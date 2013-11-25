@@ -1,5 +1,9 @@
 #!/bin/bash
-
+# 
+#   File:    llnms-list-networks.bash
+#   Author:  Marvin Smith
+#   Date:    11/23/2013
+#
 
 #-------------------------------#
 #-     Usage Instructions      -#
@@ -10,7 +14,9 @@ usage(){
     echo ""
     echo '   options:'
     echo '      -h | -help )  Print usage instructions'
-
+    echo ''
+    echo '      -p ) Print in a pretty, user-readable format(default)'
+    echo '      -l ) Print in a list format suitable for piping'
 }
 
 #----------------------------#
@@ -25,16 +31,31 @@ fi
 #  Import the utility script
 . $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
 
+#  Set the default output format
+OUTPUT_FORMAT="PRETTY"
+
 #  Parse Command-Line Options
 for OPTION in $@; do
 
     case $OPTION in
     
+        #  Print usage instructions
         "-h" | "-help")
             usage
             exit 1
             ;;
+
+        #  Format in pretty format
+        "-p" )
+            OUTPUT_FORMAT="PRETTY"
+            ;;
+
+        #  Format in a list
+        "-l" )
+            OUTPUT_FORMAT="LIST"
+            ;;
         
+        #  Print error for unknown option
         *)
             echo "Error: unknown option $OPTION"
             exit 1
@@ -52,25 +73,56 @@ if [ ! "$(ls $LLNMS_HOME/networks/)" == "" ]; then
 fi
 
 
-#  For each definition, print the details
-RANGE_CNT=0
-SINGLE_CNT=0
 
-OUTPUT=""
+#  Pretty output
+PRETTY_OUTPUT=""
+
+#  If pretty output, print the number of network files
+if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
+    echo "Number of Networks Registered: $(ls $LLNMS_HOME/networks/*.xml | wc -l)"
+else
+    echo "NETWORK_FILE_COUNT:$(ls $LLNMS_HOME/networks/*.xml | wc -l)"
+fi
+
+#  Start iterating through each network definition
+TOTAL_CNT=1
 for DEF in $NETWORK_DEFS; do 
+    
+    #  These are the counts for the range and single types.  Make sure to keep these accurate
+    RANGE_CNT=0
+    SINGLE_CNT=0
     
     #  Get the name
     DEF_NAME="$(llnms-get-network-name $DEF)"
-    OUTPUT+="Network Name=$DEF_NAME\n"
+    
+    #  Print the Name In a Table Format if pretty
+    if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
+        PRETTY_OUTPUT+="Network $TOTAL_CNT Name: $DEF_NAME\n"
+
+    #  If in list form, print the id of the network with the name
+    else
+        #  print the number which we are in the list of networks 
+        echo "NETWORK_${TOTAL_CNT}_NAME:$DEF_NAME"
+    fi
 
     #  Get the list of network ranges
     DEF_NETWORK_CNT="$(llnms-count-network-definitions $DEF)"
     
+    #  If in list form, print the count
+    if [ "$OUTPUT_FORMAT" == "LIST" ]; then
+        echo "NETWORK_${TOTAL_CNT}_NUM_DEFS:$DEF_NETWORK_CNT"
+    fi
+
     #  For each network object, get the type
     for i in $(seq 1 $DEF_NETWORK_CNT); do
         
         #  Get the nth network type
         NETWORK_TYPE=$(llnms-get-network-type $DEF $i)
+            
+        #  If we are in a list format, then print now
+        if [ "$OUTPUT_FORMAT" == "LIST" ]; then
+            echo "NETWORK_${TOTAL_CNT}_DEF_$(($RANGE_CNT+$SINGLE_CNT+1))_TYPE:$NETWORK_TYPE"
+        fi
 
         #  If we have a range object, then recover the address start and address end
         if [ "$NETWORK_TYPE" == "RANGE" ]; then
@@ -81,7 +133,12 @@ for DEF in $NETWORK_DEFS; do
             NETWORK_ADDRESS_START=$(llnms-get-network-address-start $DEF $i $RANGE_CNT)
             NETWORK_ADDRESS_END=$(llnms-get-network-address-end $DEF $i  $RANGE_CNT)
             
-            OUTPUT+="\t$NETWORK_ADDRESS_START\t$NETWORK_ADDRESS_END"
+            if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
+                PRETTY_OUTPUT+="\t$NETWORK_ADDRESS_START\t$NETWORK_ADDRESS_END"
+            else
+                echo "NETWORK_${TOTAL_CNT}_DEF_$(($RANGE_CNT+$SINGLE_CNT))_ADDRESS_START:$NETWORK_ADDRESS_START"
+                echo "NETWORK_${TOTAL_CNT}_DEF_$(($RANGE_CNT+$SINGLE_CNT))_ADDRESS_END:$NETWORK_ADDRESS_END"
+            fi
 
         # Otherwise we have a single address
         else
@@ -90,13 +147,24 @@ for DEF in $NETWORK_DEFS; do
             SINGLE_CNT=$(($SINGLE_CNT+1))
 
             NETWORK_ADDRESS=$(llnms-get-network-address $DEF $i $SINGLE_CNT)
-            OUTPUT+="\t$NETWORK_ADDRESS"
+            
+            if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
+                PRETTY_OUTPUT+="\t$NETWORK_ADDRESS"
+            else
+                echo "NETWORK_${TOTAL_CNT}_DEF_$(($RANGE_CNT+$SINGLE_CNT))_ADDRESS:$NETWORK_ADDRESS"
+            fi
+
         fi
         
-        OUTPUT+="\n"
+        PRETTY_OUTPUT+="\n"
 
     done
+    
+    TOTAL_CNT=$(($TOTAL_CNT+1))
 
 done
 
-printf "$OUTPUT" | column -t -s $'\t'
+if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
+    printf "$PRETTY_OUTPUT" #| column -t -s $'\t'
+fi
+

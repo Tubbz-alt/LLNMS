@@ -1,0 +1,39 @@
+<!--    
+    Name:    general-internet.llnms_network
+    Author:  Marvin Smith
+    Date:    11/23/2013
+ 
+    Purpose: Sample Network for LLNMS.  This demo shows a basic scan which 
+             encompasess a list of specific websites
+-->
+<!--  Start of the LLNMS Network Definition -->
+<llnms-network>
+
+    <!-- Name of the LLNMS Network -->
+    <name>General Internet</name>
+
+    <!-- All network definitions are contained within the networks container -->
+    <networks>
+    
+        <!-- Start the network definitions here.  -->
+        <network>
+        
+            <!--There are two types
+                 SINGLE and RANGE.  SINGLE corresponds to a single network 
+                 address which you would like to monitor.  RANGE corresponds to
+                 a range of addresses which you would like to monitor.
+            -->
+            <type>SINGLE</type>
+
+            <address>8.8.8.8</address>
+        
+        <!-- This is the end of the 192.168.0 network definition -->
+        </network>
+
+
+    <!-- This is the end of all network definitions -->
+    </networks>
+
+
+<!--   End of the LLNMS Network Definition -->
+</llnms-network>

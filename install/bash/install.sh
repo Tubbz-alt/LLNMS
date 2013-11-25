@@ -64,6 +64,10 @@ install_to_filesystem(){
     
     #  Copy the xml starlet utils
     cp src/xmlstarlet/bash/llnms-xmlstarlet-functions.bash $LLNMS_HOME/bin/
+    
+    #  Copy the start and stop network scanning functions
+    cp src/llnms/network/scan/bash/llnms-start-network-scan.bash  $LLNMS_HOME/bin/
+    cp src/llnms/network/scan/bash/llnms-stop-network-scan.bash   $LLNMS_HOME/bin/
 
 }
 

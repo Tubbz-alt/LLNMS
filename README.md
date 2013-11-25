@@ -25,6 +25,12 @@ usage instructions.
 
 Print the details of all networks registered in LLNMS. Use `-h` to print usage instructions.
 
+
+    llnms-start-network-scan
+
+Command LLNMS to start scanning the network.  Use `-h` to print usage instructions.
+
+
 Installation
 ------------
 
