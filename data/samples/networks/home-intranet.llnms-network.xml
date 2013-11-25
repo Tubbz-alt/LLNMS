@@ -1,0 +1,55 @@
+<!--    
+    Name:    home-intranet.llnms_network
+    Author:  Marvin Smith
+    Date:    11/23/2013
+ 
+    Purpose: Sample Network for LLNMS.  This demo shows a basic scan which 
+             encompasess the entire 192.168.0 network. 
+-->
+<!--  Start of the LLNMS Network Definition -->
+<llnms-network>
+
+    <!-- Name of the LLNMS Network -->
+    <name>Home Intranet</name>
+
+    <!-- All network definitions are contained within the networks container -->
+    <networks>
+    
+        <!-- Start the network definitions here.  -->
+        <network>
+        
+            <!--There are two types
+                 SINGLE and RANGE.  SINGLE corresponds to a single network 
+                 address which you would like to monitor.  RANGE corresponds to
+                 a range of addresses which you would like to monitor.
+            -->
+            <type>RANGE</type>
+
+            <!--  Ranges have a address-start and an address-end -->
+            <address-start>192.168.0.1</address-start>
+            <address-end>192.168.0.20</address-end>
+        
+        <!-- This is the end of the 192.168.0 network definition -->
+        </network>
+
+        <!-- This is an example of a single address -->
+        <network>
+            
+            <type>SINGLE</type>
+
+            <address>192.168.0.24</address>
+        </network>
+
+        <!--  Another range -->
+        <network>
+            <type>RANGE</type>
+            <address-start>192.168.0.30</address-start>
+            <address-end>192.168.0.40</address-end>
+        </network>
+
+    <!-- This is the end of all network definitions -->
+    </networks>
+
+
+<!--   End of the LLNMS Network Definition -->
+</llnms-network>

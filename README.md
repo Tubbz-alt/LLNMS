@@ -18,7 +18,12 @@ are generally defined as llnms-**action**-**target**.
     
     llnms-add-network
 
-Create a new network file and add it to `$LLNMS_HOME/networks/scanners/`
+Create a new network file and add it to `$LLNMS_HOME/networks/`.  Use `-h` to print
+usage instructions.
+
+    llnms-list-networks
+
+Print the details of all networks registered in LLNMS. Use `-h` to print usage instructions.
 
 Installation
 ------------
@@ -31,4 +36,8 @@ run the script from the base directory.
     ./install/bash/install.sh
 
 run with -h or -help for more options.
+
+The primary installation option is the destination for `LLNMS_HOME` which 
+should be defaulted to `/var/tmp/llnms`.  Given this installation destination,
+all components will be installed there. 
 
