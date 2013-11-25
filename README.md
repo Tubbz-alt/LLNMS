@@ -30,6 +30,11 @@ Print the details of all networks registered in LLNMS. Use `-h` to print usage i
 
 Command LLNMS to start scanning the network.  Use `-h` to print usage instructions.
 
+    llnms-stop-network-scan
+
+Command LLNMS to kill any scans currently in progress and to save results. Use `-h` to print
+usage instructions.
+
 
 Installation
 ------------
