@@ -47,6 +47,11 @@ build_and_verify_filestructure(){
     if [ ! -d "$DEFAULT_LLNMS_TEMP_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_TEMP_PATH"
     fi
+    
+    # Verify the run directory
+    if [ ! -d "$DEFAULT_LLNMS_RUN_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_RUN_PATH" 
+    fi
 
 }
 
@@ -68,6 +73,9 @@ install_to_filesystem(){
     #  Copy the start and stop network scanning functions
     cp src/llnms/network/scan/bash/llnms-start-network-scan.bash  $LLNMS_HOME/bin/
     cp src/llnms/network/scan/bash/llnms-stop-network-scan.bash   $LLNMS_HOME/bin/
+    
+    #  Copy the network utility scripts
+    cp src/llnms/network/utilities/bash/llnms-network-utilities.bash $LLNMS_HOME/bin/
 
 }
 

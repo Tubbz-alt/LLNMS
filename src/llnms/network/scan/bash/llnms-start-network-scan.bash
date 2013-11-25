@@ -23,6 +23,14 @@ usage(){
 #-         Main Function        -#
 #--------------------------------#
 
+# Import default parameters
+if [ "$LLNMS_HOME" == "" ]; then
+    LLNMS_HOME=/var/tmp/llnms
+fi
+
+#  Import the utility script
+. $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
+. $LLNMS_HOME/bin/llnms-network-utilities.bash
 
 #  Process Command-Line Arguments
 for OPTION in $@; do
@@ -45,10 +53,12 @@ done
 
 
 ADDRESS_LIST=()
+
 #  Get the number of current network definition files
 NUM_NETWORK_FILES=$($LLNMS_HOME/bin/llnms-list-networks.bash -l | grep NETWORK_FILE_COUNT | cut -d ':' -f 2)
 
-#  Iterate through each network file, checking that it matches the network-status-list
+#  Iterate through each network file, creating a master list of IP Addresses to 
+#  run
 for i in `seq 1 $NUM_NETWORK_FILES`; do
     
     #  Grab the number of definitions
@@ -57,7 +67,6 @@ for i in `seq 1 $NUM_NETWORK_FILES`; do
     #  Iterate through each definition
     for j in `seq 1 $DEF_CNT`; do
         
-        echo start $i $j
         #  get the type
         DEF_TYPE=$($LLNMS_HOME/bin/llnms-list-networks.bash -l | grep NETWORK_${i}_DEF_${j}_TYPE | cut -d ':' -f 2)
         
@@ -80,7 +89,8 @@ for i in `seq 1 $NUM_NETWORK_FILES`; do
             for b in `seq $ADDR2_START $ADDR2_END`; do
             for c in `seq $ADDR3_START $ADDR3_END`; do
             for d in `seq $ADDR4_START $ADDR4_END`; do
-                echo $a.$b.$c.$d
+                ADDR=${a}.${b}.${c}.${d}
+                ADDRESS_LIST+=($ADDR)
             done
             done
             done
@@ -88,7 +98,7 @@ for i in `seq 1 $NUM_NETWORK_FILES`; do
 
         #  If it is a single type, then just get the address
         else
-            ADDR=$($LLNMS_HOME/bin/llnms-list-networks.bash -l | grep NETWORK_${i}_DEF_${j}_ADDRESS | cut -d ':' -f 2)
+            ADDR="$($LLNMS_HOME/bin/llnms-list-networks.bash -l | grep NETWORK_${i}_DEF_${j}_ADDRESS | cut -d ':' -f 2)"
             ADDRESS_LIST+=($ADDR)
         fi
 
@@ -97,4 +107,24 @@ for i in `seq 1 $NUM_NETWORK_FILES`; do
     done
 done
 
-echo $ADDRESS_LIST
+#  Check against the network status file and ensure the addresses exist in the table
+for x in `seq 0 $((${#ADDRESS_LIST[@]}-1))`; do
+    
+    # check if the table has the entry
+    if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
+        touch "$LLNMS_HOME/run/llnms-network-status.txt"
+    fi
+
+    #  If the data does not exist, then add it
+    llnms-check-network-status-and-add-ip-entry ${ADDRESS_LIST[$x]}
+
+    #  Now that the ip status table has been updated, lets start pinging devices
+    llnms-ping-network-address ${ADDRESS_LIST[$x]} 
+
+done
+wait
+
+
+
+
+
