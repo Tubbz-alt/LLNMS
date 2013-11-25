@@ -1,0 +1,16 @@
+#   file:    Makefile.linux
+#   author:  Marvin Smith
+#   date:    11/23/2013
+#
+
+#  This is the latex compiler. 
+#  
+#  Here is a set of packages in Linux distros which contain this compiler
+#  Debian/Fedora-based distros: texlive-latex
+LTX_COMPILER=pdflatex
+
+
+#  Build the main tutorial
+tutorial.pdf: tutorial.tex
+	$(LTX_COMPILER) $<
+

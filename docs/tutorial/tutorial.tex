@@ -1,0 +1,35 @@
+\documentclass[12pt]{report}
+
+
+\begin{document}
+
+\section*{Design}
+
+\subsection*{Overview}
+The chief objective with LLNMS is \emph{modularity} and
+\emph{independence}.  Network Management Systems (NMS) tend
+to consist of a single application which does all of the work.  
+LLNMS seeks to be a collection of tools which chained together 
+designate a complete NMS solution. 
+
+
+\subsubsection*{Networks}
+
+LLNMS allows you to scan a network to view all available or detected assets.  This 
+can be used to monitor the health of a network infrastructure or to detect intruders into
+a system.  To implement this capability, LLNMS scans a network using a specified set of 
+rules.  
+
+\section*{Hierarchy}
+
+LLNMS operates as an independent set of utilities which depend on 
+a deterministic file and directory structure. 
+
+\subsubsection*{LLNMS\_HOME}
+This is the base directory for which all LLNMS activity takes place.  This
+contains all configuration files, utilities, and output.  On linux systems, 
+the designated home is at \texttt{/var/tmp/llnms}. 
+
+
+
+\end{document}
