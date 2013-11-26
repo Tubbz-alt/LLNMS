@@ -31,6 +31,15 @@ fi
 #  Import the utility script
 . $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
 . $LLNMS_HOME/bin/llnms-network-utilities.bash
+. $LLNMS_HOME/bin/llnms-log-utilities.bash
+
+#  Set our log file
+if [ "$LLNMS_SCAN_LOG" == "" ]; then
+    LLNMS_SCAN_LOG=$LLNMS_HOME/log/llnms-scan.log
+fi
+
+
+llnms-add-log-entry $LLNMS_SCAN_LOG "llnms-scan-networks started with args=$@"
 
 #  Process Command-Line Arguments
 for OPTION in $@; do
@@ -106,21 +115,30 @@ for i in `seq 1 $NUM_NETWORK_FILES`; do
             
     done
 done
+    
+
+#  Check that the status file exists
+if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
+    llnms-add-log-entry $LLNMS_SCAN_LOG "Network Status File at $LLNMS_HOME/run/llnms-network-status.txt does not exist, creating empty file now."
+    llnms-create-empty-network-status-file
+fi
 
 #  Check against the network status file and ensure the addresses exist in the table
 for x in `seq 0 $((${#ADDRESS_LIST[@]}-1))`; do
+   
     
-    # check if the table has the entry
-    if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
-        llnms-create-empty-network-status-file
-    fi
+    llnms-add-log-entry $LLNMS_SCAN_LOG "Scanning ${ADDRESS_LIST[$x]}"
 
     #  If the data does not exist, then add it
     llnms-check-network-status-and-add-ip-entry ${ADDRESS_LIST[$x]}
 
     #  Now that the ip status table has been updated, lets start pinging devices
-    llnms-ping-network-address ${ADDRESS_LIST[$x]} 
-    echo "Testing: ${ADDRESS_LIST[$x]}"
+    RES=$(llnms-ping-network-address ${ADDRESS_LIST[$x]})
+    if [ "$RES" == "0" ]; then
+        llnms-add-log-entry $LLNMS_SCAN_LOG "${ADDRESS_LIST[$x]} Found"
+    else
+        llnms-add-log-entry $LLNMS_SCAN_LOG "${ADDRESS_LIST[$x]} Not Found"
+    fi
 
 done
 wait

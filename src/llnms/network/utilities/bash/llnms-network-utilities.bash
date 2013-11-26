@@ -29,15 +29,19 @@ llnms-check-network-status-and-add-ip-entry(){
 llnms-ping-network-address(){
 
     STAT_FILE=$LLNMS_HOME/run/llnms-network-status.txt
+    RESULT=1
 
     #  Run the ping command
     ping -c 1 -q $1 > /dev/null
 
     if [ "$?" == "0" ]; then
         sed -e "s/${1} [01].*/${1} 1 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        RESULT=0
     else    
         sed -e "s/${1} [01].*/${1} 0 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        RESULT=1
     fi
+    echo "$RESULT"
 
 }
 
@@ -79,8 +83,16 @@ llnms-create-empty-network-host-map(){
 #----------------------------------------#
 llnms-resolve-ip-address(){
     
+    # use traceroute to get the item
     RES=$(traceroute $1 | tail -1 | sed 's/^ //' | sed 's/  */ /' | cut -d' ' -f2 )
-    echo "$RES"
+    
+    # make sure the hostname fits the regex
+    PATTERN="$(echo "$RES" | grep '[a-zA-Z0-9-]')"
+    if [ "$PATTERN" == "$RES" ]; then
+        echo $PATTERN
+    else
+        echo ""
+    fi
 }
 
 
