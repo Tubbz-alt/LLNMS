@@ -54,4 +54,24 @@ llnms-create-empty-network-status-file(){
 
 }
 
+#-----------------------------------------------#
+#-       Create empty network host map         -#
+#-----------------------------------------------#
+llnms-create-empty-network-host-map(){
+
+    #  Check if file exists and delete it
+    if [ -f "$LLNMS_HOME/run/llnms-network-host-map.txt" ]; then
+        rm "$LLNMS_HOME/run/llnms-network-host-map.txt"
+    fi
+
+    # Create empty host map
+    touch "$LLNMS_HOME/run/llnms-network-host-map.txt"
+
+    #  Load the headers
+    echo "#  IP Address   |   Hostname" >> "$LLNMS_HOME/run/llnms-network-host-map.txt"
+  
+
+
+}
+
 
