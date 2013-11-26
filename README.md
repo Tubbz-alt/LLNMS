@@ -26,14 +26,13 @@ usage instructions.
 Print the details of all networks registered in LLNMS. Use `-h` to print usage instructions.
 
 
-    llnms-start-network-scan
+    llnms-scan-networks
 
 Command LLNMS to start scanning the network.  Use `-h` to print usage instructions.
 
-    llnms-stop-network-scan
+    llnms-resolve-network-addresses
 
-Command LLNMS to kill any scans currently in progress and to save results. Use `-h` to print
-usage instructions.
+Command LLNMS to resolve hostnames for network addresses.
 
 
 Installation

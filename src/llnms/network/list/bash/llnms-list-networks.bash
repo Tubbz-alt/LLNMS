@@ -132,7 +132,7 @@ for DEF in $NETWORK_DEFS; do
 
             NETWORK_ADDRESS_START=$(llnms-get-network-address-start $DEF $i $RANGE_CNT)
             NETWORK_ADDRESS_END=$(llnms-get-network-address-end $DEF $i  $RANGE_CNT)
-            
+           
             if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
                 PRETTY_OUTPUT+="\t$NETWORK_ADDRESS_START\t$NETWORK_ADDRESS_END"
             else

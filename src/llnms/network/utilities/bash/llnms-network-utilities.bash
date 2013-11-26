@@ -34,10 +34,23 @@ llnms-ping-network-address(){
     ping -c 1 -q $1 > /dev/null
 
     if [ "$?" == "0" ]; then
-        sed -e "s/${1} [01]/${1} 1/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        sed -e "s/${1} [01].*/${1} 1 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
     else    
-        sed -e "s/${1} [01]/${1} 0/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        sed -e "s/${1} [01].*/${1} 0 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
     fi
+
+}
+
+#--------------------------------------------------#
+#-       Create a clean network status file       -#
+#--------------------------------------------------#
+llnms-create-empty-network-status-file(){
+    
+    #  Create new network status file
+    touch "$LLNMS_HOME/run/llnms-network-status.txt"
+
+    #  echo the headers
+    echo "#  IP Address    |    Status (0-not found | 1-found)   |   Date  " >> "$LLNMS_HOME/run/llnms-network-status.txt"
 
 }
 

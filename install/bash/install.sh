@@ -71,11 +71,14 @@ install_to_filesystem(){
     cp src/xmlstarlet/bash/llnms-xmlstarlet-functions.bash $LLNMS_HOME/bin/
     
     #  Copy the start and stop network scanning functions
-    cp src/llnms/network/scan/bash/llnms-start-network-scan.bash  $LLNMS_HOME/bin/
-    cp src/llnms/network/scan/bash/llnms-stop-network-scan.bash   $LLNMS_HOME/bin/
+    cp src/llnms/network/scan/bash/llnms-scan-networks.bash  $LLNMS_HOME/bin/
     
     #  Copy the network utility scripts
     cp src/llnms/network/utilities/bash/llnms-network-utilities.bash $LLNMS_HOME/bin/
+    
+    #  Copy the network resolve scripts
+    cp src/llnms/network/resolve/bash/llnms-resolve-network-addresses.bash $LLNMS_HOME/bin/
+
 
 }
 

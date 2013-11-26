@@ -112,7 +112,7 @@ for x in `seq 0 $((${#ADDRESS_LIST[@]}-1))`; do
     
     # check if the table has the entry
     if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
-        touch "$LLNMS_HOME/run/llnms-network-status.txt"
+        llnms-create-empty-network-status-file
     fi
 
     #  If the data does not exist, then add it
@@ -120,6 +120,7 @@ for x in `seq 0 $((${#ADDRESS_LIST[@]}-1))`; do
 
     #  Now that the ip status table has been updated, lets start pinging devices
     llnms-ping-network-address ${ADDRESS_LIST[$x]} 
+    echo "Testing: ${ADDRESS_LIST[$x]}"
 
 done
 wait

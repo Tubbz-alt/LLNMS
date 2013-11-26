@@ -41,7 +41,7 @@ llnms-get-network-type(){
 #-     Get the network address start from the specified file     -#
 #-----------------------------------------------------------------#
 llnms-get-network-address-start(){
-    XMLDATA=$(xmlstarlet sel -t -v "/llnms-network/networks/network/address-start" $1)
+    XMLDATA=$(xmlstarlet sel -t -m //network -v address-start -n $1)
     
     num=1
     for TYPE in $XMLDATA; do
@@ -56,7 +56,7 @@ llnms-get-network-address-start(){
 #-     Get the network address end from the specified file     -#
 #---------------------------------------------------------------#
 llnms-get-network-address-end(){
-    XMLDATA=$(xmlstarlet sel -t -v "/llnms-network/networks/network/address-end" $1)
+    XMLDATA=$(xmlstarlet sel -t -m //network -v address-end -n $1)
     
     num=1
     for TYPE in $XMLDATA; do
@@ -72,7 +72,7 @@ llnms-get-network-address-end(){
 #-----------------------------------------------------------#
 llnms-get-network-address(){
     
-    XMLDATA=$(xmlstarlet sel -t -v "/llnms-network/networks/network/address" $1)
+    XMLDATA=$(xmlstarlet sel -t -m //network -v address -n $1)
     
     num=1
     for TYPE in $XMLDATA; do
