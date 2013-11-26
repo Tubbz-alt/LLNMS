@@ -74,4 +74,13 @@ llnms-create-empty-network-host-map(){
 
 }
 
+#----------------------------------------#
+#-        Resolve Single Hostname       -#
+#----------------------------------------#
+llnms-resolve-ip-address(){
+    
+    RES=$(traceroute $1 | tail -1 | sed 's/^ //' | sed 's/  */ /' | cut -d' ' -f2 )
+    echo "$RES"
+}
+
 

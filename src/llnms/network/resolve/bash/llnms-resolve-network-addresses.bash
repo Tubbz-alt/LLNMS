@@ -73,7 +73,7 @@ done < $LLNMS_HOME/run/llnms-network-status.txt
 # For all addresses in the list, query the hostname
 for x in `seq 0 $((${#ACTIVE_IP_ADDRESSES[@]}-1))`; do
     
-    echo ${ACTIVE_IP_ADDRESSES[$x]}
+    echo "IP: ${ACTIVE_IP_ADDRESSES[$x]}, HOST: $(llnms-resolve-ip-address ${ACTIVE_IP_ADDRESSES[$x]})"
 
 done
 
