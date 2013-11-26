@@ -52,6 +52,11 @@ build_and_verify_filestructure(){
     if [ ! -d "$DEFAULT_LLNMS_RUN_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_RUN_PATH" 
     fi
+    
+    # Verify the log directory exists
+    if [ ! -d "$DEFAULT_LLNMS_LOG_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_LOG_PATH"
+    fi
 
 }
 
@@ -79,6 +84,9 @@ install_to_filesystem(){
     #  Copy the network resolve scripts
     cp src/llnms/network/resolve/bash/llnms-resolve-network-addresses.bash $LLNMS_HOME/bin/
 
+    
+    #  Copy the log utilities
+    cp src/llnms/log/utilities/bash/llnms-log-utilities.bash $LLNMS_HOME/bin/
 
 }
 
@@ -91,8 +99,13 @@ uninstall_llnms( ){
     echo "Uninstalling LLNMS from $LLNMS_HOME"
 
     #  Remove scripts
-    if [ ! "$(ls $LLNMS_HOME/bin/llnms-*)" == "" ]; then
+    if [ $(ls $LLNMS_HOME/bin/llnms-* 2>/dev/null | wc -l) -ne 0 ]; then
         rm $LLNMS_HOME/bin/llnms-*
+    fi
+
+    #  Remove logs
+    if [ $(ls $LLNMS_HOME/logs/llnms*.log 2>/dev/null | wc -l) -ne 0 ]; then
+        rm $LLNMS_HOME/logs/llnms-*.log
     fi
 
 
@@ -142,4 +155,5 @@ build_and_verify_filestructure
 
 #  copy the tools to the directory
 install_to_filesystem
+
 
