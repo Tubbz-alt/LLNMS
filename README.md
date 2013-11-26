@@ -51,3 +51,7 @@ The primary installation option is the destination for `LLNMS_HOME` which
 should be defaulted to `/var/tmp/llnms`.  Given this installation destination,
 all components will be installed there. 
 
+### Windows (PowerShell)
+Windows 7 and later ship with Windows PowerShell.
+
+
