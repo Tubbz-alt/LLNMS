@@ -1,17 +1,18 @@
 
-// Import the HTTP Module for NodeJS
-var http = require("http");
+// Import our server from server.js
+var server = require("./server");
 
-/// On request function
-function onRequest(request, response){
-    console.log("Request Recieved.");
-    response.writeHead(200,{"Content-Type":"text/plain"});
-    response.write("Hello World");
-    response.end();
-}
+// Import our router from router.js
+var router = require("./router");
 
-//  Create the server
-http.createServer(onRequest).listen(8888);
+// Import our request handlers from requestHandlers.js
+var requestHandlers = require("./requestHandlers");
 
-console.log("Server has started.");
+//  Create the list of handlers
+var handlers = {}
+handlers["/"] = requestHandlers.start;
+handlers["/upload"] = requestHandlers.upload;
+
+// start our server
+server.start(router.route, handlers );
 
