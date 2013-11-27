@@ -11,7 +11,7 @@ var requestHandlers = require("./requestHandlers");
 //  Create the list of handlers
 var handlers = {}
 handlers["/"] = requestHandlers.start;
-handlers["/upload"] = requestHandlers.upload;
+handlers["/networks"] = requestHandlers.networks;
 
 // start our server
 server.start(router.route, handlers );

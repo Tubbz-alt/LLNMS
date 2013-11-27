@@ -29,15 +29,29 @@ function start( response, postData ){
 }
 
 //  Upload request handler
-function upload( response, postData ){
-    console.log("Request handler 'upload' was called.");
+function networks( response, postData ){
 
-    response.writeHead(200,{"Content-Type":"text/plain"});
-    response.write("You've sent: " + querystring.parse(postData).text );
-    response.end();
+    console.log("Request handler 'networks' was called.");
+
+    // create the content of our body
+    var body=""
+
+    // make sure the main file of our body exists
+    fs.readFile('../html/networks.html', function read(err,data){
+        if(err){
+            throw err;
+        }
+        body = data;
+
+        // process file
+        response.writeHead(200,{"Content-Type":"text/html"});
+        response.write(body);
+        response.end();
+    });
+
 }
 
 // export our request handlers
-exports.start = start
-exports.upload = upload
+exports.start    = start
+exports.networks = networks
 
