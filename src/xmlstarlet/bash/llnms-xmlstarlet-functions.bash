@@ -5,7 +5,7 @@
 #-   Count the number of network definitions for a network file    -#
 #-------------------------------------------------------------------#
 llnms-count-network-definitions(){
-
+    
     # use xml starlet select
     echo $(xmlstarlet sel -t -v "count(/llnms-network/networks/network)" $1)
 }

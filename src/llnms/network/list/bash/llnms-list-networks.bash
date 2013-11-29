@@ -17,6 +17,8 @@ usage(){
     echo ''
     echo '      -p ) Print in a pretty, user-readable format(default)'
     echo '      -l ) Print in a list format suitable for piping'
+    echo '      -debug ) Print debugging info with output'
+
 }
 
 #----------------------------#
@@ -29,10 +31,12 @@ if [ "$LLNMS_HOME" == "" ]; then
 fi
 
 #  Import the utility script
-. $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
+source $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
+source $LLNMS_HOME/bin/llnms-network-utilities.bash
 
 #  Set the default output format
 OUTPUT_FORMAT="PRETTY"
+DEBUG_STATE=0
 
 #  Parse Command-Line Options
 for OPTION in $@; do
@@ -55,6 +59,11 @@ for OPTION in $@; do
             OUTPUT_FORMAT="LIST"
             ;;
         
+        #  Set debugging state
+        "-debug" )
+            DEBUG_STATE=1
+            ;;
+
         #  Print error for unknown option
         *)
             echo "Error: unknown option $OPTION"
@@ -65,6 +74,13 @@ for OPTION in $@; do
 
 done
 
+#  Print some debugging info
+if [ "$DEBUG_STATE" == "1" ]; then
+    if [ "$OUTPUT_FORMAT" == "LIST" ]; then
+        echo "LLNMS_HOME=$LLNMS_HOME"
+        echo "PS: $(llnms-ping-network-address 127.0.0.1)"
+    fi
+fi
 
 #  make sure we have definitions in the network directory
 NETWORK_DEFS=""
@@ -72,6 +88,7 @@ if [ ! "$(ls $LLNMS_HOME/networks/)" == "" ]; then
     NETWORK_DEFS=$(ls $LLNMS_HOME/networks/*.llnms-network.xml)
 fi
 
+export PATH=/opt/local/bin:$PATH
 
 
 #  Pretty output
@@ -81,7 +98,7 @@ PRETTY_OUTPUT=""
 if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
     echo "Number of Networks Registered: $(ls $LLNMS_HOME/networks/*.xml | wc -l)"
 else
-    echo "NETWORK_FILE_COUNT:$(ls $LLNMS_HOME/networks/*.xml | wc -l)"
+    echo "NETWORK_FILE_COUNT:$(ls $LLNMS_HOME/networks/*.xml | wc -l | sed 's/ *//' )"
 fi
 
 #  Start iterating through each network definition
@@ -94,7 +111,7 @@ for DEF in $NETWORK_DEFS; do
     
     #  Get the name
     DEF_NAME="$(llnms-get-network-name $DEF)"
-    
+
     #  Print the Name In a Table Format if pretty
     if [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
         PRETTY_OUTPUT+="Network $TOTAL_CNT Name: $DEF_NAME\n"

@@ -84,7 +84,6 @@ install_to_filesystem(){
     #  Copy the network resolve scripts
     cp src/llnms/network/resolve/bash/llnms-resolve-network-addresses.bash $LLNMS_HOME/bin/
 
-    
     #  Copy the log utilities
     cp src/llnms/log/utilities/bash/llnms-log-utilities.bash $LLNMS_HOME/bin/
 
