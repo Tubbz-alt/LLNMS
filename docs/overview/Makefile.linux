@@ -11,6 +11,6 @@ LTX_COMPILER=pdflatex
 
 
 #  Build the main tutorial
-tutorial.pdf: tutorial.tex
+overview.pdf: overview.tex
 	$(LTX_COMPILER) $<
 
