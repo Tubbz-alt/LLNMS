@@ -26,6 +26,16 @@ class NetworkDefinition:
 		else:
 			return [self.address_start, self.address_end];
 
+	def getAddressStr(self):
+		
+		aRange = self.getAddress()
+		output = ""
+		
+		if len(aRange) > 0:
+			output += aRange[0]
+		if len(aRange) > 1:
+			output += ' - ' +  aRange[1]
+		return output
 
 class Network:
 	
@@ -39,18 +49,25 @@ class Network:
 		
 		# get root
 		root = tree.getroot()
-		
+		networks = root.find('networks')
+
 		# get name
 		self.setName( root.find('name').text );
 
 		# get each sub network
 		self.network_definitions = []
-		for network in root.findall('network'):
+		for network in networks.findall('network'):
 			
 			# get type
 			tp = network.find('type').text
 			
-			self.addNetworkDefinition( tp, '127.0.0.1', '')
+			if tp == "SINGLE":
+				address = network.find('address').text
+				self.addNetworkDefinition( tp, address, '' )
+			else:
+				address_start = network.find('address-start').text
+				address_end   = network.find('address-end').text
+				self.addNetworkDefinition( tp, address_start, address_end)
 
 
 
