@@ -28,6 +28,15 @@ def print_network_summary_footer( stdscr ):
 	stdscr.addstr( curses.LINES-2, 0, 'q) Return to main menu')
 
 
+#-----------------------------------------#
+#-    Print the Network Summary Table    -#
+#-----------------------------------------#
+def print_network_summary_table( stdscr, llnms_state, rmin ):
+	
+	for x in xrange( 0, len(llnms_state.network_status.network_assets)):
+		stdscr.addstr( rmin + x, 0, llnms_state.network_status.network_assets[x])
+
+
 #------------------------------------------#
 #-    Print the network summary window    -#
 #------------------------------------------#
@@ -42,6 +51,9 @@ def view_network_summary( stdscr, llnms_state ):
 
 		#  Print the header
 		print_network_summary_header(stdscr);
+
+		#  Print the table
+		print_network_summary_table(stdscr, llnms_state, 3 )
 
 		#  Print the footer
 		print_network_summary_footer(stdscr);

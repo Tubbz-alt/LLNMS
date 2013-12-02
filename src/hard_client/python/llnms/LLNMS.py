@@ -21,5 +21,9 @@ class LLNMS:
 		network_path = self.LLNMS_HOME + "/networks";
 		self.networks = network.llnms_load_networks( network_path, self.logger );
 		self.logger.addMessage('Networks loaded from ' + network_path, Logger.INFO );
-
 		
+		# load the scanning list
+		status_path = self.LLNMS_HOME + "/run"
+		self.network_status = network.NetworkStatus(status_path)
+		self.logger.addMessage('Network Status Loaded', Logger.INFO );
+
