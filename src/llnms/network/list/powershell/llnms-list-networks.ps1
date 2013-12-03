@@ -19,7 +19,6 @@ Function usage( ){
     echo "        -Help : Print usage instructions"
     echo "        -p | -pretty : Print output in human-readable format"
     echo "        -l | -list   : Print output in list format with variables for piping"
-    echo "        -x | -xml    : Print the output in xml format for more advanced usage"
 
 }
 
@@ -33,5 +32,24 @@ if($Help -eq $true ){
 }
 
 
+#--------------------------------------------------#
+#-     Get a list of files in the LLNMS_HOME      -#
+#--------------------------------------------------#
+$llnms_network_files = Get-ChildItem -File -Path "C:\opt\llnms\networks\*.llnms-network.xml"
+$llnms_network_count=1
+echo "NETWORK_COUNT="
+foreach( $llnms_network in $llnms_network_files ){
+    
+    #  open the file and parse the xml
+    $xml_data = [xml](Get-Content -Path $llnms_network)
+    
+    #  Grab the name
+    $xml_name = $xml_data.'llnms-network'.'name'
 
-#  
+    echo "NETWORK_($llnms_network_count)_NAME=$xml_name"
+
+    #  Increment the count
+    $llnms_network_count += 1
+}
+
+  

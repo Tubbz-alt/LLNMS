@@ -7,7 +7,9 @@
 #             systems.
 #
 Param(
-    [parameter(Mandatory=$false)][switch]$Help
+    [parameter(Mandatory=$false)][switch]$Help,
+    [parameter(Mandatory=$false)][switch]$AddProfile,
+    [parameter(Mandatory=$false)][switch]$Version
 )
 
 
@@ -15,6 +17,9 @@ Param(
 #-    Default Parameters for LLNMS   -#
 #-------------------------------------#
 $LLNMS_HOME='C:\opt\llnms'
+$LLNMS_MAJOR=1
+$LLNMS_MINOR=0
+$LLNMS_SUBMINOR=1
 
 
 #-------------------------------------#
@@ -26,7 +31,9 @@ Function usage( ){
     echo ""
     echo "    options:"
     echo ""
-    echo "        -Help : Print usage instructions"
+    echo "        -Help       : Print usage instructions"
+    echo "        -AddProfile : Add LLNMS to the system profile"
+    echo "        -Version    : Print information about LLNMS"
     
 
 }
@@ -37,11 +44,60 @@ Function usage( ){
 Function verify-and-build-filestructure(){
 
     #  Make sure the base path exists
-    if( $(Test-Path $LLNMS_HOME) -ne $true ){
-        
+    if( $(Test-Path "$LLNMS_HOME" ) -ne $true ){
+         New-Item -ItemType directory -Path "$LLNMS_HOME"
+    }
+
+    #  Make sure the binary directory exists
+    if( $(Test-Path "$LLNMS_HOME\bin" ) -ne $true){
+        New-Item -ItemType directory -Path "$LLNMS_HOME\bin"
+    }
+
+    #  Make sure the networks directory exists
+    if( $(Test-Path "$LLNMS_HOME\networks") -ne $true ){
+        New-Item -ItemType directory -Path "$LLNMS_HOME\networks"
+    }
+
+    #  Make sure the run directory exists
+    if( $(Test-Path "$LLNMS_HOME\run" ) -ne $true ){
+        New-Item -ItemType directory -Path "$LLNMS_HOME\run"
+    }
+
 
 }
 
+
+#-----------------------------------------#
+#-        Print the Version Info         -#
+#-----------------------------------------#
+Function version(){
+    
+    #Print LLNMS Info
+    Write-Output 'LLNMS : Low-Level Network Management System'
+    Write-Output ''
+    Write-Output "LLNMS_HOME=$LLNMS_HOME"
+    Write-Output "LLNMS_VERSION=$LLNMS_MAJOR.$LLNMS_MINOR.$LLNMS_SUBMINOR"
+
+}
+
+#------------------------------------------------------#
+#-     Add LLNMS Variables to the System Profile      -#
+#------------------------------------------------------#
+Function configure-system-profile(){
+
+
+}
+
+#--------------------------------------#
+#-       LLNMS Install Files          -#
+#--------------------------------------#
+Function llnms-install-files(){
+
+    #  Copy binary files
+    Copy-Item .\src\llnms\network\list\powershell\llnms-list-networks.ps1  "$LLNMS_HOME\bin\"
+
+
+}
 
 #-------------------------------------#
 #-      Start of Main Function       -#
@@ -52,6 +108,10 @@ if($Help -eq $true ){
     return
 }
 
+#  Print the Version Info
+if($Version -eq $true ){
+    version
+}
 
 #--------------------------------------#
 #-    Verify File Structure Exists    -#
@@ -62,3 +122,13 @@ verify-and-build-filestructure
 #--------------------------------#
 #-    Start Installing Files    -#
 #--------------------------------#
+llnms-install-files
+
+#-----------------------------------------#
+#-    Add LLNMS to the system profile    -#
+#-----------------------------------------#
+if( $AddProfile -eq $true ){
+    configure-system-profile
+}
+
+
