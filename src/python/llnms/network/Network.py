@@ -173,3 +173,14 @@ def llnms_query_name_from_networks( network_list, ip_address ):
 	return "n/a"
 
 
+#------------------------------------------------#
+#-      Query the hostname from the hostname    -#
+#-      list.                                   -#
+#------------------------------------------------#
+def llnms_query_hostname( ip_address ):
+	
+	# Open the hostname resolution list
+	return ''
+
+
+

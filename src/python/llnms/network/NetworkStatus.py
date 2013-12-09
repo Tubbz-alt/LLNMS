@@ -58,7 +58,7 @@ class NetworkStatus:
 				if len(line_parts) >= 3:
 
 					ip_address = line_parts[0]
-					hostname   = ''
+					hostname   = Network.llnms_query_hostname( ip_address )
 					stat = line_parts[1]
 					if stat == '1':
 						status = True
