@@ -80,7 +80,6 @@ install_to_filesystem(){
     cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
 
 
-
 }
 
 #----------------------------#

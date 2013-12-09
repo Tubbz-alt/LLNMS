@@ -39,7 +39,7 @@ def print_network_configuration_table( stdscr, llnms_state, rmin, rmax, networkI
 
 	# set the table data
 	table.setColumnHeaderItem( 0, 'Name', 0.3)
-	table.setColumnHeaderItem( 1, 'Type', 0.2)
+	table.setColumnHeaderItem( 1, 'Type', 0.1)
 	table.setColumnHeaderItem( 2, 'Address Range', 0.5)
 
 	# add each network
@@ -53,6 +53,9 @@ def print_network_configuration_table( stdscr, llnms_state, rmin, rmax, networkI
 		for y in xrange( 0, len(llnms_state.networks[x].getNetworkDefinitions())):
 			table.setItem( 1, currentRow + y, llnms_state.networks[x].getNetworkDefinitions()[y].getType())
 			table.setItem( 2, currentRow + y, llnms_state.networks[x].getNetworkDefinitions()[y].getAddressStr())
+		
+		table.setHorizontalBar( currentRow + len(llnms_state.networks[x].getNetworkDefinitions()))
+
 		currentRow += len(llnms_state.networks[x].getNetworkDefinitions()) + 1
 
 
@@ -73,6 +76,7 @@ def print_network_configuration_table( stdscr, llnms_state, rmin, rmax, networkI
 	# Print table rows
 	for x in xrange(1, table.getRowCount()):
 		stdscr.addstr( rmin+1+x, 0, table.getRow(x))
+	stdscr.addstr( rmin+1+table.getRowCount(), 0,  table.getBlankRow());
 
 	
 

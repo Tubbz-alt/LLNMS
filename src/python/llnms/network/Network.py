@@ -98,9 +98,44 @@ class Network:
 	def addNetworkDefinition( self, netType, addressStart, addressEnd):
 		
 		self.network_definitions.append(NetworkDefinition(netType, addressStart, addressEnd ));
-
+	
+	
+	#----------------------------------------------------------------------#
+	#-        Test if the network ip address is inside the network        -#
+	#----------------------------------------------------------------------#
+	def testNetworkHost( self, host_address ):
 		
+		# iterate through network definitions
+		for network_def in self.network_definitions:
+			
+			if network_def.getType() == "SINGLE":
+				if network_def.address == host_address:
+					return True;
 
+			elif network_def.getType() == "RANGE":
+				
+				#Break down the network 
+				net_beg_0 = int(str(network_def.address_start).split('.')[0])
+				net_end_0 = int(str(network_def.address_end  ).split('.')[0])
+				net_beg_1 = int(str(network_def.address_start).split('.')[1])
+				net_end_1 = int(str(network_def.address_end  ).split('.')[1])
+				net_beg_2 = int(str(network_def.address_start).split('.')[2])
+				net_end_2 = int(str(network_def.address_end  ).split('.')[2])
+				net_beg_3 = int(str(network_def.address_start).split('.')[3])
+				net_end_3 = int(str(network_def.address_end  ).split('.')[3])
+
+				host_0 = int(str(host_address).split('.')[0])
+				host_1 = int(str(host_address).split('.')[1])
+				host_2 = int(str(host_address).split('.')[2])
+				host_3 = int(str(host_address).split('.')[3])
+
+				if host_0 >= net_beg_0 and host_0 <= net_end_0:
+					if host_1 >= net_beg_1 and host_1 <= net_end_1:
+						if host_2 >= net_beg_2 and host_2 <= net_end_2:
+							if host_3 >= net_beg_3 and host_3 <= net_end_3:
+								return True;
+
+		return False;
 
 #----------------------------------------------#
 #-     Load all Network Configuration Files   -#
@@ -126,5 +161,15 @@ def llnms_load_networks( path, logger ):
 	return outputNetworks
 
 
+#-------------------------------------------#
+#-      Query the network list for all     -#
+#-      networks given an ip address       -#  
+#-------------------------------------------#
+def llnms_query_name_from_networks( network_list, ip_address ):
+	
+	for network in network_list:
+		if network.testNetworkHost( ip_address ) == True:
+			return network.getName()
+	return "n/a"
 
 

@@ -18,6 +18,9 @@ install_llnms_python_viewer(){
         rm "$LLNMS_HOME/bin/python/llnms-viewer"
     fi
     ln -s $LLNMS_HOME/bin/python/llnms_viewer.py $LLNMS_HOME/bin/python/llnms-viewer
+    
+    
+    cp test/python/llnms_tests.py $LLNMS_HOME/bin/python/
 
 }
 

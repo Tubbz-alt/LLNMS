@@ -20,6 +20,9 @@ class CursesTable:
 			self.alignments.append( ALIGN_MIDDLE )
 
 		self.columnRanges = [ [0,0] for x in xrange(cols)]
+		
+		self.horizontalBars = []
+
 
 	#---------------------------------#
 	#-     Set the header label      -#
@@ -35,7 +38,14 @@ class CursesTable:
 	def setColumnAlignment( self, col, ALIGNMENT ):
 		
 		self.alignments[col] = ALIGNMENT
-	
+
+
+	#----------------------------------------------------#
+	#-        Set a bar to be a horizontal bar          -#
+	#----------------------------------------------------#
+	def setHorizontalBar( self, row ):
+		self.horizontalBars.append(row);
+
 	#----------------------------------------------------#
 	#-      Return the number of rows in the table      -#
 	#----------------------------------------------------#
@@ -86,6 +96,20 @@ class CursesTable:
 
 		self.columnRanges[-1][1] -= 1
 
+
+	#------------------------------------#
+	#-         Get a Blank Row          -#
+	#------------------------------------#
+	def getBlankRow( self ):
+		# print the base line
+		data = '|'
+		
+		for x in xrange( self.columnRanges[0][0]+1, self.columnRanges[-1][1]-2):
+			data += '-'
+		data += '|'		
+		return data
+
+
 	#---------------------------------------------------------#
 	#-    Return the row as a formatted table-worth string   -#
 	#---------------------------------------------------------#
@@ -94,6 +118,14 @@ class CursesTable:
 		# print the base line
 		data = '|'
 		
+		# if the row is meant to be a horizontal bar, then return that
+		if row in self.horizontalBars:
+			for x in xrange( self.columnRanges[0][0]+1, self.columnRanges[-1][1]-2):
+				data += '-'
+			data += '|'
+			return data
+
+
 		xBeg=0
 		xEnd=0
 

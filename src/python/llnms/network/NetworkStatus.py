@@ -1,8 +1,11 @@
+import Network
 
-
+#--------------------------------#
+#-      Network Host Class      -#
+#--------------------------------#
 class NetworkHost:
 	
-	def __init__(self, ip_address, hostname, status, date_scanned ):
+	def __init__(self, ip_address, hostname, network_name, status, date_scanned ):
 		
 		# set the ip address
 		self.ip_address = ip_address
@@ -13,22 +16,29 @@ class NetworkHost:
 		# set if responding to ping
 		self.respond_ping = status
 
+		# set the network name
+		self.network_name = network_name
+
 		# set the date scanned
 		self.date_scanned = date_scanned
 
 
+#-----------------------------------------#
+#-        Network Status Class           -#
+#-----------------------------------------#
 class NetworkStatus:
 
-	def __init__(self, status_path):
+	def __init__(self, status_path, networks):
 		
 		#  set the base directory of the status path
 		self.status_path = status_path
 
 		#  set the filenames we are looking for
 		self.status_file = status_path + '/llnms-network-status.txt'
-		self.load_network_status()
+		self.load_network_status(networks)
 
-	def load_network_status(self):
+
+	def load_network_status(self, networks):
 		
 		# create an empty table of items
 		self.network_assets = []
@@ -55,6 +65,7 @@ class NetworkStatus:
 					else:
 						status = False
 					date_scanned = line_parts[2]
+					network_name = Network.llnms_query_name_from_networks( networks, ip_address )
 					
-					self.network_assets.append( NetworkHost( ip_address, hostname, status, date_scanned ));
+					self.network_assets.append( NetworkHost( ip_address, hostname, network_name, status, date_scanned ));
 
