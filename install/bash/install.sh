@@ -15,9 +15,8 @@ usage(){
     echo "$0 [options]"
     echo ""
     echo "    options:"
-    echo "      -help | -h)  Print usage instructions"
-    echo ""
-    echo "      -uninstall)  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
+    echo "      -h,  -help      :  Print usage instructions"
+    echo "      -u,  -uninstall :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
     echo ""
 
 }
@@ -58,6 +57,11 @@ build_and_verify_filestructure(){
         mkdir -p "$DEFAULT_LLNMS_LOG_PATH"
     fi
 
+    if [ ! -d "$DEFAULT_LLNMS_CONFIG_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_CONFIG_PATH"
+    fi
+
+
 }
 
 
@@ -66,26 +70,16 @@ build_and_verify_filestructure(){
 #-----------------------------------------------#
 install_to_filesystem(){
     
-    #  Copy the add-network
-    cp src/llnms/network/add/bash/llnms-add-network.bash $LLNMS_HOME/bin/
+    # networks
+    cp src/bash/network/*.bash $LLNMS_HOME/bin/
 
-    #  Copy the list-networks
-    cp src/llnms/network/list/bash/llnms-list-networks.bash $LLNMS_HOME/bin/
-    
-    #  Copy the xml starlet utils
-    cp src/xmlstarlet/bash/llnms-xmlstarlet-functions.bash $LLNMS_HOME/bin/
-    
-    #  Copy the start and stop network scanning functions
-    cp src/llnms/network/scan/bash/llnms-scan-networks.bash  $LLNMS_HOME/bin/
-    
-    #  Copy the network utility scripts
-    cp src/llnms/network/utilities/bash/llnms-network-utilities.bash $LLNMS_HOME/bin/
-    
-    #  Copy the network resolve scripts
-    cp src/llnms/network/resolve/bash/llnms-resolve-network-addresses.bash $LLNMS_HOME/bin/
+    cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
 
-    #  Copy the log utilities
-    cp src/llnms/log/utilities/bash/llnms-log-utilities.bash $LLNMS_HOME/bin/
+    #cp src/bash/logging/*.bash   $LLNMS_HOME/bin/
+
+    cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
+
+
 
 }
 
@@ -129,7 +123,7 @@ for OPTION in $@; do
             ;;
         
         #   Uninstall LLNMS
-        "-uninstall" )
+        "-u" | "-uninstall" )
             
             uninstall_llnms
             exit 0
