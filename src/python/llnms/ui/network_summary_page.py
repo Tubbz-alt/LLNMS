@@ -26,7 +26,7 @@ def print_network_summary_footer( stdscr ):
 		bar += "-";
 	stdscr.addstr( curses.LINES-3, 0, bar);
 	
-	stdscr.addstr( curses.LINES-2, 0, 'q) Return to main menu')
+	stdscr.addstr( curses.LINES-2, 0, 'q) Return to main menu, r) Refresh')
 
 
 #-----------------------------------------#
@@ -115,8 +115,10 @@ def view_network_summary( stdscr, llnms_state ):
 		# get input
 		c = stdscr.getch()
 		
+		#  If user wants to quit
 		if c == ord('q'):
 			exit_network_summary_page = True
-		
+		elif c == ord('r'):
+			llnms_state.refresh_networks()
 
 

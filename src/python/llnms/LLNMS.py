@@ -27,3 +27,9 @@ class LLNMS:
 		self.network_status = network.NetworkStatus(status_path, self.networks )
 		self.logger.addMessage('Network Status Loaded', Logger.INFO );
 
+	def refresh_networks(self):
+		
+		if self.network_status !=  None:
+			network_path = self.LLNMS_HOME + "/networks";
+			self.network_status.reload_network_status( self.networks );
+

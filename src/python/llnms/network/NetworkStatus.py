@@ -68,4 +68,40 @@ class NetworkStatus:
 					network_name = Network.llnms_query_name_from_networks( networks, ip_address )
 					
 					self.network_assets.append( NetworkHost( ip_address, hostname, network_name, status, date_scanned ));
+	
+	
+	def reload_network_status( self, networks):
+		
+		# open the status file
+		status_file = open( self.status_file, 'r')
+
+		# iterate through each line
+		for line in status_file:
+				
+			# make sure the line is not a comment and has information
+			if line.strip()[0] != '#' and len(line.strip()) > 0:
+				
+				line_parts = line.strip().split()
+
+				if len(line_parts) >= 3:
+					
+					ip_address = line_parts[0]
+					hostname   = Network.llnms_query_hostname( ip_address )
+					stat = line_parts[1]
+					if stat == '1':
+						status = True
+					else:
+						status = False
+					date_scanned = line_parts[2]
+					network_name = Network.llnms_query_name_from_networks( networks, ip_address )
+					
+					tempHost = NetworkHost( ip_address, hostname, network_name, status, date_scanned);
+
+					# Check if ip_address is already in host list
+					for asset in self.network_assets:
+						if asset.ip_address == tempHost.ip_address:
+							asset.respond_ping = tempHost.respond_ping
+							asset.date_scanned = tempHost.date_scanned
+							break;
+
 
