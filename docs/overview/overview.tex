@@ -22,6 +22,17 @@ can be used to monitor the health of a network infrastructure or to detect intru
 a system.  To implement this capability, LLNMS scans a network using a specified set of 
 rules.  
 
+\section*{Executables}
+\subsection*{\texttt{llnms-scan-networks}}
+This is the primary network scanning function for llnms.  This tool takes a list of network assets
+in \texttt{\$LLNMS\_HOME/networks} and checks for their existence on the network.  This then outputs the 
+status to the status file in \texttt{\$LLNMS\_HOME/run/llnms-network-status.txt}. Unless you have identified
+specific host assets to scan, this is the only way to identify new assets to inspect. 
+
+\subsection*{\texttt{llnms-scan-assets}}
+This is the specific network host asset scanning tool.  This takes a list of assets identified by the user or
+hosts which are currently available on the networks and seeks to scan specific information about them.
+
 \section*{Hierarchy}
 
 LLNMS operates as an independent set of utilities which depend on 
