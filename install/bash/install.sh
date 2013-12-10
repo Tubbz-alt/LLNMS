@@ -17,6 +17,7 @@ usage(){
     echo "    options:"
     echo "      -h,  -help      :  Print usage instructions"
     echo "      -u,  -uninstall :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
+    echo '      -s,  --samples  :  Install LLNMS Sample Configuration Files'
     echo ""
 
 }
@@ -60,7 +61,11 @@ build_and_verify_filestructure(){
     if [ ! -d "$DEFAULT_LLNMS_CONFIG_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_CONFIG_PATH"
     fi
-
+    
+    if [ ! -d "$DEFAULT_LLNMS_ASSET_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/defined"
+        mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/discovered"
+    fi
 
 }
 
@@ -103,6 +108,21 @@ uninstall_llnms( ){
 
 }
 
+
+#----------------------------------------#
+#-       Install LLNMS Samples          -#
+#----------------------------------------#
+install_samples(){
+    
+    #  Copy networks
+    cp data/samples/networks/*.llnms-network.xml     $LLNMS_HOME/networks/
+
+    #  Copy assets
+    cp data/samples/assets/defined/*.llnms-asset.xml $LLNMS_HOME/assets/defined/
+
+}
+
+
 #  import our default configuration
 . install/bash/options.sh
 
@@ -110,6 +130,7 @@ uninstall_llnms( ){
 export LLNMS_HOME=$DEFAULT_LLNMS_HOME
 
 #  Parse Command-Line Options
+INSTALL_SAMPLES=0
 for OPTION in $@; do
     
     #  Case for options
@@ -127,7 +148,13 @@ for OPTION in $@; do
             uninstall_llnms
             exit 0
             ;;
-            
+        
+        #   Install LLNMS Samples
+        '-s' | '--samples' )
+            install_samples
+            exit 1
+            ;;
+
         #   Default Parameter.  Usually an error
         "*" )
             echo "Error: Unknown option $OPTION"
@@ -147,5 +174,12 @@ build_and_verify_filestructure
 
 #  copy the tools to the directory
 install_to_filesystem
+
+
+#  Install samples
+if [ $INSTALL_SAMPLES -eq 1 ]; then
+    install_samples
+fi
+
 
 

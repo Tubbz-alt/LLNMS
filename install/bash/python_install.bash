@@ -36,11 +36,23 @@ uninstall_llnms_python_viewer(){
 
 }
 
+usage(){
+
+    echo "$0 : [options]"
+    echo ''
+    echo '   options:'
+    echo '       -h : Print usage instructions'
+    echo '       -i : Install LLNMS (Default)'
+    echo '       -u : Uninstall LLNMS'
+    echo ''
+
+}
 
 LLNMS_HOME='/var/tmp/llnms'
 
 # Set the default install mode action
 INSTALL_MODE="INSTALL"
+INSTALL_SAMPLES=0
 
 #  Parse command-line options
 for OPTION in $@; do 
@@ -54,8 +66,16 @@ for OPTION in $@; do
         "-u" )
             INSTALL_MODE="UNINSTALL"
             ;;
+        
+        #   Print usage instructions and exit
+        "-h" )
+            usage
+            exit 1
+            ;;
+
         *)
             echo "error: unknown option $OPTION"
+            usage
             exit 1
 
     esac
@@ -66,5 +86,4 @@ if [ "$INSTALL_MODE" == "INSTALL" ]; then
 elif [ "$INSTALL_MODE" == "UNINSTALL" ]; then
     uninstall_llnms_python_viewer
 fi
-
 
