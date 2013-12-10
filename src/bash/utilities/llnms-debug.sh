@@ -29,9 +29,9 @@ usage(){
 #-------------------------------------------------#
 #-      Verify that xmlstarlet is installed      -#
 #-------------------------------------------------#
-verify-xmlstarlet(){
+verify_xmlstarlet(){
 
-
+    return 0
 
 }
 
@@ -66,5 +66,5 @@ done
 
 
 #   Check that we have xmlstarlet installed
-verify-xmlstarlet
+verify_xmlstarlet
 

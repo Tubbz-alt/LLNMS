@@ -76,9 +76,11 @@ build_and_verify_filestructure(){
 install_to_filesystem(){
     
     # networks
-    cp src/bash/network/*.bash $LLNMS_HOME/bin/
+    cp src/bash/network/*.bash   $LLNMS_HOME/bin/
 
+    #  llnms utilities
     cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
+    cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
     #cp src/bash/logging/*.bash   $LLNMS_HOME/bin/
 
