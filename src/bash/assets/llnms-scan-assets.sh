@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #  File:   llnms-scan-assets.sh
 #  Author: Marvin Smith
@@ -98,7 +98,7 @@ version(){
 #---------------------------------#
 
 #  Source llnms home
-if [ "$LLNMS_HOME" == "" ]; then
+if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 

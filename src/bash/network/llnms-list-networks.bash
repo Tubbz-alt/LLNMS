@@ -58,6 +58,10 @@ fi
 #  Import the version info
 source $LLNMS_HOME/config/llnms-info.sh
 
+#  Import the network utilities
+source $LLNMS_HOME/bin/llnms-xmlstarlet-functions.bash
+source $LLNMS_HOME/bin/llnms-network-utilities.bash
+
 #  Set the output format
 OUTPUT_FORMAT="PRETTY"
 
@@ -102,5 +106,13 @@ for OPTION in $@; do
 done
 
 
-#  If 
+#   Iterate through each network file, printing information about each file
+NETWORK_FILES=`ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null`
+for NETWORK_FILE in $NETWORK_FILES; do
+
+    #  Print the name
+    llnms-get-network-name $NETWORK_FILE
+    
+
+done
 
