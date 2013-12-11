@@ -75,6 +75,9 @@ build_and_verify_filestructure(){
 #-----------------------------------------------#
 install_to_filesystem(){
     
+    # llnms assets
+    cp src/bash/assets/*.sh      $LLNMS_HOME/bin/
+
     # networks
     cp src/bash/network/*.bash   $LLNMS_HOME/bin/
 

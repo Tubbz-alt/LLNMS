@@ -1,5 +1,4 @@
 #!/bin/sh
 
 
-xmlstarlet sel -t -v 'llnms-network/name' $1
-
+xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n $1

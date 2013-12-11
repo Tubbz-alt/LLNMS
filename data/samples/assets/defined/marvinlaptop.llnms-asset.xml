@@ -1,5 +1,7 @@
 <llnms-asset>
     
-    <ip-address>   </ip-address>
+    <ip4-address>192.168.0.14</ip4-address>
+    
+    <hostname>Marvin_Laptop</hostname>
 
 </llnms-asset>
