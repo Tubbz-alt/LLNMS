@@ -128,11 +128,37 @@ install_samples(){
 }
 
 
+
+#------------------------------------------------------#
+#-    Check LLNMS Pre-Requisites for installation     -#
+#------------------------------------------------------#
+check_prerequisites(){
+
+    echo 'checking LLNMS installation pre-requisites'
+
+    #  Check for xmlstarlet
+    echo -n ' -> checking xmlstarlet : '
+    XMLSTARLET_BIN=`find / -name 'xmlstarlet' 2> /dev/null`
+    if [ "$XMLSTARLET_BIN" = '' ]; then
+        echo 'error: xmlstarlet not found, please install'
+        exit 1
+    else
+        echo 'found'
+    fi
+
+}
+
+
+#-----------------------------#
+#-      Main Function        -#
+#-----------------------------#
+
 #  import our default configuration
 . install/bash/options.sh
 
 #  Set the LLNMS Home Directory
 export LLNMS_HOME=$DEFAULT_LLNMS_HOME
+
 
 #  Parse Command-Line Options
 INSTALL_SAMPLES=0
@@ -176,6 +202,9 @@ echo "LLNMS_HOME=$LLNMS_HOME"
 
 #  build the baseline filestructure
 build_and_verify_filestructure
+
+#  Check prerequisites
+check_prerequisites
 
 #  copy the tools to the directory
 install_to_filesystem
