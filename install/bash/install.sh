@@ -77,7 +77,7 @@ install_to_filesystem(){
     
     # llnms assets
     cp src/bash/assets/*.sh      $LLNMS_HOME/bin/
-
+    
     # networks
     cp src/bash/network/*.bash   $LLNMS_HOME/bin/
 
@@ -86,9 +86,8 @@ install_to_filesystem(){
     cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
     #cp src/bash/logging/*.bash   $LLNMS_HOME/bin/
-
+    
     cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
-
 
 }
 
@@ -128,6 +127,27 @@ install_samples(){
 }
 
 
+#-------------------------#
+#-    Check xmlstarlet   -#
+#-------------------------#
+check_xmlstarlet(){
+    
+    #  Look for xmlstarlet on the main path
+    which 'xmlstarlet' &> /dev/null
+    if [ $? -eq 0 ]; then
+        return 0
+    fi
+
+    #   Look for the actual file
+    XMLSTARLET_BIN=`find / -name 'xmlstarlet' 2> /dev/null`
+    if [ "$XMLSTARLET_BIN" = '' ]; then
+        return 1
+    else
+        return 0
+    fi
+    
+    return 1
+}
 
 #------------------------------------------------------#
 #-    Check LLNMS Pre-Requisites for installation     -#
@@ -138,12 +158,13 @@ check_prerequisites(){
 
     #  Check for xmlstarlet
     echo -n ' -> checking xmlstarlet : '
-    XMLSTARLET_BIN=`find / -name 'xmlstarlet' 2> /dev/null`
-    if [ "$XMLSTARLET_BIN" = '' ]; then
+    check_xmlstarlet
+    if [ $? -eq 0 ]; then
+        echo 'found'
+    else
+        echo 'not found'
         echo 'error: xmlstarlet not found, please install'
         exit 1
-    else
-        echo 'found'
     fi
 
 }
@@ -206,6 +227,7 @@ build_and_verify_filestructure
 #  Check prerequisites
 check_prerequisites
 
+
 #  copy the tools to the directory
 install_to_filesystem
 
@@ -214,6 +236,5 @@ install_to_filesystem
 if [ $INSTALL_SAMPLES -eq 1 ]; then
     install_samples
 fi
-
 
 

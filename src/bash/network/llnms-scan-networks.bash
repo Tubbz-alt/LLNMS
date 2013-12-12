@@ -20,6 +20,9 @@ usage(){
     echo '      -h, --help    :  Print Usage Instructions'
     echo '      -v, --version :  Print Program Version Information'
     echo ''
+    echo '      --verbose     :  Print program output to stdout (DEFAULT)'
+    echo '      -q, --quiet   :  Do not print program output to stdout'
+    echo ''
 
 }
 
@@ -50,6 +53,8 @@ fi
 source $LLNMS_HOME/config/llnms-info.sh
 source $LLNMS_HOME/bin/llnms-network-utilities.bash
 
+#  output state
+OUTPUT_STATE='VERBOSE'
 
 #  parse command-line options
 for OPTION in $@; do
@@ -66,6 +71,16 @@ for OPTION in $@; do
         "-v" | "--version" )
             version
             exit 1
+            ;;
+
+        #  Print output to stdout
+        '--verbose' )
+            OUTPUT_STATE='VERBOSE'
+            ;;
+
+        #  Do not print output to stdout
+        '-q' | '--quiet' )
+            OUTPUT_STATE='QUIET'
             ;;
 
         #  Print Error
@@ -121,7 +136,7 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
             llnms-check-network-status-and-add-ip-entry $ADDRESS 
             
             #  Ping the address
-            llnms-ping-network-address $ADDRESS
+            $LLNMS_HOME/bin/llnms-ping-address.bash -ip4 $ADDRESS -c 1
 
             #  Increment the single count
             SINGLE_CNT=$((($SINGLE_CNT + 1)))
@@ -154,9 +169,8 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
                 llnms-check-network-status-and-add-ip-entry $ADDRESS 
             
                 #  Ping the address
-                llnms-ping-network-address $ADDRESS
+                $LLNMS_HOME/bin/llnms-ping-address.bash -ip4 $ADDRESS -c 1
 
-            
             done
             done
             done
@@ -174,4 +188,6 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
     done
 
 done
+
+wait
 

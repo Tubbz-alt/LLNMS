@@ -113,6 +113,7 @@ for NETWORK_FILE in $NETWORK_FILES; do
     #  Print the name
     llnms-get-network-name $NETWORK_FILE
     
+    #  Print the different 
 
 done
 
