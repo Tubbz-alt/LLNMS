@@ -31,25 +31,32 @@ if($Help -eq $true ){
     return 1
 }
 
+#  Import the network utility script
+. C:\opt\llnms\bin\llnms-network-utilities.ps1
+
 
 #--------------------------------------------------#
 #-     Get a list of files in the LLNMS_HOME      -#
 #--------------------------------------------------#
 $llnms_network_files = Get-ChildItem -File -Path "C:\opt\llnms\networks\*.llnms-network.xml"
-$llnms_network_count=1
-echo "NETWORK_COUNT="
 foreach( $llnms_network in $llnms_network_files ){
     
-    #  open the file and parse the xml
-    $xml_data = [xml](Get-Content -Path $llnms_network)
-    
-    #  Grab the name
-    $xml_name = $xml_data.'llnms-network'.'name'
+    $network = llnms_load_network $llnms_network
 
-    echo "NETWORK_($llnms_network_count)_NAME=$xml_name"
+    echo "Network: $($network.name)"
+    $netSize=$(@($($($network).Networks)).Length)
 
-    #  Increment the count
-    $llnms_network_count += 1
+    for( $x=0; $x -lt $netSize; $x++ ){
+        echo "      Type: $($($($network).Networks)[$x].Type)"
+        if( $($($($network).Networks)[$x].Type) -eq 'SINGLE' ){
+            echo "         Address: $($($($network).Networks)[$x].Address_Start)"
+        }
+        else{
+            echo "         Address-Start: $($($($network).Networks)[$x].Address_Start)"
+            echo "         Address-End  : $($($($network).Networks)[$x].Address_End)"
+        }
+        echo ''
+    }
 }
 
   

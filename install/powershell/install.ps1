@@ -63,6 +63,11 @@ Function verify-and-build-filestructure(){
         New-Item -ItemType directory -Path "$LLNMS_HOME\run"
     }
 
+    #  Make sure the config directory exists
+    if( $(Test-Path "$LLNMS_HOME\config" ) -ne $true ){
+        New-Item -ItemType directory -Path "$LLNMS_HOME\config"
+    }
+
 
 }
 
@@ -93,8 +98,14 @@ Function configure-system-profile(){
 #--------------------------------------#
 Function llnms-install-files(){
 
+    #  Copy Configuration files
+    Copy-Item .\src\powershell\llnms-info.xml "$LLNMS_HOME\config\"
+
     #  Copy binary files
-    Copy-Item .\src\llnms\network\list\powershell\llnms-list-networks.ps1  "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-list-networks.ps1 "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-scan-networks.ps1 "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-network-utilities.ps1 "$LLNMS_HOME\bin\"
+
 
 
 }
@@ -102,6 +113,9 @@ Function llnms-install-files(){
 #-------------------------------------#
 #-      Start of Main Function       -#
 #-------------------------------------#
+#  Print the installation messages
+Write-Host 'LLNMS Windows PowerShell Installer'
+
 #  Parse the command-line options
 if($Help -eq $true ){
     usage 
