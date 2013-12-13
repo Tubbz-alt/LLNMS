@@ -1,0 +1,18 @@
+<llnms-scanner>
+
+    <name>Ping Scanner</name>
+    <description>
+    Scans an asset to determine if it responds to a ping.
+    </description>
+
+    <configuration>
+        <linux>
+            <command>ping-scanner.bash</command>
+            <base-path>/var/tmp/llnms/scanning/ping-scanner</base-path>
+        </linux>
+        <windows>
+            <command>ping-scanner.ps1</command>
+            <base-path>C:\opt\llnms\scanning\ping-scanner</bash-path>
+        </windows>
+
+</llnms-scanner>

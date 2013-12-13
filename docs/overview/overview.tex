@@ -22,6 +22,17 @@ can be used to monitor the health of a network infrastructure or to detect intru
 a system.  To implement this capability, LLNMS scans a network using a specified set of 
 rules.  
 
+\subsubsection*{Assets}
+
+Assets are hosts in a networking sense.  They are items existing on the network which can be monitored, 
+manipulated, or tested as available to LLNMS.  Assets can be discovered through network scanning or 
+defined by the user.  When an asset is defined, it is then automatically managed as a discovered asset.
+
+\subsubsection*{Scanning}
+
+Scans are actions to be taken on a specific asset.  For example, a node \em{Personal Computer} may be scanned
+to determine if the \em{ssh} protocol is enabled.  Scanners must be registered with llnms to enable their use.
+
 \section*{Executables}
 \subsection*{\texttt{llnms-scan-networks}}
 This is the primary network scanning function for llnms.  This tool takes a list of network assets

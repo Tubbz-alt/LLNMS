@@ -1,0 +1,18 @@
+<llnms-scanner>
+
+    <name>SSH Scanner</name>
+    <description>
+    Scans an asset to determine if SSH is enabled on the device.
+    </description>
+
+    <configuration>
+        <linux>
+            <command>ssh-scanner.bash</command>
+            <base-path>/var/tmp/llnms/scanning/ssh-scanner</base-path>
+        </linux>
+        <windows>
+            <command>ssh-scanner.ps1</command>
+            <base-path>C:\opt\llnms\scanning\ssh-scanner</bash-path>
+        </windows>
+
+</llnms-scanner>
