@@ -51,9 +51,22 @@ llnms_validate_asset_structure(){
     #-     have a corresponding asset file                                        -#
     STATUS_LIST=`cat $LLNMS_HOME/run/llnms-network-status.txt | sed '/ *#.*/d' | sed '/[0-9]*\.[0-9]*\.[0-9]*\.[0-9]* 0 .*/d' | cut -d ' ' -f 1`
     for ADDRESS in $STATUS_LIST; do
-        echo "ADDRESS: $ADDRESS"
-        #for DISCOVERED_ASSET_FILE in $DISCOVERED_ASSET_FILES; do
-        #done
+        
+        ASSET_FOUND=0
+        for DISCOVERED_ASSET_FILE in $DISCOVERED_ASSET_FILES; do
+            DISC_ADDRESS=`llnms_get_asset_ip4_address $DISCOVERED_ASSET_FILE`
+            
+            if [ "$DISC_ADDRESS" = "$ADDRESS" ]; then
+                ASSET_FOUND=1
+            fi
+
+        done
+
+        # if the asset was not found, then generate an asset file
+        if [ $ASSET_FOUND -eq 0 ]; then
+            llnms_create_discovered_asset $ADDRESS 
+        fi
+
     done
 
 }
@@ -144,5 +157,18 @@ done
 #-    Validate the structure of the asset filesystem     -#
 #---------------------------------------------------------#
 llnms_validate_asset_structure
+
+#----------------------------------------------------------#
+#-    Iterate through each asset file, querying through   -#
+#-    registered scanner.                                 -#
+#----------------------------------------------------------#
+DISCOVERED_ASSET_FILES=`ls $LLNMS_HOME/assets/discovered/*.llnms-asset.xml 2> /dev/null`
+for DISCOVERED_ASSET_FILE in $DISCOVERED_ASSET_FILES; do
+    
+    #  Get a list of scanners
+    #SCANNER_LIST=`llnms_list_asset_scanners
+
+done
+
 
 

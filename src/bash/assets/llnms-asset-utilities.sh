@@ -20,3 +20,29 @@ llnms_get_asset_ip4_address(){
     xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n $1
 }
 
+
+#------------------------------------------------#
+#-        Create a discovered asset file        -#
+#------------------------------------------------#
+llnms_create_discovered_asset(){
+
+    #  generate a filename for the asset
+    FILENAME="/var/tmp/llnms/assets/discovered/$(date +"%Y%m%d_%H%M%S_%N").llnms-asset.xml"
+    
+    if [ ! -e "$FILENAME" ]; then
+        touch $FILENAME
+    else
+        echo "Warning: $FILENAME already exists"
+        rm $FILENAME
+        touch $FILENAME
+    fi
+
+    # start writing the file
+    echo "<llnms-asset>" >> $FILENAME
+    echo "   <ip4-address>$1</ip4-address>" >> $FILENAME
+    echo "   <hostname></hostname>" >> $FILENAME
+    echo "</llnms-asset>" >> $FILENAME
+
+
+}
+

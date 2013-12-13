@@ -97,5 +97,4 @@ fi
 #  remove the lock file
 rm $LOCK_FILE
 
-return $RESULT
-
+exit $RESULT
