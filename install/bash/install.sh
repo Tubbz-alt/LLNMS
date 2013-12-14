@@ -57,15 +57,24 @@ build_and_verify_filestructure(){
     if [ ! -d "$DEFAULT_LLNMS_LOG_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_LOG_PATH"
     fi
-
+    
+    # Verify the config path exists
     if [ ! -d "$DEFAULT_LLNMS_CONFIG_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_CONFIG_PATH"
     fi
     
+    # Verify the asset paths exist
     if [ ! -d "$DEFAULT_LLNMS_ASSET_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/defined"
         mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/discovered"
     fi
+
+    # Verify the scanner path exists
+    if [ ! -d "$DEFAULT_LLNMS_SCAN_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_SCAN_PATH"
+        mkdir -p "$DEFAULT_LLNMS_SCAN_PATH/scanners"
+    fi
+
 
 }
 
@@ -85,8 +94,11 @@ install_to_filesystem(){
     cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
     cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
-    #cp src/bash/logging/*.bash   $LLNMS_HOME/bin/
+    #  Scanning utilities
+    cp src/bash/scanning/*.sh        $LLNMS_HOME/bin/
+    cp -r src/bash/scanning/scanners $LLNMS_HOME/scanning/
     
+    #  config utilities
     cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
 
 }
@@ -227,6 +239,8 @@ build_and_verify_filestructure
 #  Check prerequisites
 check_prerequisites
 
+#  Increment the version file
+./install/bash/version.sh -i subminor
 
 #  copy the tools to the directory
 install_to_filesystem
