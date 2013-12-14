@@ -102,8 +102,9 @@ Function llnms-install-files(){
     Copy-Item .\src\powershell\llnms-info.xml "$LLNMS_HOME\config\"
 
     #  Copy binary files
-    Copy-Item .\src\powershell\network\llnms-list-networks.ps1 "$LLNMS_HOME\bin\"
-    Copy-Item .\src\powershell\network\llnms-scan-networks.ps1 "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-add-network.ps1       "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-list-networks.ps1     "$LLNMS_HOME\bin\"
+    Copy-Item .\src\powershell\network\llnms-scan-networks.ps1     "$LLNMS_HOME\bin\"
     Copy-Item .\src\powershell\network\llnms-network-utilities.ps1 "$LLNMS_HOME\bin\"
 
 
