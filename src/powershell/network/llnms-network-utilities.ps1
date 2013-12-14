@@ -151,3 +151,33 @@ Function Write_Network_File(){
 
 
 }
+
+
+#-------------------------------------------------#
+#-       Update LLNMS Network Status File        -#
+#-------------------------------------------------#
+Function llnms_update_network_status_file( ){
+
+    Params(
+        [parameter(Mandatory=$true)][string]$address,
+        [parameter(Mandatory=$true)][bool]$state,
+        [parameter(Mandatory=$true)][string]$datestr 
+    );
+    
+    
+    #  Make sure the network status file exists, if not create an empty file
+    $netstat_filename='C:\opt\llnms\run\llnms-network-status.xml'     
+    if( $(Test-Path $netstat_filename) -eq $false ){
+        echo "<llnms-status>`n`r</llnms-status>" | Out-File $netstat_filename
+    }
+
+    #  Check if file has an entry with the address
+    $xml_data = New-Object System.XML
+    $xml_data.Load($netstat_filename);
+    
+
+
+
+}
+
+}
