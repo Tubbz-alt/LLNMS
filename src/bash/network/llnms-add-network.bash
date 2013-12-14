@@ -21,6 +21,9 @@ usage(){
     echo '        -o [output file]       : Save the file to the specified filename.'
     echo '                                 Otherwise a random file will be generated.'
     echo '        -n, --name [New Name]  : Set the name of the network'
+    echo '        -net TYPE:ADDRESS:ADDRESS : Add a network definition'
+    echo '            NOTE: Single Addresses will resemble  SINGLE:127.0.0.1'
+    echo '                  Range Addresses will resemble RANGE:192.168.0.1:192.168.0.254'
     echo ''
 
 }
@@ -201,11 +204,13 @@ NAME_FLAG=0
 #  Interactive option
 INTERACTIVE_FLAG=0
 
+#  Network flag
+NET_FLAG=0
+DEFINITIONS=''
 
 #  Parse command-line options
 for OPTION in "$@"; do
 
-    echo "$OPTION"
     case $OPTION in 
        
         #  Print usage instructions
@@ -223,6 +228,11 @@ for OPTION in "$@"; do
         '-i' | '--interactive' )
             INTERACTIVE_FLAG=1
             ;;
+        
+        # add a network definition
+        '-net' )
+            NET_FLAG=1
+            ;;
 
         # Otherwise, parse flags or throw an error
         *)
@@ -232,7 +242,11 @@ for OPTION in "$@"; do
                 NAME_FLAG=0
                 NETWORK_NAME="$OPTION"
             
-            
+            #  If net flag is set
+            elif [ $NET_FLAG -eq 1 ]; then
+                NET_FLAG=0
+                DEFINITIONS+=" $OPTION"
+                
             #  otherwise throw an error
             else
                 echo "error: unknown flag $OPTION"
@@ -258,7 +272,44 @@ OUTPUT+="  <name>$NETWORK_NAME</name>\n"
 
 #  Add each network
 OUTPUT+='  <networks>\n'
-if [ $INTERACTIVE_FLAG -eq 1 ]; then get_input_networks; fi
+
+if [ $INTERACTIVE_FLAG -eq 1 ]; then 
+    get_input_networks;
+else
+    
+    for DEF in $DEFINITIONS; do
+        
+        # modify the ifs var
+        OLDIFS="$IFS"
+        IFS=":"
+        
+        # create temp array
+        read -ra STUFF <<< "$DEF"
+        
+        # return the ifs
+        IFS=$OLDIFS
+        
+        TEMP_TYPE="${STUFF[0]}"
+        if [ "$TEMP_TYPE" == "SINGLE" ]; then 
+            ADDRESS="${STUFF[1]}"
+        else        
+            ADDRESS_START="${STUFF[1]}"
+            ADDRESS_END="${STUFF[2]}"
+        fi
+        
+        # create network 
+        OUTPUT+='    <network>\n'
+        if [ "$TEMP_TYPE" == "SINGLE" ]; then 
+            OUTPUT+='      <type>SINGLE</type>\n'
+            OUTPUT+="      <address>$ADDRESS</address>\n"
+        else  
+            OUTPUT+='      <type>RANGE</type>\n'
+            OUTPUT+="      <address-start>$ADDRESS_START</address-start>\n"
+            OUTPUT+="      <address-end>$ADDRESS_END</address-end>\n"
+        fi
+        OUTPUT+='    </network>\n'
+    done
+fi
 OUTPUT+='  </networks>\n'
 
 # Close off the output
