@@ -59,4 +59,15 @@ llnms_print_registered_scanner_command(){
 }
 
 
+#------------------------------------------------------------#
+#-     Add a scanner to the registered scanners xml file    -#
+#-                                                          -#
+#-     $1 - Path to add                                     -#
+#------------------------------------------------------------#
+llnms_add_scanner_to_registered_list(){
+    XMLFILE='/var/tmp/llnms/run/llnms-registered-scanners.xml'
+    xmlstarlet ed --subnode "/llnms-registered-scanners" --type elem -n 'llnms-scanner' -v $1 $XMLFILE
+}
+
+
 

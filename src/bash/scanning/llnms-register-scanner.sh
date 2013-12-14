@@ -26,7 +26,7 @@ usage(){
 #             Error Function          #
 #-------------------------------------#
 error(){
-    echo "error $1"
+    echo "error: $1"
 }
 
 
@@ -55,6 +55,8 @@ fi
 #  Import the version info
 source $LLNMS_HOME/config/llnms-info.sh
 
+#  Import the scanning utilities
+source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
 
 #  Scanner flags
 SCANNER_FLAG=0
@@ -101,5 +103,36 @@ for OPTION in "$@"; do
         
     esac
 done
+
+
+#-----------------------------------------------#
+#-      Make sure the scanner file exists      -#
+#-----------------------------------------------#
+if [ ! -e "$SCANNER_FILE" ]; then
+    error "Scanner file at $SCANNER_FILE does not exist"
+    exit 1
+fi
+
+
+#-------------------------------------------------------------#
+#-     Make sure the scanner has not already been added      -#
+#-------------------------------------------------------------#
+SCANNER_PATHS=$(llnms_list_registered_scanner_paths)
+for SCANNER in $SCANNER_PATHS; do
+    if [ "$SCANNER" = "$SCANNER_FILE" ]; then
+        echo 'Scanner has already been registered. Skipping registration.'
+        exit 1;
+    fi
+done
+
+#---------------------------------------------------------------------#
+#-     If it is not already registered, then add it to the list      -#
+#---------------------------------------------------------------------#
+llnms_add_scanner_to_registered_list $SCANNER_FILE
+
+#------------------------------------------------------#
+#-      Add the scanner to every registered asset     -#
+#------------------------------------------------------#
+
 
 

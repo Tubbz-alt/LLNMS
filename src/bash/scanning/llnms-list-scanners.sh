@@ -30,7 +30,7 @@ usage(){
 #             Error Function          # 
 #-------------------------------------#
 error(){
-    echo "error $1"
+    echo "error: $1"
 }
 
 
