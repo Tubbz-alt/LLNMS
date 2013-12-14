@@ -125,6 +125,15 @@ for SCANNER in $SCANNER_PATHS; do
     fi
 done
 
+
+#--------------------------------------------------------------------#
+#-  If the registered scanner list does not exist, then create it   -#
+#--------------------------------------------------------------------#
+if [ ! -e "$LLNMS_HOME/run/llnms-registered-scanners.xml" ]; then
+    llnms_create_registered_scanners_file
+fi
+
+
 #---------------------------------------------------------------------#
 #-     If it is not already registered, then add it to the list      -#
 #---------------------------------------------------------------------#
