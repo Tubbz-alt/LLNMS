@@ -1,9 +1,7 @@
 <llnms-scanner>
 
     <name>Ping Scanner</name>
-    <description>
-    Scans an asset to determine if it responds to a ping.
-    </description>
+    <description>Scans an asset to determine if it responds to a ping.</description>
 
     <configuration>
         <linux>
@@ -12,7 +10,7 @@
         </linux>
         <windows>
             <command>ping-scanner.ps1</command>
-            <base-path>C:\opt\llnms\scanning\ping-scanner</bash-path>
+            <base-path>C:\opt\llnms\scanning\ping-scanner</base-path>
         </windows>
-
+    </configuration>
 </llnms-scanner>
