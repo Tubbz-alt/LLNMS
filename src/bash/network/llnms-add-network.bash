@@ -208,6 +208,9 @@ INTERACTIVE_FLAG=0
 NET_FLAG=0
 DEFINITIONS=''
 
+FILE_FLAG=1
+OUTPUT_FILENAME="$LLNMS_HOME/networks/$(date +"%Y%m%d_%H%M%S_%N").llnms-network.xml"
+
 #  Parse command-line options
 for OPTION in "$@"; do
 
@@ -234,6 +237,11 @@ for OPTION in "$@"; do
             NET_FLAG=1
             ;;
 
+        # set the output file
+        '-o' )
+            FILE_FLAG=1
+            ;;
+
         # Otherwise, parse flags or throw an error
         *)
            
@@ -246,7 +254,12 @@ for OPTION in "$@"; do
             elif [ $NET_FLAG -eq 1 ]; then
                 NET_FLAG=0
                 DEFINITIONS+=" $OPTION"
-                
+            
+            # if the output filename is set
+            elif [ $FILE_FLAG -eq 1 ]; then
+                FILE_FLAG=0
+                OUTPUT_FILENAME=$OPTION
+
             #  otherwise throw an error
             else
                 echo "error: unknown flag $OPTION"
@@ -320,7 +333,7 @@ OLDIFS="$IFS"
 IFS=""
 
 #  Print data to file
-echo -e $OUTPUT > '/var/tmp/llnms/networks/test-network.llnms-network.xml'
+echo -e $OUTPUT > $OUTPUT_FILENAME
 
 #  Fix IFS
 IFS=$OLDIFS
