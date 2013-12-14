@@ -311,9 +311,14 @@ OUTPUT+="    <description>$DESCRIPTION</description>\n"
 #  Close off the xml data
 OUTPUT+='</llnms-asset>\n'
 
+#  Set the output file if not set
+if [ "$OUTFILE" = '' ]; then
+    OUTFILE="$LLNMS_HOME/assets/defined/${NEW_HOSTNAME}.llnms-asset.xml"
+fi
+
 #  Write data to file
 OLDIFS=$IFS
 IFS=''
-echo -e $OUTPUT
+echo -e $OUTPUT > $OUTFILE
 IFS=$OLDIFS
 
