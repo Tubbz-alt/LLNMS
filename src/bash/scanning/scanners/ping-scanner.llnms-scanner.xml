@@ -1,5 +1,6 @@
 <llnms-scanner>
 
+    <id>ping-scanner</id>
     <name>Ping Scanner</name>
     <description>Scans an asset to determine if it responds to a ping.</description>
 

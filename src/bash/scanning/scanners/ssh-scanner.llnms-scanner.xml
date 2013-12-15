@@ -1,5 +1,6 @@
 <llnms-scanner>
 
+    <id>ssh-scanner</id>
     <name>SSH Scanner</name>
     <description>Scans an asset to determine if SSH is enabled on the device.</description>
 
@@ -13,4 +14,5 @@
             <base-path>C:\opt\llnms\scanning\ssh-scanner</base-path>
         </windows>
     </configuration>
+
 </llnms-scanner>
