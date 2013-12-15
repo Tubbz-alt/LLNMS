@@ -133,7 +133,8 @@ for SCANNER in $SCANNER_PATHS; do
     
     #  print the name
     SCANNER_NAME=$(llnms_print_registered_scanner_name $SCANNER)
-    echo "- Name: $SCANNER_NAME"
+    echo "- ID: $(llnms_print_registered_scanner_id $SCANNER)"
+    echo "  Name: $SCANNER_NAME"
     
     #  print the command
     SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER)

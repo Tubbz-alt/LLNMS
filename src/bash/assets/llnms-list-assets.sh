@@ -14,8 +14,11 @@ usage(){
     echo "$0 [options]"
     echo ''
     echo '    options:'
-    echo '        -h | --help    :  Print usage instructions'
-    echo '        -v | --version :  Print version information'
+    echo '        -h, --help    :  Print usage instructions'
+    echo '        -v, --version :  Print version information'
+    echo ''
+    echo '        Formatting Options'
+    echo '        -p, --pretty  :  Print in human-readible format (Default)'
     echo ''
 }
 
@@ -56,6 +59,11 @@ source $LLNMS_HOME/config/llnms-info.sh
 #  Import utilities
 source $LLNMS_HOME/bin/llnms-asset-utilities.sh
 
+#  Output Format
+#  PRETTY : Pretty
+OUTPUT_FORMAT='PRETTY'
+
+
 #   Parse Command-Line Options
 for OPTION in $@; do
 
@@ -73,7 +81,11 @@ for OPTION in $@; do
             version
             exit 1
             ;;
-
+        
+        #  Set pretty format
+        '-p' | '--pretty' )
+            OUTPUT_FORMAT='PRETTY'
+            ;;
 
         #  Print error message
         *)
@@ -85,5 +97,26 @@ for OPTION in $@; do
 
     esac
 done
+
+
+# Print a header if in pretty format
+if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+    echo 'LLNMS Asset List'
+    echo '----------------'
+    echo ''
+fi
+
+
+#  Get a list of assets in the asset folder
+ASSET_LIST=$(ls $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null)
+for ASSET_FILE in $ASSET_LIST; do
+    
+    #  Print the asset hostname
+    echo "- Asset  hostname  : $(llnms_get_asset_hostname $ASSET_FILE)"
+    echo "        ip4 address: $(llnms_get_asset_ip4_address $ASSET_FILE)"
+    echo ''
+
+done
+
 
 

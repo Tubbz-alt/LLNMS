@@ -59,6 +59,13 @@ llnms_print_registered_scanner_command(){
 }
 
 
+#-----------------------------------------------------#
+#-     Print the registered scanner's id string      -#
+#-----------------------------------------------------#
+llnms_print_registered_scanner_id(){
+    xmlstarlet sel -t -m '//llnms-scanner' -v 'id' -n "$1"
+}
+
 #------------------------------------------------------------#
 #-     Add a scanner to the registered scanners xml file    -#
 #-                                                          -#

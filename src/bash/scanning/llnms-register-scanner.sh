@@ -58,6 +58,9 @@ source $LLNMS_HOME/config/llnms-info.sh
 #  Import the scanning utilities
 source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
 
+#  Import the asset utilities
+source $LLNMS_HOME/bin/llnms-asset-utilities.sh
+
 #  Scanner flags
 SCANNER_FLAG=0
 SCANNER_FILE=''
@@ -138,10 +141,4 @@ fi
 #-     If it is not already registered, then add it to the list      -#
 #---------------------------------------------------------------------#
 llnms_add_scanner_to_registered_list $SCANNER_FILE
-
-#------------------------------------------------------#
-#-      Add the scanner to every registered asset     -#
-#------------------------------------------------------#
-
-
 
