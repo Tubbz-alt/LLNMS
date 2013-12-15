@@ -146,10 +146,10 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
 #  Import utilities
-source $LLNMS_HOME/bin/llnms-asset-utilities.sh
+. $LLNMS_HOME/bin/llnms-asset-utilities.sh
 
 
 #  Mode flags
@@ -281,7 +281,7 @@ if [ $INTERACTIVE_MODE -eq 1 ]; then
 fi
 
 #  set the xml
-OUTPUT+="    <hostname>$NEW_HOSTNAME</hostname>\n"
+OUTPUT="$OUTPUT    <hostname>$NEW_HOSTNAME</hostname>\n"
 
 
 #------------------------------#
@@ -293,7 +293,7 @@ if [ $INTERACTIVE_MODE -eq 1 ]; then
 fi
 
 #  Set the xml
-OUTPUT+="    <ip4-address>$IP4_ADDRESS</ip4-address>\n"
+OUTPUT="$OUTPUT    <ip4-address>$IP4_ADDRESS</ip4-address>\n"
 
 
 #-------------------------------#
@@ -305,14 +305,14 @@ if [ $INTERACTIVE_MODE -eq 1 ]; then
 fi
 
 #  set the xml
-OUTPUT+="    <description>$DESCRIPTION</description>\n"
+OUTPUT="$OUTPUT    <description>$DESCRIPTION</description>\n"
 
 #  Add a blank scanner section
-OUTPUT+="    <scanners>\n"
-OUTPUT+="    </scanners>\n"
+OUTPUT="$OUTPUT    <scanners>\n"
+OUTPUT="$OUTPUT    </scanners>\n"
 
 #  Close off the xml data
-OUTPUT+='</llnms-asset>\n'
+OUTPUT="$OUTPUT</llnms-asset>\n"
 
 #  Set the output file if not set
 if [ "$OUTFILE" = '' ]; then
