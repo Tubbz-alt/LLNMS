@@ -314,9 +314,12 @@ OUTPUT="$OUTPUT    </scanners>\n"
 #  Close off the xml data
 OUTPUT="$OUTPUT</llnms-asset>\n"
 
+#  Fix the hostname to remove periods
+TEMP_NEW_HOSTNAME=$(echo $NEW_HOSTNAME | sed 's/\./_/g')
+
 #  Set the output file if not set
 if [ "$OUTFILE" = '' ]; then
-    OUTFILE="$LLNMS_HOME/assets/${NEW_HOSTNAME}.llnms-asset.xml"
+    OUTFILE="$LLNMS_HOME/assets/${TEMP_NEW_HOSTNAME}.llnms-asset.xml"
 fi
 
 #  Write data to file
