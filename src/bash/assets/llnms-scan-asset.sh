@@ -55,9 +55,11 @@ fi
 #  Import the version info
 source $LLNMS_HOME/config/llnms-info.sh
 
-
 #  Import asset utilities
 source $LLNMS_HOME/bin/llnms-asset-utilities.sh
+
+#  Import scanning utilities
+source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
 
 #  Asset name and path
 ASSET_HOSTNAME=''
@@ -109,5 +111,34 @@ for OPTION in "$@"; do
 done
 
 
+#-------------------------------------#
+#-    Make sure the asset exists     -#
+#-------------------------------------#
+# get a list of assets
+ASSET_LIST=$(ls $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null)
+for ASSET_FILE in $ASSET_LIST; do
+    
+    #  check the hostname.  if they match, then retrieve the asset filename
+    if [ "$(llnms_get_asset_hostname $ASSET_FILE)" = "$ASSET_HOSTNAME" ]; then
+        ASSET_PATH=$ASSET_FILE
+    fi
 
+done
+
+
+#   - get a list of registered scanners
+ASSET_SCANNERS=$(llnms_list_asset_registered_scanners $ASSET_PATH)
+for ASSET_SCANNER in $ASSET_SCANNERS; do
+
+    #  get the file pathname for the scanner
+    SCANNER_PATH=$(llnms_get_scanner_path_from_id $ASSET_SCANNER)
+
+    #  get the command to run for the scanner
+    SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER_PATH)
+
+    #  get the argument-list for the scanner
+    
+    echo "SCANNER_CMD: $SCANNER_CMD"
+
+done
 

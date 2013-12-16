@@ -73,7 +73,9 @@ llnms_add_registered_scanner_to_asset(){
     
     # Add the id
     xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner" --type elem -n 'id' -v "$(llnms_print_registered_scanner_id $SCANNER_PATH)" $ASSET_PATH
-
+    
+    # add the configuration options
+    
     
     echo ''
     echo 'OUTPUT'
