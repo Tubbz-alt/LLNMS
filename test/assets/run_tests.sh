@@ -21,8 +21,28 @@ TEST_llnms_create_asset_01(){
     #  make sure the file was properly created
     if [ ! -e '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml' ]; then
         echo "1"
+        return
     fi
     
+    #  make sure that the file validates properly
+    xmlstarlet val -q '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'
+    if [ $? -ne 0 ]; then
+        echo '1'
+        return
+    fi
+
+    #  check the name
+    if [ ! "$(xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml')" = 'temp-asset' ]; then
+        echo '1'
+        return
+    fi
+
+    #  check the ip address
+    if [ ! "$(xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml')" = '192.168.0.1' ]; then
+        echo '1'
+        return 
+    fi
+
     echo '0'
 }
 
