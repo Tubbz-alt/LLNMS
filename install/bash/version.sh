@@ -75,20 +75,20 @@ for OPTION in "$@"; do
 
                 #  Increment the major version
                 if [ "$OPTION" == "major" ]; then
-                    NEW_MAJOR=`expr $LLNMS_MAJOR + 1`
-                    sed -i  "s/^ *LLNMS_MAJOR=$LLNMS_MAJOR$/LLNMS_MAJOR=${NEW_MAJOR}/g" 'src/bash/llnms-info.sh'
-                    LLNMS_MAJOR=$NEW_MAJOR
+                    NEW_MAJOR=`expr ${LLNMS_MAJOR} + 1`
+                    sed -ie  "s/^ *LLNMS_MAJOR=${LLNMS_MAJOR}$/LLNMS_MAJOR=${NEW_MAJOR}/g" 'src/bash/llnms-info.sh'
+                    LLNMS_MAJOR=${NEW_MAJOR}
                 
                 #  Increment the minor version
                 elif [ "$OPTION" == "minor" ]; then
                     NEW_MINOR=`expr $LLNMS_MINOR + 1`
-                    sed -i  "s/^ *LLNMS_MINOR=$LLNMS_MINOR$/LLNMS_MINOR=${NEW_MINOR}/g" 'src/bash/llnms-info.sh'
+                    sed -ie  "s/^ *LLNMS_MINOR=$LLNMS_MINOR$/LLNMS_MINOR=${NEW_MINOR}/g" 'src/bash/llnms-info.sh'
                     LLNMS_MINOR=$NEW_MINOR
                 
                 #  Increment the subminor version
                 elif [ "$OPTION" == "subminor" ]; then
                     NEW_SUBMINOR=`expr $LLNMS_SUBMINOR + 1`
-                    sed -i  "s/^ *LLNMS_SUBMINOR=$LLNMS_SUBMINOR$/LLNMS_SUBMINOR=${NEW_SUBMINOR}/g" 'src/bash/llnms-info.sh'
+                    sed -ie  "s/^ *LLNMS_SUBMINOR=$LLNMS_SUBMINOR$/LLNMS_SUBMINOR=${NEW_SUBMINOR}/g" 'src/bash/llnms-info.sh'
                     LLNMS_SUBMINOR=$NEW_SUBMINOR
                 
                 #  Otherwise the option specified was in error and cannot be incremented
@@ -106,19 +106,19 @@ for OPTION in "$@"; do
                 #  Decrement the major version
                 if [ "$OPTION" == "major" ]; then
                     NEW_MAJOR=`expr $LLNMS_MAJOR - 1`
-                    sed -i  "s/^ *LLNMS_MAJOR=$LLNMS_MAJOR$/LLNMS_MAJOR=${NEW_MAJOR}/g" 'src/bash/llnms-info.sh'
+                    sed -ie  "s/^ *LLNMS_MAJOR=$LLNMS_MAJOR$/LLNMS_MAJOR=${NEW_MAJOR}/g" 'src/bash/llnms-info.sh'
                     LLNMS_MAJOR=$NEW_MAJOR
                 
                 #  Decrement the minor version
                 elif [ "$OPTION" == "minor" ]; then
                     NEW_MINOR=`expr $LLNMS_MINOR - 1`
-                    sed -i  "s/^ *LLNMS_MINOR=$LLNMS_MINOR$/LLNMS_MINOR=${NEW_MINOR}/g" 'src/bash/llnms-info.sh'
+                    sed -ie  "s/^ *LLNMS_MINOR=$LLNMS_MINOR$/LLNMS_MINOR=${NEW_MINOR}/g" 'src/bash/llnms-info.sh'
                     LLNMS_MINOR=$NEW_MINOR
                 
                 #  Decrement the subminor version
                 elif [ "$OPTION" == "subminor" ]; then
                     NEW_SUBMINOR=`expr $LLNMS_SUBMINOR - 1`
-                    sed -i  "s/^ *LLNMS_SUBMINOR=$LLNMS_SUBMINOR$/LLNMS_SUBMINOR=${NEW_SUBMINOR}/g" 'src/bash/llnms-info.sh'
+                    sed -ie  "s/^ *LLNMS_SUBMINOR=$LLNMS_SUBMINOR$/LLNMS_SUBMINOR=${NEW_SUBMINOR}/g" 'src/bash/llnms-info.sh'
                     LLNMS_SUBMINOR=$NEW_SUBMINOR
                 
                 #  Otherwise the option specified was in error and cannot be decremented
