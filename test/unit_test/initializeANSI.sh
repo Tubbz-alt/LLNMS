@@ -8,7 +8,7 @@ INITIALIZEANSI_INSTALLED="1"
 
 initializeANSI( ){
 
-    esc="\E" # If this doesn't work, enter an ESC directly
+    esc="\033" # If this doesn't work, enter an ESC directly
 
     # Foreground Colors
     blackf="${esc}[30m";  redf="${esc}[31m";   greenf="${esc}[32m"

@@ -145,6 +145,13 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 
+#  Import the configuration
+if [ ! -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
+    echo "error: LLNMS configuration does not exist at $LLNMS_HOME/config/llnms-config.sh"
+    exit 1
+fi
+. $LLNMS_HOME/config/llnms-config.sh
+
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info.sh
 
@@ -325,7 +332,7 @@ fi
 #  Write data to file
 OLDIFS=$IFS
 IFS=''
-echo -e $OUTPUT > $OUTFILE
+$ECHO $OUTPUT > $OUTFILE
 IFS=$OLDIFS
 
 

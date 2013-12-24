@@ -182,6 +182,28 @@ check_prerequisites(){
 }
 
 
+#----------------------------------------------------------------#
+#-     Build the installation-specific configuration file       -#
+#----------------------------------------------------------------#
+create_configuration_file(){
+
+    #  Create the file
+    if [ -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
+        rm -r $LLNMS_HOME/config/llnms-config.sh
+    fi
+
+    #  If we are using Darwin, then build the Darwin-specific options
+    if [ "`uname`" = "Darwin" ]; then
+        ./install/bash/darwin-config.sh "$LLNMS_HOME"
+
+    #  If we are using Linux, add the -e to the echo
+    else
+        echo "ECHO=echo -e" >> $LLNMS_HOME/config/llnms-config.sh
+    fi
+
+
+}
+
 #-----------------------------#
 #-      Main Function        -#
 #-----------------------------#
@@ -245,6 +267,8 @@ check_prerequisites
 #  copy the tools to the directory
 install_to_filesystem
 
+#  Create the configuration file
+create_configuration_file
 
 #  Install samples
 if [ $INSTALL_SAMPLES -eq 1 ]; then
