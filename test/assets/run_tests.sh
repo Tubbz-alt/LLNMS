@@ -39,6 +39,12 @@ print_test_result 'llnms-create-asset' 'Create Asset File' "$RESULT"
 if [ -e "/var/tmp/cause.txt" ]; then rm /var/tmp/cause.txt; fi
 
 
-#-   
+#------------------------------------------------------------#
+#-                    Test Asset Removal                    -#
+#------------------------------------------------------------#
+. test/assets/TEST_llnms_remove_asset.sh
+RESULT=`TEST_llnms_remove_asset_01`
+print_test_result 'llnms-remove-asset' 'Remove Asset File' "$RESULT"
+if [ -e "/var/tmp/cause.txt" ]; then rm /var/tmp/cause.txt; fi
 
 
