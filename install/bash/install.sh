@@ -65,8 +65,7 @@ build_and_verify_filestructure(){
     
     # Verify the asset paths exist
     if [ ! -d "$DEFAULT_LLNMS_ASSET_PATH" ]; then
-        mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/defined"
-        mkdir -p "$DEFAULT_LLNMS_ASSET_PATH/discovered"
+        mkdir -p "$DEFAULT_LLNMS_ASSET_PATH"
     fi
 
     # Verify the scanner path exists

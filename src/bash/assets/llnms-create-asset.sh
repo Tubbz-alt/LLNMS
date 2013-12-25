@@ -60,12 +60,12 @@ get_input_hostname(){
     
         #  prompt the user
         echo ''
-        echo -n 'Please enter the desired hostname: '
+        echo "Please enter the desired hostname: \c"
         read TEMP_HOSTNAME
         
         #  check if answer is correct
         echo ''
-        echo -n "Hostname will be set to ${TEMP_HOSTNAME}.  Is this correct (y/n, y - default): "
+        echo "Hostname will be set to ${TEMP_HOSTNAME}.  Is this correct (y/n, y - default): \c"
         read ANS
 
         #  if the user is happy, then set the hostname and exit
@@ -88,12 +88,12 @@ get_input_ip4_address(){
     
         #  prompt the user
         echo ''
-        echo -n 'Please enter the desired ip4 address: '
+        echo "Please enter the desired ip4 address: \c"
         read TEMP_ADDRESS
         
         #  check if answer is correct
         echo ''
-        echo -n "The ip4 address will be set to ${TEMP_ADDRESS}.  Is this correct (y/n, y - default): "
+        echo "The ip4 address will be set to ${TEMP_ADDRESS}.  Is this correct (y/n, y - default): \c"
         read ANS
 
         #  if the user is happy, then set the address and exit
@@ -116,14 +116,14 @@ get_input_description(){
     
         #  prompt the user
         echo ''
-        echo -n 'Please enter the desired asset description (optional): '
+        echo "Please enter the desired asset description (optional): \c"
         read TEMP_DESCRIPTION
         
         #  check if answer is correct
         echo ''
         echo    "The description will be set to: "
         echo    "${TEMP_DESCRIPTION}"
-        echo -n "Is this correct (y/n, y - default): "
+        echo "Is this correct (y/n, y - default): \c"
         read ANS
 
         #  if the user is happy, then set the description and exit
