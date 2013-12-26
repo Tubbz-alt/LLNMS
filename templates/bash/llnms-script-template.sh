@@ -11,7 +11,7 @@
 #----------------------------------------#
 usage(){
 
-    echo "$0 [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '    options:'
     echo '        -h, --help    :  Print usage instructions'
@@ -33,7 +33,7 @@ error(){
 #-------------------------------------#
 version(){
 
-    echo "$0 Information"
+    echo "`basename $0` Information"
     echo ''
     echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
 
