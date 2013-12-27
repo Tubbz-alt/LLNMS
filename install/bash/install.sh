@@ -89,17 +89,19 @@ install_to_filesystem(){
     echo '-> Copying asset module scripts'
     
     echo '   -> llnms-create-asset.sh'
-    cp 'src/bash/assets/llnms-create-asset.sh'      $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-create-asset.sh'            $LLNMS_HOME/bin/
     
     echo '   -> llnms-remove-asset.sh'
-    cp 'src/bash/assets/llnms-remove-asset.sh'      $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-remove-asset.sh'            $LLNMS_HOME/bin/
     
     echo '   -> llnms-list-assets.sh'
-    cp 'src/bash/assets/llnms-list-assets.sh'       $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-list-assets.sh'             $LLNMS_HOME/bin/
     
     echo '   -> llnms-print-asset-info.sh'
-    cp 'src/bash/assets/llnms-print-asset-info.sh'  $LLNMS_HOME/bin/
- 
+    cp 'src/bash/assets/llnms-print-asset-info.sh'        $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-register-asset-scanner.sh'   
+    cp 'src/bash/assets/llnms-register-asset-scanner.sh'  $LLNMS_HOME/bin/
 
     # networks
     #cp src/bash/network/*.bash   $LLNMS_HOME/bin/
@@ -109,9 +111,21 @@ install_to_filesystem(){
     #cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
     #  Scanning utilities
-    #cp src/bash/scanning/*.sh        $LLNMS_HOME/bin/
-    #cp -r src/bash/scanning/scanners $LLNMS_HOME/scanning/
+    echo ''
+    echo '-> Copying scanning module scripts'
     
+    echo '   -> llnms-list-scanners.sh'
+    cp 'src/bash/scanning/llnms-list-scanners.sh'      $LLNMS_HOME/bin/
+
+    echo '   -> llnms-register-scanner.sh'
+    cp 'src/bash/scanning/llnms-register-scanner.sh'   $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-print-scanner-info.sh' 
+    cp 'src/bash/scanning/llnms-print-scanner-info.sh' $LLNMS_HOME/bin/
+    
+    echo '   -> llnms scanner scripts'
+    cp -r  src/bash/scanning/scanners/*                $LLNMS_HOME/scanning/
+
     #  config utilities
     cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
 
