@@ -4,14 +4,18 @@
 #   Author:  Marvin Smith
 #   Date:    12/13/2013
 #
-
+#   Purpose:  Registers a scanner to the LLNMS Scanner List
+#
+#   Outputs:  
+#     0 - Success
+#     2 - Scanner already registered
 
 #---------------------------------------#
 #-          Usage Instructions         -#
 #---------------------------------------#
 usage(){
 
-    echo "$0 [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '    options:'
     echo '        -h, --help    : Print usage instructions'
@@ -19,14 +23,54 @@ usage(){
     echo '' 
     echo '        -s, --scanner [llnms-scanner.xml file] : Set the scanner filename (Mandatory)'
     echo ''
+
 }
 
 
 #-------------------------------------#
-#             Error Function          #
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
 #-------------------------------------#
 error(){
-    echo "error: $1"
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
 }
 
 
@@ -35,10 +79,21 @@ error(){
 #-------------------------------------#
 version(){
 
-    echo "$0 Information"
+    echo "`basename $0` Information"
     echo ''
     echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
 
+}
+
+
+#------------------------------------------------------------#
+#-     Add a scanner to the registered scanners xml file    -#
+#-                                                          -#
+#-     $1 - Path to add                                     -#
+#------------------------------------------------------------#
+llnms_add_scanner_to_registered_list(){
+    XMLFILE='/var/tmp/llnms/run/llnms-registered-scanners.xml'
+    xmlstarlet ed -L --subnode "/llnms-registered-scanners" --type elem -n 'llnms-scanner' -v $1 $XMLFILE
 }
 
 
@@ -53,13 +108,11 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
-#  Import the scanning utilities
-source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
+#  Import the configuration
+. $LLNMS_HOME/config/llnms-config.sh
 
-#  Import the asset utilities
-source $LLNMS_HOME/bin/llnms-asset-utilities.sh
 
 #  Scanner flags
 SCANNER_FLAG=0
@@ -120,11 +173,11 @@ fi
 #-------------------------------------------------------------#
 #-     Make sure the scanner has not already been added      -#
 #-------------------------------------------------------------#
-SCANNER_PATHS=$(llnms_list_registered_scanner_paths)
+SCANNER_PATHS=`llnms-list-scanners.sh -l -f`
 for SCANNER in $SCANNER_PATHS; do
     if [ "$SCANNER" = "$SCANNER_FILE" ]; then
         echo 'Scanner has already been registered. Skipping registration.'
-        exit 1;
+        exit 2;
     fi
 done
 
@@ -141,4 +194,7 @@ fi
 #-     If it is not already registered, then add it to the list      -#
 #---------------------------------------------------------------------#
 llnms_add_scanner_to_registered_list $SCANNER_FILE
+
+#  Output success
+exit 0
 
