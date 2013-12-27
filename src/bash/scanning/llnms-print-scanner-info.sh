@@ -26,6 +26,7 @@ usage(){
     echo '        -n, --name         :  Print scanner name'
     echo '        -d, --description  :  Print scanner description.'
     echo '        -c, --command      :  Print scanner command.'
+    echo '        -b, --base-path    :  Print scanner base path.'
     echo ''
 
 }
@@ -115,6 +116,7 @@ PRINT_ID=0
 PRINT_NAME=0
 PRINT_DESCRIPTION=0
 PRINT_COMMAND=0
+PRINT_BASEPATH=0
 
 #   Parse Command-Line Options
 for OPTION in "$@"; do
@@ -166,6 +168,12 @@ for OPTION in "$@"; do
         '-c' | '--command' )
             PRINT_EVERYTHING=0
             PRINT_COMMAND=1
+            ;;
+
+        #  Print scanner base path
+        '-b' | '--base-path' )
+            PRINT_EVERYTHING=0
+            PRINT_BASEPATH=1
             ;;
         
         #  Process flag values or print error message
@@ -250,6 +258,15 @@ if [ "$PRINT_COMMAND" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
         echo ", \c"
     fi
     $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'command' -n $FILE_VALUE`\c"
+    DATA_PRINTED=1
+fi
+
+#  Print Command base path
+if [ "$PRINT_BASEPATH" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
+    if [ "$DATA_PRINTED" = '1' ]; then
+        echo ", \c"
+    fi
+    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'base-path' -n $FILE_VALUE`\c"
     DATA_PRINTED=1
 fi
 
