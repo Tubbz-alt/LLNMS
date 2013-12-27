@@ -242,5 +242,14 @@ if [ "$DESCRIPTION_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
     DATA_PRINTED=1
 fi
 
+#  Scanners
+if [ "$SCANNER_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
+    if [ "$DATA_PRINTED" = '1' ]; then
+        echo " \c"
+    fi
+    echo "`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`\c"
+    DATA_PRINTED=1
+fi
+
 echo ''
 
