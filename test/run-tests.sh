@@ -40,10 +40,13 @@ check_installation
 ./test/assets/run_tests.sh
 
 $ECHO ''
-$ECHO ''
-$ECHO ''
 
 #  run networking unit tests
 ./test/networks/run_tests.sh
+
+$ECHO ''
+
+#  run scanning unit tests
+./test/scanning/run_tests.sh
 
 
