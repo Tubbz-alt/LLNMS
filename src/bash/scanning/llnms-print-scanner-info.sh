@@ -21,12 +21,14 @@ usage(){
     echo '        -f, --file [*.llnms-scanner.xml file] :  Set the LLNMS Scanner File to read.'
     echo ''
     echo '    Printing Options (Select one or more of the following)'
-    echo '        -a, --all          :  Print everything (Default)'
-    echo '        -i, --id           :  Print scanner id'
-    echo '        -n, --name         :  Print scanner name'
-    echo '        -d, --description  :  Print scanner description.'
-    echo '        -c, --command      :  Print scanner command.'
-    echo '        -b, --base-path    :  Print scanner base path.'
+    echo '        -a, --all            :  Print everything (Default)'
+    echo '        -i, --id             :  Print scanner id'
+    echo '        -n, --name           :  Print scanner name'
+    echo '        -d, --description    :  Print scanner description.'
+    echo '        -c, --command        :  Print scanner command.'
+    echo '        -b, --base-path      :  Print scanner base path.'
+    echo '        -num, --number-args  :  Print the number of arguments.'
+    #echo '        -arg, --argument [arg #] : Print the specified argument.'
     echo ''
 
 }
@@ -117,6 +119,7 @@ PRINT_NAME=0
 PRINT_DESCRIPTION=0
 PRINT_COMMAND=0
 PRINT_BASEPATH=0
+PRINT_NUMARGS=0
 
 #   Parse Command-Line Options
 for OPTION in "$@"; do
@@ -174,6 +177,12 @@ for OPTION in "$@"; do
         '-b' | '--base-path' )
             PRINT_EVERYTHING=0
             PRINT_BASEPATH=1
+            ;;
+
+        #  Print the number of arguments
+        '-num' | '--number-args' )
+            PRINT_EVERYTHING=0
+            PRINT_NUMARGS=1
             ;;
         
         #  Process flag values or print error message
@@ -269,6 +278,16 @@ if [ "$PRINT_BASEPATH" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'base-path' -n $FILE_VALUE`\c"
     DATA_PRINTED=1
 fi
+
+#  Print the number of arguments
+if [ "$PRINT_NUMARGS" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
+    if [ "$DATA_PRINTED" = '1' ]; then
+        echo ", \c"
+    fi
+    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'number-arguments' -n $FILE_VALUE`\c"
+    DATA_PRINTED=1
+fi
+
 
 #  print final newline
 echo ''
