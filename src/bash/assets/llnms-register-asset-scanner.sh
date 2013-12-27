@@ -28,6 +28,8 @@ usage(){
     echo '        -s, --scanner [scanner id]    : Specify scanner to add.'
     echo '                                        (Mandatory)'
     echo ''
+    #echo '        -p, --parameter [key] [value] : Set an argument to the scanner.'
+    #echo ''
 }
 
 
@@ -103,6 +105,9 @@ llnms_add_registered_scanner_to_asset(){
     ASSET_PATH=$1
     SCANNER_PATH=$2
 
+    #  Get the current number of registered scanners
+    SCANNER_CNT=`llnms-print-asset-info.sh -f $ASSET_PATH -s | wc -l | sed 's/ *//g'`
+    
     #  Make sure asset exists
     if [ ! -e $ASSET_PATH ]; then
         return
@@ -123,8 +128,12 @@ llnms_add_registered_scanner_to_asset(){
     xmlstarlet ed -L --subnode "/llnms-asset/scanners" --type elem -n 'scanner' -v '' $ASSET_PATH
 
     # Add the id
-    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner" --type elem -n 'id' -v "`llnms-print-scanner-info.sh -f $SCANNER_PATH --id`" $ASSET_PATH
+    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]" --type elem -n 'id' -v "`llnms-print-scanner-info.sh -f $SCANNER_PATH --id`" $ASSET_PATH
     
+    #  Add the arguments
+    NUM_ARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
+    echo "NUM_ARGS: $NUM_ARGS"
+
 }
 
 
