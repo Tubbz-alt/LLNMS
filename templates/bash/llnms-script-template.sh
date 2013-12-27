@@ -90,8 +90,10 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
+#  Import the configuration info
+. $LLNMS_HOME/config/llnms-config.sh
 
 #   Parse Command-Line Options
 for OPTION in "$@"; do
