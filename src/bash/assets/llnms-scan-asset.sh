@@ -5,13 +5,14 @@
 #   Date:    12/13/2013
 #
 #   Purpose: Runs the scanners on the specified asset.
+#
 
 #----------------------------------------#
 #-       Print Usage Instructions       -#
 #----------------------------------------#
 usage(){
 
-    echo "$0 [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '    options:'
     echo '        -h, --help    :  Print usage instructions'
@@ -23,11 +24,51 @@ usage(){
 
 
 #-------------------------------------#
-#             Error Function          #
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
 #-------------------------------------#
 error(){
-    echo "error: $1"
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
 }
+
 
 
 #-------------------------------------#
@@ -53,13 +94,11 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
 #  Import asset utilities
-source $LLNMS_HOME/bin/llnms-asset-utilities.sh
+. $LLNMS_HOME/config/llnms-config.sh
 
-#  Import scanning utilities
-source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
 
 #  Asset name and path
 ASSET_HOSTNAME=''
@@ -100,7 +139,7 @@ for OPTION in "$@"; do
 
             # otherwise, throw the error for an unknown option
             else
-                error "Unknown option $OPTION"
+                error "Unknown option $OPTION" "$LINENO"
                 usage
                 exit 1
             fi
