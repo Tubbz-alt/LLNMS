@@ -102,6 +102,9 @@ install_to_filesystem(){
     
     echo '   -> llnms-register-asset-scanner.sh'   
     cp 'src/bash/assets/llnms-register-asset-scanner.sh'  $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-scan-asset.sh'                  
+    cp 'src/bash/assets/llnms-scan-asset.sh'              $LLNMS_HOME/bin/
 
     # networks
     #cp src/bash/network/*.bash   $LLNMS_HOME/bin/

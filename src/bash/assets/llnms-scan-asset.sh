@@ -154,30 +154,41 @@ done
 #-    Make sure the asset exists     -#
 #-------------------------------------#
 # get a list of assets
-ASSET_LIST=$(ls $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null)
+ASSET_LIST=`llnms-list-assets.sh -l -path`
+
 for ASSET_FILE in $ASSET_LIST; do
-    
     #  check the hostname.  if they match, then retrieve the asset filename
-    if [ "$(llnms_get_asset_hostname $ASSET_FILE)" = "$ASSET_HOSTNAME" ]; then
+    if [ "`llnms-print-asset-info.sh -f $ASSET_FILE -host`" = "$ASSET_HOSTNAME" ]; then
         ASSET_PATH=$ASSET_FILE
     fi
-
 done
 
+#  if the asset path is blank, then the asset was not found.
+if [ "$ASSET_PATH" = '' ]; then
+    error "Asset with hostname ($ASSET_HOSTNAME) does not exist." "$LINENO"
+    usage
+    exit 1
+fi
+
+
+#-----------------------------------------------------#
+#-       Get the list of scanners and run each       -#
+#-----------------------------------------------------#
 
 #   - get a list of registered scanners
-ASSET_SCANNERS=$(llnms_list_asset_registered_scanners $ASSET_PATH)
+ASSET_SCANNERS=`llnms-print-asset-info.sh  -f $ASSET_PATH -s`
 for ASSET_SCANNER in $ASSET_SCANNERS; do
-
+    
+    echo "SCAN: $ASSET_SCANNER"
     #  get the file pathname for the scanner
-    SCANNER_PATH=$(llnms_get_scanner_path_from_id $ASSET_SCANNER)
+    #SCANNER_PATH=$(llnms_get_scanner_path_from_id $ASSET_SCANNER)
 
     #  get the command to run for the scanner
-    SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER_PATH)
+    #SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER_PATH)
 
     #  get the argument-list for the scanner
     
-    echo "SCANNER_CMD: $SCANNER_CMD"
+    #echo "SCANNER_CMD: $SCANNER_CMD"
 
 done
 
