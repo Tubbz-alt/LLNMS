@@ -40,47 +40,6 @@ llnms_list_asset_registered_scanners(){
 }
 
 
-#-------------------------------------#
-#-   Add a scanner to the asset      -#
-#-                                   -#
-#-   $1 - Asset path to update.      -#
-#-   $2 - Scanner path to register.  -#
-#-------------------------------------#
-llnms_add_registered_scanner_to_asset(){
-
-    # set some helper variables
-    ASSET_PATH=$1
-    SCANNER_PATH=$2
-
-    #  Make sure asset exists
-    if [ ! -e $ASSET_PATH ]; then
-        return
-    fi
-
-    #  Make sure scanner exists
-    if [ ! -e $SCANNER_PATH ]; then
-        return
-    fi
-
-    #  Make sure the asset has the scanners xml element
-    SCANNERS_OUTPUT=$(xmlstarlet sel -t -m '//llnms-asset' -v 'scanners' -n $ASSET_PATH | sed 's/ *//g')
-    if [ "$SCANNERS_OUTPUT" == '' ]; then
-        xmlstarlet ed -L --subnode "/llnms-asset" --type elem -n 'scanners' $ASSET_PATH 
-    fi
-
-    # Add the scanner
-    xmlstarlet ed -L --subnode "/llnms-asset/scanners" --type elem -n 'scanner' $ASSET_PATH
-    
-    # Add the id
-    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner" --type elem -n 'id' -v "$(llnms_print_registered_scanner_id $SCANNER_PATH)" $ASSET_PATH
-    
-    # add the configuration options
-    
-    
-    echo ''
-    echo 'OUTPUT'
-    cat $ASSET_PATH
-}
 
 
 #------------------------------------------------#
