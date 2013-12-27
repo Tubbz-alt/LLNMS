@@ -155,9 +155,6 @@ fi
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info.sh
 
-#  Import utilities
-. $LLNMS_HOME/bin/llnms-asset-utilities.sh
-
 
 #  Mode flags
 INTERACTIVE_MODE=0
