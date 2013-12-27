@@ -5,6 +5,11 @@
 #   Date:    12/14/2013
 #
 #   Purpose:  This will add scanners to assets.
+#
+#   Returns:
+#      0 - Scanner successfully registered to asset.
+#      2 - Scanner is already registered to asset.
+
 
 
 #----------------------------------------#
@@ -12,7 +17,7 @@
 #----------------------------------------#
 usage(){
 
-    echo "$0 [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '    options:'
     echo '        -h, --help    :  Print usage instructions'
@@ -27,11 +32,51 @@ usage(){
 
 
 #-------------------------------------#
-#             Error Function          #
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1"
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1  Line: $2, File: $3"
+    fi
+}
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
 #-------------------------------------#
 error(){
-    echo "error: $1"
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1"
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1  Line: $2, File: $3"
+    fi
 }
+
 
 
 #-------------------------------------#
@@ -39,10 +84,47 @@ error(){
 #-------------------------------------#
 version(){
 
-    echo "$0 Information"
+    echo "`basename $0` Information"
     echo ''
     echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
 
+}
+
+
+#-------------------------------------#
+#-   Add a scanner to the asset      -#
+#-                                   -#
+#-   $1 - Asset path to update.      -#
+#-   $2 - Scanner path to register.  -#
+#-------------------------------------#
+llnms_add_registered_scanner_to_asset(){
+
+    # set some helper variables
+    ASSET_PATH=$1
+    SCANNER_PATH=$2
+
+    #  Make sure asset exists
+    if [ ! -e $ASSET_PATH ]; then
+        return
+    fi
+
+    #  Make sure scanner exists
+    if [ ! -e $SCANNER_PATH ]; then
+        return
+    fi
+
+    #  Make sure the asset has the scanners xml element
+    SCANNERS_OUTPUT=`xmlstarlet el $ASSET_PATH | grep scanners`
+    if [ "$SCANNERS_OUTPUT" == '' ]; then
+        xmlstarlet ed -L --subnode "/llnms-asset" --type elem -n 'scanners' -v '' $ASSET_PATH
+    fi
+
+    # Add the scanner
+    xmlstarlet ed -L --subnode "/llnms-asset/scanners" --type elem -n 'scanner' -v '' $ASSET_PATH
+
+    # Add the id
+    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner" --type elem -n 'id' -v "`llnms-print-scanner-info.sh -f $SCANNER_PATH --id`" $ASSET_PATH
+    
 }
 
 
@@ -57,14 +139,10 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
-#  Import scanning utilities
-source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
-
-#  Import asset utilities
-source $LLNMS_HOME/bin/llnms-asset-utilities.sh
-
+#  Import configuration info
+. $LLNMS_HOME/config/llnms-config.sh
 
 #  Flags
 ASSET_FLAG=0
@@ -154,12 +232,12 @@ fi
 #-      Error Checking      -#
 #----------------------------#
 #  Make sure the scanner exists
-SCANNER_PATHS=$(llnms_list_registered_scanner_paths)
+SCANNER_PATHS=`llnms-list-scanners.sh -f -l`
 SCANNER_EXISTS=0
 for SCANNER_FILE in $SCANNER_PATHS; do
     
     # compare id
-    if [ "$SCANNER_VALUE" = "$(llnms_print_registered_scanner_id $SCANNER_FILE)" ]; then
+    if [ "$SCANNER_VALUE" =  "`llnms-print-scanner-info.sh -f $SCANNER_FILE -i`" ]; then
         SCANNER_EXISTS=1
         SCANNER_PATH=$SCANNER_FILE
         break;
@@ -173,12 +251,12 @@ fi
 
 
 #  Make sure the asset exists
-ASSET_PATHS=$(ls $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null)
+ASSET_PATHS=`llnms-list-assets.sh -path -l`
 ASSET_EXISTS=0
 for ASSET_FILE in $ASSET_PATHS; do
-    
+   
     # compare hostname
-    if [ "$ASSET_VALUE" = "$(llnms_get_asset_hostname $ASSET_FILE)" ]; then
+    if [ "$ASSET_VALUE" = "`llnms-print-asset-info.sh -f $ASSET_FILE -host`" ]; then
         ASSET_EXISTS=1
         ASSET_PATH=$ASSET_FILE
         break;
@@ -191,25 +269,24 @@ if [ $ASSET_EXISTS -eq 0 ]; then
 fi
 
 
-
 #------------------------------------------------------------------------#
 #-     Make sure the scanner is not already registered with the asset   -#
 #------------------------------------------------------------------------#
 # get a list of registered scanners for the asset
-REG_SCANNERS=$(llnms_list_asset_registered_scanners $ASSET_PATH)
+REG_SCANNERS=`llnms-print-asset-info.sh -f $ASSET_PATH -s`
 for REG_SCANNER in $REG_SCANNERS; do
 
     #  compare the scanner ids
     if [ "$REG_SCANNER" = "$SCANNER_VALUE" ]; then
         error "scanner $SCANNER_VALUE is already registered with the asset."
-        exit 1
+        exit 2
     fi
-
 done
 
 
 #-----------------------------------------------------------#
 #-      Add the scanner to the asset manifest document     -#
 #-----------------------------------------------------------#
+
 llnms_add_registered_scanner_to_asset $ASSET_PATH $SCANNER_PATH
 
