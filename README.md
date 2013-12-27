@@ -11,7 +11,7 @@ of utilities merged into a cohesive NMS solution.
 Commands
 --------
 
-LLNMS does everything through a set of tools.  Commands to run the LLNMS suite
+LLNMS does everything through a set of command-line tools.  Commands to run the LLNMS suite
 are generally defined as llnms-**action**-**target**.  
 
 ###  Scanning and configuring networks
@@ -34,7 +34,8 @@ Command LLNMS to start scanning the network.  Use `-h` to print usage instructio
 
 Command LLNMS to resolve hostnames for network addresses.
 
-
+###  Managing Assets
+    
 
 Installation
 ------------

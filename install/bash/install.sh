@@ -15,9 +15,10 @@ usage(){
     echo "$0 [options]"
     echo ""
     echo "    options:"
-    echo "      -h,  -help      :  Print usage instructions"
-    echo "      -u,  -uninstall :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
-    echo '      -s,  --samples  :  Install LLNMS Sample Configuration Files'
+    echo "      -h,  -help       :  Print usage instructions"
+    echo "      -u,  -uninstall  :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
+    echo '      -s,  --samples   :  Install LLNMS Sample Configuration Files'
+    echo '      -n,  --no-update :  Skip updating the version file.'
     echo ""
 
 }
@@ -84,18 +85,32 @@ build_and_verify_filestructure(){
 install_to_filesystem(){
     
     # llnms assets
-    cp src/bash/assets/*.sh      $LLNMS_HOME/bin/
+    echo ''
+    echo '-> Copying asset module scripts'
     
+    echo '   -> llnms-create-asset.sh'
+    cp 'src/bash/assets/llnms-create-asset.sh'      $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-remove-asset.sh'
+    cp 'src/bash/assets/llnms-remove-asset.sh'      $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-list-assets.sh'
+    cp 'src/bash/assets/llnms-list-assets.sh'       $LLNMS_HOME/bin/
+    
+    echo '   -> llnms-print-asset-info.sh'
+    cp 'src/bash/assets/llnms-print-asset-info.sh'  $LLNMS_HOME/bin/
+ 
+
     # networks
-    cp src/bash/network/*.bash   $LLNMS_HOME/bin/
+    #cp src/bash/network/*.bash   $LLNMS_HOME/bin/
 
     #  llnms utilities
-    cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
-    cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
+    #cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
+    #cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
     #  Scanning utilities
-    cp src/bash/scanning/*.sh        $LLNMS_HOME/bin/
-    cp -r src/bash/scanning/scanners $LLNMS_HOME/scanning/
+    #cp src/bash/scanning/*.sh        $LLNMS_HOME/bin/
+    #cp -r src/bash/scanning/scanners $LLNMS_HOME/scanning/
     
     #  config utilities
     cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
@@ -165,10 +180,10 @@ check_xmlstarlet(){
 #------------------------------------------------------#
 check_prerequisites(){
 
-    echo 'checking LLNMS installation pre-requisites'
+    echo '-> checking LLNMS installation pre-requisites'
 
     #  Check for xmlstarlet
-    echo -n ' -> checking xmlstarlet : '
+    echo "   -> checking xmlstarlet : \c"
     check_xmlstarlet
     if [ $? -eq 0 ]; then
         echo 'found'
@@ -186,6 +201,7 @@ check_prerequisites(){
 #----------------------------------------------------------------#
 create_configuration_file(){
 
+    echo ''
     #  Create the file
     if [ -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
         rm -r $LLNMS_HOME/config/llnms-config.sh
@@ -206,6 +222,13 @@ create_configuration_file(){
 #-----------------------------#
 #-      Main Function        -#
 #-----------------------------#
+# clear the screen
+clear
+
+#  Pick header
+echo ''
+echo 'LLNMS Installer'
+echo '---------------'
 
 #  import our default configuration
 . install/bash/options.sh
@@ -216,6 +239,8 @@ export LLNMS_HOME=$DEFAULT_LLNMS_HOME
 
 #  Parse Command-Line Options
 INSTALL_SAMPLES=0
+UPDATE_LLNMS=1
+
 for OPTION in $@; do
     
     #  Case for options
@@ -240,6 +265,11 @@ for OPTION in $@; do
             exit 1
             ;;
 
+        #   Skip update of llnms version file
+        '-n' | '--no-update' )
+            UPDATE_LLNMS=0
+            ;;
+
         #   Default Parameter.  Usually an error
         "*" )
             echo "Error: Unknown option $OPTION"
@@ -252,7 +282,9 @@ for OPTION in $@; do
 done
 
 #  If no options are present, then do a default install
-echo "LLNMS_HOME=$LLNMS_HOME"
+echo "-> Configuration information"
+echo "   -> LLNMS_HOME=$LLNMS_HOME"
+echo ''
 
 #  build the baseline filestructure
 build_and_verify_filestructure
@@ -261,7 +293,13 @@ build_and_verify_filestructure
 check_prerequisites
 
 #  Increment the version file
-./install/bash/version.sh -i subminor
+echo ''
+if [ $UPDATE_LLNMS -eq 1 ]; then
+    echo "-> Updating LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
+    ./install/bash/version.sh -i subminor
+else
+    echo "-> Skipping update of LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
+fi
 
 #  copy the tools to the directory
 install_to_filesystem
@@ -274,4 +312,7 @@ if [ $INSTALL_SAMPLES -eq 1 ]; then
     install_samples
 fi
 
+echo ''
+echo 'End of LLNMS Installer'
+echo '----------------------'
 

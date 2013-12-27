@@ -39,7 +39,11 @@ check_installation
 #  run asset unit tests
 ./test/assets/run_tests.sh
 
+$ECHO ''
+$ECHO ''
+$ECHO ''
+
 #  run networking unit tests
-#./test/networks/run_tests.sh
+./test/networks/run_tests.sh
 
 
