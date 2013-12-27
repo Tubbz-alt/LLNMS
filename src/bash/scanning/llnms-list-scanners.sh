@@ -11,27 +11,73 @@
 #---------------------------------------#
 usage(){
 
-    echo "$0 [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '    options:'
     echo '        -h, --help    : Print usage instructions'
     echo '        -v, --version : Print version information'
-    echo '' 
-    echo '        --names-only  : Print only the scanner names, no other info (Default)'
     echo ''
+    echo '        Printing Information (Select one or more)'
+    echo '        -a, --all          : Print everything (Default)'
+    echo '        -i, --id           : Print id'
+    echo '        -n, --name         : Print name'
+    echo '        -d, --description  : Print description'
+    echo '        -c, --command      : Print the required command.' 
+    echo '        -f, --file         : Print the scanner filename.'
+    echo '' 
     echo '        Printing Format'
     echo '        -p, --pretty  : Print data in human-readible format (Default)'
+    echo '        -l, --list    : Print data in list format.'
     echo ''
 
 }
 
+#-------------------------------------#
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
 
 #-------------------------------------#
-#             Error Function          # 
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
 #-------------------------------------#
 error(){
-    echo "error: $1"
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
 }
+
 
 
 #-------------------------------------#
@@ -39,11 +85,39 @@ error(){
 #-------------------------------------#
 version(){
 
-    echo "$0 Information"
+    echo "`basename $0` Information"
     echo ''
     echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
 
 }
+
+#-----------------------------------------------#
+#-      Create a registered scanners file      -#
+#-----------------------------------------------#
+llnms_create_registered_scanners_file(){
+
+    #  Create the output xml headers
+    OUTPUT="<llnms-registered-scanners>\n"
+    
+    #  Create the output xml footers
+    OUTPUT+="</llnms-registered-scanners>\n"
+
+    #  Output to file
+    OLDIFS=$IFS
+    IFS=''
+    $ECHO_ESC $OUTPUT > "$LLNMS_HOME/run/llnms-registered-scanners.xml"
+    IFS=$OLDIFS
+
+
+}
+
+#--------------------------------------------------#
+#-      Print all registered scanner paths        -#
+#--------------------------------------------------#
+llnms_list_registered_scanner_paths(){
+    xmlstarlet sel -t -m '//llnms-registered-scanners/llnms-scanner' -n -v '.' $LLNMS_HOME/run/llnms-registered-scanners.xml
+}
+
 
 
 #-------------------------------------#
@@ -57,19 +131,24 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info.sh
 
-#  Import the scanning utilities
-source $LLNMS_HOME/bin/llnms_scanning_utilities.sh
+#  Import the configuration
+. $LLNMS_HOME/config/llnms-config.sh
 
 
 #  Detail flag
-#  0 - Print only names
-PRINT_FLAG=0
+PRINT_EVERYTHING=1
+PRINT_ID=0
+PRINT_NAME=0
+PRINT_DESCRIPTION=0
+PRINT_COMMAND=0
+PRINT_FILE=0
 
 
 #  Output format flag
 #  PRETTY - Pretty output format
+#  LIST   - List output format
 OUTPUT_FORMAT='PRETTY'
 
 
@@ -94,6 +173,46 @@ for OPTION in "$@"; do
         #  Set output format to pretty
         '-p' | '--pretty' )
             OUTPUT_FORMAT='PRETTY'
+            ;;
+
+        #  Set output format to list
+        '-l' | '--list' )
+            OUTPUT_FORMAT="LIST"
+            ;;
+        
+        #  Print everything
+        '-a' | '--all' )
+            PRINT_EVERYTHING=1
+            ;;
+
+        #  Print id
+        '-i' | '--id' )
+            PRINT_ID=1
+            PRINT_EVERYTHING=0
+            ;;
+
+        #  Print name
+        '-n' | '--name' )
+            PRINT_NAME=1
+            PRINT_EVERYTHING=0
+            ;;
+
+        #  Print description
+        '-d' | '--description' )
+            PRINT_DESCRIPTION=1
+            PRINT_EVERYTHING=0
+            ;;
+
+        #  Print command
+        '-c' | '--command' )
+            PRINT_COMMAND=1
+            PRINT_EVERYTHING=0
+            ;;
+
+        #  Print file
+        '-f' | '--file' )
+            PRINT_FILE=1
+            PRINT_EVERYTHING=0
             ;;
 
         #  Otherwise there is an error or we are pulling values
@@ -126,27 +245,68 @@ if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
 fi
 
 #  Grab a list of all scanners
-SCANNER_PATHS=$(llnms_list_registered_scanner_paths)
+SCANNER_PATHS="`llnms_list_registered_scanner_paths`"
 
 #  Iterate over each scanner, printing the desired information
 for SCANNER in $SCANNER_PATHS; do
     
-    #  print the name
-    SCANNER_NAME=$(llnms_print_registered_scanner_name $SCANNER)
-    echo "- ID: $(llnms_print_registered_scanner_id $SCANNER)"
-    echo "  Name: $SCANNER_NAME"
-    
-    #  print the command
-    SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER)
-    echo "  Command: $SCANNER_CMD"
+    DATA_PRINTED=0
 
-    # print the description
-    SCANNER_DESC=$(llnms_print_registered_scanner_description $SCANNER)
-    echo "  Description: $SCANNER_DESC"
+    #  print the name
+    if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+        echo " -> Scanner: `llnms-print-scanner-info.sh -f $SCANNER -n`"
+    elif [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_NAME" = '1' ]; then
+        if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+            echo "`llnms-print-scanner-info.sh -f $SCANNER -n`\c"
+            DATA_PRINTED=1
+        fi
+    fi
+    
+    #  Print the filename
+    if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_FILE" = '1' ]; then
+        if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
+            echo "    File: $SCANNER"
+        elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
+            if [ "$DATA_PRINTED" = '1' ]; then
+                echo ", \c"
+            fi
+            echo "$SCANNER\c"
+            DATA_PRINTED=1
+        fi
+    fi
+
+    #  Print the id
+    if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_ID" = '1' ]; then
+        if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+            echo "    ID: `llnms-print-scanner-info.sh -f $SCANNER -i`"
+         elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+            if [ "$DATA_PRINTED" = '1' ]; then
+                echo ", \c"
+            fi
+            echo "`llnms-print-scanner-info.sh -f $SCANNER -i`\c"
+            DATA_PRINTED=1
+         fi
+    fi
+    
+    #  Print the description
+    if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_DESCRIPTION" = '1' ]; then
+        if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+            echo "    Description: `llnms-print-scanner-info.sh -f $SCANNER -d`"
+        elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+            if [ "$DATA_PRINTED" = '1' ]; then
+                echo ", \c"
+            fi
+            echo "`llnms-print-scanner-info.sh -f $SCANNER -d`\c"
+            DATA_PRINTED=1
+        fi
+    fi
+
 
     #  Print ending blank line
-    echo ''
+    if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+        echo ''
+    fi
+
 
 done
-
 
