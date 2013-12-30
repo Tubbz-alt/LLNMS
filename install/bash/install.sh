@@ -230,7 +230,7 @@ create_configuration_file(){
 
     #  If we are using Linux, add the -e to the echo
     else
-        echo "ECHO=echo -e" >> $LLNMS_HOME/config/llnms-config.sh
+        ./install/bash/linux-config.sh "$LLNMS_HOME"
     fi
 
 

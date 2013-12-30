@@ -39,6 +39,11 @@ print_module_header "Asset"
 RESULT=`TEST_llnms_create_asset_01`
 print_test_result 'llnms-create-asset' 'Create Asset File' "$RESULT"
 
+#  Check for program halt
+if [ -e /var/tmp/llnms-halt.txt ]; then
+    echo 'llnms asset unit tests halted.'
+    exit 1
+fi
 
 #-------------------------------------------------------------#
 #-                Test Asset Scanner Registration            -#

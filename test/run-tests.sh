@@ -32,6 +32,10 @@ fi
 
 check_installation
 
+if [ -e "/var/tmp/llnms-halt.txt" ]; then
+    rm /var/tmp/llnms-halt.txt
+fi
+
 
 #  Import LLNMS-specific options
 . $LLNMS_HOME/config/llnms-config.sh
