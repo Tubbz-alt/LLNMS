@@ -216,20 +216,28 @@ for ASSET_SCANNER in $ASSET_SCANNERS; do
     #  Get the number of arguments to query
     NUMARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
 
-    echo "Scanner ID: $ASSET_SCANNER"
-    echo "Scanner Path: $SCANNER_PATH"
-    echo "Scanner CMD:  $SCANNER_CMD"
-    echo "Scanner BP : $SCANNER_BASE_PATH"
-    echo "Number Args: $NUMARGS"
-
     #  get the argument-list for the scanner
+    ARGC=`llnms-print-asset-info.sh -f $ASSET_PATH -sac $ASSET_SCANNER`
     ARGLIST=''
-    for ((x=1; x<=$NUMARGS; x++ )); do
+    for ((x=1; x<=$ARGC; x++ )); do
         
-        #  Get the arg
-        ARG=`llnms-print-asset-info
+        #  Get the arg value
+        ARGFLG=`llnms-print-asset-info.sh -f $ASSET_PATH -san $ASSET_SCANNER $x`
+        ARGVAL=`llnms-print-asset-info.sh -f $ASSET_PATH -sav $ASSET_SCANNER $x`
+
+        ARGLIST="$ARGLIST --$ARGFLG $ARGVAL"
     done
-    echo "Arg List: $ARGLIST"
     
+    #  merge all variables into a single command
+    COMMAND_RUN="$SCANNER_BASE_PATH/$SCANNER_CMD $ARGLIST"
+    
+    #  Running command
+    echo "Running $COMMAND_RUN"
+    $COMMAND_RUN > $LLNMS_HOME/log/llnms-scan-asset.log
+    
+    #  Grab the output
+    RESULT="$?"
+    
+
 done
 

@@ -29,6 +29,9 @@ fi
 #---------------------------------------------#
 TEST_llnms_print_asset_info_01(){
 
+    #  Delete all assets
+    rm $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null
+
     #  Create an asset using the create asset command
     llnms-create-asset.sh  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
     TEMP_FILENAME="$LLNMS_HOME/assets/temp-asset.llnms-asset.xml"
@@ -48,7 +51,19 @@ TEST_llnms_print_asset_info_01(){
         echo '1'
         return
     fi
+    
+    #  register a scanner with the asset
+    llnms-register-asset-scanner.sh -a temp-asset -s ssh-scanner > /dev/null
 
+    #  Make sure the print function works
+    ASSET_SCANNER_LIST=`llnms-print-asset-info.sh -f "$TEMP_FILENAME" -s`
+    if [ ! "$ASSET_SCANNER_LIST" = 'ssh-scanner' ]; then
+        echo "ssh-scanner did not show up in the output for scanners. File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt
+        echo '1'
+        return
+    fi
+    
+    #  Check the default arguments
 
     # Otherwise, success
     echo '0'

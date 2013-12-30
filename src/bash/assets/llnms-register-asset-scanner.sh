@@ -128,14 +128,12 @@ llnms_add_registered_scanner_to_asset(){
     xmlstarlet ed -L --subnode "/llnms-asset/scanners" --type elem -n 'scanner' -v '' $ASSET_PATH
 
     # Add the id
-    echo "scanner cnt: $SCANNER_CNT and `expr $SCANNER_CNT + 1 `"
     xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]" --type elem -n 'id' -v "`llnms-print-scanner-info.sh -f $SCANNER_PATH --id`" $ASSET_PATH
 
     #  Add the arguments
     NUM_ARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
     for ((x=1; x<=$NUM_ARGS; x++)); do
         
-        echo "Processing Arg $x"
         #  Get the name of the scanner argument
         SCANNER_ARG_NAME=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-name $x`
         SCANNER_ARG_TYPE=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-type $x`
@@ -158,8 +156,6 @@ llnms_add_registered_scanner_to_asset(){
         xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]/argument[$x]" --type attr -n 'name'     -v "$SCANNER_ARG_NAME" $ASSET_PATH
         xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]/argument[$x]" --type attr -n 'value'    -v "$ARG_VALUE"        $ASSET_PATH
         
-        echo 'Testing asset output'
-        cat $ASSET_PATH
     done
 
 }

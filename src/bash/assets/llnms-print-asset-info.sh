@@ -29,6 +29,10 @@ usage(){
     echo '        -d, --description     : Print the description.'
     echo '        -s, --scanners        : Print registered scanners.'
     echo ''
+    echo '        -sac, --scanner-arg-cnt   [scanner-id]              : Print the number of arguments given the scanner id and the scanner-argument number.'
+    echo '        -san, --scanner-arg-name  [scanner-id] [arg-number] : Print the scanner argument name given the scanner id and the scanner-argument number.'
+    echo '        -sav, --scanner-arg-value [scanner-id] [arg-number] : Print the scanner argument value given the scanner id and the scanner-argument number.'
+    echo ''
 }
 
 
@@ -116,6 +120,16 @@ IP4ADDRESS_FLAG=0
 DESCRIPTION_FLAG=0
 SCANNER_FLAG=0
 
+SCANNER_ARG_NAME_FLAG=0
+SCANNER_ARG_VALUE_FLAG=0
+SCANNER_ARG_COUNT_FLAG=0
+
+
+SCANNER_ARG_ID_FLAG=0
+SCANNER_ARG_NO_FLAG=0
+SCANNER_ARG_ID=''
+SCANNER_ARG_NO=''
+
 
 #   Parse Command-Line Options
 for OPTION in "$@"; do
@@ -164,6 +178,23 @@ for OPTION in "$@"; do
             EVERYTHING_FLAG=0
             ;;
 
+        #  Set the scanner argument name flag
+        '-san' | '--scanner-arg-name' )
+            SCANNER_ARG_NAME_FLAG=1
+            EVERYTHING_FLAG=0
+            ;;
+
+        #  set the scanner argument value flag
+        '-sav' | '--scanner-arg-value' )
+            SCANNER_ARG_VALUE_FLAG=1
+            EVERYTHING_FLAG=0
+            ;;
+        #  set the scanner argument count flag
+        '-sac' | '--scanner-arg-count' )
+            SCANNER_ARG_COUNT_FLAG=1
+            EVERYTHING_FLAG=0
+            ;;
+         
         #  Set the print everything flag
         '-a' | '--all' )
             EVERYTHING_FLAG=1
@@ -176,6 +207,28 @@ for OPTION in "$@"; do
             if [ "$FILE_FLAG" = "1" ]; then
                 FILE_FLAG=0
                 FILE_VALUE=$OPTION
+
+            #  If we need to grab the scanner id
+            elif [ "$SCANNER_ARG_NAME_FLAG" = '1' -a "$SCANNER_ARG_ID_FLAG" = '0' ]; then
+                SCANNER_ARG_ID=$OPTION
+                SCANNER_ARG_ID_FLAG=1
+            
+            elif [ "$SCANNER_ARG_VALUE_FLAG" = '1' -a "$SCANNER_ARG_ID_FLAG" = '0' ]; then
+                SCANNER_ARG_ID=$OPTION
+                SCANNER_ARG_ID_FLAG=1
+            
+            elif [ "$SCANNER_ARG_COUNT_FLAG" = '1' -a "$SCANNER_ARG_ID_FLAG" = '0' ]; then
+                SCANNER_ARG_ID=$OPTION
+                SCANNER_ARG_ID_FLAG=1
+            
+            #  if we need to grab the scanner number
+            elif [ "$SCANNER_ARG_NAME_FLAG" = '1' -a "$SCANNER_ARG_ID_FLAG" = '1' -a "$SCANNER_ARG_NO_FLAG" = '0' ]; then
+                SCANNER_ARG_NO=$OPTION
+                SCANNER_ARG_NO_FLAG=1
+            
+            elif [ "$SCANNER_ARG_VALUE_FLAG" = '1' -a "$SCANNER_ARG_ID_FLAG" = '1' -a "$SCANNER_ARG_NO_FLAG" = '0' ]; then
+                SCANNER_ARG_NO=$OPTION
+                SCANNER_ARG_NO_FLAG=1
 
             #  Otherwise, print an error message for an unknown option
             else
@@ -250,6 +303,71 @@ if [ "$SCANNER_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
     echo "`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`\c"
     DATA_PRINTED=1
 fi
+
+#  Scanner arguments
+if [ "$SCANNER_ARG_NAME_FLAG" = '1' ]; then
+    
+    #  find the index of the scanner id
+    ID_LIST=`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v 'id' $FILE_VALUE | sed '/^\s*$/d' | sed 's/ *//g'`
+
+    TEMP_IDX=1
+    ACTUAL_IDX=0
+    for ID in $ID_LIST; do
+        if [ "$ID" = "$SCANNER_ARG_ID" ]; then
+            ACTUAL_IDX=$TEMP_IDX
+        else
+            TEMP_IDX=`expr $TEMP_IDX + 1` 
+        fi
+    done
+    
+    #  Get the value of the argument
+    echo "`xmlstarlet sel -t -m //llnms-asset/scanners/scanner[$ACTUAL_IDX]/argument[$SCANNER_ARG_NO] -n -v @name $FILE_VALUE | sed '/^\s*$/d' | sed 's/ *//g'` "
+
+fi
+
+if [ "$SCANNER_ARG_VALUE_FLAG" = '1' ]; then
+    
+    #  find the index of the scanner id
+    ID_LIST=`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v 'id' $FILE_VALUE | sed '/^\s*$/d' | sed 's/ *//g'`
+
+    TEMP_IDX=1
+    ACTUAL_IDX=0
+    for ID in $ID_LIST; do
+        if [ "$ID" = "$SCANNER_ARG_ID" ]; then
+            ACTUAL_IDX=$TEMP_IDX
+        else
+            TEMP_IDX=`expr $TEMP_IDX + 1` 
+        fi
+    done
+    
+    #  Get the value of the argument
+    echo "`xmlstarlet sel -t -m //llnms-asset/scanners/scanner[$ACTUAL_IDX]/argument[$SCANNER_ARG_NO] -n -v @value $FILE_VALUE | sed '/^\s*$/d' `"
+    exit 0
+
+fi
+
+if [ "$SCANNER_ARG_COUNT_FLAG" = '1' ]; then
+    
+    #  find the index of the scanner id
+    ID_LIST=`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v 'id' $FILE_VALUE | sed '/^\s*$/d' | sed 's/ *//g'`
+
+    TEMP_IDX=1
+    ACTUAL_IDX=0
+    for ID in $ID_LIST; do
+        if [ "$ID" = "$SCANNER_ARG_ID" ]; then
+            ACTUAL_IDX=$TEMP_IDX
+        else
+            TEMP_IDX=`expr $TEMP_IDX + 1` 
+        fi
+    done
+    
+    #  Get the value of the argument
+    echo "`xmlstarlet sel -t -m //llnms-asset/scanners/scanner[$ACTUAL_IDX]/argument -n -v @value $FILE_VALUE | sed '/^\s*$/d' | wc -l | sed 's/ *//g'`"
+    exit 0
+
+fi
+
+
 
 echo ''
 

@@ -6,7 +6,7 @@
 
     <configuration>
         <linux>
-            <command>ssh-scanner.bash</command>
+            <command>ssh-scanner.sh</command>
             <base-path>/var/tmp/llnms/scanning/ssh-scanner</base-path>
             <number-arguments>1</number-arguments>
             <argument id="1" name="ip4-address" type="ASSET_ELEMENT" value="ip4-address" />
