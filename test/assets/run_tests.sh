@@ -40,6 +40,19 @@ RESULT=`TEST_llnms_create_asset_01`
 print_test_result 'llnms-create-asset' 'Create Asset File' "$RESULT"
 
 
+#-------------------------------------------------------------#
+#-                Test Asset Scanner Registration            -#
+#-------------------------------------------------------------#
+#  Test Asset Scanner Registration
+. test/assets/TEST_llnms_register_asset_scanner.sh
+RESULT=`TEST_llnms_register_asset_scanner_01`
+print_test_result 'llnms-register-asset-scanner'  'Register Scanner to Asset' "$RESULT"
+
+if [ -e /var/tmp/llnms-halt.txt ]; then
+    echo 'llnms asset unit tests halted.'
+    exit 1
+fi
+
 #------------------------------------------------------------#
 #-                    Test Asset Removal                    -#
 #------------------------------------------------------------#

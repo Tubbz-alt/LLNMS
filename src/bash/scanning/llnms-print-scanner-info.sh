@@ -28,7 +28,10 @@ usage(){
     echo '        -c, --command        :  Print scanner command.'
     echo '        -b, --base-path      :  Print scanner base path.'
     echo '        -num, --number-args  :  Print the number of arguments.'
-    #echo '        -arg, --argument [arg #] : Print the specified argument.'
+    echo '        -arg-name, --argument-name [arg #] : Print the specified argument name.'
+    echo '        -arg-type, --argument-type [arg #] : Print the specified argument type.'
+    echo '        -arg-val, --argument-value [arg #] : Print the specified argument value.'
+    echo '        -arg-def, --argument-default [arg #] : Print the specified argument default value.'
     echo ''
 
 }
@@ -121,6 +124,21 @@ PRINT_COMMAND=0
 PRINT_BASEPATH=0
 PRINT_NUMARGS=0
 
+PRINT_ARGUMENT_NAME=0
+PRINT_ARGUMENT_TYPE=0
+PRINT_ARGUMENT_VALUE=0
+PRINT_ARGUMENT_DEFAULT=0
+
+ARGUMENT_NAME_FLAG=0
+ARGUMENT_TYPE_FLAG=0
+ARGUMENT_VALUE_FLAG=0
+ARGUMENT_DEFAULT_FLAG=0
+
+ARGUMENT_NAME_DATA=''
+ARGUMENT_TYPE_DATA=''
+ARGUMENT_VALUE_DATA=''
+ARGUMENT_DEFAULT_DATA=''
+
 #   Parse Command-Line Options
 for OPTION in "$@"; do
 
@@ -184,7 +202,35 @@ for OPTION in "$@"; do
             PRINT_EVERYTHING=0
             PRINT_NUMARGS=1
             ;;
-        
+
+        #  Print argument name
+        '-arg-name' | '--argument-name' )
+            PRINT_ARGUMENT_NAME=1
+            PRINT_EVERYTHING=0
+            ARGUMENT_NAME_FLAG=1
+            ;;
+
+        #  Print argument type
+        '-arg-type' | '--argument-type' )
+            PRINT_ARGUMENT_TYPE=1
+            PRINT_EVERYTHING=0
+            ARGUMENT_TYPE_FLAG=1
+            ;;
+
+        #  Print argument value
+        '-arg-val' | '--argument-value' )    
+            PRINT_ARGUMENT_VALUE=1
+            PRINT_EVERYTHING=0
+            ARGUMENT_VALUE_FLAG=1
+            ;;
+
+        #  Print argument default
+        '-arg-def' | '--argument-default' )    
+            PRINT_ARGUMENT_DEFAULT=1
+            PRINT_EVERYTHING=0
+            ARGUMENT_DEFAULT_FLAG=1
+            ;;
+
         #  Process flag values or print error message
         *)
             
@@ -193,6 +239,24 @@ for OPTION in "$@"; do
                 FILE_FLAG=0
                 FILE_VALUE=$OPTION
 
+            #  If argument flag set, then grab the value
+            elif [ "$ARGUMENT_NAME_FLAG" = '1' ]; then
+                ARGUMENT_NAME_FLAG=0
+                ARGUMENT_NAME_DATA=$OPTION
+
+            elif [ "$ARGUMENT_TYPE_FLAG" = '1' ]; then
+                ARGUMENT_TYPE_FLAG=0
+                ARGUMENT_TYPE_DATA=$OPTION
+
+            elif [ "$ARGUMENT_VALUE_FLAG" = '1' ]; then
+                ARGUMENT_VALUE_FLAG=0
+                ARGUMENT_VALUE_DATA=$OPTION
+            
+            elif [ "$ARGUMENT_DEFAULT_FLAG" = '1' ]; then
+                ARGUMENT_DEFAULT_FLAG=0
+                ARGUMENT_DEFAULT_DATA=$OPTION
+                
+                
             #  Otherwise, throw an error for an unknown option
             else
                 error "Unknown option $OPTION" "$LINENO"
@@ -286,6 +350,27 @@ if [ "$PRINT_NUMARGS" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     fi
     $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'number-arguments' -n $FILE_VALUE`\c"
     DATA_PRINTED=1
+fi
+
+#  Print the specified argument
+if [ "$PRINT_ARGUMENT_NAME" = '1' ]; then
+    $ECHO "`xmlstarlet sel -t -m "//llnms-scanner/configuration/linux/argument[@id=${ARGUMENT_NAME_DATA}]" -v '@name' $FILE_VALUE`"
+    exit 0
+fi
+
+if [ "$PRINT_ARGUMENT_TYPE" = '1' ]; then
+    $ECHO "`xmlstarlet sel -t -m "//llnms-scanner/configuration/linux/argument[@id=${ARGUMENT_TYPE_DATA}]" -v '@type' $FILE_VALUE`"
+    exit 0
+fi
+
+if [ "$PRINT_ARGUMENT_VALUE" = '1' ]; then
+    $ECHO "`xmlstarlet sel -t -m "//llnms-scanner/configuration/linux/argument[@id=${ARGUMENT_VALUE_DATA}]" -v '@value' $FILE_VALUE`"
+    exit 0
+fi
+
+if [ "$PRINT_ARGUMENT_DEFAULT" = '1' ]; then
+    $ECHO "`xmlstarlet sel -t -m "//llnms-scanner/configuration/linux/argument[@id=${ARGUMENT_DEFAULT_DATA}]" -v '@default' $FILE_VALUE`"
+    exit 0
 fi
 
 

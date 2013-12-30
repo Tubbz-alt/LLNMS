@@ -83,6 +83,24 @@ version(){
 }
 
 
+#------------------------------------------#
+#-    Given an id, get the scanner path   -#
+#------------------------------------------#
+get_scanner_path_from_id(){
+
+    #  Get a list of scanners
+    SCANNER_LIST=`llnms-list-scanners.sh -f -l`
+
+    for SCANNER in $SCANNER_LIST; do
+        if [ "`llnms-print-scanner-info.sh -f $SCANNER -i`" = "$1" ]; then
+            echo $SCANNER
+            return
+        fi
+    done
+
+}
+
+
 #---------------------------------#
 #-         Main Function         -#
 #---------------------------------#
@@ -150,6 +168,15 @@ for OPTION in "$@"; do
 done
 
 
+#-----------------------------------------------#
+#-   If no asset specified, then throw error   -#
+#-----------------------------------------------#
+if [ "$ASSET_HOSTNAME" = '' ]; then
+    error  "No asset specified."  "$LINENO" 
+    usage
+    exit 1
+fi
+
 #-------------------------------------#
 #-    Make sure the asset exists     -#
 #-------------------------------------#
@@ -179,16 +206,30 @@ fi
 ASSET_SCANNERS=`llnms-print-asset-info.sh  -f $ASSET_PATH -s`
 for ASSET_SCANNER in $ASSET_SCANNERS; do
     
-    echo "SCAN: $ASSET_SCANNER"
     #  get the file pathname for the scanner
-    #SCANNER_PATH=$(llnms_get_scanner_path_from_id $ASSET_SCANNER)
+    SCANNER_PATH=`get_scanner_path_from_id $ASSET_SCANNER`
+    
+    #  Get the command we have to run
+    SCANNER_CMD=`llnms-print-scanner-info.sh -f $SCANNER_PATH -c`
+    SCANNER_BASE_PATH=`llnms-print-scanner-info.sh -f $SCANNER_PATH -b`
 
-    #  get the command to run for the scanner
-    #SCANNER_CMD=$(llnms_print_registered_scanner_command $SCANNER_PATH)
+    #  Get the number of arguments to query
+    NUMARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
+
+    echo "Scanner ID: $ASSET_SCANNER"
+    echo "Scanner Path: $SCANNER_PATH"
+    echo "Scanner CMD:  $SCANNER_CMD"
+    echo "Scanner BP : $SCANNER_BASE_PATH"
+    echo "Number Args: $NUMARGS"
 
     #  get the argument-list for the scanner
+    ARGLIST=''
+    for ((x=1; x<=$NUMARGS; x++ )); do
+        
+        #  Get the arg
+        ARG=`llnms-print-asset-info
+    done
+    echo "Arg List: $ARGLIST"
     
-    #echo "SCANNER_CMD: $SCANNER_CMD"
-
 done
 
