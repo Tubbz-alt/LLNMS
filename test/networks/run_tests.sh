@@ -32,6 +32,14 @@ fi
 #------------------------------------------#
 print_module_header "Networking"
 
+#--------------------------------------------------#
+#-              Test Create Network               -#
+#--------------------------------------------------#
+. test/networks/TEST_llnms_create_network.sh
+RESULT=`TEST_llnms_create_network_01`
+print_test_result 'llnms-create-network'  'Create a Network'  "$RESULT"
+
+
 
 #------------------------------------------#
 #-           Print our footer             -#

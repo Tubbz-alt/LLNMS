@@ -45,7 +45,6 @@ TEST_llnms_create_asset_01(){
         echo '1'
         return
     fi
-    touch /var/tmp/llnms-halt.txt
 
     #  check the name
     if [ ! "$(xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml')" = 'temp-asset' ]; then
