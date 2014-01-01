@@ -24,6 +24,7 @@ int main( int argc, char* argv[] ){
         init_curses();
     
         // start main program
+        main_menu();
 
 
     } catch(...){
