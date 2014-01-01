@@ -143,12 +143,12 @@ uninstall_llnms( ){
     echo "Uninstalling LLNMS from $LLNMS_HOME"
 
     #  Remove scripts
-    if [ $(ls $LLNMS_HOME/bin/llnms-* 2>/dev/null | wc -l) -ne 0 ]; then
+    if [ `ls $LLNMS_HOME/bin/llnms-* 2>/dev/null | wc -l` -ne 0 ]; then
         rm $LLNMS_HOME/bin/llnms-*
     fi
 
     #  Remove logs
-    if [ $(ls $LLNMS_HOME/logs/llnms*.log 2>/dev/null | wc -l) -ne 0 ]; then
+    if [ `ls $LLNMS_HOME/logs/llnms*.log 2>/dev/null | wc -l` -ne 0 ]; then
         rm $LLNMS_HOME/logs/llnms-*.log
     fi
 
@@ -200,7 +200,12 @@ check_prerequisites(){
     echo '-> checking LLNMS installation pre-requisites'
 
     #  Check for xmlstarlet
-    echo "   -> checking xmlstarlet : \c"
+    if [ "`uname`" == "Darwin" ]; then
+        echo "   -> checking xmlstarlet : \c"
+    else
+        echo -n "  -> checking xmlstarlet :"
+    fi
+
     check_xmlstarlet
     if [ $? -eq 0 ]; then
         echo 'found'
