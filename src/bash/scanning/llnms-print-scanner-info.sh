@@ -303,52 +303,52 @@ DATA_PRINTED=0
 
 #  Print id
 if [ "$PRINT_ID" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner' -v 'id' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner' -v 'id' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Print name
 if [ "$PRINT_NAME" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo ", \c"
+        printf ", "
     fi
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner' -v 'name' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner' -v 'name' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Print description
 if [ "$PRINT_DESCRIPTION" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo ", \c"
+        printf ", "
     fi
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner' -v 'description' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner' -v 'description' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Print Command
 if [ "$PRINT_COMMAND" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo ", \c"
+        printf ", "
     fi
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'command' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'command' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Print Command base path
 if [ "$PRINT_BASEPATH" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo ", \c"
+        printf ", "
     fi
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'base-path' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'base-path' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Print the number of arguments
 if [ "$PRINT_NUMARGS" = '1' -o "$PRINT_EVERYTHING" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo ", \c"
+        printf ", "
     fi
-    $ECHO "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'number-arguments' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-scanner/configuration/linux' -v 'number-arguments' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 

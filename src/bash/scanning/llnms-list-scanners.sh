@@ -257,7 +257,7 @@ for SCANNER in $SCANNER_PATHS; do
         echo " -> Scanner: `llnms-print-scanner-info.sh -f $SCANNER -n`"
     elif [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_NAME" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
-            echo "`llnms-print-scanner-info.sh -f $SCANNER -n`\c"
+            printf "`llnms-print-scanner-info.sh -f $SCANNER -n`"
             DATA_PRINTED=1
         fi
     fi
@@ -268,9 +268,9 @@ for SCANNER in $SCANNER_PATHS; do
             echo "    File: $SCANNER"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
             if [ "$DATA_PRINTED" = '1' ]; then
-                echo ", \c"
+                printf ", "
             fi
-            echo "$SCANNER\c"
+            printf "$SCANNER"
             DATA_PRINTED=1
         fi
     fi
@@ -281,9 +281,9 @@ for SCANNER in $SCANNER_PATHS; do
             echo "    ID: `llnms-print-scanner-info.sh -f $SCANNER -i`"
          elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
             if [ "$DATA_PRINTED" = '1' ]; then
-                echo ", \c"
+                printf ", "
             fi
-            echo "`llnms-print-scanner-info.sh -f $SCANNER -i`\c"
+            printf "`llnms-print-scanner-info.sh -f $SCANNER -i`"
             DATA_PRINTED=1
          fi
     fi
@@ -294,9 +294,9 @@ for SCANNER in $SCANNER_PATHS; do
             echo "    Description: `llnms-print-scanner-info.sh -f $SCANNER -d`"
         elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
             if [ "$DATA_PRINTED" = '1' ]; then
-                echo ", \c"
+                printf ", "
             fi
-            echo "`llnms-print-scanner-info.sh -f $SCANNER -d`\c"
+            printf "`llnms-print-scanner-info.sh -f $SCANNER -d`"
             DATA_PRINTED=1
         fi
     fi
@@ -304,6 +304,8 @@ for SCANNER in $SCANNER_PATHS; do
 
     #  Print ending blank line
     if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+        echo ''
+    elif [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
         echo ''
     fi
 

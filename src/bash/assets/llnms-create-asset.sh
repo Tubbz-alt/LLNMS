@@ -60,12 +60,12 @@ get_input_hostname(){
     
         #  prompt the user
         echo ''
-        echo "Please enter the desired hostname: \c"
+        printf "Please enter the desired hostname: "
         read TEMP_HOSTNAME
         
         #  check if answer is correct
         echo ''
-        echo "Hostname will be set to ${TEMP_HOSTNAME}.  Is this correct (y/n, y - default): \c"
+        printf "Hostname will be set to ${TEMP_HOSTNAME}.  Is this correct (y/n, y - default): "
         read ANS
 
         #  if the user is happy, then set the hostname and exit
@@ -88,12 +88,12 @@ get_input_ip4_address(){
     
         #  prompt the user
         echo ''
-        echo "Please enter the desired ip4 address: \c"
+        printf "Please enter the desired ip4 address: "
         read TEMP_ADDRESS
         
         #  check if answer is correct
         echo ''
-        echo "The ip4 address will be set to ${TEMP_ADDRESS}.  Is this correct (y/n, y - default): \c"
+        printf "The ip4 address will be set to ${TEMP_ADDRESS}.  Is this correct (y/n, y - default): "
         read ANS
 
         #  if the user is happy, then set the address and exit
@@ -115,15 +115,15 @@ get_input_description(){
     while [ $EXIT_LOOP -ne 1 ]; do
     
         #  prompt the user
-        echo ''
-        echo "Please enter the desired asset description (optional): \c"
+        printf '\n'
+        printf "Please enter the desired asset description (optional): "
         read TEMP_DESCRIPTION
         
         #  check if answer is correct
         echo ''
-        echo    "The description will be set to: "
-        echo    "${TEMP_DESCRIPTION}"
-        echo "Is this correct (y/n, y - default): \c"
+        printf  "The description will be set to: \n"
+        printf  "${TEMP_DESCRIPTION}\n"
+        printf "Is this correct (y/n, y - default): "
         read ANS
 
         #  if the user is happy, then set the description and exit
