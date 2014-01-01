@@ -44,7 +44,7 @@ TEST_llnms_print_scanner_info_01(){
     if [ ! "$OUT" = "Ping Scanner" ]; then echo '1'; echo "Name of scanner should be 'Ping Scanner', actual answer was $OUT,  File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt; fi
     
     OUT="`llnms-print-scanner-info.sh -f $SCANFILE -c`"
-    if [ ! "$OUT" = "ping-scanner.bash" ]; then echo '1'; echo "Command for scanner should be 'ping-scanner.bash', actual answer was $OUT,  File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt; fi
+    if [ ! "$OUT" = "ping-scanner.sh" ]; then echo '1'; echo "Command for scanner should be 'ping-scanner.sh', actual answer was $OUT,  File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt; fi
 
     echo '0'
 }
