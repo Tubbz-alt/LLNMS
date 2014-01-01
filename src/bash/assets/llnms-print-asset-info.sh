@@ -270,7 +270,7 @@ DATA_PRINTED=0
 
 #  Hostname
 if [ "$HOSTNAME_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
-    echo "`xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
@@ -278,29 +278,29 @@ fi
 if [ "$IP4ADDRESS_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
 
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo " \c"
+        printf " "
     fi
 
-    echo "`xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Description
 if [ "$DESCRIPTION_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo " \c"
+        printf " "
     fi
 
-    echo "`xmlstarlet sel -t -m '//llnms-asset' -v 'description' -n $FILE_VALUE`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-asset' -v 'description' -n $FILE_VALUE`"
     DATA_PRINTED=1
 fi
 
 #  Scanners
 if [ "$SCANNER_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
     if [ "$DATA_PRINTED" = '1' ]; then
-        echo " \c"
+        printf " "
     fi
-    echo "`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`\c"
+    printf "`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`"
     DATA_PRINTED=1
 fi
 

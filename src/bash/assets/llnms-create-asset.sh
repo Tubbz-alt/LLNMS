@@ -319,7 +319,7 @@ OUTPUT="$OUTPUT    </scanners>\n"
 OUTPUT="$OUTPUT</llnms-asset>\n"
 
 #  Fix the hostname to remove periods
-TEMP_NEW_HOSTNAME=$(echo $NEW_HOSTNAME | sed 's/\./_/g')
+TEMP_NEW_HOSTNAME=`echo $NEW_HOSTNAME | sed 's/\./_/g'`
 
 #  Set the output file if not set
 if [ "$OUTFILE" = '' ]; then
@@ -329,7 +329,7 @@ fi
 #  Write data to file
 OLDIFS=$IFS
 IFS=''
-$ECHO $OUTPUT > $OUTFILE
+printf $OUTPUT > $OUTFILE
 IFS=$OLDIFS
 
 

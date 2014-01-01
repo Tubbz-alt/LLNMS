@@ -18,9 +18,9 @@ fi
 #-------------------------------------#
 print_module_header(){
 
-    $ECHO_ESC "${bluef}-----------------------------${reset}"
-    $ECHO_ESC "${bluef}    Start of $1 Module    ${reset}"
-    $ECHO_ESC "${bluef}-----------------------------${reset}"
+    printf "${bluef}-----------------------------${reset}\n"
+    printf "${bluef}    Start of $1 Module    ${reset}\n"
+    printf "${bluef}-----------------------------${reset}\n"
 
 }
 
@@ -31,9 +31,9 @@ print_module_header(){
 #-------------------------------------#
 print_module_footer(){
     
-    $ECHO_ESC "${bluef}-----------------------------${reset}"
-    $ECHO_ESC "${bluef}    End of $1 Module    ${reset}"
-    $ECHO_ESC "${bluef}-----------------------------${reset}"
+    printf "${bluef}-----------------------------${reset}\n"
+    printf "${bluef}    End of $1 Module    ${reset}"
+    printf "${bluef}-----------------------------${reset}\n"
 
 }
 
@@ -54,9 +54,9 @@ print_test_result(){
     fi
     
     if [ "$3" = "0" ]; then
-        $ECHO_ESC "${greenf}| passed |${bluef} $1 - $2 ${reset}"
+        printf "${greenf}| passed |${bluef} $1 - $2 ${reset}\n"
     else
-        $ECHO_ESC "${redf}| failed |${bluef} $1 - $2 ${reset} - Cause: $(cat /var/tmp/cause.txt)"
+        printf "${redf}| failed |${bluef} $1 - $2 ${reset} - Cause: $(cat /var/tmp/cause.txt)\n"
     fi
 
     if [ -e "/var/tmp/cause.txt" ]; then

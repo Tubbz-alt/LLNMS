@@ -105,7 +105,7 @@ llnms_create_registered_scanners_file(){
     #  Output to file
     OLDIFS=$IFS
     IFS=''
-    $ECHO_ESC $OUTPUT > "$LLNMS_HOME/run/llnms-registered-scanners.xml"
+    printf $OUTPUT > "$LLNMS_HOME/run/llnms-registered-scanners.xml"
     IFS=$OLDIFS
 
 

@@ -219,7 +219,7 @@ for ASSET_FILE in $ASSET_LIST; do
     #  Print pathname
     if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_PATHNAME" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = "LIST" ]; then
-            echo "$ASSET_FILE\c"
+            printf "$ASSET_FILE"
             DATA_PRINTED=1
         fi
     fi
@@ -227,12 +227,12 @@ for ASSET_FILE in $ASSET_LIST; do
     #  Print Hostname
     if [ "$PRINT_EVERYTHING" = "1" -o "$PRINT_HOSTNAME" = "1" ]; then
         if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            echo "      Hostname: `llnms-print-asset-info.sh -host -f $ASSET_FILE`"
+            printf "      Hostname: `llnms-print-asset-info.sh -host -f $ASSET_FILE`\n"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
             if [ "$DATA_PRINTED" = "1" ]; then
-                echo " \c"
+                printf " "
             fi
-            echo "`llnms-print-asset-info.sh -host -f $ASSET_FILE`\c"
+            printf "`llnms-print-asset-info.sh -host -f $ASSET_FILE`"
             DATA_PRINTED=1
         fi
     fi
@@ -244,9 +244,9 @@ for ASSET_FILE in $ASSET_LIST; do
             echo "      IP4 Address: `llnms-print-asset-info.sh -ip4 -f $ASSET_FILE`"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
             if [ "$DATA_PRINTED" = "1" ]; then
-                echo " \c"
+                printf " "
             fi
-            echo "`llnms-print-asset-info.sh -ip4 -f $ASSET_FILE`\c"
+            printf "`llnms-print-asset-info.sh -ip4 -f $ASSET_FILE`"
             DATA_PRINTED=1
         fi
     fi
@@ -258,9 +258,9 @@ for ASSET_FILE in $ASSET_LIST; do
             echo "      Description: `llnms-print-asset-info.sh -d -f $ASSET_FILE`"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then    
             if [ "$DATA_PRINTED" = '1' ]; then
-                echo " \c"
+                printf ' '
             fi
-            echo "\"`llnms-print-asset-info.sh -d -f $ASSET_FILE`\"\c"
+            printf "\"`llnms-print-asset-info.sh -d -f $ASSET_FILE`\""
             DATA_PRINTED=1
         fi
     fi
