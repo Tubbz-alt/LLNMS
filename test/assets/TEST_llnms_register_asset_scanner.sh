@@ -73,8 +73,9 @@ TEST_llnms_register_asset_scanner_01(){
     fi
 
     #  Make sure the scanner is inside of the asset
-    if [ ! "`TMP_number_asset_scanners $ASSET1`" = '1' ]; then
-        echo "temp-asset1 should have one and only one registered scanner. File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt
+    AS2CNT="`TMP_number_asset_scanners $ASSET1`"
+    if [ ! "$AS2CNT" = '1' ]; then
+        echo "temp-asset1 list $AS2CNT registered scanner(s). It should have 1. File: `basename $0`, Line: $LINENO." > /var/tmp/cause.txt
         echo '1'
         return
     fi

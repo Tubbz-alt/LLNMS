@@ -32,7 +32,7 @@ print_module_header(){
 print_module_footer(){
     
     printf "${bluef}-----------------------------${reset}\n"
-    printf "${bluef}    End of $1 Module    ${reset}"
+    printf "${bluef}    End of $1 Module    ${reset}\n"
     printf "${bluef}-----------------------------${reset}\n"
 
 }
