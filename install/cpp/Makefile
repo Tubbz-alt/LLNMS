@@ -27,6 +27,7 @@ OBJ=$(RELEASE)/tmp
 #  Header list
 HEADERS=src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp \
 		src/cpp/llnms-viewer/llnms/LLNMS_State.hpp \
+		src/cpp/llnms-viewer/llnms/Logger.hpp \
 		src/cpp/llnms-viewer/llnms/Options.hpp \
 		src/cpp/llnms-viewer/ui/asset_ui.hpp \
 		src/cpp/llnms-viewer/ui/curses_utils.hpp \
@@ -37,6 +38,7 @@ HEADERS=src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp \
 OBJECTS=$(OBJ)/llnms_viewer.o \
         $(OBJ)/llnms/LLNMS_State.o \
 		$(OBJ)/llnms/LLNMS_Asset_Manager.o \
+		$(OBJ)/llnms/Logger.o \
 		$(OBJ)/llnms/Options.o \
 		$(OBJ)/ui/asset_ui.o \
 		$(OBJ)/ui/main_menu.o \
@@ -69,4 +71,8 @@ $(OBJ)/ui/curses_utils.o: src/cpp/llnms-viewer/ui/curses_utils.cpp $(HEADERS)
 
 $(OBJ)/ui/Table.o: src/cpp/llnms-viewer/ui/Table.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
+
+$(OBJ)/llnms/Logger.o: src/cpp/llnms-viewer/llnms/Logger.cpp $(HEADERS)
+	g++ -o $@ $< -c $(INCL)
+
 

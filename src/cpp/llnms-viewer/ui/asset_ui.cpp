@@ -30,8 +30,11 @@ void asset_ui(){
         */
         Table table;
         table.setHeaderName( 0, "Asset Name" );
+        table.setHeaderName( 1, "IP4 Address" );
+        table.setHeaderName( 2, "Hostname" );
+        table.setHeaderName( 3, "Number Registered Scanners");
         
-        table.print( 2, options.maxX, options.maxY );
+        table.print( 2, options.maxX-1, options.maxY-4 );
 
         // refresh the screen
         refresh();

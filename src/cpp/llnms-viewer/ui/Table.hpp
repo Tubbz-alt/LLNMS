@@ -6,8 +6,29 @@
 #ifndef __SRC_CPP_LLNMS_UI_TABLE_HPP__
 #define __SRC_CPP_LLNMS_UI_TABLE_HPP__
 
+#include <sstream>
 #include <string>
 #include <vector>
+
+
+template <typename TP>
+TP str2num( std::string const& value ){
+    
+    std::stringstream sin;
+    TP result;
+    sin << value;
+    sin >> result;
+    return result;
+}
+
+template <typename TP>
+std::string num2str( TP const& value ){
+
+    std::stringstream sin;
+    sin << value;
+    return sin.str();
+}
+
 
 /** 
  * @class Table

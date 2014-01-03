@@ -7,6 +7,8 @@
 
 #include <ncurses.h>
 
+#include <cstdlib>
+
 using namespace std;
 
 /**
@@ -19,7 +21,8 @@ Table::Table(){
     data.resize(1);
     headers.resize(1);
     headerRatios.resize(1);
-
+    
+    headerRatios[0] = 1;
 }
 
 /**
@@ -27,7 +30,7 @@ Table::Table(){
 */
 void Table::resetRatios(){
     for( size_t i=0; i<headerRatios.size(); i++ ){
-        headerRatios[i] = ((double)i/headerRatios.size());
+        headerRatios[i] = ((double)1/headerRatios.size());
     }
 }
 
@@ -51,6 +54,21 @@ void Table::setHeaderName( const int& idx, const std::string& hdr ){
 
 }
 
+
+char format_string( string const& str, const int& idx, const int& maxWidth, const string& STYLE="LEFT" ){
+    
+    if( STYLE == "LEFT" ){
+        
+        if( idx < 0 ){ return ' '; }
+        if( idx >= str.size() ){ return ' '; }
+        return str[idx];
+
+    }
+    
+    return ' ';
+
+}
+
 /**
  * Print table
 */
@@ -64,9 +82,67 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
     }
 
     // print header info
-    for( size_t i=0; i<maxX; i++ ){
+    int tidx=0;
+    int cidx=0;
+    int crow=row;
+    for( size_t i=0; i<=maxX; i++ ){
         
 
+        // if starting a new block, print the bar
+        if( tidx == 0 || i == maxX ){ mvprintw( crow, i, "|" ); }
+
+        // if starting a new block, print a space after the bar
+        else if( tidx == 1 ){ mvprintw( crow, i, " " ); }
+        
+        // if ending a new block, print another space
+        else if( tidx == (widths[cidx])){ mvprintw( crow, i, " "); }
+
+        // otherwise print the string
+        else{ mvaddch( crow, i, format_string(headers[cidx], tidx-2, widths[cidx]-3, "LEFT") ); }
+        
+        tidx++;
+        if( tidx > widths[cidx] ){
+            cidx++;
+            tidx=0;
+        }
+
     }
+
+    // print header bar
+    tidx=0;
+    cidx=0;
+    crow++;
+    for( size_t i=0; i<=maxX; i++ ){
+        
+        /**
+         * Print corner
+         */
+        if( tidx == 0 || i == maxX ){
+            mvaddch( crow, i, '+' );
+        }
+
+        /**
+         * Print horizontal line
+         */
+        else{
+            mvaddch( crow, i, '-' );
+        }
+
+        /// increment temp index
+        tidx++;
+        if( tidx > widths[cidx] ){
+            tidx=0;
+            cidx++;
+        }
+
+    }
+
+    /**
+     * Print data
+     */
+    
+
 }
+
+
 
