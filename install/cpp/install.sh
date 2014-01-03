@@ -10,6 +10,7 @@
 
 
 #  Make sure the release directory exists
+mkdir -p release/tmp/llnms
 mkdir -p release/tmp/ui
 mkdir -p release/bin
 

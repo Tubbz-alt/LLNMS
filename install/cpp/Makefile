@@ -25,16 +25,18 @@ BIN=$(RELEASE)/bin/llnms-viewer
 OBJ=$(RELEASE)/tmp
 
 #  Header list
-HEADERS=src/cpp/llnms-viewer/LLNMS_Asset_Manager.hpp \
-		src/cpp/llnms-viewer/LLNMS_State.hpp \
+HEADERS=src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp \
+		src/cpp/llnms-viewer/llnms/LLNMS_State.hpp \
+		src/cpp/llnms-viewer/llnms/Options.hpp \
 		src/cpp/llnms-viewer/ui/asset_ui.hpp \
 		src/cpp/llnms-viewer/ui/curses_utils.hpp \
 		src/cpp/llnms-viewer/ui/main_menu.hpp 
 
 
 OBJECTS=$(OBJ)/llnms_viewer.o \
-        $(OBJ)/LLNMS_State.o \
-		$(OBJ)/LLNMS_Asset_Manager.o \
+        $(OBJ)/llnms/LLNMS_State.o \
+		$(OBJ)/llnms/LLNMS_Asset_Manager.o \
+		$(OBJ)/llnms/Options.o \
 		$(OBJ)/ui/asset_ui.o \
 		$(OBJ)/ui/main_menu.o \
 		$(OBJ)/ui/curses_utils.o 
@@ -45,10 +47,13 @@ $(BIN): $(OBJECTS)
 $(OBJ)/llnms_viewer.o: src/cpp/llnms-viewer/llnms_viewer.cpp $(HEADERS)
 	g++ -o $@ $< -c 
 
-$(OBJ)/LLNMS_State.o: src/cpp/llnms-viewer/LLNMS_State.cpp $(HEADERS)
+$(OBJ)/llnms/LLNMS_State.o: src/cpp/llnms-viewer/llnms/LLNMS_State.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
-$(OBJ)/LLNMS_Asset_Manager.o: src/cpp/llnms-viewer/LLNMS_Asset_Manager.cpp $(HEADERS)
+$(OBJ)/llnms/LLNMS_Asset_Manager.o: src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.cpp $(HEADERS)
+	g++ -o $@ $< -c $(INCL)
+
+$(OBJ)/llnms/Options.o: src/cpp/llnms-viewer/llnms/Options.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
 $(OBJ)/ui/main_menu.o: src/cpp/llnms-viewer/ui/main_menu.cpp $(HEADERS)
@@ -59,3 +64,4 @@ $(OBJ)/ui/asset_ui.o: src/cpp/llnms-viewer/ui/asset_ui.cpp $(HEADERS)
 
 $(OBJ)/ui/curses_utils.o: src/cpp/llnms-viewer/ui/curses_utils.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
+
