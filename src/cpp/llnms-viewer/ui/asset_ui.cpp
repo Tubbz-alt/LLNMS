@@ -6,8 +6,13 @@
 #include "asset_ui.hpp"
 #include "curses_utils.hpp"
 
+#include "Table.hpp"
+
 #include <ncurses.h>
 
+/**
+ * Asset Manager User Interface
+*/
 void asset_ui(){
     
     // start loop
@@ -20,12 +25,23 @@ void asset_ui(){
         // print the header
         print_header("Asset Status and Configuration");
     
+        /**
+         * Create table
+        */
+        Table table;
+        table.setHeaderName( 0, "Asset Name" );
+        
+        table.print( 2, options.maxX, options.maxY );
+
         // refresh the screen
         refresh();
 
         // get the character
         int ch = getch();
 
+        /**
+         * Parse Switch
+        */
         switch(ch){
 
             /**
@@ -35,6 +51,7 @@ void asset_ui(){
             case 'Q':
                 EXIT_LOOP=true;
                 break;
+
 
         }
 

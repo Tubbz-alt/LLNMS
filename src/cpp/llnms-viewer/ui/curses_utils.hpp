@@ -8,6 +8,10 @@
 
 #include <string>
 
+#include "../llnms/Options.hpp"
+
+extern Options options;
+
 /**
  * Initialize Curses
 */

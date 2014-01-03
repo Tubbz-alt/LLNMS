@@ -23,7 +23,7 @@ class Options{
 
         /// Max Window Height
         int maxY;
-
+        
 }; /// End of Options class
 
 #endif

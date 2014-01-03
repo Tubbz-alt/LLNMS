@@ -5,20 +5,9 @@
  */
 #include "main_menu.hpp"
 #include "asset_ui.hpp"
+#include "curses_utils.hpp"
 
 #include <ncurses.h>
-
-/**
- * Print the LLNMS Main Menu Header
-*/
-void print_header(){
-    
-    // Print top header row
-    mvprintw( 0, 0, "LLNMS Main Menu");
-    mvprintw( 1, 0, "---------------");
-    mvprintw( 2, 0, "a. Asset Status and Configuration");
-    mvprintw( 3, 0, "q. Quit Program");
-}
 
 /**
  * Print the LLNMS Main Menu Footer
@@ -26,7 +15,7 @@ void print_header(){
 void print_footer(){
     
     // print bottom header row
-    mvprintw( 5, 0, "Press any key to continue: ");
+    mvprintw( 10, 0, "Press any key to continue: ");
 
 }
 
@@ -42,8 +31,12 @@ void main_menu(){
         clear();    
 
         // print header
-        print_header();
+        print_header("LLNMS Main Menu");
         
+        // print content
+        mvprintw( 2, 0, "a: Asset Manager");
+        mvprintw( 3, 0, "q: Quit LLNMS Manager");
+
         // print footer
         print_footer();
 

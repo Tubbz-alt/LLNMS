@@ -30,6 +30,7 @@ HEADERS=src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp \
 		src/cpp/llnms-viewer/llnms/Options.hpp \
 		src/cpp/llnms-viewer/ui/asset_ui.hpp \
 		src/cpp/llnms-viewer/ui/curses_utils.hpp \
+		src/cpp/llnms-viewer/ui/Table.hpp \
 		src/cpp/llnms-viewer/ui/main_menu.hpp 
 
 
@@ -39,6 +40,7 @@ OBJECTS=$(OBJ)/llnms_viewer.o \
 		$(OBJ)/llnms/Options.o \
 		$(OBJ)/ui/asset_ui.o \
 		$(OBJ)/ui/main_menu.o \
+		$(OBJ)/ui/Table.o \
 		$(OBJ)/ui/curses_utils.o 
 
 $(BIN): $(OBJECTS)
@@ -63,5 +65,8 @@ $(OBJ)/ui/asset_ui.o: src/cpp/llnms-viewer/ui/asset_ui.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
 $(OBJ)/ui/curses_utils.o: src/cpp/llnms-viewer/ui/curses_utils.cpp $(HEADERS)
+	g++ -o $@ $< -c $(INCL)
+
+$(OBJ)/ui/Table.o: src/cpp/llnms-viewer/ui/Table.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
