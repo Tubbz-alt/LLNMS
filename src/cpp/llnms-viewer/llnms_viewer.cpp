@@ -5,10 +5,13 @@
 */
 
 /// Curses Utilities
-#include "curses_utils.hpp"
+#include "ui/curses_utils.hpp"
 
 /// LLNMS State container
 #include "LLNMS_State.hpp"
+
+/// LLNMS Main Menu
+#include "ui/main_menu.hpp"
 
 /// LLNMS State
 LLNMS_State llnms_state;

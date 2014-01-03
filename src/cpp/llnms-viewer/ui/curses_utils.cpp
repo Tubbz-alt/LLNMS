@@ -31,3 +31,8 @@ void close_curses(){
 
 }
 
+void print_header( const std::string& module_name ){
+
+    mvprintw( 0, 0, module_name.c_str() );
+
+}

@@ -10,7 +10,7 @@
 
 
 #  Make sure the release directory exists
-mkdir -p release/tmp
+mkdir -p release/tmp/ui
 mkdir -p release/bin
 
 make -f install/cpp/Makefile 
