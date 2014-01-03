@@ -13,8 +13,14 @@
 /// Options
 #include "llnms/Options.hpp"
 
+/// LLNMS_State
+#include "llnms/LLNMS_State.hpp"
+
 /// Global Options
 Options options;
+
+/// LLNMS State Object
+LLNMS_State llnms_state;
 
 /**
  * Main Function

@@ -29,11 +29,14 @@ void asset_ui(){
          * Create table
         */
         Table table;
-        table.setHeaderName( 0, "Asset Name" );
-        table.setHeaderName( 1, "IP4 Address" );
-        table.setHeaderName( 2, "Hostname" );
-        table.setHeaderName( 3, "Number Registered Scanners");
         
+        // update the asset list
+        llnms_state.asset_manager.update_asset_list();
+
+        // load the data
+        llnms_state.asset_manager.load_table( table );
+
+        // print the table data
         table.print( 2, options.maxX-1, options.maxY-4 );
 
         // refresh the screen
