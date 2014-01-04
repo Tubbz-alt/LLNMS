@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "curses_utils.hpp"
 
 template <typename TP>
 TP str2num( std::string const& value ){

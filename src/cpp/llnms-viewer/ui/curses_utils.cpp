@@ -41,3 +41,43 @@ void print_header( const std::string& module_name ){
         mvprintw( 1, i, "-" );
 
 }
+
+char format_string( std::string const& str, const int& idx, const int& maxWidth, const std::string& STYLE="LEFT" ){
+    
+    if( STYLE == "LEFT" ){
+        
+        if( idx < 0 ){ return ' '; }
+        if( idx >= str.size() ){ return ' '; }
+        return str[idx];
+
+    }
+
+    return ' ';
+
+}
+
+char parse_string( std::string const& strData, const int& index, const int& startWordIndex, const int& stopWordIndex, const std::string& STYLE="LEFT" ){
+
+    //  Parse Word
+    if( STYLE == "LEFT" ){
+
+        if( index < startWordIndex ){ return ' '; }
+        if( index > startWordIndex && index < (startWordIndex + strData.size()) ){ return strData[index - startWordIndex]; }
+
+    }
+    else if( STYLE == "CENTER" ){
+        
+        if( index < startWordIndex ){ return ' '; }
+        if( index > stopWordIndex  ){ return ' '; }
+        
+        int halfIndex = (stopWordIndex+startWordIndex)/2;
+        int startOfWord = (halfIndex - (strData.size()/2));
+
+        if( index >= startOfWord && index < (startOfWord + strData.size())){
+            return strData[index - startOfWord];
+        }
+    }
+
+    return ' ';
+}
+

@@ -27,5 +27,9 @@ void close_curses();
 */
 void print_header( const std::string& module_name );
 
+
+char parse_string( std::string const& strData, const int& index, const int& startWordIndex, const int& stopWordIndex, const std::string& STYLE="LEFT" );
+
+ 
 #endif
 

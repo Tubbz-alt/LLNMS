@@ -25,9 +25,15 @@ LLNMS_Asset::LLNMS_Asset( const std::string& filename ){
     doc.LoadFile( filename.c_str());
 
     // grab the hostname
-	tinyxml2::XMLElement* hostnameElement = doc.FirstChildElement( "llnms-asset" )->FirstChildElement( "hostname" );
+	tinyxml2::XMLElement* hostnameElement = doc.FirstChildElement("llnms-asset")->FirstChildElement("hostname");
     hostname = hostnameElement->GetText();
     
-    ip4_address="8.8.8.8";
-    description="Some long description";
+    // grab the ip4 address
+    tinyxml2::XMLElement* addressElement = doc.FirstChildElement("llnms-asset")->FirstChildElement("ip4-address");
+    ip4_address = addressElement->GetText();
+
+    // grab the description
+    tinyxml2::XMLElement* descriptionElement = doc.FirstChildElement("llnms-asset")->FirstChildElement("description");
+    description = descriptionElement->GetText();
+
 }

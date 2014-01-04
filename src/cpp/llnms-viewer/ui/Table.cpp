@@ -79,20 +79,6 @@ void Table::setData( const int& x, const int& y, const string& strdata ){
 }
 
 
-char format_string( string const& str, const int& idx, const int& maxWidth, const string& STYLE="LEFT" ){
-    
-    if( STYLE == "LEFT" ){
-        
-        if( idx < 0 ){ return ' '; }
-        if( idx >= str.size() ){ return ' '; }
-        return str[idx];
-
-    }
-    
-    return ' ';
-
-}
-
 /**
  * Print table
 */
