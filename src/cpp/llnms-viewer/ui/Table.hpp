@@ -53,6 +53,11 @@ class Table{
         void setHeaderName( const int& idx, const std::string& hdr );
         
         /**
+         * Set table data
+        */
+        void setData( const int& x, const int& y, const std::string& strdata );
+
+        /**
          * Print table
         */
         void print( int const& row, int const& maxX, int const& maxY );

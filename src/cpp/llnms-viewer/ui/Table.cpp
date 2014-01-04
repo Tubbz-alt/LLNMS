@@ -18,7 +18,6 @@ Table::Table(){
 
     // initialize data
     data.clear();
-    data.resize(1);
     headers.resize(1);
     headerRatios.resize(1);
     
@@ -52,6 +51,31 @@ void Table::setHeaderName( const int& idx, const std::string& hdr ){
     // set text
     headers[idx] = hdr;
 
+}
+
+
+/**
+ * Set table data
+*/
+void Table::setData( const int& x, const int& y, const string& strdata ){
+
+    if( data.size() <= x ){
+        data.resize(x+1);
+        for( size_t i=0; i<data.size(); i++ ){
+            if( data[i].size() <= y ){
+                data[i].resize(y+1);
+            }
+        }
+    }
+    if( data[x].size() <= y ){
+        for( size_t i=0; i<data.size(); i++ ){
+            if( data[i].size() <= y ){
+                data[i].resize(y+1);
+            }
+        }
+    }
+    
+    data[x][y]=strdata;
 }
 
 
@@ -137,11 +161,56 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
 
     }
 
+    if( data.size() <= 0 ){
+        return;
+    }
+
     /**
      * Print data
      */
-    
+    for( size_t i=0; i<data[0].size(); i++ ){
+        tidx=0;
+        cidx=0;
+        crow++;
+        for( size_t j=0; j<=maxX; j++ ){
+            
+            // if starting a new block, print the bar
+            if( tidx == 0 || j == maxX ){ mvprintw( crow, j, "|" ); }
 
+            // if starting a new block, print a space after the bar
+            else if( tidx == 1 ){ mvprintw( crow, j, " " ); }
+        
+            // if ending a new block, print another space
+            else if( tidx == (widths[cidx])){ mvprintw( crow, j, " "); }
+
+            // otherwise print the string
+            else{ mvaddch( crow, j, format_string(data[cidx][i], tidx-2, widths[cidx]-3, "LEFT") ); }
+
+            tidx++;
+            if( tidx > widths[cidx] ){
+                cidx++;
+                tidx=0;
+            }
+        }
+    }
+
+    while( crow <= maxY ){
+            
+        tidx=0;
+        cidx=0;
+        crow++;
+        for( size_t j=0; j<=maxX; j++ ){
+
+            // if starting a new block, print the bar
+            if( tidx == 0 || j == maxX ){ mvprintw( crow, j, "|" ); }
+
+            tidx++;
+            if( tidx > widths[cidx] ){
+                cidx++;
+                tidx=0;
+            }
+        }
+    }
 }
 
 

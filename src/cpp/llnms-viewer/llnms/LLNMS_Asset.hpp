@@ -15,7 +15,11 @@
 class LLNMS_Asset{
 
     public:
-        
+    
+        LLNMS_Asset();
+        LLNMS_Asset( std::string const& filename );
+
+        std::string filename;
         std::string hostname;
         std::string ip4_address;
         std::string description;
