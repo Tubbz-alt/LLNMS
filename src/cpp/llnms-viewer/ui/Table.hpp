@@ -12,24 +12,6 @@
 
 #include "curses_utils.hpp"
 
-template <typename TP>
-TP str2num( std::string const& value ){
-    
-    std::stringstream sin;
-    TP result;
-    sin << value;
-    sin >> result;
-    return result;
-}
-
-template <typename TP>
-std::string num2str( TP const& value ){
-
-    std::stringstream sin;
-    sin << value;
-    return sin.str();
-}
-
 
 /** 
  * @class Table

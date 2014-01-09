@@ -5,6 +5,8 @@
 */
 #include "Table.hpp"
 
+#include "curses_utils.hpp"
+
 #include <ncurses.h>
 
 #include <cstdlib>
@@ -108,7 +110,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
         else if( tidx == (widths[cidx])){ mvprintw( crow, i, " "); }
 
         // otherwise print the string
-        else{ mvaddch( crow, i, format_string(headers[cidx], tidx-2, widths[cidx]-3, "LEFT") ); }
+        else{ mvaddch( crow, i, parse_string(headers[cidx], tidx-2, widths[cidx]-3, "LEFT") ); }
         
         tidx++;
         if( tidx > widths[cidx] ){
@@ -170,7 +172,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
             else if( tidx == (widths[cidx])){ mvprintw( crow, j, " "); }
 
             // otherwise print the string
-            else{ mvaddch( crow, j, format_string(data[cidx][i], tidx-2, widths[cidx]-3, "LEFT") ); }
+            else{ mvaddch( crow, j, parse_string(data[cidx][i], tidx-2, widths[cidx]-3, "LEFT") ); }
 
             tidx++;
             if( tidx > widths[cidx] ){

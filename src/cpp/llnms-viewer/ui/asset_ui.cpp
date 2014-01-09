@@ -7,41 +7,19 @@
 #include "curses_utils.hpp"
 
 #include "Table.hpp"
+#include "create_llnms_asset_ui.hpp"
 
 #include <ncurses.h>
                
 
-void create_llnms_asset_ui(){
-    
-    /**
-     * Start a loop
-    */
-    bool EXIT_LOOP=false;
-    while( EXIT_LOOP == false ){
 
-        // clear the screen
-        clear();
-
-        // print the header
-        for( int i=0; i<options.maxX; i++ ){
-            mvaddch( 0, 0, parse_string("Create LLNMS Asset", i, 0, options.maxX, "CENTER" ) );          
-        }
-
-        // get a character
-
-
-    }
-
-
-}
 
 void print_asset_footer(){
 
     for( int i=0; i<=options.maxX; i++ ){
        mvaddch( options.maxY-3, i, '-' );  
     }
-    mvprintw( options.maxY-1, 0, " q: Exit Asset Pane");
-    mvprintw( options.maxY,   0, " c: Create Asset"   );
+    mvprintw( options.maxY-1, 0, " q: Exit Asset Pane,  c: Create Asset");
 
 }
 

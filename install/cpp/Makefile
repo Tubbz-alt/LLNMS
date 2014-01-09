@@ -35,6 +35,7 @@ HEADERS=src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp \
 		src/cpp/llnms-viewer/llnms/Options.hpp \
 		src/cpp/llnms-viewer/llnms/tinyxml2.h \
 		src/cpp/llnms-viewer/ui/asset_ui.hpp \
+		src/cpp/llnms-viewer/ui/create_llnms_asset_ui.hpp \
 		src/cpp/llnms-viewer/ui/curses_utils.hpp \
 		src/cpp/llnms-viewer/ui/Table.hpp \
 		src/cpp/llnms-viewer/ui/main_menu.hpp 
@@ -48,6 +49,7 @@ OBJECTS=$(OBJ)/llnms_viewer.o \
 		$(OBJ)/llnms/tinyxml2.o \
 		$(OBJ)/llnms/Options.o \
 		$(OBJ)/ui/asset_ui.o \
+		$(OBJ)/ui/create_llnms_asset_ui.o \
 		$(OBJ)/ui/main_menu.o \
 		$(OBJ)/ui/Table.o \
 		$(OBJ)/ui/curses_utils.o 
@@ -68,6 +70,9 @@ $(OBJ)/llnms/Options.o: src/cpp/llnms-viewer/llnms/Options.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
 $(OBJ)/ui/main_menu.o: src/cpp/llnms-viewer/ui/main_menu.cpp $(HEADERS)
+	g++ -o $@ $< -c $(INCL)
+
+$(OBJ)/ui/create_llnms_asset_ui.o: src/cpp/llnms-viewer/ui/create_llnms_asset_ui.cpp $(HEADERS)
 	g++ -o $@ $< -c $(INCL)
 
 $(OBJ)/ui/asset_ui.o: src/cpp/llnms-viewer/ui/asset_ui.cpp $(HEADERS)
