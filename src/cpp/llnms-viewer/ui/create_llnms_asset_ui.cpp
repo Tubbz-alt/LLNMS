@@ -9,7 +9,36 @@
 
 #include <ncurses.h>
 
+#include <cstdlib>
 #include <vector>
+
+/**
+ * Save and create asset screen
+ */
+void save_and_create_asset( const std::string& hostname, const std::string& ip4address, const std::string& description ){
+    
+    // create the command to run
+    std::string command=std::string("llnms-create-asset.sh -host ")+hostname+std::string(" -ip4 ")+ip4address+std::string(" -d ") + description;
+    system(command.c_str());
+
+    // output success screen
+    clear();
+
+    int row = options.maxY/2;
+    int col = options.maxX/2-10;  
+    if( col < 0 )  col=0;
+    
+    // print the screen
+    mvprintw( row  , col, "Operation Successful" );
+    mvprintw( row+1, col, "Press Any Key To Continue");
+
+    // refresh and wait for character
+    refresh();
+
+    int ch=getch();
+
+    return;
+}
 
 /**
  * Print the llnms asset creation footer
@@ -116,7 +145,17 @@ void create_llnms_asset_ui(){
 
             // check for button
             case 10:
-                if( currentIdx == 4 ){
+                
+                // if we want to save and exit
+                if( currentIdx == 3 ){
+                    
+                    save_and_create_asset( temp_data[0], temp_data[1], temp_data[2] );
+                    llnms_state.asset_manager.update_asset_list();
+                    EXIT_LOOP=true;
+
+                }
+                // if we want to cancel our progress
+                else if( currentIdx == 4 ){
                     EXIT_LOOP=true;
                 }
                 break;
@@ -125,9 +164,17 @@ void create_llnms_asset_ui(){
             default:
                 
                 // check if character was entered
-                if ( currentIdx < 3 && (ch >= 'a' && ch <= 'z' )){
-                    temp_data[currentIdx].insert( cursor_positions[currentIdx], 1, (char)ch);
-                    cursor_positions[currentIdx]++;
+                if ( currentIdx < 3 ){
+                    
+                    // if the character is an accepted pattern
+                    if( (currentIdx == 0 && isValidHostnameCharacter(ch)  ) ||
+                        (currentIdx == 1 && isValidIP4AddressCharacter(ch)) ||
+                        (currentIdx == 2 && isValidDescriptionCharacter(ch)   )) {
+
+                    
+                        temp_data[currentIdx].insert( cursor_positions[currentIdx], 1, (char)ch);
+                        cursor_positions[currentIdx]++;
+                    }
                 }
 
                 break;

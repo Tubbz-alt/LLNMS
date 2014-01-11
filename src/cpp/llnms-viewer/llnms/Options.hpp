@@ -26,4 +26,11 @@ class Options{
         
 }; /// End of Options class
 
+/**
+ * Return true if the character is a valid char for a hostname
+ */
+bool isValidHostnameCharacter( const char& ch );
+bool isValidIP4AddressCharacter( const char& ch );
+bool isValidDescriptionCharacter( const char& ch );
+
 #endif
