@@ -105,7 +105,19 @@ void print_single_char_line( char const& printChar, const int& row, const int& s
 
 }
 
-void print_form_line( const std::string& keyData, const std::string& valueData, const int& row, const int& startx, const int& stopx, const std::string& ALIGNMENT, const bool& highlighted ){
+
+/**
+ * Print single line form entry
+ */
+void print_form_line( const std::string& keyData, 
+                      const std::string& valueData, 
+                      const int& row, 
+                      const int& startx, 
+                      const int& stopx, 
+                      const std::string& ALIGNMENT, 
+                      const bool& highlighted,
+                      const int& cursor_position
+                     ){
     
     /**
      * Dont print anything if the indeces are wrong
@@ -144,18 +156,33 @@ void print_form_line( const std::string& keyData, const std::string& valueData, 
         else if( x >= keyStart && (x-keyStart) < keyData.size() ){
             mvaddch(row, x, keyData[x-keyStart]);
         }
+
+        // If we are inside the value string
         else if( x >= valueStart && (x-valueStart) < valueData.size() ){
             
+            // if we want the line to be highlighted, then highlight
             if( highlighted == true ){  attron(A_STANDOUT); }
-
+            if( highlighted == true && cursor_position == (x-valueStart)){ attron(A_UNDERLINE); }     
+            
+            // print the character
             mvaddch( row, x, valueData[x-valueStart]);
             
+            // undo the print changes
             if( highlighted == true ){  attroff(A_STANDOUT); }
+            if( highlighted == true && cursor_position == (x-valueStart)){ attroff(A_UNDERLINE); }     
+        
         }
+
+        // if we are past the end of the value string, then print spaces
         else if( x >= valueStart ){
+            
             if( highlighted == true ){
                 attron(A_STANDOUT);
+                if( highlighted == true && cursor_position == (x-valueStart)){ attron(A_UNDERLINE); }     
+                
                 mvaddch( row, x, ' ');
+                
+                if( highlighted == true && cursor_position == (x-valueStart)){ attroff(A_UNDERLINE); }     
                 attroff(A_STANDOUT);
             }
         }
@@ -164,6 +191,9 @@ void print_form_line( const std::string& keyData, const std::string& valueData, 
 }
 
 
+/**
+ * Print an NCurses Button
+ */
 void print_button( const std::string& text, const int& row, const int& startx, const int& stopx, const bool& highlighted ){
     
     int startWord = (stopx+startx)/2 - (text.size()/2);

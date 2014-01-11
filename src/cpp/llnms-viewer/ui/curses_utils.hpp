@@ -65,8 +65,18 @@ void print_single_char_line( char const& printChar, const int& row, const int& s
 /**
  * Print data meant for a form
 */
-void print_form_line( const std::string& keyData, const std::string& valueData, const int& row, const int& startx, const int& stopx, const std::string& ALIGNMENT, const bool& highlighted );
+void print_form_line( const std::string& keyData, 
+                      const std::string& valueData, 
+                      const int& row, const int& startx, 
+                      const int& stopx, 
+                      const std::string& ALIGNMENT, 
+                      const bool& highlighted,
+                      const int& cursor_position);
 
+
+/**
+ * Print a button
+ */
 void print_button( const std::string& text, const int& row, const int& startx, const int& stopx, const bool& highlighted );
 
 

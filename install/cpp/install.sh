@@ -80,11 +80,23 @@ make_software(){
     #  Make sure the release directory exists
     mkdir -p release
 
+    #  Enter release directory
     cd release
 
+    #  Create Makefile
     cmake ../install/cpp 
 
+    #  Build software 
     make
+    MAKE_RESULT="$?"
+
+    #  Exit release directory
+    cd ..
+    
+    if [ ! "$MAKE_RESULT" = "0" ]; then
+        error "make failed" $LINENO 
+        exit 1
+    fi
 
 }
 
