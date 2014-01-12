@@ -9,6 +9,15 @@
 
 #include <ncurses.h>
 
+
+/**
+ * Print the list of registered scanners
+*/
+void print_registered_scanner_table( LLNMS_Asset& asset, int const& topRow, const bool& highlight ){
+    
+    
+}
+
 /**
  * Print the footer
 */
@@ -29,6 +38,7 @@ void asset_information_ui( LLNMS_Asset& asset ){
 
     // current cursor position
     int currentIdx = 0;
+    int topRow = 0;
 
     // width variables
     int hostnameWidth = 40;
@@ -47,13 +57,16 @@ void asset_information_ui( LLNMS_Asset& asset ){
         print_header("LLNMS Asset Information");
 
         ///   Print Hostname Information
-        print_form_line( "   Hostname:", asset.hostname, 4, 1, hostnameWidth, "LEFT", (currentIdx == 0), 0 );  
+        print_form_line( "   Hostname:", asset.hostname, topRow+4, 1, hostnameWidth, "LEFT", (currentIdx == 0), 0 );  
         
         ///   Print IP4 Address Information
-        print_form_line( "IP4 Address:", asset.ip4_address, 6, 1, ip4addressWidth, "LEFT", (currentIdx == 1), 0);
+        print_form_line( "IP4 Address:", asset.ip4_address, topRow+6, 1, ip4addressWidth, "LEFT", (currentIdx == 1), 0);
         
         ///   Print description Information
-        
+        print_form_multiline( "Description:", asset.description, topRow+8, topRow+12, 1, hostnameWidth, (currentIdx == 2), 0); 
+    
+        ///   Print registered scanners
+        print_registered_scanner_table( asset, topRow+14, (currentIdx == 3) );
 
         // print the footer
         asset_information_footer();

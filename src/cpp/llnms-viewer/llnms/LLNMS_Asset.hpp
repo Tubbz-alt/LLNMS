@@ -19,8 +19,17 @@ extern Logger logger;
 class LLNMS_Asset{
 
     public:
-    
+        
+        /**
+         * Default Constructor
+        */
         LLNMS_Asset();
+        
+        /**
+         * Default Constructor Given Filename to Load
+         * 
+         * @filename  llnms-asset.xml file to load.
+        */
         LLNMS_Asset( std::string const& filename );
 
         std::string filename;

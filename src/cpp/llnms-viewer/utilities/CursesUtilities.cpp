@@ -294,7 +294,7 @@ void print_form_multiline( const std::string& keyData,
     } 
     
     // fix the color if modified    
-    attron( options.PRIMARY_COLOR_PAIR );
+    attron( COLOR_PAIR(options.PRIMARY_COLOR_PAIR) );
 
 
 }
