@@ -7,10 +7,11 @@
 #define __SRC_CPP_LLNMSIVEWER_UI_ASSETUI_HPP__
 
 #include "../llnms/LLNMS_State.hpp"
-#include "../llnms/Options.hpp"
+#include "../utilities/Logger.hpp"
+#include "../utilities/Options.hpp"
 
+extern Logger logger;
 extern Options options;
-
 extern LLNMS_State llnms_state;
 
 /**

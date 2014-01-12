@@ -9,6 +9,10 @@
 #include <string>
 #include <vector>
 
+#include "../utilities/Logger.hpp"
+
+extern Logger logger;
+
 /**
  * @class LLNMS_Asset
  */

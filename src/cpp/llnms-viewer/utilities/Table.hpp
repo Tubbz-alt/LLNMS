@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "curses_utils.hpp"
+#include "CursesUtilities.hpp"
 
 
 /** 
@@ -44,6 +44,11 @@ class Table{
          * Print table
         */
         void print( int const& row, int const& maxX, int const& maxY );
+        
+        /**
+         * Print table with highlighting and other stuff
+        */
+        void print( int const& row, int const& maxX, int const& maxY, const int& currentIdx, const int& topItem );
 
     private:
         

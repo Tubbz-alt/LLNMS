@@ -44,6 +44,8 @@ void LLNMS_Asset_Manager::load_table( Table& table ){
 
 void LLNMS_Asset_Manager::update_asset_list(){
     
+    logger.add_message( Message( "Updating the Asset List", Logger::LOG_NOTE ));
+
     asset_list.clear();
 
     // get a list of files in the llnms home directory
@@ -70,3 +72,22 @@ void LLNMS_Asset_Manager::update_asset_list(){
     }
     
 }
+
+/**
+ * Delete an LLNMS Asset
+*/
+bool LLNMS_Asset_Manager::delete_asset( const LLNMS_Asset& asset2delete, std::string& message ){
+    
+    // iterate through assets searching for a match
+    for( size_t i=0; i<asset_list.size(); i++ ){
+        if( asset_list[i].hostname    == asset2delete.hostname ){
+        if( asset_list[i].ip4_address == asset2delete.ip4_address ){
+            
+            std::string command = string("llnms-remove-asset.sh -host ") + asset2delete.hostname;
+            return run_command( command, message );
+    }}}
+
+    message = "Asset not found";
+    return false;
+}
+

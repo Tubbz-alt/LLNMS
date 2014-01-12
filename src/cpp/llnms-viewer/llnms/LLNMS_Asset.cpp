@@ -17,9 +17,11 @@ LLNMS_Asset::LLNMS_Asset(){
 
 LLNMS_Asset::LLNMS_Asset( const std::string& filename ){
 
+    logger.add_message( Message( std::string("Loading asset at file: ")+filename, Logger::LOG_NOTE));
+
     // set the filename
     this->filename = filename;
-
+    
     // open the xml file
     tinyxml2::XMLDocument doc;
     doc.LoadFile( filename.c_str());
@@ -34,6 +36,9 @@ LLNMS_Asset::LLNMS_Asset( const std::string& filename ){
 
     // grab the description
     tinyxml2::XMLElement* descriptionElement = doc.FirstChildElement("llnms-asset")->FirstChildElement("description");
-    description = descriptionElement->GetText();
+    if( descriptionElement->GetText() != NULL ){
+        description = descriptionElement->GetText();
+    }
 
+    logger.add_message( Message( std::string("Asset file <")+filename+std::string("> loaded."), Logger::LOG_NOTE));
 }

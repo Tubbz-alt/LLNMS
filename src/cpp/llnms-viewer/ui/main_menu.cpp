@@ -3,10 +3,15 @@
  * @author  Marvin Smith
  * @date    12/31/2013
  */
+
+ /// User-Interface Libraries
 #include "main_menu.hpp"
 #include "asset_ui.hpp"
-#include "curses_utils.hpp"
 
+/// Utility Libraries
+#include "../utilities/CursesUtilities.hpp"
+
+/// NCurses
 #include <ncurses.h>
 
 /**

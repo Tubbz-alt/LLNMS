@@ -5,19 +5,23 @@
 */
 
 /// Curses Utilities
-#include "ui/curses_utils.hpp"
+#include "utilities/CursesUtilities.hpp"
 
 /// LLNMS Main Menu
 #include "ui/main_menu.hpp"
 
 /// Options
-#include "llnms/Options.hpp"
+#include "utilities/Logger.hpp"
+#include "utilities/Options.hpp"
 
 /// LLNMS_State
 #include "llnms/LLNMS_State.hpp"
 
 /// Global Options
 Options options;
+
+/// Logging Utility
+Logger logger;
 
 /// LLNMS State Object
 LLNMS_State llnms_state;
@@ -27,6 +31,7 @@ LLNMS_State llnms_state;
 */
 int main( int argc, char* argv[] ){
 
+
     try{
 
         // initialize curses
@@ -35,6 +40,13 @@ int main( int argc, char* argv[] ){
         // initialize options
         options.init();
     
+        /// set log file
+        logger.filename() = options.log_filename;
+        logger.priority() = options.log_priority;
+    
+        /// clear log file
+        logger.clear_log();
+        
         // start main program
         main_menu();
 

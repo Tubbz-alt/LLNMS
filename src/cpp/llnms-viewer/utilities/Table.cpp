@@ -5,7 +5,7 @@
 */
 #include "Table.hpp"
 
-#include "curses_utils.hpp"
+#include "CursesUtilities.hpp"
 
 #include <ncurses.h>
 
@@ -80,12 +80,18 @@ void Table::setData( const int& x, const int& y, const string& strdata ){
     data[x][y]=strdata;
 }
 
-
 /**
  * Print table
 */
 void Table::print( const int& row, const int& maxX, const int& maxY ){
-    
+    print( row, maxX, maxY, -1, 0 );
+}
+
+/**
+ * Print table
+*/
+void Table::print( const int& row, const int& maxX, const int& maxY, const int& currentIdx, const int& topItem ){  
+  
     // current index
     int cIdx=0;
     vector<int> widths(headers.size());
@@ -160,6 +166,10 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
         tidx=0;
         cidx=0;
         crow++;
+
+        // turn on highlighting if requested
+        if( i == currentIdx ){  attron( A_STANDOUT ); }
+
         for( size_t j=0; j<=maxX; j++ ){
             
             // if starting a new block, print the bar
@@ -180,6 +190,9 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
                 tidx=0;
             }
         }
+        
+        // turn off highlighting if requested
+        if( i == currentIdx ){  attroff( A_STANDOUT ); }
     }
 
     while( crow <= maxY ){

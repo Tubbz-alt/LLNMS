@@ -20,6 +20,8 @@ find_package( Boost
                 COMPONENTS
                     system
                     filesystem
+                    regex
+                    date_time
 )
 include_directories( ${Boost_INCLUDE_DIR} )
 
@@ -34,12 +36,16 @@ set( LLNMS_VIEWER_SOURCES
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.cpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.cpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.cpp
-        ../../src/cpp/llnms-viewer/llnms/Options.cpp
         ../../src/cpp/llnms-viewer/ui/asset_ui.cpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.cpp
-        ../../src/cpp/llnms-viewer/ui/curses_utils.cpp
+        ../../src/cpp/llnms-viewer/ui/error_ui.cpp
         ../../src/cpp/llnms-viewer/ui/main_menu.cpp
-        ../../src/cpp/llnms-viewer/ui/Table.cpp
+        ../../src/cpp/llnms-viewer/utilities/CursesUtilities.cpp
+        ../../src/cpp/llnms-viewer/utilities/Logger.cpp
+        ../../src/cpp/llnms-viewer/utilities/FileUtilities.cpp
+        ../../src/cpp/llnms-viewer/utilities/NetworkUtilities.cpp
+        ../../src/cpp/llnms-viewer/utilities/Options.cpp
+        ../../src/cpp/llnms-viewer/utilities/Table.cpp
 )
 
 set( LLNMS_VIEWER_HEADERS
@@ -47,12 +53,16 @@ set( LLNMS_VIEWER_HEADERS
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.hpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.h
-        ../../src/cpp/llnms-viewer/llnms/Options.hpp
         ../../src/cpp/llnms-viewer/ui/asset_ui.hpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.hpp
-        ../../src/cpp/llnms-viewer/ui/curses_utils.hpp
+        ../../src/cpp/llnms-viewer/ui/error_ui.hpp
         ../../src/cpp/llnms-viewer/ui/main_menu.hpp
-        ../../src/cpp/llnms-viewer/ui/Table.hpp
+        ../../src/cpp/llnms-viewer/utilities/CursesUtilities.hpp
+        ../../src/cpp/llnms-viewer/utilities/FileUtilities.hpp
+        ../../src/cpp/llnms-viewer/utilities/Logger.hpp
+        ../../src/cpp/llnms-viewer/utilities/NetworkUtilities.hpp
+        ../../src/cpp/llnms-viewer/utilities/Options.hpp
+        ../../src/cpp/llnms-viewer/utilities/Table.hpp
 )
 
 

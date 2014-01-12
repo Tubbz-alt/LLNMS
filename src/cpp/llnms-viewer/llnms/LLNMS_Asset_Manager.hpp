@@ -7,9 +7,15 @@
 #define __SRC_CPP_LLNMSVIEWER_LLNMSASSETMANAGER_HPP__
 
 #include "LLNMS_Asset.hpp"
-#include "../ui/Table.hpp"
+#include "../utilities/Table.hpp"
 
+#include <string>
 #include <vector>
+
+#include "../utilities/FileUtilities.hpp"
+#include "../utilities/Logger.hpp"
+
+extern Logger logger;
 
 /**
  * @class  LLNMS_Asset_Manager
@@ -33,6 +39,11 @@ class LLNMS_Asset_Manager{
          */
         void update_asset_list();
         
+        /**
+         * Delete an LLNMS Asset
+        */
+        bool delete_asset( LLNMS_Asset const& asset2delete, std::string& message );
+
         /**
          * Asset List
          */
