@@ -17,6 +17,9 @@
 /// LLNMS_State
 #include "llnms/LLNMS_State.hpp"
 
+/// C Standard Library
+#include <string>
+
 /// Global Options
 Options options;
 
@@ -51,8 +54,10 @@ int main( int argc, char* argv[] ){
         main_menu();
 
 
+    } catch( std::string e ){
+        logger.add_message( Message( std::string("String exception thrown. Exiting program. Message: ")+e, Logger::LOG_MAJOR ));
     } catch(...){
-        // do nothing
+        logger.add_message( Message( std::string("Unknown exception thrown. Exiting program."), Logger::LOG_MAJOR ));
     } 
 
     // make sure to close up curses

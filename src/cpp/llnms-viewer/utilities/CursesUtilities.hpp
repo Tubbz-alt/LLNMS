@@ -64,8 +64,16 @@ char parse_string( std::string const& str, const int& idx, const int& maxWidth, 
 
 /**
  * Return a string composed of a single character
+ *
+ * @param[in] printChar  Character to print
+ * @param[in] row        Row to print
+ * @param[in] startx     Starting X Position to print data
+ * @param[in] endx       Ending X Position to print data
 */
-void print_single_char_line( char const& printChar, const int& row, const int& startx, const int& endx );
+void print_single_char_line( char const& printChar, 
+                             const int& row, 
+                             const int& startx, 
+                             const int& endx );
 
 /**
  * Print data meant for a form

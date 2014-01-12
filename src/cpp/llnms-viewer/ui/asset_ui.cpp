@@ -4,6 +4,7 @@
  * @date    1/2/2014
 */
 #include "asset_ui.hpp"
+#include "asset_information_ui.hpp"
 #include "create_llnms_asset_ui.hpp"
 
 #include "../utilities/CursesUtilities.hpp"
@@ -230,7 +231,7 @@ void asset_ui(){
             case 'I':
                 
                 // open the asset information pane
-                //asset_information_pane( llnms_state.asset_manager.asset_list[currentIdx] );
+                asset_information_ui( llnms_state.asset_manager.asset_list[currentIdx] );
                 break;
 
             /**
