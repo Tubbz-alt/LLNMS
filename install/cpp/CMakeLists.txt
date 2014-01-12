@@ -37,6 +37,7 @@ set( LLNMS_VIEWER_SOURCES
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.cpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.cpp
         ../../src/cpp/llnms-viewer/ui/asset_ui.cpp
+        ../../src/cpp/llnms-viewer/ui/asset_information_ui.cpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.cpp
         ../../src/cpp/llnms-viewer/ui/error_ui.cpp
         ../../src/cpp/llnms-viewer/ui/main_menu.cpp
@@ -54,6 +55,7 @@ set( LLNMS_VIEWER_HEADERS
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.hpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.h
         ../../src/cpp/llnms-viewer/ui/asset_ui.hpp
+        ../../src/cpp/llnms-viewer/ui/asset_information_ui.hpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.hpp
         ../../src/cpp/llnms-viewer/ui/error_ui.hpp
         ../../src/cpp/llnms-viewer/ui/main_menu.hpp

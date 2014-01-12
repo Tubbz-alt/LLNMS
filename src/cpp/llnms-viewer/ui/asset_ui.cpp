@@ -119,8 +119,8 @@ void print_asset_footer(){
     for( int i=0; i<=options.maxX; i++ ){
        mvaddch( options.maxY-3, i, '-' );  
     }
-    mvprintw( options.maxY-1, 0, " q: Exit Asset Pane,  c: Create Asset, d: Delete Asset");
-
+    mvprintw( options.maxY-2, 0, " q: Exit Asset Pane,  c: Create Asset, d: Delete Asset");
+    mvprintw( options.maxY-1, 0, " i: Asset Information");
 }
 
 
@@ -221,6 +221,16 @@ void asset_ui(){
                     currentIdx = -1;
                 }
                 
+                break;
+            
+            /** 
+             * Asset information
+             */
+            case 'i':
+            case 'I':
+                
+                // open the asset information pane
+                //asset_information_pane( llnms_state.asset_manager.asset_list[currentIdx] );
                 break;
 
             /**
