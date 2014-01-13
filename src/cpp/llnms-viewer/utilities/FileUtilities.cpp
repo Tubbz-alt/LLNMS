@@ -5,6 +5,7 @@
 */
 #include "FileUtilities.hpp"
 
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 

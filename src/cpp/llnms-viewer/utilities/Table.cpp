@@ -215,4 +215,15 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
 }
 
 
+/**
+ * Get the full, printed table height
+ */
+int Table::getFullTableHeight()const{
+    
+    int headerHeight = 2;
+    int dataHeight   = 0;
+    if( data.size() > 0 ){ dataHeight = data[0].size(); }
+
+    return headerHeight + dataHeight;
+}
 

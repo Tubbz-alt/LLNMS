@@ -13,8 +13,30 @@
 /**
  * Print the list of registered scanners
 */
-void print_registered_scanner_table( LLNMS_Asset& asset, int const& topRow, const bool& highlight ){
+void print_registered_scanner_table( LLNMS_Asset& asset, int const& topRow, const int& currentIdx ){
     
+    ///  print header
+    print_string("Registered Scanners", topRow, 0, options.maxX, "LEFT" );
+    print_single_char_line( '-', topRow+1, 0, options.maxX ); 
+
+    /// print each scanner
+    int offset = 2;
+    int maxYPosition;
+    for( size_t i=0; i<asset.scanner_list().size(); i++ ){
+        
+        // get the table to be printed
+        Table scanner_table = asset.scanner_list()[i].toTable();
+
+        // find out how many rows it requires
+        scanner_table.print( topRow + offset, options.maxX, std::min(options.maxY, scanner_table.getFullTableHeight()), -1/*(currentIdx == (2+asset.scanner_list().size()))*/, 0 ); 
+        offset += scanner_table.getFullTableHeight();
+
+        if( topRow+offset < options.maxY ){
+            print_single_char_line( '-', topRow+offset, 0, options.maxX ); 
+            offset+=1;
+        }
+
+    }
     
 }
 
@@ -39,6 +61,7 @@ void asset_information_ui( LLNMS_Asset& asset ){
     // current cursor position
     int currentIdx = 0;
     int topRow = 0;
+    int asset_count = asset.scanner_list().size();
 
     // width variables
     int hostnameWidth = 40;
@@ -66,7 +89,7 @@ void asset_information_ui( LLNMS_Asset& asset ){
         print_form_multiline( "Description:", asset.description, topRow+8, topRow+12, 1, hostnameWidth, (currentIdx == 2), 0); 
     
         ///   Print registered scanners
-        print_registered_scanner_table( asset, topRow+14, (currentIdx == 3) );
+        print_registered_scanner_table( asset, topRow+14, currentIdx );
 
         // print the footer
         asset_information_footer();
@@ -80,6 +103,27 @@ void asset_information_ui( LLNMS_Asset& asset ){
         // parse input options
         switch(ch){
 
+            /**
+             * Arrow Up Key
+             */
+            case KEY_UP:
+                if( currentIdx > 0 ){
+                    currentIdx--;
+                }
+                break;
+
+            /**
+             * Arrow Down Key
+             */
+            case KEY_DOWN:
+                if( currentIdx < 2 ){
+                    currentIdx++;
+                }
+                break;
+
+            /**
+             *  Exit Asset Information Screen
+             */
             case 'q':
             case 'Q':
                 EXIT_LOOP=true;

@@ -49,6 +49,11 @@ class Table{
          * Print table with highlighting and other stuff
         */
         void print( int const& row, int const& maxX, int const& maxY, const int& currentIdx, const int& topItem );
+        
+        /**
+         * Get the printed table height
+         */
+        int getFullTableHeight()const;
 
     private:
         

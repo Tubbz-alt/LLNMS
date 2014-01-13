@@ -130,7 +130,7 @@ Logger::Logger( const std::string& filename, const int& priority ){
 */
 void Logger::clear_log(){
    std::ofstream fout;
-   fout.open(m_filename);
+   fout.open(m_filename.c_str());
    fout.close();
 }
 
