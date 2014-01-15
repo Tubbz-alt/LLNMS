@@ -10,8 +10,12 @@ project (LLNMS-Viewer)
 #------------------------------------#
 #-      Import NCurses Library      -#
 #------------------------------------#
-find_package( Curses REQUIRED )
+
+SET(CURSES_NEED_NCURSES TRUE)
+FIND_PACKAGE(Curses)
 include_directories( ${CURSES_NCURSES_INCLUDE_PATH} )
+
+
 
 #-------------------------------------#
 #-       Import Boost Library        -#

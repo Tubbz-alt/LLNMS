@@ -29,7 +29,7 @@ fi
 TEST_llnms_create_asset_01(){
     
     #  Remove all existing assets
-    rm -r $LLNMS_HOME/assets/*.llnms-asset.xml
+    rm -r $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null
 
     #  Create an asset using the create asset command
     llnms-create-asset.sh  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
