@@ -14,28 +14,32 @@ Commands
 LLNMS does everything through a set of command-line tools.  Commands to run the LLNMS suite
 are generally defined as llnms-**action**-**target**.  
 
-###  Scanning and configuring networks
-    
-    llnms-add-network
-
-Create a new network file and add it to `$LLNMS_HOME/networks/`.  Use `-h` to print
-usage instructions.
-
-    llnms-list-networks
-
-Print the details of all networks registered in LLNMS. Use `-h` to print usage instructions.
+###  Network Management
 
 
-    llnms-scan-networks
 
-Command LLNMS to start scanning the network.  Use `-h` to print usage instructions.
 
-    llnms-resolve-network-addresses
+###  Asset Management
 
-Command LLNMS to resolve hostnames for network addresses.
+To create an asset, 
 
-###  Managing Assets
-    
+    llnms-create-asset
+
+To remove an asset,
+
+    llnms-remove-asset
+ 
+
+
+###  LLNMS-Viewer
+
+LLNMS-Viewer is a command-line application designed to make using LLNMS easier.  It is
+designed with ncurses to allow for use when logged via ssh or another network protocol. To
+run, type
+
+    llnms-viewer
+
+
 
 Installation
 ------------
