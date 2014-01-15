@@ -13,8 +13,12 @@
 */
 class Options{
 
+
     public:
         
+        /**
+         * Color Definitions
+         */
         enum {
             PRIMARY_COLOR_PAIR              = 1,
             BUTTON_UNCOVERED_COLOR_PAIR     = 2,
@@ -24,11 +28,24 @@ class Options{
             MULTILINE_UNCOVERED_COLOR_PAIR  = 6,
             ERROR_TEXT_COLOR_PAIR           = 7
         };
+        
+        /**
+         * Default Constructor
+         */
+        Options();
 
         /**
          * Initialize Window
         */
-        void init();
+        void init( int argc, char* argv[] );
+        
+        /**
+         * Write Configuration File
+         */
+        void write_config_file();
+
+        /// Configuration File
+        std::string config_filename;
 
         /// Max Window Width
         int maxX;

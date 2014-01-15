@@ -13,5 +13,9 @@
 */
 bool run_command( const std::string& command, std::string& message );
 
+/**
+ * Check if a file exists
+ */
+bool file_exists( const std::string& filename );
 
 #endif

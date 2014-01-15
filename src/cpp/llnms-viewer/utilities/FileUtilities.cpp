@@ -9,6 +9,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+
+namespace bf=boost::filesystem;
+
 /**
  * Run a standard system command and grab the output
 */
@@ -39,5 +43,13 @@ bool run_command( const std::string& command, std::string& message ){
     
 
     return true;
+}
+
+
+/**
+ * Check if a file exists
+ */
+bool file_exists( const std::string& filename ){
+    return bf::exists( bf::path( filename ));
 }
 

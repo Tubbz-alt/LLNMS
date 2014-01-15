@@ -41,7 +41,7 @@ int main( int argc, char* argv[] ){
         init_curses();
 
         // initialize options
-        options.init();
+        options.init( argc, argv );
     
         /// set log file
         logger.filename() = options.log_filename;

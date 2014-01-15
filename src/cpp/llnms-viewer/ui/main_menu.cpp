@@ -7,6 +7,10 @@
  /// User-Interface Libraries
 #include "main_menu.hpp"
 #include "asset_ui.hpp"
+#include "asset_status_ui.hpp"
+#include "network_manager_ui.hpp"
+#include "network_status_ui.hpp"
+#include "configure_ui.hpp"
 
 /// Utility Libraries
 #include "../utilities/CursesUtilities.hpp"
@@ -39,8 +43,13 @@ void main_menu(){
         print_header("LLNMS Main Menu");
         
         // print content
-        mvprintw( 2, 0, "a: Asset Manager");
-        mvprintw( 3, 0, "q: Quit LLNMS Manager");
+        int i=2;
+        mvprintw( i++, 0, "1: Network Status");
+        mvprintw( i++, 0, "2: Asset Status");
+        mvprintw( i++, 0, "a: Asset Manager");
+        mvprintw( i++, 0, "n: Network Manager");
+        mvprintw( i++, 0, "c: Configure LLNMS-Viewer");
+        mvprintw( i++, 0, "q: Quit LLNMS Manager");
 
         // print footer
         print_footer();
@@ -52,6 +61,36 @@ void main_menu(){
         int ch = getch();
 
         switch(ch){
+            
+            /**
+             * Network status
+             */
+            case '1':
+                network_status_ui();
+                break;
+
+            /**
+             * Asset Status UI
+             */
+            case '2':
+                asset_status_ui();
+                break;
+
+            /**
+             * Network Manager
+             */
+            case 'n':
+            case 'N':
+                network_manager_ui();
+                break;
+
+            /**
+             * Configuration UI
+             */
+            case 'c':
+            case 'C':
+                configure_ui();
+                break;
 
             /**
              * Quit Program

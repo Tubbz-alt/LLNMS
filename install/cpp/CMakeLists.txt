@@ -42,7 +42,11 @@ set( LLNMS_VIEWER_SOURCES
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.cpp
         ../../src/cpp/llnms-viewer/ui/asset_ui.cpp
         ../../src/cpp/llnms-viewer/ui/asset_information_ui.cpp
+        ../../src/cpp/llnms-viewer/ui/asset_status_ui.cpp
+        ../../src/cpp/llnms-viewer/ui/configure_ui.cpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.cpp
+        ../../src/cpp/llnms-viewer/ui/network_manager_ui.cpp
+        ../../src/cpp/llnms-viewer/ui/network_status_ui.cpp
         ../../src/cpp/llnms-viewer/ui/error_ui.cpp
         ../../src/cpp/llnms-viewer/ui/main_menu.cpp
         ../../src/cpp/llnms-viewer/utilities/CursesUtilities.cpp
@@ -50,6 +54,7 @@ set( LLNMS_VIEWER_SOURCES
         ../../src/cpp/llnms-viewer/utilities/FileUtilities.cpp
         ../../src/cpp/llnms-viewer/utilities/NetworkUtilities.cpp
         ../../src/cpp/llnms-viewer/utilities/Options.cpp
+        ../../src/cpp/llnms-viewer/utilities/Parser.cpp
         ../../src/cpp/llnms-viewer/utilities/Table.cpp
 )
 
@@ -59,15 +64,20 @@ set( LLNMS_VIEWER_HEADERS
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.hpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.h
         ../../src/cpp/llnms-viewer/ui/asset_ui.hpp
+        ../../src/cpp/llnms-viewer/ui/asset_status_ui.hpp
         ../../src/cpp/llnms-viewer/ui/asset_information_ui.hpp
+        ../../src/cpp/llnms-viewer/ui/configure_ui.hpp
         ../../src/cpp/llnms-viewer/ui/create_llnms_asset_ui.hpp
         ../../src/cpp/llnms-viewer/ui/error_ui.hpp
         ../../src/cpp/llnms-viewer/ui/main_menu.hpp
+        ../../src/cpp/llnms-viewer/ui/network_manager_ui.hpp
+        ../../src/cpp/llnms-viewer/ui/network_status_ui.hpp
         ../../src/cpp/llnms-viewer/utilities/CursesUtilities.hpp
         ../../src/cpp/llnms-viewer/utilities/FileUtilities.hpp
         ../../src/cpp/llnms-viewer/utilities/Logger.hpp
         ../../src/cpp/llnms-viewer/utilities/NetworkUtilities.hpp
         ../../src/cpp/llnms-viewer/utilities/Options.hpp
+        ../../src/cpp/llnms-viewer/utilities/Parser.hpp
         ../../src/cpp/llnms-viewer/utilities/Table.hpp
 )
 
