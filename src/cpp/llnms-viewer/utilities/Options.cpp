@@ -66,12 +66,20 @@ void Options::init( int argc, char* argv[] ){
     PSR::Parser parser( argc, argv, config_filename );
     bool found;
     std::string tempString;
+    int tempInt;
 
     // load the log file
     tempString = parser.getItem_string( "LOG_FILENAME", found ); 
     if( found == true ){
         log_filename = tempString;
     }
+
+    // load the log priority
+    tempInt = parser.getItem_int( "LOG_PRIORITY", found );
+    if( found == true ){
+        log_priority = tempInt;
+    }
+
 
 
 }
@@ -90,6 +98,11 @@ void Options::write_config_file(){
     // write log file
     fout << "#  Log File to Write Data To" << std::endl;
     fout << "LOG_FILENAME=" << log_filename << std::endl;
+    fout << std::endl;
+
+    // write log priority
+    fout << "#  Max Log Priority to Output" << std::endl;
+    fout << "LOG_PRIORITY=" << log_priority << std::endl;
     fout << std::endl;
 
     // close file

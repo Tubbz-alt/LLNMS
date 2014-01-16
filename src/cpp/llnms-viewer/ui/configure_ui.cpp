@@ -63,10 +63,14 @@ void config_file_save_dialog(){
 void print_configuration_window( const int& topRow ){
 
     /// print the log filename
-    if( topRow <= 0 && (topRow + options.maxY) > topRow ){
+    if( topRow <= 0 && (topRow + options.maxY) > 1 ){
         print_form_line( "Log Filename:", options.log_filename, 3, 0, options.maxX-1, "LEFT", false, 0 );
     }
     
+    /// print the log priority
+    if( topRow <= 1 && (topRow + options.maxY) > 1 ){
+        print_form_line( "Log Priority:", num2str(options.log_priority), 4, 0, options.maxX-1, "LEFT", false, 0 );
+    }
 
 }
 
