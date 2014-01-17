@@ -7,6 +7,7 @@
 #define __SRC_CPP_LLNMSVIEWER_LLNMSSTATE_HPP__
 
 #include "LLNMS_Asset_Manager.hpp"
+#include "LLNMS_Network_Manager.hpp"
 
 /**
  * @class  LLNMS_State
@@ -22,6 +23,9 @@ class LLNMS_State{
 
         /// LLNMS Asset Container
         LLNMS_Asset_Manager asset_manager;
+        
+        /// LLNMS Network Container
+        LLNMS_Network_Manager network_manager;
 
 
 }; // End of LLNMS_State class

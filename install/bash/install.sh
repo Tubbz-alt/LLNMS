@@ -107,7 +107,9 @@ install_to_filesystem(){
     cp 'src/bash/assets/llnms-scan-asset.sh'              $LLNMS_HOME/bin/
 
     # networks
-    #cp src/bash/network/*.bash   $LLNMS_HOME/bin/
+    echo ''
+    echo '-> Copying llnms-list-networks'
+    cp src/bash/network/llnms-list-networks.sh            $LLNMS_HOME/bin/llnms-list-networks
 
     #  llnms utilities
     #cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
