@@ -92,6 +92,9 @@ Table  LLNMS_Asset_Scanner::toTable()const{
  */
 LLNMS_Asset::LLNMS_Asset(){
 
+    // set default network status
+    m_network_status = "Unknown";
+
 }
 
 
@@ -101,6 +104,9 @@ LLNMS_Asset::LLNMS_Asset(){
 LLNMS_Asset::LLNMS_Asset( const std::string& filename ){
 
     logger.add_message( Message( std::string("Loading asset at file: ")+filename, Logger::LOG_NOTE));
+    
+    // set default network status
+    m_network_status = "Unknown";
 
     // set the filename
     this->filename = filename;
@@ -197,6 +203,20 @@ LLNMS_Asset::LLNMS_Asset( const std::string& filename ){
     }
 
     logger.add_message( Message( std::string("Asset file <")+filename+std::string("> loaded."), Logger::LOG_NOTE));
+}
+
+/**
+ * Get the network status
+ */
+std::string LLNMS_Asset::network_status()const{
+    return m_network_status;
+}
+
+/**
+ * Set the network status
+ */
+std::string& LLNMS_Asset::network_status(){
+    return m_network_status;
 }
 
 /**

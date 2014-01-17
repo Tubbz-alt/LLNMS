@@ -160,7 +160,7 @@ void asset_ui(){
         llnms_state.asset_manager.update_asset_list();
 
         // load the data
-        llnms_state.asset_manager.load_table( table );
+        llnms_state.asset_manager.load_asset_info_table( table );
 
         // print the table data
         table.print( 2, options.maxX-1, options.maxY-4, currentIdx, topIndex );

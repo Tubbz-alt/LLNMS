@@ -23,7 +23,29 @@ LLNMS_Asset_Manager::LLNMS_Asset_Manager(){
 }
 
 
-void LLNMS_Asset_Manager::load_table( Table& table ){
+/**
+ * Get asset state info
+ */
+void LLNMS_Asset_Manager::load_asset_state_table( Table& table ){
+
+    // create the headers
+    table.setHeaderName( 0, "Asset Hostname");
+    table.setHeaderName( 1, "Network Status");
+    table.setHeaderName( 2, "Last Update");
+
+    // set data
+    for( size_t i=0; i<asset_list.size(); i++ ){
+        table.setData( 0, i, asset_list[i].hostname );
+        table.setData( 1, i, asset_list[i].network_status() );
+        table.setData( 2, i, "N/A");
+    }
+
+}
+
+/**
+ * Recover the asset information table.
+ */
+void LLNMS_Asset_Manager::load_asset_info_table( Table& table ){
 
     table.setHeaderName( 0, "Hostname" );
     table.setHeaderName( 1, "IP4 Address" );

@@ -9,11 +9,39 @@
 #include <ncurses.h>
 
 /**
+ * Print description dialog
+ */
+void print_description_dialog( const std::string& variable, const std::string& description ){
+    
+    // clear
+    clear();
+
+    //  print string
+    print_string( variable, options.maxY/2-2, 0, options.maxX, "CENTER" );
+    print_string( description, options.maxY/2, 0, options.maxX, "CENTER" ); 
+    
+    // hide cursor
+    move( 0, 0);
+    
+    /// refresh screen
+    refresh();
+
+    // get temp input
+    int ch = getch();
+
+    return;
+
+
+
+}
+
+/**
  * Print configuration footer
  */
 void print_configuration_footer(){
     
     print_single_char_line( '-', options.maxY-3, 0, options.maxX );
+    mvprintw( options.maxY-2, 0, "Up/Down Arrows: Navigate menu,  ENTER: Modify setting,  ?: print description" );
     mvprintw( options.maxY-1, 0, "q: back to main menu,  s: save configuration file");
 
 }
@@ -60,16 +88,16 @@ void config_file_save_dialog(){
 /**
  *
  */
-void print_configuration_window( const int& topRow ){
+void print_configuration_window( const int& topRow, const int& currentIdx ){
 
     /// print the log filename
     if( topRow <= 0 && (topRow + options.maxY) > 1 ){
-        print_form_line( "Log Filename:", options.log_filename, 3, 0, options.maxX-1, "LEFT", false, 0 );
+        print_form_line( "LOG_FILENAME:", options.log_filename, 3, 0, options.maxX-1, "LEFT", (currentIdx == 0), 0 );
     }
     
     /// print the log priority
     if( topRow <= 1 && (topRow + options.maxY) > 1 ){
-        print_form_line( "Log Priority:", num2str(options.log_priority), 4, 0, options.maxX-1, "LEFT", false, 0 );
+        print_form_line( "LOG_PRIORITY:", num2str(options.log_priority), 4, 0, options.maxX-1, "LEFT", (currentIdx == 1), 0 );
     }
 
 }
@@ -83,6 +111,7 @@ void configure_ui(){
 
     int ch;
     int topRow=0;
+    int currentIdx = 0;
 
     /**
      * Run Loop
@@ -98,7 +127,7 @@ void configure_ui(){
         
         
         // print configuration window
-        print_configuration_window( topRow );    
+        print_configuration_window( topRow, currentIdx );    
         
 
         // print footer
@@ -126,6 +155,37 @@ void configure_ui(){
                 options.write_config_file();
                 config_file_save_dialog();   
                 break;
+            
+            // up arrow
+            case KEY_UP:
+                if( currentIdx > 0 ){
+                    currentIdx--;
+                }
+                break;
+
+            // down arrow
+            case KEY_DOWN:
+                if( currentIdx < 1 ){
+                    currentIdx++;
+                }
+                break;
+
+            // description
+            case '?':
+                
+                switch( currentIdx ){
+                    
+                    // LOG_FILENAME
+                    case 0:
+                        print_description_dialog("LOG_FILENAME", "File to dump logging information to.");
+                        break;
+                    
+                    // LOG_PRIORITY
+                    case 1:
+                        print_description_dialog("LOG_PRIORITY", "Priority of messages to display.");
+                }
+                break;
+
 
         }
 

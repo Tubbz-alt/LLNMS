@@ -30,9 +30,14 @@ class LLNMS_Asset_Manager{
         LLNMS_Asset_Manager();
         
         /**
-         *  Load the table with relevant data
+         * Load the table with relevant asset state information
          */
-        void load_table( Table& table );
+        void load_asset_state_table( Table& table );
+
+        /**
+         *  Load the table with relevant asset information data
+         */
+        void load_asset_info_table( Table& table );
 
         /**
          * Update asset list

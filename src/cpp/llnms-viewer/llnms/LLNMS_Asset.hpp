@@ -93,6 +93,16 @@ class LLNMS_Asset{
         LLNMS_Asset( std::string const& filename );
         
         /**
+         * Get the network status
+         */
+        std::string network_status()const;
+
+        /** 
+         * Set the network status
+         */
+        std::string& network_status();
+
+        /**
          * Get the scanner list
          */
         std::vector<LLNMS_Asset_Scanner> scanner_list()const;
@@ -108,6 +118,9 @@ class LLNMS_Asset{
 
         ///  Asset Description
         std::string description;
+        
+        ///  Asset Network Status
+        std::string m_network_status;
 
     private:
     
