@@ -32,7 +32,7 @@ void save_and_create_asset( const std::string& hostname, const std::string& ip4a
                   
 
     // create the command to run
-    std::string command = std::string("llnms-create-asset.sh -host '")+hostname+std::string("' -ip4 ")+ip4address;
+    std::string command = std::string("llnms-create-asset -host '")+hostname+std::string("' -ip4 ")+ip4address;
     if( description != "" ){
         command += std::string(" -d '") + description + std::string("'");
     }

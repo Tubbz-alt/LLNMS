@@ -102,10 +102,10 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 
 #  Output Format
@@ -227,12 +227,12 @@ for ASSET_FILE in $ASSET_LIST; do
     #  Print Hostname
     if [ "$PRINT_EVERYTHING" = "1" -o "$PRINT_HOSTNAME" = "1" ]; then
         if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            printf "      Hostname: `llnms-print-asset-info.sh -host -f $ASSET_FILE`\n"
+            printf "      Hostname: `llnms-print-asset-info -host -f $ASSET_FILE`\n"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
             if [ "$DATA_PRINTED" = "1" ]; then
                 printf " "
             fi
-            printf "`llnms-print-asset-info.sh -host -f $ASSET_FILE`"
+            printf "`llnms-print-asset-info -host -f $ASSET_FILE`"
             DATA_PRINTED=1
         fi
     fi
@@ -241,12 +241,12 @@ for ASSET_FILE in $ASSET_LIST; do
     #  Print IP4 Address
     if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_IP4ADDRESS" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            echo "      IP4 Address: `llnms-print-asset-info.sh -ip4 -f $ASSET_FILE`"
+            echo "      IP4 Address: `llnms-print-asset-info -ip4 -f $ASSET_FILE`"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
             if [ "$DATA_PRINTED" = "1" ]; then
                 printf " "
             fi
-            printf "`llnms-print-asset-info.sh -ip4 -f $ASSET_FILE`"
+            printf "`llnms-print-asset-info -ip4 -f $ASSET_FILE`"
             DATA_PRINTED=1
         fi
     fi
@@ -255,12 +255,12 @@ for ASSET_FILE in $ASSET_LIST; do
     #  Print description
     if [ "$PRINT_EVERYTHING" = "1" -o "$PRINT_DESCRIPTION" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            echo "      Description: `llnms-print-asset-info.sh -d -f $ASSET_FILE`"
+            echo "      Description: `llnms-print-asset-info -d -f $ASSET_FILE`"
         elif [ "$OUTPUT_FORMAT" = "LIST" ]; then    
             if [ "$DATA_PRINTED" = '1' ]; then
                 printf ' '
             fi
-            printf "\"`llnms-print-asset-info.sh -d -f $ASSET_FILE`\""
+            printf "\"`llnms-print-asset-info -d -f $ASSET_FILE`\""
             DATA_PRINTED=1
         fi
     fi

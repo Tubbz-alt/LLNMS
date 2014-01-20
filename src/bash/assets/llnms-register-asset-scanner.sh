@@ -106,7 +106,7 @@ llnms_add_registered_scanner_to_asset(){
     SCANNER_PATH=$2
 
     #  Get the current number of registered scanners
-    SCANNER_CNT=`llnms-print-asset-info.sh -f $ASSET_PATH -s | sed '/^\s*$/d' | wc -l | sed 's/ *//g'`
+    SCANNER_CNT=`llnms-print-asset-info  -f $ASSET_PATH -s | sed '/^\s*$/d' | wc -l | sed 's/ *//g'`
     
     #  Make sure asset exists
     if [ ! -e $ASSET_PATH ]; then
@@ -128,22 +128,22 @@ llnms_add_registered_scanner_to_asset(){
     xmlstarlet ed -L --subnode "/llnms-asset/scanners" --type elem -n 'scanner' -v '' $ASSET_PATH
 
     # Add the id
-    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]" --type elem -n 'id' -v "`llnms-print-scanner-info.sh -f $SCANNER_PATH --id`" $ASSET_PATH
+    xmlstarlet ed -L --subnode "/llnms-asset/scanners/scanner[`expr $SCANNER_CNT + 1`]" --type elem -n 'id' -v "`llnms-print-scanner-info  -f $SCANNER_PATH --id`" $ASSET_PATH
 
     #  Add the arguments
-    NUM_ARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
+    NUM_ARGS=`llnms-print-scanner-info  -f $SCANNER_PATH -num`
     for ((x=1; x<=$NUM_ARGS; x++)); do
         
         #  Get the name of the scanner argument
-        SCANNER_ARG_NAME=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-name $x`
-        SCANNER_ARG_TYPE=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-type $x`
-        SCANNER_ARG_VALUE=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-val $x`
-        SCANNER_ARG_DEFAULT=`llnms-print-scanner-info.sh -f $SCANNER_PATH -arg-def $x`
+        SCANNER_ARG_NAME=`llnms-print-scanner-info  -f $SCANNER_PATH -arg-name $x`
+        SCANNER_ARG_TYPE=`llnms-print-scanner-info  -f $SCANNER_PATH -arg-type $x`
+        SCANNER_ARG_VALUE=`llnms-print-scanner-info -f $SCANNER_PATH -arg-val $x`
+        SCANNER_ARG_DEFAULT=`llnms-print-scanner-info  -f $SCANNER_PATH -arg-def $x`
         
         #  If the parameter is of type ASSET_ELEMENT, then take the value and query is
         ARG_VALUE=''
         if [ "$SCANNER_ARG_TYPE" = 'ASSET_ELEMENT' ]; then
-            ARG_VALUE=`llnms-print-asset-info.sh -f $ASSET_PATH "--${SCANNER_ARG_VALUE}"`
+            ARG_VALUE=`llnms-print-asset-info  -f $ASSET_PATH "--${SCANNER_ARG_VALUE}"`
         elif [ "$SCANNER_ARG_TYPE" = 'ASSET_SCANNER_FLAG' ]; then
             ARG_VALUE=$SCANNER_ARG_DEFAULT
         else
@@ -172,10 +172,10 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import configuration info
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 #  Flags
 ASSET_FLAG=0
@@ -265,12 +265,12 @@ fi
 #-      Error Checking      -#
 #----------------------------#
 #  Make sure the scanner exists
-SCANNER_PATHS=`llnms-list-scanners.sh -f -l`
+SCANNER_PATHS=`llnms-list-scanners -f -l`
 SCANNER_EXISTS=0
 for SCANNER_FILE in $SCANNER_PATHS; do
     
     # compare id
-    if [ "$SCANNER_VALUE" =  "`llnms-print-scanner-info.sh -f $SCANNER_FILE -i`" ]; then
+    if [ "$SCANNER_VALUE" =  "`llnms-print-scanner-info -f $SCANNER_FILE -i`" ]; then
         SCANNER_EXISTS=1
         SCANNER_PATH=$SCANNER_FILE
         break;
@@ -284,12 +284,12 @@ fi
 
 
 #  Make sure the asset exists
-ASSET_PATHS=`llnms-list-assets.sh -path -l`
+ASSET_PATHS=`llnms-list-assets -path -l`
 ASSET_EXISTS=0
 for ASSET_FILE in $ASSET_PATHS; do
    
     # compare hostname
-    if [ "$ASSET_VALUE" = "`llnms-print-asset-info.sh -f $ASSET_FILE -host`" ]; then
+    if [ "$ASSET_VALUE" = "`llnms-print-asset-info -f $ASSET_FILE -host`" ]; then
         ASSET_EXISTS=1
         ASSET_PATH=$ASSET_FILE
         break;
@@ -306,7 +306,7 @@ fi
 #-     Make sure the scanner is not already registered with the asset   -#
 #------------------------------------------------------------------------#
 # get a list of registered scanners for the asset
-REG_SCANNERS=`llnms-print-asset-info.sh -f $ASSET_PATH -s`
+REG_SCANNERS=`llnms-print-asset-info  -f $ASSET_PATH -s`
 for REG_SCANNER in $REG_SCANNERS; do
 
     #  compare the scanner ids

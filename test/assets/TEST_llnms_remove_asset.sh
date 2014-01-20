@@ -27,9 +27,9 @@ fi
 TMP_llnms_remove_asset_create_assets(){
 
     #  Create 3 temporary assets
-    llnms-create-asset.sh  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
-    llnms-create-asset.sh  -host 'temp-asset2' -ip4 '10.2.10.1'   -d 'sample file'
-    llnms-create-asset.sh  -host 'temp-asset3' -ip4 '172.16.0.1'  -d 'final test file'
+    llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
+    llnms-create-asset  -host 'temp-asset2' -ip4 '10.2.10.1'   -d 'sample file'
+    llnms-create-asset  -host 'temp-asset3' -ip4 '172.16.0.1'  -d 'final test file'
 
 }
 
@@ -111,14 +111,14 @@ TEST_llnms_remove_asset_01(){
     TMP_llnms_remove_asset_create_assets
     
     #  Remove the temp-asset1 asset by hostname
-    llnms-remove-asset.sh -host 'temp-asset1'
+    llnms-remove-asset -host 'temp-asset1'
     
     #  Test asset existence
     RESULT="`TMP_llnms_remove_asset_test_assets 0 1 1`"
     if [ "$RESULT" = '1' ]; then echo '1'; return; fi
    
     #  Remove the temp-asset3 by address
-    llnms-remove-asset.sh -ip4 '172.16.0.1'
+    llnms-remove-asset -ip4 '172.16.0.1'
     
     #  Test asset existence
     RESULT="`TMP_llnms_remove_asset_test_assets 0 1 0`"

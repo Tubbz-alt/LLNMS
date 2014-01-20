@@ -89,22 +89,22 @@ install_to_filesystem(){
     echo '-> Copying asset module scripts'
     
     echo '   -> llnms-create-asset.sh'
-    cp 'src/bash/assets/llnms-create-asset.sh'            $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-create-asset.sh'            "$LLNMS_HOME/bin/llnms-create-asset"
     
     echo '   -> llnms-remove-asset.sh'
-    cp 'src/bash/assets/llnms-remove-asset.sh'            $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
     echo '   -> llnms-list-assets.sh'
-    cp 'src/bash/assets/llnms-list-assets.sh'             $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-remove-asset"
     
     echo '   -> llnms-print-asset-info.sh'
-    cp 'src/bash/assets/llnms-print-asset-info.sh'        $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"
     
     echo '   -> llnms-register-asset-scanner.sh'   
-    cp 'src/bash/assets/llnms-register-asset-scanner.sh'  $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-register-asset-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-asset-scanner"
     
     echo '   -> llnms-scan-asset.sh'                  
-    cp 'src/bash/assets/llnms-scan-asset.sh'              $LLNMS_HOME/bin/
+    cp 'src/bash/assets/llnms-scan-asset.sh'              "$LLNMS_HOME/bin/llnms-scan-asset"
 
     # networks
     echo ''
@@ -120,19 +120,20 @@ install_to_filesystem(){
     echo '-> Copying scanning module scripts'
     
     echo '   -> llnms-list-scanners.sh'
-    cp 'src/bash/scanning/llnms-list-scanners.sh'      $LLNMS_HOME/bin/
+    cp 'src/bash/scanning/llnms-list-scanners.sh'       "$LLNMS_HOME/bin/llnms-list-scanners"
 
     echo '   -> llnms-register-scanner.sh'
-    cp 'src/bash/scanning/llnms-register-scanner.sh'   $LLNMS_HOME/bin/
+    cp 'src/bash/scanning/llnms-register-scanner.sh'    "$LLNMS_HOME/bin/llnms-register-scanner"
     
     echo '   -> llnms-print-scanner-info.sh' 
-    cp 'src/bash/scanning/llnms-print-scanner-info.sh' $LLNMS_HOME/bin/
+    cp 'src/bash/scanning/llnms-print-scanner-info.sh'  "$LLNMS_HOME/bin/llnms-print-scanner-info"
     
     echo '   -> llnms scanner scripts'
-    cp -r  src/bash/scanning/scanners/*                $LLNMS_HOME/scanning/
+    cp -r  src/bash/scanning/scanners/*                 "$LLNMS_HOME/scanning/"
 
     #  config utilities
-    cp src/bash/llnms-info.sh    $LLNMS_HOME/config/
+    echo '   -> llnms info script'
+    cp src/bash/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
 
 }
 
@@ -227,8 +228,8 @@ create_configuration_file(){
 
     echo ''
     #  Create the file
-    if [ -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
-        rm -r $LLNMS_HOME/config/llnms-config.sh
+    if [ -e "$LLNMS_HOME/config/llnms-config" ]; then
+        rm -r $LLNMS_HOME/config/llnms-config
     fi
 
     #  If we are using Darwin, then build the Darwin-specific options

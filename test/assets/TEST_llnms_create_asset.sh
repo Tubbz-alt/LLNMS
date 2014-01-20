@@ -14,7 +14,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh
@@ -32,7 +32,7 @@ TEST_llnms_create_asset_01(){
     rm -r $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null
 
     #  Create an asset using the create asset command
-    llnms-create-asset.sh  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
+    llnms-create-asset  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
 
     #  make sure the file was properly created
     if [ ! -e '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml' ]; then

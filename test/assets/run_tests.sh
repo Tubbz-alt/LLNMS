@@ -19,7 +19,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh
@@ -65,6 +65,11 @@ fi
 RESULT=`TEST_llnms_remove_asset_01`
 print_test_result 'llnms-remove-asset' 'Remove Asset File' "$RESULT"
 
+if [ -e /var/tmp/llnms-halt.txt ]; then
+    echo 'llnms asset unit tests halted.'
+    exit 1
+fi
+
 
 #--------------------------------------------------#
 #-              Test List Assets                  -#
@@ -73,12 +78,22 @@ print_test_result 'llnms-remove-asset' 'Remove Asset File' "$RESULT"
 RESULT=`TEST_llnms_list_assets_01`
 print_test_result 'llnms-list-assets'  'List assets in asset directory' "$RESULT"
 
+if [ -e /var/tmp/llnms-halt.txt ]; then
+    echo 'llnms asset unit tests halted.'
+    exit 1
+fi
+
 #-----------------------------------------------------------#
 #-              Test Print Asset Information               -#
 #-----------------------------------------------------------#
 . test/assets/TEST_llnms_print_asset_info.sh
 RESULT=`TEST_llnms_print_asset_info_01`
 print_test_result 'llnms-print-asset-info' 'Print test asset file information.' "$RESULT"
+
+if [ -e /var/tmp/llnms-halt.txt ]; then
+    echo 'llnms asset unit tests halted.'
+    exit 1
+fi
 
 
 #------------------------------------------#

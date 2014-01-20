@@ -131,10 +131,10 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import the configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 
 #  Detail flag
@@ -254,10 +254,10 @@ for SCANNER in $SCANNER_PATHS; do
 
     #  print the name
     if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
-        echo " -> Scanner: `llnms-print-scanner-info.sh -f $SCANNER -n`"
+        echo " -> Scanner: `llnms-print-scanner-info -f $SCANNER -n`"
     elif [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_NAME" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
-            printf "`llnms-print-scanner-info.sh -f $SCANNER -n`"
+            printf "`llnms-print-scanner-info -f $SCANNER -n`"
             DATA_PRINTED=1
         fi
     fi
@@ -278,12 +278,12 @@ for SCANNER in $SCANNER_PATHS; do
     #  Print the id
     if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_ID" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
-            echo "    ID: `llnms-print-scanner-info.sh -f $SCANNER -i`"
+            echo "    ID: `llnms-print-scanner-info -f $SCANNER -i`"
          elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
             if [ "$DATA_PRINTED" = '1' ]; then
                 printf ", "
             fi
-            printf "`llnms-print-scanner-info.sh -f $SCANNER -i`"
+            printf "`llnms-print-scanner-info -f $SCANNER -i`"
             DATA_PRINTED=1
          fi
     fi
@@ -291,12 +291,12 @@ for SCANNER in $SCANNER_PATHS; do
     #  Print the description
     if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_DESCRIPTION" = '1' ]; then
         if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
-            echo "    Description: `llnms-print-scanner-info.sh -f $SCANNER -d`"
+            echo "    Description: `llnms-print-scanner-info -f $SCANNER -d`"
         elif [ "$OUTPUT_FORMAT" = 'LIST' ]; then
             if [ "$DATA_PRINTED" = '1' ]; then
                 printf ", "
             fi
-            printf "`llnms-print-scanner-info.sh -f $SCANNER -d`"
+            printf "`llnms-print-scanner-info -f $SCANNER -d`"
             DATA_PRINTED=1
         fi
     fi

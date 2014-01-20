@@ -146,14 +146,14 @@ fi
 
 
 #  Import the configuration
-if [ ! -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
-    echo "error: LLNMS configuration does not exist at $LLNMS_HOME/config/llnms-config.sh"
+if [ ! -e "$LLNMS_HOME/config/llnms-config" ]; then
+    echo "error: LLNMS configuration does not exist at $LLNMS_HOME/config/llnms-config"
     exit 1
 fi
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 
 #  Mode flags

@@ -13,8 +13,8 @@
 check_installation(){
 
     #  Make sure the config file exists
-    if [ ! -e "$LLNMS_HOME/config/llnms-config.sh" ]; then
-        echo "error:  The LLNMS configuration file does not exist at $LLNMS_HOME/config/llnms-config.sh"
+    if [ ! -e "$LLNMS_HOME/config/llnms-config" ]; then
+        echo "error:  The LLNMS configuration file does not exist at $LLNMS_HOME/config/llnms-config"
         exit 1
     fi
 
@@ -38,7 +38,7 @@ fi
 
 
 #  Import LLNMS-specific options
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 #  run asset unit tests
 ./test/assets/run_tests.sh
