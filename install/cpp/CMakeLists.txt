@@ -39,6 +39,8 @@ set( LLNMS_VIEWER_SOURCES
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset.cpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.cpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Network.cpp
+        ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host.cpp
+        ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host_Update.cpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Manager.cpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.cpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.cpp
@@ -64,6 +66,8 @@ set( LLNMS_VIEWER_HEADERS
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset.hpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Asset_Manager.hpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Network.hpp
+        ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host.hpp
+        ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host_Update.hpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Manager.hpp
         ../../src/cpp/llnms-viewer/llnms/LLNMS_State.hpp
         ../../src/cpp/llnms-viewer/llnms/tinyxml2.h
@@ -111,12 +115,30 @@ set( GOOGLE_TEST_HEADERS
     ../../test/gtest/include/gtest/gtest.h
 )
 
+set( LLNMS_UNIT_TEST_SOURCES 
+    ../../src/cpp/llnms-viewer/llnms/TEST_LLNMS_Network.cpp
+    ../../src/cpp/llnms-viewer/llnms/TEST_LLNMS_Network_Host.cpp
+)
+
+set( LLNMS_SOURCES 
+    ../../src/cpp/llnms-viewer/llnms/LLNMS_Network.cpp
+    ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host.cpp
+)
+
+set( LLNMS_HEADERS
+    ../../src/cpp/llnms-viewer/llnms/LLNMS_Network.hpp
+    ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host.hpp
+)
+
 include_directories( ../../test/gtest/include )
 include_directories( ../../test/gtest )
 
 add_executable( llnms-viewer-unit-test
     ${GOOGLE_TEST_SOURCES}
     ${GOOGLE_TEST_HEADERS}
+    ${LLNMS_SOURCES}
+    ${LLNMS_HEADERS}
+    ${LLNMS_UNIT_TEST_SOURCES}
 )
 target_link_libraries( llnms-viewer-unit-test
                         ${CURSES_NCURSES_LIBRARY}

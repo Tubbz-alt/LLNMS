@@ -17,6 +17,7 @@ usage(){
     echo ''
     echo '    options:'
     echo '        -h, --help             : Print usage instructions'
+    echo '        -v, --version          : Print version information' 
     echo '        -i, --interactive      : use the interactive wizard to configure network'
     echo '        -o [output file]       : Save the file to the specified filename.'
     echo '                                 Otherwise a random file will be generated.'
@@ -27,6 +28,66 @@ usage(){
     echo ''
 
 }
+
+
+#-------------------------------------#
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+error(){
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
+}
+
+
+#-------------------------------------#
+#           Version Function          #
+#-------------------------------------#
+version(){
+
+    echo "`basename $0` Information"
+    echo ''
+    echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
+
+}
+
 
 
 #--------------------------------------------#
@@ -196,6 +257,15 @@ get_input_networks(){
 if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
+
+
+#  Import the version info
+. $LLNMS_HOME/config/llnms-info
+
+
+#  Import the configuration info
+. $LLNMS_HOME/config/llnms-config
+
 
 #  Desired name
 NETWORK_NAME=''

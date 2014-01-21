@@ -14,7 +14,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh
@@ -48,11 +48,11 @@ TEST_llnms_list_scanners_01(){
     fi
 
     #  Register the two scanners
-    llnms-register-scanner.sh -s $SCANFILE1
-    llnms-register-scanner.sh -s $SCANFILE2
+    llnms-register-scanner -s $SCANFILE1
+    llnms-register-scanner -s $SCANFILE2
     
     #  Run the llnms-list-scanner command
-    OUTPUT=`llnms-list-scanners.sh -l -i`
+    OUTPUT=`llnms-list-scanners -l -i`
     OUT1=0
     OUT2=0
     for SCANNER in $OUTPUT; do

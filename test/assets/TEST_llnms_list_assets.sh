@@ -13,7 +13,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh
@@ -31,12 +31,12 @@ TEST_llnms_list_assets_01(){
     rm $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null
 
     #  Create an asset using the create asset command
-    llnms-create-asset.sh  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
-    llnms-create-asset.sh  -host 'temp-asset2' -ip4 '10.2.18.200' -d 'other test file'
-    llnms-create-asset.sh  -host 'temp-asset3' -ip4 '172.2.18.200' -d 'final test file'
+    llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
+    llnms-create-asset  -host 'temp-asset2' -ip4 '10.2.18.200' -d 'other test file'
+    llnms-create-asset  -host 'temp-asset3' -ip4 '172.2.18.200' -d 'final test file'
     
     #   Get a list of assets by name 
-    ASSETS="`llnms-list-assets.sh -l -path`"
+    ASSETS="`llnms-list-assets -l -path`"
     A1=0
     A2=0
     A3=0
@@ -64,7 +64,7 @@ TEST_llnms_list_assets_01(){
     if [ "$A3" = '0' ]; then echo "temp-asset3 was not listed when it should be. File `basename $0`, Line $LINENO." > /var/tmp/cause.txt; echo 1; return; fi
     
     #   Get a list of assets by name 
-    ASSETS="`llnms-list-assets.sh -l -host`"
+    ASSETS="`llnms-list-assets -l -host`"
     A1=0
     A2=0
     A3=0
@@ -90,7 +90,7 @@ TEST_llnms_list_assets_01(){
     if [ "$A3" = '0' ]; then echo "temp-asset3 was not listed when it should be. File `basename $0`, Line $LINENO." > /var/tmp/cause.txt; echo 1; return; fi
 
     #   Get a list of assets by name 
-    ASSETS="`llnms-list-assets.sh -l -ip4`"
+    ASSETS="`llnms-list-assets -l -ip4`"
     A1=0
     A2=0
     A3=0
@@ -118,9 +118,9 @@ TEST_llnms_list_assets_01(){
 
 
     #  Remove all files
-    llnms-remove-asset.sh -host 'temp-asset1'
-    llnms-remove-asset.sh -host 'temp-asset2'
-    llnms-remove-asset.sh -host 'temp-asset3'
+    llnms-remove-asset -host 'temp-asset1'
+    llnms-remove-asset -host 'temp-asset2'
+    llnms-remove-asset -host 'temp-asset3'
 
     #  Successful Operation 
     echo '0'

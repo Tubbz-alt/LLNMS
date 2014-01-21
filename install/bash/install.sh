@@ -95,7 +95,7 @@ install_to_filesystem(){
     cp 'src/bash/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
     echo '   -> llnms-list-assets.sh'
-    cp 'src/bash/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-remove-asset"
+    cp 'src/bash/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-list-assets"
     
     echo '   -> llnms-print-asset-info.sh'
     cp 'src/bash/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"

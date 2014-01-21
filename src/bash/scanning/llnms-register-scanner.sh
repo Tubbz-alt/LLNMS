@@ -108,10 +108,10 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import the configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 
 #  Scanner flags
@@ -173,7 +173,7 @@ fi
 #-------------------------------------------------------------#
 #-     Make sure the scanner has not already been added      -#
 #-------------------------------------------------------------#
-SCANNER_PATHS=`llnms-list-scanners.sh -l -f`
+SCANNER_PATHS=`llnms-list-scanners -l -f`
 for SCANNER in $SCANNER_PATHS; do
     if [ "$SCANNER" = "$SCANNER_FILE" ]; then
         echo 'Scanner has already been registered. Skipping registration.'

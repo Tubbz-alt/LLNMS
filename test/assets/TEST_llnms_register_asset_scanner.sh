@@ -66,7 +66,7 @@ TEST_llnms_register_asset_scanner_01(){
     #-----------------------------------------#
     llnms-register-asset-scanner -a temp-asset1 -s ping-scanner > /dev/null
 
-    touch /var/tmp/llnms-halt.txt
+    #touch /var/tmp/llnms-halt.txt
 
     #  Make sure the asset is still valid xml
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset1.llnms-asset.xml" > /dev/null

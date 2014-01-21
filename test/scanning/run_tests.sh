@@ -18,7 +18,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh

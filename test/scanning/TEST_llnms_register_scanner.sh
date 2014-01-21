@@ -14,7 +14,7 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 #  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
 . test/unit_test/unit_test_utilities.sh
@@ -51,7 +51,7 @@ TEST_llnms_register_scanner_01(){
     fi
 
     #  Register a new scanner
-    llnms-register-scanner.sh -s $SCANFILE1 > /dev/null
+    llnms-register-scanner -s $SCANFILE1 > /dev/null
     OUT="$?"
 
     #  Make sure the item was registered successfully
@@ -72,7 +72,7 @@ TEST_llnms_register_scanner_01(){
     fi
 
     #  Re-register the same file
-    llnms-register-scanner.sh -s $SCANFILE1 > /dev/null
+    llnms-register-scanner -s $SCANFILE1 > /dev/null
     
     OUT="$?"
     #  Make sure an error is returned for already being registered
@@ -88,7 +88,7 @@ TEST_llnms_register_scanner_01(){
 
     #  register another scanner
     OUT=0
-    llnms-register-scanner.sh -s $SCANFILE2 > /dev/null
+    llnms-register-scanner -s $SCANFILE2 > /dev/null
     OUT="$?"
 
     #  Make sure the item was registered successfully
