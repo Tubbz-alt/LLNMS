@@ -99,4 +99,28 @@ target_link_libraries( llnms-viewer
 )
 
 
+#--------------------------------------------#
+#-      Create the unit test library        -#
+#--------------------------------------------#
+set( GOOGLE_TEST_SOURCES
+    ../../test/gtest/src/gtest-all.cc
+    ../../test/gtest/src/gtest_main.cc
+)
+
+set( GOOGLE_TEST_HEADERS
+    ../../test/gtest/include/gtest/gtest.h
+)
+
+include_directories( ../../test/gtest/include )
+include_directories( ../../test/gtest )
+
+add_executable( llnms-viewer-unit-test
+    ${GOOGLE_TEST_SOURCES}
+    ${GOOGLE_TEST_HEADERS}
+)
+target_link_libraries( llnms-viewer-unit-test
+                        ${CURSES_NCURSES_LIBRARY}
+                        ${Boost_LIBRARIES}
+)
+
 

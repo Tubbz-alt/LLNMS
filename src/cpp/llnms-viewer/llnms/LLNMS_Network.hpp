@@ -6,6 +6,8 @@
 #ifndef __SRC_CPP_LLNMSVIEWER_LLNMSNETWORK_HPP__
 #define __SRC_CPP_LLNMSVIEWER_LLNMSNETWORK_HPP__
 
+#include <string>
+
 /**
  * @class LLNMS_Network
  */
