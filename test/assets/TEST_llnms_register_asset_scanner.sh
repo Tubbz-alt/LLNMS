@@ -39,10 +39,17 @@ TMP_number_asset_scanners(){
 #-------------------------------------#
 TEST_llnms_register_asset_scanner_01(){
 
+    #   Post log message
+    echo '' >> $LLNMS_UNIT_TEST_LOG
+    echo '' >> $LLNMS_UNIT_TEST_LOG
+    echo "Starting LLNMS Register Asset Scanner Unit Test 01 at $(date)" >> $LLNMS_UNIT_TEST_LOG
+
     #   Remove all assets
+    echo "\nRemoving existing LLNMS Assets."  >> $LLNMS_UNIT_TEST_LOG
     rm "$LLNMS_HOME/assets/*.llnms-asset.xml" 2> /dev/null
     
     #   Verify proper scanners exist
+    echo "Ensuring ping scanner and ssh scanner exist." >> $LLNMS_UNIT_TEST_LOG
     if [ ! -e "$LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml" ]; then
         echo '1'
         echo "ping-scanner.llnms-scanner.xml does not exist in $LLNMS_HOME/scanning/" > /var/tmp/cause.txt
@@ -53,8 +60,20 @@ TEST_llnms_register_asset_scanner_01(){
         echo "ssh-scanner.llnms-scanner.xml does not exist in $LLNMS_HOME/scanning/" > /var/tmp/cause.txt
         return
     fi
+    
+    #   Remove the registered scanner file
+    echo "Purging the existing llnms-register-scanners.xml file" >> $LLNMS_UNIT_TEST_LOG
+    rm $LLNMS_HOME/run/llnms-registered-scanners.xml 2> /dev/null
+
+    #   Register the ping scanner and ssh scanner
+    echo "Registering ping scanner" >> $LLNMS_UNIT_TEST_LOG
+    echo "llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
+    llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml
+    echo "llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
+    llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml
 
     #   Create demo assets
+    echo "Creating demo assets 'temp-asset1' and 'temp-asset2'" >> $LLNMS_UNIT_TEST_LOG
     llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
     llnms-create-asset  -host 'temp-asset2' -ip4 '172.16.0.1'
 
@@ -64,9 +83,9 @@ TEST_llnms_register_asset_scanner_01(){
     #-----------------------------------------#
     #              test temp-asset 1         -#
     #-----------------------------------------#
-    llnms-register-asset-scanner -a temp-asset1 -s ping-scanner > /dev/null
-
-    #touch /var/tmp/llnms-halt.txt
+    echo "running llnms-register-asset-scanner at $(date)" >> $LLNMS_UNIT_TEST_LOG
+    echo 'llnms-register-asset-scanner -a temp-asset1 -s ping-scanner' >> $LLNMS_UNIT_TEST_LOG
+    llnms-register-asset-scanner -a temp-asset1 -s ping-scanner >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the asset is still valid xml
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset1.llnms-asset.xml" > /dev/null

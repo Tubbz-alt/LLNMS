@@ -17,8 +17,12 @@ check_installation(){
         echo "error:  The LLNMS configuration file does not exist at $LLNMS_HOME/config/llnms-config"
         exit 1
     fi
-
-
+    
+    #  Set the unit test log variable
+    export LLNMS_UNIT_TEST_LOG="$LLNMS_HOME/log/llnms_unit_test.log"
+    if [ -e "$LLNMS_UNIT_TEST_LOG" ]; then
+        rm $LLNMS_UNIT_TEST_LOG
+    fi
 }
 
 
