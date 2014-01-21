@@ -57,8 +57,33 @@ The primary installation option is the destination for `LLNMS_HOME` which
 should be defaulted to `/var/tmp/llnms`.  Given this installation destination,
 all components will be installed there. 
 
+
 ### Windows (PowerShell)
 Windows 7 and later ship with Windows PowerShell.
 
+
+Building and Unit-Testing
+-------------------------
+
+###  Linux (shell)
+LLNMS comes with a full unit-test suite for both LLNMS and LLNMS-Viewer.  To do a complete setup and build, read the documentation at docs/overview/overview.pdf.
+
+In general, this is the recommended process. 
+
+First, install LLNMS
+
+    ./install/bash/install -n
+
+Next, build LLNMS-Viewer and install
+
+    ./install/cpp/install make install
+
+Next, run the llnms unit test suite.  You should have complete passes or else there is a bug.
+
+    ./test/run_tests.sh
+
+Finally, run the llnms-viewer unit-test suite.  You should have complete passes or else there is a bug.
+    
+    ./release/llnms-viewer-unit-test
 
 
