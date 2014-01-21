@@ -40,6 +40,22 @@ RESULT=`TEST_llnms_create_network_01`
 print_test_result 'llnms-create-network'  'Create a Network'  "$RESULT"
 
 
+#-------------------------------------------------#
+#-              Test List Networks               -#
+#-------------------------------------------------#
+. test/networks/TEST_llnms_list_networks.sh
+RESULT=`TEST_llnms_list_networks_01`
+print_test_result 'llnms-list-networks'  'List Networks'  "$RESULT"
+
+
+#-------------------------------------------------#
+#-              Test Remove Network              -#
+#-------------------------------------------------#
+. test/networks/TEST_llnms_remove_network.sh
+RESULT=`TEST_llnms_remove_network_01`
+print_test_result 'llnms-remove-network'  'Remove a Network'  "$RESULT"
+
+
 
 #------------------------------------------#
 #-           Print our footer             -#

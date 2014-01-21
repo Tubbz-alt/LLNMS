@@ -21,10 +21,10 @@ fi
 
 
 #-------------------------------------#
-#-   TEST_llnms_register_scanner_01  -#
+#-   TEST_llnms_create_network_01    -#
 #-                                   -#
 #-   Test the created file output    -#
-#-   from llnms-register_scanner.    -#
+#-   from llnms-create-network.      -#
 #-------------------------------------#
 TEST_llnms_create_network_01(){
     
