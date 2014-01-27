@@ -16,7 +16,7 @@ usage(){
     echo ""
     echo "    options:"
     echo "      -h,  -help       :  Print usage instructions"
-    echo "      -u,  -uninstall  :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
+    echo "      -u,  --uninstall :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
     echo '      -s,  --samples   :  Install LLNMS Sample Configuration Files'
     echo '      -n,  --no-update :  Skip updating the version file.'
     echo ""
@@ -285,7 +285,7 @@ for OPTION in $@; do
             ;;
         
         #   Uninstall LLNMS
-        "-u" | "-uninstall" )
+        "-u" | "--uninstall" )
             
             uninstall_llnms
             exit 0
