@@ -17,7 +17,7 @@ fi
 . $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
-. test/unit_test/unit_test_utilities.sh
+. test/bash/unit_test/unit_test_utilities.sh
 
 # Filename variable
 FILENAME="TEST_llnms_register_asset_scanner.sh"

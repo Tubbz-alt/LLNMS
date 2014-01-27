@@ -45,7 +45,7 @@ fi
 . $LLNMS_HOME/config/llnms-config
 
 #  run asset unit tests
-./test/assets/run_tests.sh
+./test/bash/assets/run_tests.sh
 if [ -e "/var/tmp/llnms-halt.txt" ]; then
     echo 'llnms unit tests halted.'
     exit 1
@@ -53,7 +53,7 @@ fi
 $ECHO ''
 
 #  run networking unit tests
-./test/networks/run_tests.sh
+./test/bash/networks/run_tests.sh
 if [ -e "/var/tmp/llnms-halt.txt" ]; then
     echo 'llnms unit tests halted.'
     exit 1
@@ -62,7 +62,7 @@ fi
 $ECHO ''
 
 #  run scanning unit tests
-./test/scanning/run_tests.sh
+./test/bash/scanning/run_tests.sh
 if [ -e "/var/tmp/llnms-halt.txt" ]; then
     echo 'llnms unit tests halted.'
     exit 1

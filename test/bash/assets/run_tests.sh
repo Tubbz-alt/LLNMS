@@ -22,7 +22,7 @@ fi
 . $LLNMS_HOME/config/llnms-config
 
 # Initialize ANSI
-. test/unit_test/unit_test_utilities.sh
+. test/bash/unit_test/unit_test_utilities.sh
 
 
 #------------------------------------------#
@@ -35,7 +35,7 @@ print_module_header "Asset"
 #-                     Test Asset Creation                      -#
 #----------------------------------------------------------------#
 #  Test asset creation
-. test/assets/TEST_llnms_create_asset.sh
+. test/bash/assets/TEST_llnms_create_asset.sh
 RESULT=`TEST_llnms_create_asset_01`
 print_test_result 'llnms-create-asset' 'Create Asset File' "$RESULT"
 
@@ -49,7 +49,7 @@ fi
 #-                Test Asset Scanner Registration            -#
 #-------------------------------------------------------------#
 #  Test Asset Scanner Registration
-. test/assets/TEST_llnms_register_asset_scanner.sh
+. test/bash/assets/TEST_llnms_register_asset_scanner.sh
 RESULT=`TEST_llnms_register_asset_scanner_01`
 print_test_result 'llnms-register-asset-scanner'  'Register Scanner to Asset' "$RESULT"
 
@@ -61,7 +61,7 @@ fi
 #------------------------------------------------------------#
 #-                    Test Asset Removal                    -#
 #------------------------------------------------------------#
-. test/assets/TEST_llnms_remove_asset.sh
+. test/bash/assets/TEST_llnms_remove_asset.sh
 RESULT=`TEST_llnms_remove_asset_01`
 print_test_result 'llnms-remove-asset' 'Remove Asset File' "$RESULT"
 
@@ -74,7 +74,7 @@ fi
 #--------------------------------------------------#
 #-              Test List Assets                  -#
 #--------------------------------------------------#
-. test/assets/TEST_llnms_list_assets.sh
+. test/bash/assets/TEST_llnms_list_assets.sh
 RESULT=`TEST_llnms_list_assets_01`
 print_test_result 'llnms-list-assets'  'List assets in asset directory' "$RESULT"
 
@@ -86,7 +86,7 @@ fi
 #-----------------------------------------------------------#
 #-              Test Print Asset Information               -#
 #-----------------------------------------------------------#
-. test/assets/TEST_llnms_print_asset_info.sh
+. test/bash/assets/TEST_llnms_print_asset_info.sh
 RESULT=`TEST_llnms_print_asset_info_01`
 print_test_result 'llnms-print-asset-info' 'Print test asset file information.' "$RESULT"
 

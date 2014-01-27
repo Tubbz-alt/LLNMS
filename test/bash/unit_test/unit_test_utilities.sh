@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-. test/unit_test/initializeANSI.sh
+. test/bash/unit_test/initializeANSI.sh
 
 
 #  Make sure LLNMS has been installed
