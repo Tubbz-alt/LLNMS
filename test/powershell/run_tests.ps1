@@ -34,3 +34,9 @@ if( $Help -eq $true ){
     usage
     exit 1
 }
+
+
+#  Run the network module unit tests
+. .\test\powershell\network\network_module_tests.ps1
+test_network_module
+
