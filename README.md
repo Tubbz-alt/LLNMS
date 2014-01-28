@@ -80,7 +80,7 @@ Next, build LLNMS-Viewer and install
 
 Next, run the llnms unit test suite.  You should have complete passes or else there is a bug.
 
-    ./test/run_tests.sh
+    ./test/bash/run_tests.sh
 
 Finally, run the llnms-viewer unit-test suite.  You should have complete passes or else there is a bug.
     
