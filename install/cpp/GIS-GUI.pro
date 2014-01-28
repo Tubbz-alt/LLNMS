@@ -1,0 +1,130 @@
+######################################################################
+#  Marvin Smith
+#  LLNMS-GUI Project File
+######################################################################
+
+QT += core gui widgets
+TARGET = bin/LLNMS-Viewer
+
+#  Add Console Support to allow cout statements to propogate to the terminal
+CONFIG += console
+
+#  Create as application
+TEMPLATE = app
+
+
+#  Set the destination paths
+debug:BUILD_BASE=debug
+release:BUILD_BASE=release
+
+#  Set the library destination paths
+DESTDIR=$$BUILD_BASE
+
+#  Set the build paths
+OBJECTS_DIR   = $$BUILD_BASE/build
+MOC_DIR       = $$BUILD_BASE/build
+
+
+#  Unix-Specific Dependencies and Configuration Options
+unix:!macx{
+	message("using unix")
+    
+    # Set the desired application icon
+    #ICON = GIS-Viewer.icns
+
+    # GIS-Library Dependencies
+    INCLUDEPATH += /opt/local/include
+    LIBS += -L/opt/local/lib -lGIS_Library
+
+    #  GDAL Library
+    #INCLUDEPATH += /usr/include/gdal
+    #LIBS += -lgdal
+
+    # Boost Library
+    #LIBS += -lboost_system -lboost_filesystem -lboost_regex
+
+    #  OpenCV
+    #LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+
+
+    #DEPENDPATH += .
+	#INCLUDEPATH += /opt/local/include /usr/include/gdal src 
+	
+	#LIBS += -L/opt/local/lib -lGeoImage -lgdal -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_calib3d -lboost_system -lboost_filesystem
+	#QMAKE_CXXFLAGS += -std=c++0x -O2
+	#MOC_DIR += build
+	#OBJECTS_DIR += build
+	#GUI_DIR += build
+
+}
+
+#  Mac specific choices
+unix:macx{
+    message("using MacOSX")
+
+    #DEPENDPATH += .
+    #INCLUDEPATH += /opt/local/include src
+
+    #LIBS += -L/opt/local/lib
+    #LIBS += -lgdal
+    #LIBS += -lopencv_core.2.4.5 -lopencv_highgui.2.4.5 -lopencv_imgproc.2.4.5 -lopencv_calib3d.2.4.5
+    
+    #  Add path for GIS-Library
+    #LIBS += -L/opt/lib -lGIS_Library
+    #INCLUDEPATH += /opt/include
+
+    #  Add Path for Boost
+    #LIBS += -L/opt/local/lib -lboost_system-mt -lboost_filesystem-mt -lboost_regex-mt
+    #INCLUDEPATH += /opt/local/include
+    
+    #  Add Path for OpenCV
+    #LIBS += -L/opt/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc
+    #INCLUDEPATH += /opt/local/include
+	
+    #MOC_DIR += build
+	#OBJECTS_DIR += build
+	#GUI_DIR += build
+
+}
+
+#  Windows-Specific Dependencies and Configuration Options
+win32{
+	message("using win32")
+	
+	#  Icon File
+	RC_FILE = src\GIS-Viewer.rc 
+	
+	#  Include code for boost
+	LIBS += -LC:/opt/local/lib -lboost_filesystem-vc110-1_55 -lboost_system-vc110-mt-1_55
+	INCLUDEPATH += /opt/local/include
+	
+    #  Include the GIS-Library Material
+    LIBS += -LC:/opt/local/lib -lGIS_Library
+    INCLUDEPATH += /opt/local/include
+	
+	#  Include the gdal Material
+	INCLUDEPATH += /opt/local/include/gdal
+	LIBS += /opt/local/lib -lgdal_i
+	
+	#  Include OpenCV Material
+	INCLUDEPATH += /opt/local/include
+	LIBS += -L/opt/local/lib -lopencv_core246 -lopencv_imgproc246 -lopencv_highgui246
+	
+
+}
+
+
+DEPENDPATH += src/cpp/llnms-gui/src
+			 
+
+INCLUDEPATH += src/cpp/llnms-gui/src
+			  
+
+# Input
+#HEADERS += \
+#            src/cpp/llnms-gui/src/llnms_gui.cpp
+
+SOURCES += \
+            src/cpp/llnms-gui/src/llnms_gui.cpp
+
+
