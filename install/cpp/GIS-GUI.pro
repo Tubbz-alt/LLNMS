@@ -121,10 +121,11 @@ INCLUDEPATH += src/cpp/llnms-gui/src
 			  
 
 # Input
-#HEADERS += \
-#            src/cpp/llnms-gui/src/llnms_gui.cpp
+HEADERS += \
+            src/cpp/llnms-gui/core/DataContainer.hpp
+
 
 SOURCES += \
-            src/cpp/llnms-gui/src/llnms_gui.cpp
+            src/cpp/llnms-gui/llnms_gui.cpp
 
 
