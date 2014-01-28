@@ -114,18 +114,23 @@ win32{
 }
 
 
-DEPENDPATH += src/cpp/llnms-gui/src
+DEPENDPATH += src/cpp/llnms-gui
 			 
 
-INCLUDEPATH += src/cpp/llnms-gui/src
+INCLUDEPATH += src/cpp/llnms-gui
 			  
 
 # Input
 HEADERS += \
-            src/cpp/llnms-gui/core/DataContainer.hpp
+            src/cpp/llnms-gui/core/DataContainer.hpp \
+            src/cpp/llnms-gui/core/Parser.hpp \
+            src/cpp/llnms-gui/gui/MainWindow.hpp
 
 
 SOURCES += \
-            src/cpp/llnms-gui/llnms_gui.cpp
+            src/cpp/llnms-gui/llnms_gui.cpp \
+            src/cpp/llnms-gui/core/DataContainer.cpp \
+            src/cpp/llnms-gui/core/Parser.cpp \
+            src/cpp/llnms-gui/gui/MainWindow.cpp
 
 

@@ -6,11 +6,7 @@
 #ifndef __SRC_CPP_LLNMSGUI_CORE_DATACONTAINER_HPP__
 #define __SRC_CPP_LLNMSGUI_CORE_DATACONTAINER_HPP__
 
-#include "AssetSettings.hpp"
-#include "BrowserSettings.hpp"
 #include "GUI_Settings.hpp"
-
-#include "TempData.hpp"
 
 #include <string>
 
@@ -37,21 +33,14 @@ class DataContainer {
         void write_config_file( );
         
         void create_file_structure();
+       
         
-        /// Default Asset Settings
-        AssetSettings asset_settings;
-
-        /// Configuration data specific to the GUI
-        GUI_Settings  gui_settings;
-        
-        /// Configuration data specific to GeoBrowsers
-        Browser_Settings browser_settings;
-
-        /// Temp Data Storage
-        TempData      temp_data;
+        /// GUI Data Storage
+        GUI_Settings gui_settings;
 
         /// Tells us if we found a config file
         bool config_file_found;
+
 
     private:
 	

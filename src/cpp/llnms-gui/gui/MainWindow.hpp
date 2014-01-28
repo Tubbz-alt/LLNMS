@@ -9,14 +9,9 @@
 #define __SRC_CPP_LLNMSGUI_GUI_MAIN_WINDOW_HPP__
 
 ///  QT Libraries
-#include <QApplication>
-#include <QDockWidget>
 #include <QMainWindow>
-#include <QMenu>
-#include <QShortcut>
-#include <QStatusBar>
-#include <QtGui>
 #include <QWidget> 
+
 
 /// LLNMS GUI Libraries
 #include <src/core/DataContainer.hpp>
@@ -52,21 +47,14 @@ class MainWindow : public QMainWindow {
 	/******************************/
 	/*     Private Functions      */
 	/******************************/
-        /**
-         * Build the Status Bar at the Bottom of the Window
-        */
-        void build_status_bar();
-	    
-        /**
-         * Filter relevant events
-        */
-        bool eventFilter( QObject* object, QEvent* event );
+	
+    
+    /******************************/
+	/*     Private Variables      */
+	/******************************/
+     
 
-        /**
-         * Create all connections
-         */
-        void build_connections();
-        
+
 };
 
 #endif
