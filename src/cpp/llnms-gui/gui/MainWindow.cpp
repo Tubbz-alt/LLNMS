@@ -39,7 +39,36 @@ void MainWindow::quit_program( ){
  */
 void MainWindow::build_ui(){
 
+    /// create main widget
+    mainWidget = new QWidget(this);
+
     /// create the main layout
+    mainLayout = new QVBoxLayout;
+    
+    /// Create the navigation bar
+    navigationBar = new NavigationBar;
+    
+    /// Create the stacked widget
+    assetPane   = new AssetPane;
+    networkPane = new NetworkPane;
+    summaryPane = new SummaryPane;
+    configPane  = new ConfigPane;
+    
+    stackedWidget = new QStackedWidget;
+    stackedWidget->addWidget( summaryPane );
+    stackedWidget->addWidget( networkPane );
+    stackedWidget->addWidget( assetPane );
+    stackedWidget->addWidget( configPane );
+
+    /// add the layout items
+    mainLayout->addWidget( navigationBar );
+    mainLayout->addWidget( stackedWidget );
+
+    // set the main widget
+    mainWidget->setLayout( mainLayout );
+
+    // set the main widget
+    setCentralWidget( mainWidget );
 
 }
 

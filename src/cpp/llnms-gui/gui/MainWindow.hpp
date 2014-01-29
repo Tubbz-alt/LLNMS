@@ -19,6 +19,7 @@
 #include <core/DataContainer.hpp>
 #include <core/MessagingService.hpp>
 
+#include <gui/ConfigPane.hpp>
 #include <gui/SummaryPane.hpp>
 #include <gui/NetworkPane.hpp>
 #include <gui/AssetPane.hpp>
@@ -62,6 +63,15 @@ class MainWindow : public QMainWindow {
 	/*     Private Variables      */
 	/******************************/
     
+    /// Main Widget
+    QWidget*  mainWidget;
+
+    /// Main Layout
+    QVBoxLayout* mainLayout;
+
+    /// Navigation Bar
+    NavigationBar*     navigationBar;
+
     /// Stacked Widget
     QStackedWidget*  stackedWidget;
 
@@ -73,7 +83,9 @@ class MainWindow : public QMainWindow {
 
     /// Asset Pane
     AssetPane*    assetPane;
-
+    
+    /// Configuration Pane
+    ConfigPane*   configPane;
 
 };
 
