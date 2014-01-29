@@ -26,12 +26,19 @@ class DataContainer {
         */
         DataContainer();
         
+        /**
+         * Load the configuration file
+         */
         void load( int argc, char* argv[], const std::string& filename );
         
-        void print();
-
+        /**
+         * Write configuration file
+         */
         void write_config_file( );
         
+        /**
+         * Create baseline file structure
+         */
         void create_file_structure();
        
         
@@ -42,7 +49,6 @@ class DataContainer {
         bool config_file_found;
 
 
-    private:
 	
 
 };

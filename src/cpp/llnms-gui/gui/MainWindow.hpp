@@ -9,13 +9,14 @@
 #define __SRC_CPP_LLNMSGUI_GUI_MAIN_WINDOW_HPP__
 
 ///  QT Libraries
+#include <QApplication>
 #include <QMainWindow>
 #include <QWidget> 
 
 
 /// LLNMS GUI Libraries
-#include <src/core/DataContainer.hpp>
-#include <src/core/MessagingService.hpp>
+#include <core/DataContainer.hpp>
+#include <core/MessagingService.hpp>
 
 
 extern DataContainer settings;

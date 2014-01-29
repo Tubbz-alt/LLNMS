@@ -24,6 +24,13 @@ class MessagingService : public QObject{
         /// List of status messages
         std::deque<std::string> status_messages;
         
+    
+    signals:
+
+        /**
+         * Tell the program to quit
+         */
+        void quit_program_signal();
 
 };
 

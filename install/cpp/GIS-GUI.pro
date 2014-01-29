@@ -29,22 +29,8 @@ MOC_DIR       = $$BUILD_BASE/build
 unix:!macx{
 	message("using unix")
     
-    # Set the desired application icon
-    #ICON = GIS-Viewer.icns
-
-    # GIS-Library Dependencies
-    INCLUDEPATH += /opt/local/include
-    LIBS += -L/opt/local/lib -lGIS_Library
-
-    #  GDAL Library
-    #INCLUDEPATH += /usr/include/gdal
-    #LIBS += -lgdal
-
     # Boost Library
-    #LIBS += -lboost_system -lboost_filesystem -lboost_regex
-
-    #  OpenCV
-    #LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+    LIBS += -lboost_system -lboost_filesystem -lboost_regex
 
 
     #DEPENDPATH += .
@@ -123,6 +109,9 @@ INCLUDEPATH += src/cpp/llnms-gui
 # Input
 HEADERS += \
             src/cpp/llnms-gui/core/DataContainer.hpp \
+            src/cpp/llnms-gui/core/FileUtilities.hpp \
+            src/cpp/llnms-gui/core/GUI_Settings.hpp \
+            src/cpp/llnms-gui/core/MessagingService.hpp \
             src/cpp/llnms-gui/core/Parser.hpp \
             src/cpp/llnms-gui/gui/MainWindow.hpp
 
@@ -130,6 +119,8 @@ HEADERS += \
 SOURCES += \
             src/cpp/llnms-gui/llnms_gui.cpp \
             src/cpp/llnms-gui/core/DataContainer.cpp \
+            src/cpp/llnms-gui/core/FileUtilities.cpp \
+            src/cpp/llnms-gui/core/GUI_Settings.cpp \
             src/cpp/llnms-gui/core/Parser.cpp \
             src/cpp/llnms-gui/gui/MainWindow.cpp
 
