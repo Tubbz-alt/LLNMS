@@ -11,12 +11,19 @@
 ///  QT Libraries
 #include <QApplication>
 #include <QMainWindow>
+#include <QStackedWidget>
 #include <QWidget> 
 
 
 /// LLNMS GUI Libraries
 #include <core/DataContainer.hpp>
 #include <core/MessagingService.hpp>
+
+#include <gui/SummaryPane.hpp>
+#include <gui/NetworkPane.hpp>
+#include <gui/AssetPane.hpp>
+
+#include <gui/NavigationBar.hpp>
 
 
 extern DataContainer settings;
@@ -48,12 +55,24 @@ class MainWindow : public QMainWindow {
 	/******************************/
 	/*     Private Functions      */
 	/******************************/
+    void build_ui();
 	
     
     /******************************/
 	/*     Private Variables      */
 	/******************************/
-     
+    
+    /// Stacked Widget
+    QStackedWidget*  stackedWidget;
+
+    /// Summary Pane
+    SummaryPane*  summaryPane;
+
+    /// Network Pane
+    NetworkPane*  networkPane;
+
+    /// Asset Pane
+    AssetPane*    assetPane;
 
 
 };

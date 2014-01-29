@@ -113,6 +113,10 @@ HEADERS += \
             src/cpp/llnms-gui/core/GUI_Settings.hpp \
             src/cpp/llnms-gui/core/MessagingService.hpp \
             src/cpp/llnms-gui/core/Parser.hpp \
+            src/cpp/llnms-gui/gui/AssetPane.hpp \
+            src/cpp/llnms-gui/gui/NetworkPane.hpp \
+            src/cpp/llnms-gui/gui/SummaryPane.hpp \
+            src/cpp/llnms-gui/gui/NavigationBar.hpp \
             src/cpp/llnms-gui/gui/MainWindow.hpp
 
 
@@ -122,6 +126,10 @@ SOURCES += \
             src/cpp/llnms-gui/core/FileUtilities.cpp \
             src/cpp/llnms-gui/core/GUI_Settings.cpp \
             src/cpp/llnms-gui/core/Parser.cpp \
+            src/cpp/llnms-gui/gui/AssetPane.cpp \
+            src/cpp/llnms-gui/gui/NetworkPane.cpp \
+            src/cpp/llnms-gui/gui/SummaryPane.cpp \
+            src/cpp/llnms-gui/gui/NavigationBar.cpp \
             src/cpp/llnms-gui/gui/MainWindow.cpp
 
 
