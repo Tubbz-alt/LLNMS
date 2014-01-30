@@ -265,7 +265,7 @@ for OPTION in "$@"; do
         
         # add a network ending address
         '-ae' )
-            ADDR_STOP_FLAG=1
+            ADDR_END_FLAG=1
             ;;
 
         # set the output file
@@ -287,7 +287,7 @@ for OPTION in "$@"; do
                 ADDR_START_VALUE=$OPTION
             
             #  If address end flag is set
-            elif [ $ADDR_STOP_FLAG -eq 1 ]; then
+            elif [ $ADDR_END_FLAG -eq 1 ]; then
                 ADDR_END_FLAG=0
                 ADDR_END_VALUE=$OPTION
 
