@@ -19,6 +19,11 @@ class LLNMS_State{
          * Default Constructor
          */
         LLNMS_State();
+        
+        /**
+         * Update Function
+         */
+        void update();
 
         /// Container with the LLNMS Network Definitions
         LLNMS_Network_Container  network_container;

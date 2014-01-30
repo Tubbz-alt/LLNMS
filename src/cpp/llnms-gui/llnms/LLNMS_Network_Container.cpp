@@ -24,7 +24,7 @@ LLNMS_Network_Container::LLNMS_Network_Container(){
 /**
  * Refresh the LLNMS Network List
  */
-void LLNMS_Network_Container::refresh(){
+void LLNMS_Network_Container::update(){
 
 
     /// get a list of llnms network files
@@ -53,7 +53,7 @@ void LLNMS_Network_Container::refresh(){
             }
         }
         
-        if( network_match == true ){
+        if( network_match == false ){
             m_network_list.push_back( tmpNetwork );
         }
     }

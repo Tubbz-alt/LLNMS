@@ -47,7 +47,7 @@ LLNMS_Network::LLNMS_Network( std::string const& networkfilename ){
     tinyxml2::XMLElement* networkElement = doc.FirstChildElement("llnms-network");
     
     // get the name
-    m_name = networkElement->FirstChildElement("name")->GetText();
+    m_name = "Hello";//networkElement->FirstChildElement("name")->GetText();
 
 
 }
@@ -69,7 +69,7 @@ std::string& LLNMS_Network::name(){
 /**
  * Equivalent operator
  */
-bool LLNMS_Network operator == ( const LLNMS_Network& other ){
+bool LLNMS_Network::operator == ( const LLNMS_Network& other ){
     
     // make sure names are the same
     if( name() != other.name() ){ return false; }

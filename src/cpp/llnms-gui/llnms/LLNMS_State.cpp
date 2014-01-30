@@ -15,4 +15,10 @@ LLNMS_State::LLNMS_State(){
 
 }
 
+/**
+ * Update function
+ */
+void LLNMS_State::update(){
+   network_container.update(); 
+}
 

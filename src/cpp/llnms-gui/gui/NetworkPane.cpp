@@ -7,7 +7,10 @@
 
 #include "../llnms/LLNMS_Network.hpp"
 
+#include <iostream>
 #include <vector>
+
+using namespace std;
 
 /**
  * Constructor
@@ -119,11 +122,16 @@ void NetworkPane::load_network_list_table(){
     networkListTable->clearContents();
     
     // refresh the LLNMS Network Table
-    llnms.network_container.refresh();
+    llnms.network_container.update();
 
     // get the list of networks
-    vector<LLNMS_Network> networklist = llnms.network_container.network_list();
+    std::vector<LLNMS_Network> networklist = llnms.network_container.network_list();
+    
+    // resize the table
+    networkListTable->setRowCount( networklist.size()+1 );
 
+    // load the table
+    cout << "SIZE: " << networklist.size() << endl;
     for( size_t i=0; i<networklist.size(); i++ ){
         networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
     }

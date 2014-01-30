@@ -28,7 +28,7 @@ class LLNMS_Network_Container{
         /**
          * Refresh the network list
          */
-        void refresh();
+        void update();
     
         /**
          * Get the network list
