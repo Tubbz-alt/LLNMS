@@ -17,6 +17,7 @@ NavigationBar::NavigationBar( QWidget* parent ) : QWidget(parent){
 
     // create the main layout
     mainLayout = new QVBoxLayout;
+    mainLayout->setAlignment( Qt::AlignTop );
 
     // create the home button
     homeButton = new QToolButton;
@@ -27,7 +28,7 @@ NavigationBar::NavigationBar( QWidget* parent ) : QWidget(parent){
     homeButton->setFixedHeight( 90 );
     homeButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
     mainLayout->addWidget( homeButton );
-
+    connect( homeButton, SIGNAL(clicked()), this, SIGNAL(summaryPaneButtonSignal()));
     
     // create the network button
     networkButton = new QToolButton;
@@ -38,6 +39,7 @@ NavigationBar::NavigationBar( QWidget* parent ) : QWidget(parent){
     networkButton->setFixedHeight( 90 );
     networkButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
     mainLayout->addWidget( networkButton );
+    connect( networkButton, SIGNAL(clicked()), this, SIGNAL(networkPaneButtonSignal()));
 
     // create the asset button
     assetButton = new QToolButton;
@@ -48,6 +50,8 @@ NavigationBar::NavigationBar( QWidget* parent ) : QWidget(parent){
     assetButton->setFixedHeight( 90 );
     assetButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
     mainLayout->addWidget( assetButton );
+    connect( assetButton, SIGNAL(clicked()), this, SIGNAL(assetPaneButtonSignal()));
+
 
     // create the config button
     configButton = new QToolButton;
@@ -58,6 +62,8 @@ NavigationBar::NavigationBar( QWidget* parent ) : QWidget(parent){
     configButton->setFixedHeight( 90 );
     configButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
     mainLayout->addWidget( configButton );
+    connect( configButton, SIGNAL(clicked()), this, SIGNAL(configPaneButtonSignal()));
+
 
     // set the main layout
     setLayout( mainLayout );

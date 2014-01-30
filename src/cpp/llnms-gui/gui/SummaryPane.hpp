@@ -7,6 +7,8 @@
 #define __SRC_CPP_LLNMSGUI_GUI_SUMMARYPANE_HPP__
 
 
+#include <QLabel>
+#include <QVBoxLayout>
 #include <QWidget>
 
 /**
@@ -22,6 +24,24 @@ class SummaryPane : public QWidget {
          * Default Constructor
          */
         SummaryPane( QWidget* widget = NULL );
+    
+
+    private:
+        
+        /*************************************/
+        /*         Private Functions         */
+        /*************************************/
+        
+        
+        /*************************************/
+        /*         Private Variables         */
+        /*************************************/
+
+        // main layout
+        QVBoxLayout*   mainLayout;
+
+        // main label
+        QLabel*        mainLabel;
 
 
     

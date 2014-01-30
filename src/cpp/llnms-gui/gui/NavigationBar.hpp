@@ -29,6 +29,29 @@ class NavigationBar : public QWidget{
          */
         NavigationBar( QWidget* parent = NULL );
     
+    
+    signals:
+        
+        /**
+         * Signal to return to the home menu
+         */
+        void summaryPaneButtonSignal();
+
+        /**
+         * Signal to return to network menu
+         */
+        void networkPaneButtonSignal();
+
+        /**
+         * Signal to return to asset menu
+         */
+        void assetPaneButtonSignal();
+
+        /**
+         * Signal to return to config menu
+         */
+        void configPaneButtonSignal();
+
 
     private:
 

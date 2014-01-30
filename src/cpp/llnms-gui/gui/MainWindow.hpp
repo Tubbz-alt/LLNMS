@@ -50,6 +50,26 @@ class MainWindow : public QMainWindow {
          * Close the current Main Window, thus closing the entire GUI
         */
         void quit_program( );
+        
+        /**
+         * Move to summary panel
+         */
+        void moveToSummaryPanel();
+
+        /**
+         * Move to the network panel
+         */
+        void moveToNetworkPanel();
+        
+        /**
+         * Move to the asset panel
+         */
+        void moveToAssetPanel();
+        
+        /**
+         * Move to the configuration panel
+         */
+        void moveToConfigPanel();
 
     private:
 	

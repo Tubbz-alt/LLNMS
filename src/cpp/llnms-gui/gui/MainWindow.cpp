@@ -22,6 +22,10 @@ MainWindow::MainWindow() : QMainWindow() {
     // initialize all of our connections
     connect( &message_service, SIGNAL(quit_program_signal()), this, SLOT(quit_program()));
     
+    connect( navigationBar, SIGNAL(summaryPaneButtonSignal()), this, SLOT(moveToSummaryPanel()));
+    connect( navigationBar, SIGNAL(networkPaneButtonSignal()), this, SLOT(moveToNetworkPanel()));
+    connect( navigationBar, SIGNAL(  assetPaneButtonSignal()), this, SLOT(moveToAssetPanel()));
+    connect( navigationBar, SIGNAL( configPaneButtonSignal()), this, SLOT(moveToConfigPanel()));
 
 }
 
@@ -71,4 +75,37 @@ void MainWindow::build_ui(){
     setCentralWidget( mainWidget );
 
 }
+
+
+/**
+ * Move to summary panel
+ */
+void MainWindow::moveToSummaryPanel(){
+    stackedWidget->setCurrentIndex(0);
+}
+
+
+/**
+ * Move to network panel
+ */
+void MainWindow::moveToNetworkPanel(){
+    stackedWidget->setCurrentIndex(1);
+}
+
+
+/**
+ * Move to asset panel
+ */
+void MainWindow::moveToAssetPanel(){
+    stackedWidget->setCurrentIndex(2);
+}
+
+
+/**
+ * Move to config panel
+ */
+void MainWindow::moveToConfigPanel(){
+    stackedWidget->setCurrentIndex(3);
+}
+
 
