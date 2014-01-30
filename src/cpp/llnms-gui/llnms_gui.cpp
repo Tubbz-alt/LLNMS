@@ -13,11 +13,12 @@
 #include <core/DataContainer.hpp>
 #include <core/MessagingService.hpp>
 #include <gui/MainWindow.hpp>
-
+#include <llnms/LLNMS_State.hpp>
 
 #include <iostream>
 
 DataContainer settings;
+LLNMS_State   llnms;
 MessagingService message_service;
 
 using namespace std;

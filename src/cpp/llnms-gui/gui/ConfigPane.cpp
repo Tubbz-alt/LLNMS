@@ -12,7 +12,20 @@
 ConfigPane::ConfigPane( QWidget* parent ) : QWidget(parent){
 
 
+    // build main widget
+    mainLayout = new QVBoxLayout;
+    mainLayout->setAlignment( Qt::AlignLeft | Qt::AlignTop );
+
+    // build main label
+    mainLabel = new QLabel("LLNMS Configuration Management");
+    mainLabel->setFont(QFont(mainLabel->font().family(), 18));
+    mainLayout->addWidget( mainLabel );
+
+    // set layout
+    setLayout( mainLayout );
+
 
 }
+
 
 

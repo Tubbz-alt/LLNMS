@@ -108,7 +108,10 @@ HEADERS += \
             src/cpp/llnms-gui/gui/NetworkPane.hpp \
             src/cpp/llnms-gui/gui/SummaryPane.hpp \
             src/cpp/llnms-gui/gui/NavigationBar.hpp \
-            src/cpp/llnms-gui/gui/MainWindow.hpp
+            src/cpp/llnms-gui/gui/MainWindow.hpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Network.hpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Network_Container.hpp \
+            src/cpp/llnms-gui/llnms/LLNMS_State.hpp
 
 
 SOURCES += \
@@ -122,6 +125,9 @@ SOURCES += \
             src/cpp/llnms-gui/gui/NetworkPane.cpp \
             src/cpp/llnms-gui/gui/SummaryPane.cpp \
             src/cpp/llnms-gui/gui/NavigationBar.cpp \
-            src/cpp/llnms-gui/gui/MainWindow.cpp
+            src/cpp/llnms-gui/gui/MainWindow.cpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Network.cpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Network_Container.cpp \
+            src/cpp/llnms-gui/llnms/LLNMS_State.cpp
 
 
