@@ -39,8 +39,10 @@ void DataContainer::load( int argc, char* argv[], const std::string& filename ){
 
     // create the parser object
     PSR::Parser parser( argc, argv, filename );
-
-
+    
+    
+    // get the icon home
+    gui_settings.ICON_HOME = getenv("LLNMS_ICON_HOME")+string("/icons");
 
 }
 

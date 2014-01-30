@@ -43,7 +43,7 @@ void MainWindow::build_ui(){
     mainWidget = new QWidget(this);
 
     /// create the main layout
-    mainLayout = new QVBoxLayout;
+    mainLayout = new QHBoxLayout;
     
     /// Create the navigation bar
     navigationBar = new NavigationBar;

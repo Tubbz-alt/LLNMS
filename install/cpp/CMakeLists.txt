@@ -107,12 +107,12 @@ target_link_libraries( llnms-viewer
 #-      Create the unit test library        -#
 #--------------------------------------------#
 set( GOOGLE_TEST_SOURCES
-    ../../test/gtest/src/gtest-all.cc
-    ../../test/gtest/src/gtest_main.cc
+    ../../test/cpp/gtest/src/gtest-all.cc
+    ../../test/cpp/gtest/src/gtest_main.cc
 )
 
 set( GOOGLE_TEST_HEADERS
-    ../../test/gtest/include/gtest/gtest.h
+    ../../test/cpp/gtest/include/gtest/gtest.h
 )
 
 set( LLNMS_UNIT_TEST_SOURCES 
@@ -130,8 +130,8 @@ set( LLNMS_HEADERS
     ../../src/cpp/llnms-viewer/llnms/LLNMS_Network_Host.hpp
 )
 
-include_directories( ../../test/gtest/include )
-include_directories( ../../test/gtest )
+include_directories( ../../test/cpp/gtest/include )
+include_directories( ../../test/cpp/gtest )
 
 add_executable( llnms-viewer-unit-test
     ${GOOGLE_TEST_SOURCES}

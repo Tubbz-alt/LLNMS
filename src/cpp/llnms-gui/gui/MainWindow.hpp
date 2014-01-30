@@ -67,7 +67,7 @@ class MainWindow : public QMainWindow {
     QWidget*  mainWidget;
 
     /// Main Layout
-    QVBoxLayout* mainLayout;
+    QHBoxLayout* mainLayout;
 
     /// Navigation Bar
     NavigationBar*     navigationBar;

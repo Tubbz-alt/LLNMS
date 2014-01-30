@@ -1,6 +1,6 @@
 ######################################################################
 #  Marvin Smith
-#  LLNMS-GUI Project File
+#  LLNMS-Viewer-GUI Project File
 ######################################################################
 
 QT += core gui widgets
@@ -31,16 +31,6 @@ unix:!macx{
     
     # Boost Library
     LIBS += -lboost_system -lboost_filesystem -lboost_regex
-
-
-    #DEPENDPATH += .
-	#INCLUDEPATH += /opt/local/include /usr/include/gdal src 
-	
-	#LIBS += -L/opt/local/lib -lGeoImage -lgdal -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_calib3d -lboost_system -lboost_filesystem
-	#QMAKE_CXXFLAGS += -std=c++0x -O2
-	#MOC_DIR += build
-	#OBJECTS_DIR += build
-	#GUI_DIR += build
 
 }
 

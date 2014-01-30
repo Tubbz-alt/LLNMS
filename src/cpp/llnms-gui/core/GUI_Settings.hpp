@@ -21,7 +21,9 @@ class GUI_Settings{
 
         /// Name of the application [ INDEX 0 ]
         std::string app_name;
-
+        
+        /// LLNMS Icon Home
+        std::string ICON_HOME;
 
 };
 

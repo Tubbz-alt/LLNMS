@@ -11,6 +11,10 @@
 #include <QWidget>
 
 
+#include <core/DataContainer.hpp>
+
+extern DataContainer settings;
+
 /**
  * @class NavigationBar
  */
@@ -33,7 +37,7 @@ class NavigationBar : public QWidget{
         //---------------------------------//
         
         /// Main Layout
-        QHBoxLayout*  mainLayout;
+        QVBoxLayout*  mainLayout;
         
         /// Home Button
         QToolButton*  homeButton;

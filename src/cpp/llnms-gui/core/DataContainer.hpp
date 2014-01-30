@@ -40,7 +40,6 @@ class DataContainer {
          * Create baseline file structure
          */
         void create_file_structure();
-       
         
         /// GUI Data Storage
         GUI_Settings gui_settings;

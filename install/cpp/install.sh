@@ -15,9 +15,15 @@ usage(){
     echo "`basename $0` [options]"
     echo ''
     echo '    options:'
-    echo '        -h, --help    :  Print usage instructions'
-    echo '        make          :  Build C++ Software'
-    echo '        install       :  Install C++ Software'
+    echo '          -h, --help     :  Print usage instructions'
+    echo '          make  [system] :  Build C++ Software'
+    echo ''
+    echo '              system options:'
+    echo '                  all = default : Build everything'
+    echo '                  curses        : Build Curses GUI'
+    echo '                  gui           : Build Qt GUI'
+    echo ''
+    echo '        install        :  Install C++ Software'
     echo ''
 }
 
@@ -72,10 +78,10 @@ error(){
 #----------------------------------#
 #-           Make Software        -#
 #----------------------------------#
-make_software(){
+make_curses_software(){
 
     #  Print message
-    echo '->  building c++ software'
+    echo '->  building curses LLNMS-Viewer'
 
     #  Make sure the release directory exists
     mkdir -p release
@@ -100,6 +106,32 @@ make_software(){
 
 }
 
+#----------------------------------#
+#-           Make Software        -#
+#----------------------------------#
+make_gui_software(){
+
+    #  Print message
+    echo '->  building Qt LLNMS-Viewer'
+
+    #  Run QMake
+    echo '  -> Running QMake'
+    $QMAKE install/cpp/LLNMS-Viewer-GUI.pro
+
+    #  Run Make
+    echo '  -> Running Make'
+    make 
+
+    #  Create the release
+    echo '  -> Building the release'
+    mkdir -p release/share/llnms-viewer/bin
+    mkdir -p release/share/llnms-viewer/icons
+    cp -r src/cpp/llnms-gui/icons/* release/share/llnms-viewer/icons/
+    cp  release/bin/LLNMS-Viewer     release/share/llnms-viewer/bin/LLNMS-Viewer.out
+    cp  install/cpp/LLNMS-Viewer.sh  release/share/llnms-viewer/LLNMS-Viewer
+
+}
+
 
 #-----------------------------------#
 #-        Install Software         -#
@@ -110,6 +142,32 @@ install_software(){
     echo "->  installing llnms-viewer to $LLNMS_HOME/bin/llnms-viewer"
     cp "release/llnms-viewer"  "$LLNMS_HOME/bin/llnms-viewer"
 
+
+}
+
+
+#----------------------------------------#
+#-       Set the QMake Variable         -#
+#----------------------------------------#
+set_qmake(){
+
+    which qmake 2> /dev/null
+    if [ "$?" = 0 ]; then 
+        QMAKE='qmake'
+        return
+    fi
+
+    which qmake-qt4 2> /dev/null
+    if [ "$?" = 0 ]; then 
+        QMAKE='qmake-qt4'
+        return
+    fi
+    
+    which qmake-qt5 2> /dev/null
+    if [ "$?" = 0 ]; then 
+        QMAKE='qmake-qt5'
+        return
+    fi
 
 }
 
@@ -134,8 +192,13 @@ fi
 
 #   Variables
 RUN_MAKE=0
+MAKE_FLAG=0
+MAKE_VALUE="all"
 RUN_INSTALL=0
 
+# Figure out qmake
+QMAKE='qmake'
+set_qmake
 
 
 #   Parse command-line options
@@ -163,6 +226,7 @@ for OPTION in "$@"; do
         #----------------------------------#
         'make' )
             RUN_MAKE=1
+            MAKE_FLAG=1
             ;;
 
         #----------------------------------#
@@ -170,11 +234,32 @@ for OPTION in "$@"; do
         #----------------------------------#
         *)
             
-            #else
+            #  If make flag is set
+            if [ "$MAKE_FLAG" = '1' ]; then
+                MAKE_FLAG=0
+               
+                case $OPTION in
+                    'all')
+                        MAKE_VALUE='all'
+                        ;;
+                    'gui')
+                        MAKE_VALUE='gui'
+                        ;;
+                    'curses')
+                        MAKE_VALUE='curses'
+                        ;;
+                    *)
+                        error "Unknown make option $OPTION" $LINENO
+                        exit 1
+                        ;;
+                esac
+
+            #  Otherwise throw an error for unknown option
+            else
                 error "Unknown option $OPTION"
                 usage
                 exit 1
-            #fi
+            fi
 
             ;;
 
@@ -194,7 +279,16 @@ fi
 #-      Make Software      -#
 #---------------------------#
 if [ $RUN_MAKE -ne 0 ]; then
-    make_software
+    
+    if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'curses' ]; then
+        make_curses_software
+    fi
+    
+    if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'gui' ]; then
+        make_gui_software
+    fi
+    
+    
 fi
 
 
