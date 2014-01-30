@@ -40,9 +40,19 @@ void DataContainer::load( int argc, char* argv[], const std::string& filename ){
     // create the parser object
     PSR::Parser parser( argc, argv, filename );
     
-    
-    // get the icon home
-    gui_settings.ICON_HOME = getenv("LLNMS_ICON_HOME")+string("/icons");
+    bool found;
+    string tmpString;
+
+    // Set LLNMS_HOME if it is not already an environment variable
+    if( gui_settings.LLNMS_HOME == "" ){
+        cout << "setting llnms-home from config" << endl;
+        tmpString = parser.getItem_string( "LLNMS_HOME", found );
+        if( found ){
+            gui_settings.LLNMS_HOME=tmpString;
+        } else {
+            throw string("Error:  LLNMS_HOME does not exist in the path or in the config file");
+        }
+    }
 
 }
 
@@ -70,6 +80,11 @@ void DataContainer::write_config_file( ){
 
     ///   Write the GUI Options
     fout << "#  LLNMS-Viewer" << endl;
+    
+    ///   Set LLNMS Home
+    fout << endl;
+    fout << "#   Location of the Base LLNMS Installation" << endl;
+    fout << "LLNMS_HOME=" << gui_settings.LLNMS_HOME << endl;
 
     // close the file
     fout.close();

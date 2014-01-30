@@ -23,7 +23,7 @@ class GUI_Settings{
         std::string app_name;
         
         /// LLNMS Icon Home
-        std::string ICON_HOME;
+        std::string LLNMS_HOME;
 
 };
 
