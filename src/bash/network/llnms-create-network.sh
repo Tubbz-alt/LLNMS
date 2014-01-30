@@ -176,24 +176,14 @@ get_input_networks(){
         echo "Starting IP Address: $ADDRESS_START"
         echo "Ending IP Address:   $ADDRESS_END"
         echo ''
-        echo -n 'Do you wish to add the network? (y/n - default): '
+        echo -n 'Do you wish to save the network? (y/n - default): '
         read ANS
 
         if [ "$ANS" == 'y' -o "$ANS" == 'Y' ]; then
-            OUTPUT+="       <address-start>$ADDRESS_START</address-start>\n"
-            OUTPUT+="       <address-end>$ADDRESS_END</address-end>\n"
-        fi
-
-        #  Ask if we want to continue
-        echo -n 'Do you wish to add additional network definitions? (y/n - default): '
-        read ANS
-        if [ "$ANS" == 'n' -o "$ANS" == 'N' ]; then
+            OUTPUT+="   <address-start>$ADDRESS_START</address-start>\n"
+            OUTPUT+="   <address-end>$ADDRESS_END</address-end>\n"
             EXIT_LOOP=1
-        else
-            EXIT_LOOP=0
         fi
-
-
 
     done
 }
