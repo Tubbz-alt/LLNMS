@@ -5,6 +5,10 @@
  */
 #include "NetworkPane.hpp"
 
+#include "../llnms/LLNMS_Network.hpp"
+
+#include <vector>
+
 /**
  * Constructor
  */
@@ -117,7 +121,12 @@ void NetworkPane::load_network_list_table(){
     // refresh the LLNMS Network Table
     llnms.network_container.refresh();
 
+    // get the list of networks
+    vector<LLNMS_Network> networklist = llnms.network_container.network_list();
 
+    for( size_t i=0; i<networklist.size(); i++ ){
+        networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
+    }
 
 }
 

@@ -7,15 +7,21 @@
 #define __SRC_CPP_LLNMSGUI_CORE_FILEUTILITIES_HPP__
 
 #include <string>
+#include <vector>
 
 /**
- * Return true if the file exists
+ * Return true if the path exists
  *
- * @param[in] filename File to check
+ * @param[in] pathename File to check
  *
- * @return True if the file exists
+ * @return True if the path exists
  */
-bool file_exists( const std::string& filename );
+bool path_exists( const std::string& pathname );
+
+/**
+ * Get a list of files in a directory
+ */
+std::vector<std::string> path_ls( const std::string& pathname );
 
 
 #endif

@@ -12,6 +12,7 @@
 
 using namespace std;
 
+namespace bf=boost::filesystem;
 
 /**
  * GUI_Settings Default Constructor
@@ -22,10 +23,10 @@ GUI_Settings::GUI_Settings( ){
     app_name = "LLNMS-Viewer";
     
     // set the LLNMS Home Variable
-    if( boost::filesystem::exists(getenv("LLNMS_HOME")) == false ){
-        cout << "Setting LLNMS_HOME in gui-settings" << endl;
-        LLNMS_HOME = "/var/tmp";
-    } 
+    LLNMS_HOME="/var/tmp/llnms";
+    if( ( getenv("LLNMS_HOME") != NULL ) && ( bf::exists(getenv("LLNMS_HOME")) == true )){
+        LLNMS_HOME = getenv("LLNMS_HOME");
+    }
 
 }
 

@@ -28,7 +28,7 @@ DataContainer::DataContainer( ){
 void DataContainer::load( int argc, char* argv[], const std::string& filename ){
     
     // check that the filename exists and if not, skip loading
-    if( file_exists( filename ) == false ){
+    if( path_exists( filename ) == false ){
         
         write_config_file( );
         config_file_found = false;
@@ -50,7 +50,7 @@ void DataContainer::load( int argc, char* argv[], const std::string& filename ){
         if( found ){
             gui_settings.LLNMS_HOME=tmpString;
         } else {
-            throw string("Error:  LLNMS_HOME does not exist in the path or in the config file");
+            gui_settings.LLNMS_HOME="/var/tmp/llnms";
         }
     }
 
@@ -67,7 +67,7 @@ void DataContainer::write_config_file( ){
     config_filename="options.cfg";
 #else
     // if linux, then check for the home directory
-    config_filename=string(getenv("HOME"))+string("/.gis_viewer/options.cfg");
+    config_filename=string(getenv("HOME"))+string("/.llnms_viewer/options.cfg");
     
     // if the file does not exist for linux, then create it
     create_file_structure( );
@@ -95,8 +95,8 @@ void DataContainer::write_config_file( ){
 void DataContainer::create_file_structure( ){
     
 #ifndef _WIN32
-    if( file_exists(string(string(getenv("HOME"))+string("/.gis_viewer"))) == false ){
-        system("mkdir $HOME/.gis_viewer");
+    if( path_exists(string(string(getenv("HOME"))+string("/.llnms_viewer"))) == false ){
+        system("mkdir $HOME/.llnms_viewer");
     }
 #endif
 

@@ -47,11 +47,11 @@ TEST_llnms_create_network_01(){
     echo "   -> NETWORK1=$NETWORK1" >> $LLNMS_UNIT_TEST_LOG
     echo "   -> NETWORK2=$NETWORK1" >> $LLNMS_UNIT_TEST_LOG
 
-    #  Create range network
+    #  Create network 1
     echo "" >> $LLNMS_UNIT_TEST_LOG
-    echo "-> Creating first RANGE network" >> $LLNMS_UNIT_TEST_LOG
-    echo "   llnms-create-network -n \"HOME NETWORK\" -net \"RANGE:192.168.0.1:192.168.0.254\" -o $LLNMS_HOME/networks/home-network.llnms-network.xml" >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "HOME NETWORK" -net "RANGE:192.168.0.1:192.168.0.254" -o $NETWORK1 >> $LLNMS_UNIT_TEST_LOG
+    echo "-> Creating first network" >> $LLNMS_UNIT_TEST_LOG
+    echo "   llnms-create-network -n \"HOME NETWORK\" -as \"192.168.0.1\" -ae \"192.168.0.254\" -o $NETWORK1" >> $LLNMS_UNIT_TEST_LOG
+    llnms-create-network -n "HOME NETWORK" -as "192.168.0.1" -ae "192.168.0.254" -o $NETWORK1 >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the network exists
@@ -61,11 +61,11 @@ TEST_llnms_create_network_01(){
         return
     fi
     
-    #  Create single network
+    #  Create network 2
     echo "" >> $LLNMS_UNIT_TEST_LOG
-    echo "-> Create first SINGLE network" >> $LLNMS_UNIT_TEST_LOG
-    echo "   llnms-create-network -n \"Google DNS\" -net \"SINGLE:8.8.8.8\" -o $NETWORK2" >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "Google DNS" -net "SINGLE:8.8.8.8" -o $NETWORK2 >> $LLNMS_UNIT_TEST_LOG
+    echo "-> Creating second network" >> $LLNMS_UNIT_TEST_LOG
+    echo "   llnms-create-network -n \"Google DNS\" -as \"8.8.8.8\" -ae \"8.8.8.8\" -o $NETWORK2" >> $LLNMS_UNIT_TEST_LOG
+    llnms-create-network -n "Google DNS" -as "8.8.8.8" -ae "8.8.8.8" -o $NETWORK2 >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the network exists

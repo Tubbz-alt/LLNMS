@@ -8,8 +8,10 @@
 
 #include <vector>
 
+#include "../core/DataContainer.hpp"
 #include "LLNMS_Network.hpp"
 
+extern DataContainer settings;
 
 /**
  * @class LLNMS_Network_Container
@@ -28,6 +30,11 @@ class LLNMS_Network_Container{
          */
         void refresh();
     
+        /**
+         * Get the network list
+         */
+        std::vector<LLNMS_Network> network_list()const;
+
     private:
         
         /// List of Networks

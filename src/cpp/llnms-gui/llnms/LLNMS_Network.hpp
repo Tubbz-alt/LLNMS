@@ -16,31 +16,46 @@ class LLNMS_Network{
 
     public:
         
-        /// network type
-        enum {
-            SINGLE = 0,
-            RANGE  = 1
-        };
-
         /**
          * Default Constructor for LLNMS_Network Class
          */
         LLNMS_Network();
-
     
+        /**
+         * Constructor given a llnms network file
+         */
+        LLNMS_Network( std::string const& filename );
+        
+        /**
+         * Get the name
+         */
+        std::string name()const;
+
+        /**
+         * Set the name
+         */
+        std::string& name();
+        
+        /**
+         * Equivalent operator
+         */
+        bool operator == ( const LLNMS_Network& other );
+
     private:
         
         /// Name of the network
         std::string  m_name;
         
-        /// Type of network
-        int m_type;
-
         /// Address start
         std::string m_address_start;
 
         /// Address end
         std::string m_address_end;
+
+        /// Network Filename
+        std::string m_network_filename;
+
+
 
 
 }; /// End of LLNMS_Network class

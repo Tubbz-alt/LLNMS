@@ -111,7 +111,8 @@ HEADERS += \
             src/cpp/llnms-gui/gui/MainWindow.hpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network.hpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network_Container.hpp \
-            src/cpp/llnms-gui/llnms/LLNMS_State.hpp
+            src/cpp/llnms-gui/llnms/LLNMS_State.hpp \
+            src/cpp/llnms-gui/thirdparty/tinyxml2/tinyxml2.h
 
 
 SOURCES += \
@@ -128,6 +129,7 @@ SOURCES += \
             src/cpp/llnms-gui/gui/MainWindow.cpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network.cpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network_Container.cpp \
-            src/cpp/llnms-gui/llnms/LLNMS_State.cpp
+            src/cpp/llnms-gui/llnms/LLNMS_State.cpp \
+            src/cpp/llnms-gui/thirdparty/tinyxml2/tinyxml2.cpp
 
 

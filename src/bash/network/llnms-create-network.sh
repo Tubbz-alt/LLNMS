@@ -7,6 +7,9 @@
 #    Purpose:  This program will add a network to the system.
 #
 
+ERROR_NO_FLAGS_PROVIDED=2
+ERROR_ADDR_START_FLAG_INVALID_FORMAT=3
+ERROR_ADDR_END_FLAG_INVALID_FORMAT=4
 
 #-------------------------------------#
 #-     Print usage instructions      -#
@@ -22,11 +25,14 @@ usage(){
     echo '        -o [output file]       : Save the file to the specified filename.'
     echo '                                 Otherwise a random file will be generated.'
     echo '        -n, --name [New Name]  : Set the name of the network'
-    echo '        -net TYPE:ADDRESS:ADDRESS : Add a network definition'
-    echo '            NOTE: Single Addresses will resemble  SINGLE:127.0.0.1'
-    echo '                  Range Addresses will resemble RANGE:192.168.0.1:192.168.0.254'
+    echo '        -as, --address-start [address] : Starting address in the range'
+    echo '        -ae, --address-end   [address] : Ending address in the range'
     echo ''
-
+    echo '    return values:'
+    echo "        $ERROR_NO_FLAGS_PROVIDED : Not enough flags were provided."
+    echo "        $ERROR_ADDR_START_FLAG_INVALID_FORMAT : address-start flag is in invalid format"
+    echo "        $ERROR_ADDR_END_FLAG_INVALID_FORMAT : address-end flag is in invalid format"
+    echo ''
 }
 
 
@@ -124,114 +130,58 @@ get_input_networks(){
 
         #  start type loop
         TEMP_TYPE=''
-        EXIT_TYPE_LOOP=0
-        while [ $EXIT_TYPE_LOOP -ne 1 ]; do
 
-            # Query for the network type
-            clear
-            echo "Add network definition to $NETWORK_NAME"
-            echo '-------------------------------'
-            echo ''
-            echo 'Enter desired network type'
-            echo '1. SINGLE - Single IP address'
-            echo '2. RANGE  - Range of IP addresses'
-            echo -n 'Selection: '
+        # Query for the network type
+        clear
+        echo "Add network definition to $NETWORK_NAME"
+        echo '-------------------------------'
+        echo ''
+            
+        #  Start the address loop
+        EXIT_ADDR_LOOP=0
+        while [ $EXIT_ADDR_LOOP -ne 1 ]; do
+                
+            #  ask for the ip address
+            echo -n 'Enter the desired starting IP address: '
             read ANS
-        
-            # make sure we have acceptable output
-            if [ "$ANS" == '1' ]; then 
-                TEMP_TYPE='SINGLE'
-                EXIT_TYPE_LOOP=1
-            elif [ "$ANS" == '2' ]; then 
-                TEMP_TYPE='RANGE'
-                EXIT_TYPE_LOOP=1
-            else
-                echo 'error: not valid option'
+
+            #  make sure it fits the pattern
+            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+                ADDRESS_START=$ANS
+                EXIT_ADDR_LOOP=1
             fi
-        done # end of type loop
-    
-        #  Add the ip address for single
-        if [ "$TEMP_TYPE" == "SINGLE" ]; then
-            
-            #  Start the address loop
-            EXIT_ADDR_LOOP=0
-            while [ $EXIT_ADDR_LOOP -ne 1 ]; do
+
+        done
+        
+        #  Start the address loop
+        EXIT_ADDR_LOOP=0
+        while [ $EXIT_ADDR_LOOP -ne 1 ]; do
                 
-                #  ask for the ip address
-                echo -n 'Enter the desired IP address: '
-                read ANS
+            #  ask for the ip address
+            echo -n 'Enter the desired ending IP address: '
+            read ANS
 
-                #  make sure it fits the pattern
-                if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
-                    ADDRESS=$ANS
-                    EXIT_ADDR_LOOP=1
-                fi
-            done
+            #  make sure it fits the pattern
+            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+                ADDRESS_END=$ANS
+                EXIT_ADDR_LOOP=1
+            fi
 
-        # add the addresses for range
-        else
-            
-            #  Start the address loop
-            EXIT_ADDR_LOOP=0
-            while [ $EXIT_ADDR_LOOP -ne 1 ]; do
-                
-                #  ask for the ip address
-                echo -n 'Enter the desired starting IP address: '
-                read ANS
-
-                #  make sure it fits the pattern
-                if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
-                    ADDRESS_START=$ANS
-                    EXIT_ADDR_LOOP=1
-                fi
-
-            done
-            
-            #  Start the address loop
-            EXIT_ADDR_LOOP=0
-            while [ $EXIT_ADDR_LOOP -ne 1 ]; do
-                
-                #  ask for the ip address
-                echo -n 'Enter the desired ending IP address: '
-                read ANS
-
-                #  make sure it fits the pattern
-                if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
-                    ADDRESS_END=$ANS
-                    EXIT_ADDR_LOOP=1
-                fi
-
-            done
-
-        fi
-
+        done
         
         # Review our changes
         clear
         echo 'Network Definition Review'
         echo '-------------------------'
-        echo "Type: $TEMP_TYPE"
-        if [ "$TEMP_TYPE" == "SINGLE" ]; then
-            echo "IP Address: $ADDRESS"
-        else
-            echo "Starting IP Address: $ADDRESS_START"
-            echo "Ending IP Address:   $ADDRESS_END"
-        fi
+        echo "Starting IP Address: $ADDRESS_START"
+        echo "Ending IP Address:   $ADDRESS_END"
+        echo ''
         echo -n 'Do you wish to add the network? (y/n - default): '
         read ANS
 
         if [ "$ANS" == 'y' -o "$ANS" == 'Y' ]; then
-            echo 'adding definition'
-            OUTPUT+='    <network>\n'
-            OUTPUT+="       <type>$TEMP_TYPE</type>\n"
-            
-            if [ "$TEMP_TYPE" == "SINGLE" ]; then
-                OUTPUT+="       <address>$ADDRESS</address>\n"
-            else
-                OUTPUT+="       <address-start>$ADDRESS_START</address-start>\n"
-                OUTPUT+="       <address-end>$ADDRESS_END</address-end>\n"
-            fi
-            OUTPUT+='    </network>\n'
+            OUTPUT+="       <address-start>$ADDRESS_START</address-start>\n"
+            OUTPUT+="       <address-end>$ADDRESS_END</address-end>\n"
         fi
 
         #  Ask if we want to continue
@@ -271,15 +221,21 @@ fi
 NETWORK_NAME=''
 NAME_FLAG=0
 
+#  Desired starting address
+ADDR_START_FLAG=0
+ADDR_START_VALUE=''
+
+#  Desired Ending Address
+ADDR_END_FLAG=0
+ADDR_END_VALUE=''
+
 #  Interactive option
 INTERACTIVE_FLAG=0
 
-#  Network flag
-NET_FLAG=0
-DEFINITIONS=''
-
-FILE_FLAG=1
+#  File parameters
+FILE_FLAG=0
 OUTPUT_FILENAME="$LLNMS_HOME/networks/$(date +"%Y%m%d_%H%M%S_%N").llnms-network.xml"
+
 
 #  Parse command-line options
 for OPTION in "$@"; do
@@ -302,9 +258,14 @@ for OPTION in "$@"; do
             INTERACTIVE_FLAG=1
             ;;
         
-        # add a network definition
-        '-net' )
-            NET_FLAG=1
+        # add a network starting address
+        '-as' )
+            ADDR_START_FLAG=1
+            ;;
+        
+        # add a network ending address
+        '-ae' )
+            ADDR_STOP_FLAG=1
             ;;
 
         # set the output file
@@ -320,11 +281,16 @@ for OPTION in "$@"; do
                 NAME_FLAG=0
                 NETWORK_NAME="$OPTION"
             
-            #  If net flag is set
-            elif [ $NET_FLAG -eq 1 ]; then
-                NET_FLAG=0
-                DEFINITIONS+=" $OPTION"
+            #  If address start flag is set
+            elif [ $ADDR_START_FLAG -eq 1 ]; then
+                ADDR_START_FLAG=0
+                ADDR_START_VALUE=$OPTION
             
+            #  If address end flag is set
+            elif [ $ADDR_STOP_FLAG -eq 1 ]; then
+                ADDR_END_FLAG=0
+                ADDR_END_VALUE=$OPTION
+
             # if the output filename is set
             elif [ $FILE_FLAG -eq 1 ]; then
                 FILE_FLAG=0
@@ -344,6 +310,43 @@ for OPTION in "$@"; do
 done
 
 
+#----------------------------------------------------------------------------------#
+#-     Make sure that either interactive is set or the other flags are set        -#
+#----------------------------------------------------------------------------------#
+if [ ! "$INTERACTIVE_FLAG" = '1' ]; then
+    if [ "$NETWORK_NAME" = '' -o "$ADDR_START_FLAG" = '' -o "$ADDR_END_FLAG" = '' ]; then
+        error "Either interactive mode must be set or all network flags must be provided." "$LINENO"
+        exit $ERROR_NO_FLAGS_PROVIDED
+    fi
+fi
+
+
+#-------------------------------------------------------------------------#
+#-       Make sure the input addresses are in the correct format         -#
+#-------------------------------------------------------------------------#
+if [ ! "$ADDR_START_VALUE" = '' ]; then
+    if [ ! "$(echo $ADDR_START_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+        error "The address-start flag must be in a proper ip4 address format." "$LINENO"
+        exit $ERROR_ADDR_START_FLAG_INVALID_FORMAT
+    else
+        ADDRESS_START=$ADDR_START_VALUE
+    fi
+
+fi
+
+if [ ! "$ADDR_END_VALUE" = '' ]; then
+    if [ ! "$(echo $ADDR_END_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+        error "The address-end flag must be in a proper ip4 address format." "$LINENO"
+        exit $ERROR_ADDR_END_FLAG_INVALID_FORMAT
+    else    
+        ADDRESS_END=$ADDR_END_VALUE
+    fi
+fi
+
+
+#-------------------------------------------#
+#-       Start Processing the Output       -#
+#-------------------------------------------#
 #  Create output
 OUTPUT='<llnms-network>\n'
 
@@ -354,58 +357,26 @@ OUTPUT+="  <name>$NETWORK_NAME</name>\n"
 
 
 #  Add each network
-OUTPUT+='  <networks>\n'
-
 if [ $INTERACTIVE_FLAG -eq 1 ]; then 
     get_input_networks;
 else
-    
-    for DEF in $DEFINITIONS; do
-        
-        # modify the ifs var
-        OLDIFS="$IFS"
-        IFS=":"
-        
-        # create temp array
-        read -ra STUFF <<< "$DEF"
-        
-        # return the ifs
-        IFS=$OLDIFS
-        
-        TEMP_TYPE="${STUFF[0]}"
-        if [ "$TEMP_TYPE" == "SINGLE" ]; then 
-            ADDRESS="${STUFF[1]}"
-        else        
-            ADDRESS_START="${STUFF[1]}"
-            ADDRESS_END="${STUFF[2]}"
-        fi
-        
-        # create network 
-        OUTPUT+='    <network>\n'
-        if [ "$TEMP_TYPE" == "SINGLE" ]; then 
-            OUTPUT+='      <type>SINGLE</type>\n'
-            OUTPUT+="      <address>$ADDRESS</address>\n"
-        else  
-            OUTPUT+='      <type>RANGE</type>\n'
-            OUTPUT+="      <address-start>$ADDRESS_START</address-start>\n"
-            OUTPUT+="      <address-end>$ADDRESS_END</address-end>\n"
-        fi
-        OUTPUT+='    </network>\n'
-    done
+    # create network 
+    OUTPUT+="  <address-start>$ADDRESS_START</address-start>\n"
+    OUTPUT+="  <address-end>$ADDRESS_END</address-end>\n"
 fi
-OUTPUT+='  </networks>\n'
 
 # Close off the output
-OUTPUT+='</llnms-network>'
+OUTPUT+="</llnms-network>\n"
 
 #  Modify IFS to print spaces properly
 OLDIFS="$IFS"
 IFS=""
 
 #  Print data to file
-echo -e $OUTPUT > $OUTPUT_FILENAME
+printf $OUTPUT > $OUTPUT_FILENAME
 
 #  Fix IFS
 IFS=$OLDIFS
+
 
 
