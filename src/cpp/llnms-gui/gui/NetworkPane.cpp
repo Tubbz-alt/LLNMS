@@ -6,6 +6,7 @@
 #include "NetworkPane.hpp"
 
 #include "../llnms/LLNMS_Network.hpp"
+#include "CreateNetworkDialog.hpp"
 
 #include <QHeaderView>
 
@@ -80,6 +81,7 @@ void NetworkPane::build_network_list_widget(){
     networkListCreateNetworkButton->setIconSize(QSize(40,40));
     networkListCreateNetworkButton->setToolTip("Create a Network Definition");
     networkListToolbarLayout->addWidget( networkListCreateNetworkButton );
+    connect( networkListCreateNetworkButton, SIGNAL(clicked()), this, SLOT(createNewNetworkDialog()));
 
     // create the remove network button
     networkListRemoveNetworkButton = new QToolButton;
@@ -150,5 +152,13 @@ void NetworkPane::load_network_list_table(){
     networkListTable->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
 #endif
  
+}
+
+void NetworkPane::createNewNetworkDialog(){
+    
+    // load the new network dialog
+    CreateNetworkDialog  networkDialog;
+    networkDialog.exec();
+    
 }
 

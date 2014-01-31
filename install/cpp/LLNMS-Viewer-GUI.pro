@@ -105,6 +105,7 @@ HEADERS += \
             src/cpp/llnms-gui/core/Parser.hpp \
             src/cpp/llnms-gui/gui/AssetPane.hpp \
             src/cpp/llnms-gui/gui/ConfigPane.hpp \
+            src/cpp/llnms-gui/gui/CreateNetworkDialog.hpp \
             src/cpp/llnms-gui/gui/NetworkPane.hpp \
             src/cpp/llnms-gui/gui/SummaryPane.hpp \
             src/cpp/llnms-gui/gui/NavigationBar.hpp \
@@ -123,6 +124,7 @@ SOURCES += \
             src/cpp/llnms-gui/core/Parser.cpp \
             src/cpp/llnms-gui/gui/AssetPane.cpp \
             src/cpp/llnms-gui/gui/ConfigPane.cpp \
+            src/cpp/llnms-gui/gui/CreateNetworkDialog.cpp \
             src/cpp/llnms-gui/gui/NetworkPane.cpp \
             src/cpp/llnms-gui/gui/SummaryPane.cpp \
             src/cpp/llnms-gui/gui/NavigationBar.cpp \

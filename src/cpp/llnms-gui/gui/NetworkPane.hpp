@@ -41,6 +41,11 @@ class NetworkPane : public QWidget{
          * Rebuild the network list table
          */
         void load_network_list_table();
+        
+        /**
+         * Create a new asset
+         */
+        void createNewNetworkDialog();
 
     private:    
         
