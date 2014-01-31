@@ -37,6 +37,26 @@ class LLNMS_Network{
         std::string& name();
         
         /**
+         * Get the starting address
+         */
+        std::string address_start()const;
+
+        /**
+         * Set the starting address
+         */
+        std::string& address_start();
+
+        /**
+         * Get the ending address
+         */
+        std::string address_end()const;
+
+        /**
+         * Set the ending address
+         */
+        std::string& address_end();
+
+        /**
          * Equivalent operator
          */
         bool operator == ( const LLNMS_Network& other );

@@ -7,6 +7,8 @@
 
 #include "../llnms/LLNMS_Network.hpp"
 
+#include <QHeaderView>
+
 #include <iostream>
 #include <vector>
 
@@ -32,7 +34,6 @@ NetworkPane::NetworkPane( QWidget*  parent ) : QWidget( parent ){
     // set layout
     setLayout( mainLayout );
 
-
 }
 
 
@@ -40,7 +41,7 @@ NetworkPane::NetworkPane( QWidget*  parent ) : QWidget( parent ){
  * Create the network list widget
  */
 void NetworkPane::build_network_list_widget(){
-
+    
     // create the network list label
     networkListLabel  = new QLabel("Network List");
 
@@ -54,12 +55,11 @@ void NetworkPane::build_network_list_widget(){
     networkListLayout = new QHBoxLayout;
 
     // create the table
-    networkListTable = new QTableWidget(0, 4, networkListWidget);
-    networkListTableHeaders.resize(4);
+    networkListTable = new QTableWidget(0, 3, networkListWidget);
+    networkListTableHeaders.resize(3);
     networkListTableHeaders[0].setText("Name");
-    networkListTableHeaders[1].setText("Type");
-    networkListTableHeaders[2].setText("Address-Start");
-    networkListTableHeaders[3].setText("Address-End");
+    networkListTableHeaders[1].setText("Address-Start");
+    networkListTableHeaders[2].setText("Address-End");
     for( int i=0; i<networkListTableHeaders.size(); i++ ){
         networkListTable->setHorizontalHeaderItem( i, &networkListTableHeaders[i] );
     }
@@ -117,7 +117,7 @@ void NetworkPane::build_network_list_widget(){
  * Load the network list table
  */
 void NetworkPane::load_network_list_table(){
-
+    
     // clear the table
     networkListTable->clearContents();
     
@@ -129,12 +129,26 @@ void NetworkPane::load_network_list_table(){
     
     // resize the table
     networkListTable->setRowCount( networklist.size()+1 );
+    
+    // create the all item
+    networkListTable->setItem( 0, 0, new QTableWidgetItem("All Networks"));
 
     // load the table
-    cout << "SIZE: " << networklist.size() << endl;
     for( size_t i=0; i<networklist.size(); i++ ){
         networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
+        networkListTable->setItem( i+1, 1, new QTableWidgetItem( networklist[i].address_start().c_str()));
+        networkListTable->setItem( i+1, 2, new QTableWidgetItem( networklist[i].address_end().c_str()));
     }
 
+#if QT_VERSION > 0x050000
+    networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setSectionResizeMode( 1, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setSectionResizeMode( 2, QHeaderView::Stretch );
+#else
+    networkListTable->horizontalHeader()->setResizeMode( 0, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
+#endif
+ 
 }
 

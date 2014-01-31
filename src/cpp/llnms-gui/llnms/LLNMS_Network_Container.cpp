@@ -25,8 +25,7 @@ LLNMS_Network_Container::LLNMS_Network_Container(){
  * Refresh the LLNMS Network List
  */
 void LLNMS_Network_Container::update(){
-
-
+    
     /// get a list of llnms network files
     vector<string> file_list =  path_ls( settings.gui_settings.LLNMS_HOME + string("/networks"));
     vector<string> netfile_list;    
@@ -57,7 +56,6 @@ void LLNMS_Network_Container::update(){
             m_network_list.push_back( tmpNetwork );
         }
     }
-
 }
 
 /**

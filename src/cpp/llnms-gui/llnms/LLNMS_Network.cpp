@@ -8,6 +8,10 @@
 #include "../core/FileUtilities.hpp"
 #include "../thirdparty/tinyxml2/tinyxml2.h"
 
+#include <iostream>
+
+using namespace std;
+
 
 /**
  * Default Constructor for LLNMS_Network class
@@ -44,11 +48,24 @@ LLNMS_Network::LLNMS_Network( std::string const& networkfilename ){
     doc.LoadFile(networkfilename.c_str());
 
     // get the base element
+    if( doc.FirstChildElement("llnms-network") == NULL ){ return; }
+
     tinyxml2::XMLElement* networkElement = doc.FirstChildElement("llnms-network");
     
     // get the name
-    m_name = "Hello";//networkElement->FirstChildElement("name")->GetText();
+    if( networkElement->FirstChildElement("name") != NULL ){
+        m_name = networkElement->FirstChildElement("name")->GetText();
+    }
 
+    // get the starting address
+    if( networkElement->FirstChildElement("address-start") != NULL ){
+        m_address_start = networkElement->FirstChildElement("address-start")->GetText();
+    }
+
+    // get the ending address
+    if( networkElement->FirstChildElement("address-end") != NULL ){
+        m_address_end = networkElement->FirstChildElement("address-end")->GetText();
+    }
 
 }
 
@@ -65,6 +82,35 @@ std::string LLNMS_Network::name()const{
 std::string& LLNMS_Network::name(){
     return m_name;
 }
+
+/**
+ * Get the starting address
+ */
+std::string LLNMS_Network::address_start()const{
+    return m_address_start;
+}
+
+/**
+ * Set the starting address
+ */
+std::string& LLNMS_Network::address_start(){
+    return m_address_start;
+}
+
+/**
+ * Get the ending address
+ */
+std::string LLNMS_Network::address_end()const{
+    return m_address_end;
+}
+
+/**
+ * Set the ending address
+ */
+std::string& LLNMS_Network::address_end(){
+    return m_address_end;
+}
+
 
 /**
  * Equivalent operator
