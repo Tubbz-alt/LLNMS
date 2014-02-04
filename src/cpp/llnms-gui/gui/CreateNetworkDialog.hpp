@@ -7,7 +7,10 @@
 #define __SRC_CPP_LLNMSGUI_GUI_CREATENETWORKDIALOG_HPP__
 
 #include <QDialog>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
+#include <QToolButton>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -26,7 +29,23 @@ class CreateNetworkDialog : public QDialog {
         CreateNetworkDialog( QWidget* parent = NULL );
 
     
+    public slots:
+        
+        void saveAndClose();
+
     private:
+
+        //------------------------------------//
+        //-        Private Variables         -//
+        //------------------------------------//
+        void build_name_widget();
+
+        void build_start_widget();
+
+        void build_end_widget();
+
+        void build_toolbar_widget();
+
 
         //------------------------------------//
         //-        Private Variables         -//
@@ -36,6 +55,30 @@ class CreateNetworkDialog : public QDialog {
 
         /// Main Label
         QLabel*       mainLabel;
+        
+        /// Network Name Widget
+        QWidget*      networkNameWidget;
+        QHBoxLayout*  networkNameLayout;
+        QLabel*       networkNameLabel;
+        QLineEdit*    networkNameEdit;
+
+        /// Network Start Address Widget
+        QWidget*      networkStartWidget;
+        QHBoxLayout*  networkStartLayout;
+        QLabel*       networkStartLabel;
+        QLineEdit*    networkStartEdit;
+
+        /// Network End Address Widget
+        QWidget*      networkEndWidget;
+        QHBoxLayout*  networkEndLayout;
+        QLabel*       networkEndLabel;
+        QLineEdit*    networkEndEdit;
+
+        /// Toolbar
+        QWidget*      toolbarWidget;
+        QHBoxLayout*  toolbarLayout;
+        QToolButton*  toolbarSaveButton;
+        QToolButton*  toolbarCancelButton;
 
 
 }; /// End of CreateNetworkDialog class
