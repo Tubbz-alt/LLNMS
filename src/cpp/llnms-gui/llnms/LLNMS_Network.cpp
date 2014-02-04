@@ -8,6 +8,7 @@
 #include "../core/FileUtilities.hpp"
 #include "../thirdparty/tinyxml2/tinyxml2.h"
 
+#include <fstream>
 #include <iostream>
 
 using namespace std;
@@ -29,6 +30,17 @@ LLNMS_Network::LLNMS_Network( ){
 
 }
 
+/**
+ * Parameterized Container for the LLNMS Network
+ */
+LLNMS_Network::LLNMS_Network( const std::string& name,
+                              const std::string& address_start,
+                              const std::string& address_end ){
+
+    m_name = name;
+    m_address_start = address_start;
+    m_address_end   = address_end;
+}
 
 /**
  * Constructor given the default filename
@@ -126,5 +138,22 @@ bool LLNMS_Network::operator == ( const LLNMS_Network& other ){
 
     return true;
 
+}
+
+/**
+ * Write network to file
+ */
+void LLNMS_Network::write( const std::string& filename ) const{
+
+    ofstream fout;
+    fout.open(filename.c_str() );
+    
+    fout << "<llnms-network>" << endl;
+    fout << "  <name>" << m_name << "</name>" << endl;
+    fout << "  <address-start>" << m_address_start << "</address-start>" << endl;
+    fout << "  <address-end>" << m_address_end << "</address-end>" << endl;
+    fout << "</llnms-network>" << endl;
+
+    fout.close();
 }
 

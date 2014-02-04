@@ -65,4 +65,18 @@ std::vector<LLNMS_Network> LLNMS_Network_Container::network_list()const{
     return m_network_list;
 }
 
+/**
+ * Create a network
+ */
+void LLNMS_Network_Container::llnms_create_network( const std::string& name, 
+                                                    const std::string& address_start,
+                                                    const std::string& address_end 
+                                                  ){
+    
+    /// create a network file
+    LLNMS_Network new_network( name, address_start, address_end );
+    
+    //new_network.write( );
+
+}
 
