@@ -38,29 +38,10 @@ unix:!macx{
 unix:macx{
     message("using MacOSX")
 
-    #DEPENDPATH += .
-    #INCLUDEPATH += /opt/local/include src
-
-    #LIBS += -L/opt/local/lib
-    #LIBS += -lgdal
-    #LIBS += -lopencv_core.2.4.5 -lopencv_highgui.2.4.5 -lopencv_imgproc.2.4.5 -lopencv_calib3d.2.4.5
-    
-    #  Add path for GIS-Library
-    #LIBS += -L/opt/lib -lGIS_Library
-    #INCLUDEPATH += /opt/include
-
     #  Add Path for Boost
-    #LIBS += -L/opt/local/lib -lboost_system-mt -lboost_filesystem-mt -lboost_regex-mt
-    #INCLUDEPATH += /opt/local/include
+    LIBS += -L/opt/local/lib -lboost_system-mt -lboost_filesystem-mt -lboost_regex-mt
+    INCLUDEPATH += /opt/local/include
     
-    #  Add Path for OpenCV
-    #LIBS += -L/opt/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc
-    #INCLUDEPATH += /opt/local/include
-	
-    #MOC_DIR += build
-	#OBJECTS_DIR += build
-	#GUI_DIR += build
-
 }
 
 #  Windows-Specific Dependencies and Configuration Options

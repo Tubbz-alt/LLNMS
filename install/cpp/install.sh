@@ -110,8 +110,14 @@ make_curses_software(){
 #-           Make Software        -#
 #----------------------------------#
 make_gui_software(){
+    
 
     #  Print message
+    if [ "`uname`" = 'Darwin' ]; then
+        echo '->  Cleaning old gui builds'
+        rm -rf release/bin/LLNMS-Viewer.app
+    fi
+    
     echo '->  building Qt LLNMS-Viewer'
 
     #  Run QMake
@@ -124,13 +130,26 @@ make_gui_software(){
 
     #  Create the release
     echo '  -> Building the release'
-    mkdir -p release/share/llnms-viewer/bin
-    mkdir -p release/share/llnms-viewer/icons
-    cp -r src/cpp/llnms-gui/icons/* release/share/llnms-viewer/icons/
-    cp  release/bin/LLNMS-Viewer     release/share/llnms-viewer/bin/LLNMS-Viewer.out
-    cp  install/cpp/LLNMS-Viewer.sh  release/share/llnms-viewer/LLNMS-Viewer
+    if [ "`uname`" = 'Darwin' ]; then
+        
+        #  Add the icons
+        mkdir -p release/bin/LLNMS-Viewer.app/Contents/MacOS/icons
+        cp -r src/cpp/llnms-gui/icons/*  release/bin/LLNMS-Viewer.app/Contents/MacOS/icons/
+        
+        #  Set the executables
+        mkdir -p release/bin/LLNMS-Viewer.app/Contents/MacOS/bin
+        mv  release/bin/LLNMS-Viewer.app/Contents/MacOS/LLNMS-Viewer  release/bin/LLNMS-Viewer.app/Contents/MacOS/bin/LLNMS-Viewer.out
+        cp  install/cpp/LLNMS-Viewer.sh                               release/bin/LLNMS-Viewer.app/Contents/MacOS/LLNMS-Viewer
+        
+    else
+        mkdir -p release/share/llnms-viewer/bin
+        mkdir -p release/share/llnms-viewer/icons
+        cp -r src/cpp/llnms-gui/icons/* release/share/llnms-viewer/icons/
+        cp  release/bin/LLNMS-Viewer     release/share/llnms-viewer/bin/LLNMS-Viewer.out
+        cp  install/cpp/LLNMS-Viewer.sh  release/share/llnms-viewer/LLNMS-Viewer
+    fi
 
-}
+}   
 
 
 #-----------------------------------#
