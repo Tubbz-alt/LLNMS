@@ -68,7 +68,8 @@ std::vector<LLNMS_Network> LLNMS_Network_Container::network_list()const{
 /**
  * Create a network
  */
-void LLNMS_Network_Container::llnms_create_network( const std::string& name, 
+void LLNMS_Network_Container::llnms_create_network( const std::string& LLNMS_HOME,
+                                                    const std::string& name, 
                                                     const std::string& address_start,
                                                     const std::string& address_end 
                                                   ){
@@ -76,7 +77,18 @@ void LLNMS_Network_Container::llnms_create_network( const std::string& name,
     /// create a network file
     LLNMS_Network new_network( name, address_start, address_end );
     
-    //new_network.write( );
+    /// Create filename using name substited of periods
+    std::string new_filename = name;
+    for( size_t i=0; i<new_filename.size(); i++ ){
+        if( new_filename[i] == '.' || new_filename[i] == ' ' ){
+            new_filename[i] = '_';
+        }
+    }
+    
+    new_filename = LLNMS_HOME + std::string("/networks/") + new_filename + std::string(".llnms-network.xml");
+
+    cout << "NEW FILENAME: " << new_filename << endl;
+    //new_network.write( new_filename + std::string(".llnms-network.xml"));
 
 }
 

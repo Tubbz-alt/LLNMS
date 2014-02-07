@@ -14,6 +14,12 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "../core/DataContainer.hpp"
+#include "../llnms/LLNMS_State.hpp"
+
+extern DataContainer settings;
+extern LLNMS_State   llnms;
+
 /**
  * @class CreateNetworkDialog
  */

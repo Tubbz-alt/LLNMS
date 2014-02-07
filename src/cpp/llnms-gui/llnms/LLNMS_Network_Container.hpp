@@ -33,7 +33,8 @@ class LLNMS_Network_Container{
         /**
          * Create a LLNMS Network
          */
-        void llnms_create_network( const std::string& name, 
+        void llnms_create_network( const std::string& LLNMS_HOME,
+                                   const std::string& name, 
                                    const std::string& address_start,
                                    const std::string& address_end
                                  );
