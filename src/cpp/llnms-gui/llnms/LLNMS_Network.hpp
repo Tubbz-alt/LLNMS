@@ -27,6 +27,13 @@ class LLNMS_Network{
         LLNMS_Network( std::string const& filename );
         
         /**
+         * Constructor given the LLNMS Network
+        */
+        LLNMS_Network( const std::string& name,
+                       const std::string& address_start,
+                       const std::string& address_end );
+
+        /**
          * Write the network to file
          */
         void write( const std::string& filename ) const;
