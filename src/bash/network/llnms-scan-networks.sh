@@ -50,8 +50,8 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
-source $LLNMS_HOME/bin/llnms-network-utilities.bash
+source $LLNMS_HOME/config/llnms-info
+
 
 #  output state
 OUTPUT_STATE='VERBOSE'

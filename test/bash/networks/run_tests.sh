@@ -32,6 +32,7 @@ fi
 #------------------------------------------#
 print_module_header "Networking"
 
+
 #--------------------------------------------------#
 #-              Test Create Network               -#
 #--------------------------------------------------#
@@ -55,6 +56,13 @@ print_test_result 'llnms-list-networks'  'List Networks'  "$RESULT"
 RESULT=`TEST_llnms_remove_network_01`
 print_test_result 'llnms-remove-network'  'Remove a Network'  "$RESULT"
 
+
+#------------------------------------------------#
+#-              Test Scan Networks              -#
+#------------------------------------------------#
+. test/bash/networks/TEST_llnms_scan_networks.sh
+RESULT=`TEST_llnms_scan_networks_01`
+print_test_result 'llnms-scan-networks'  'Scan Networks'   "$RESULT"
 
 
 #------------------------------------------#
