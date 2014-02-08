@@ -82,7 +82,9 @@ usage(){
     echo '         -l, --list    :  Print in a List format'
     echo '         -p, --pretty  :  Print in a human-readable format (DEFAULT)'
     echo '         -x, --xml     :  Print in a XML format'
-
+    echo ''
+    echo '      --name-only      :  Print only network names'
+    echo '      --file-only      :  Print only filenames'
 }
 
 
@@ -106,6 +108,8 @@ fi
 
 #  Set the output format
 OUTPUT_FORMAT="LIST"
+NAME_ONLY=0
+FILE_ONLY=0
 
 #  parse command-line options
 for OPTION in $@; do
@@ -138,6 +142,16 @@ for OPTION in $@; do
         "-x" | "--xml" )
             OUTPUT_FORMAT="XML"
             ;;
+        
+        #  Print only names
+        '--name-only' )
+            NAME_ONLY=1
+            ;;
+
+        #  Print only files
+        '--file-only' )
+            FILE_ONLY=1
+            ;;
 
         #  Print Error
         *)
@@ -158,29 +172,35 @@ fi
 NETWORK_FILES=`ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null`
 for NETWORK_FILE in $NETWORK_FILES; do
 
-    
+   
+    #  Print the filename
+    if [ "$FILE_ONLY" = '1' ]; then
+        printf "$NETWORK_FILE"
+    fi
+
     #  Print the name
     NETWORK_NAME="`llnms-print-network-info -n  -f $NETWORK_FILE`"
-    if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$NAME_ONLY" = '1' ]; then
+        printf "$NETWORK_NAME"
+
+    elif [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
         printf "$NETWORK_NAME, "
     fi
 
     #  Print the address start
     ADDRESS_START="`llnms-print-network-info -s -f $NETWORK_FILE`"
-    if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
         printf "$ADDRESS_START,  "
     fi
 
     #  Print the address end
     ADDRESS_END="`llnms-print-network-info -e -f $NETWORK_FILE`"
-    if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
         printf "$ADDRESS_END"
     fi
 
     #  Print a new line
-    if [ "$OUTPUT_FORMAT" = 'LIST' ]; then
-        printf "\n"
-    fi
+    printf "\n"
 
 done
 

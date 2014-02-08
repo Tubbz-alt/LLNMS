@@ -181,7 +181,6 @@ for OPTION in "$@"; do
     esac
 done
 
-
 #-------------------------------------------------------#
 #-      Make sure a network file has been selected.    -#
 #-------------------------------------------------------#
@@ -204,7 +203,7 @@ fi
 #-------------------------------------------#
 #-      Print the name if requested        -#
 #-------------------------------------------#
-if [ "$PRINT_ALL" = '1' -o "$PRINT_NAME" ]; then
+if [ "$PRINT_ALL" = '1' -o "$PRINT_NAME" = '1' ]; then
     printf "`xmlstarlet sel -t -m '//llnms-network' -v 'name' -n $FILE_VALUE`"
 fi
 
