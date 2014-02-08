@@ -115,6 +115,9 @@ install_to_filesystem(){
     echo '-> Copying llnms-list-networks'
     cp 'src/bash/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
     
+    echo '-> Copying llnms-print-network-info'
+    cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
+
     echo '-> Copying llnms-remove-network'    
     cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
     
