@@ -197,7 +197,9 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
 
         #  create address
         TEST_ADDRESS="${a}.${b}.${c}.${d}"
-
+        
+        #  Run ping on the address
+        llnms-ping-address -ip4 ${TEST_ADDRESS} -c 1
 
     done
     done

@@ -164,12 +164,26 @@ done
 #  Generate a new lock file
 touch $LOCK_FILE
 
-if [ $PING_RESULT -eq 0 ]; then
-    sed -e "s/${IP4_ADDRESS} [01].*/${IP4_ADDRESS} 1 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
-    RESULT=0
-else    
-    sed -e "s/${IP4_ADDRESS} [01].*/${IP4_ADDRESS} 0 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
-    RESULT=1
+
+#  If the status file does not have the address
+if [ "`cat $STAT_FILE | grep $IP4_ADDRESS`" = '' ]; then
+    if [ "$PING_RESULT" = '0' ]; then
+        echo "${IP4_ADDRESS} 1 `date +%Y-%m-%d-%H:%M:%S`" >> ${STAT_FILE}
+        RESULT=0
+    else
+        echo "${IP4_ADDRESS} 0 `date +%Y-%m-%d-%H:%M:%S`" >> ${STAT_FILE}
+        RESULT=1
+    fi
+
+#  If the status file does have the address
+else
+    if [ $PING_RESULT -eq 0 ]; then
+        sed -e "s/${IP4_ADDRESS} [01].*/${IP4_ADDRESS} 1 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        RESULT=0
+    else    
+        sed -e "s/${IP4_ADDRESS} [01].*/${IP4_ADDRESS} 0 $(date +"%Y-%m-%d-%H:%M:%S")/g" $STAT_FILE > ${STAT_FILE}.tmp && mv ${STAT_FILE}.tmp $STAT_FILE
+        RESULT=1
+    fi
 fi
 
 #  remove the lock file

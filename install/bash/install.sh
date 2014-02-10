@@ -108,25 +108,27 @@ install_to_filesystem(){
 
 
     # networks
-    echo ''    
-    echo '-> Copying llnms-create-network'                
+    echo ''   
+    echo '-> Copying network module scripts'
+    
+    echo '   -> Copying llnms-create-network'                
     cp 'src/bash/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
     
-    echo '-> Copying llnms-list-networks'
+    echo '   -> Copying llnms-list-networks'
     cp 'src/bash/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
     
-    echo '-> Copying llnms-print-network-info'
+    echo '   -> Copying llnms-ping-address' 
+    cp 'src/bash/network/llnms-ping-address.sh'           "$LLNMS_HOME/bin/llnms-ping-address"
+
+    echo '   -> Copying llnms-print-network-info'
     cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
 
-    echo '-> Copying llnms-remove-network'    
+    echo '   -> Copying llnms-remove-network'    
     cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
     
-    echo '-> Copying llnms-scan-networks'   
+    echo '   -> Copying llnms-scan-networks'   
     cp 'src/bash/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
 
-    #  llnms utilities
-    #cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
-    #cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
 
     #  Scanning utilities
     echo ''
