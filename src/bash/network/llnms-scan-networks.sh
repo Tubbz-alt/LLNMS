@@ -84,17 +84,6 @@ version(){
 }
 
 
-#--------------------------------------------------#
-#-        Create Empty Network Status File        -#
-#--------------------------------------------------#
-llnms_create_empty_network_status_file(){
-
-    #  Create file
-    touch "$LLNMS_HOME/run/llnms-network-status.txt"
-
-}
-
-
 #---------------------------------#
 #         Main Functions          #
 #---------------------------------#
@@ -150,16 +139,6 @@ for OPTION in "$@"; do
 done
 
 
-#-----------------------------------------#
-#-   Configure the Network Status File   -#
-#-----------------------------------------#
-
-#    Create an empty network status file if it does not exist
-if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
-    llnms_create_empty_network_status_file
-fi
-
-
 
 #-------------------------------------------#
 #      Get a list of networks to scan       #
@@ -199,7 +178,16 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
         TEST_ADDRESS="${a}.${b}.${c}.${d}"
         
         #  Run ping on the address
-        llnms-ping-address -ip4 ${TEST_ADDRESS} -c 1
+        if [ "$OUTPUT_STATE" = 'QUIET' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet
+        
+        elif [ "$OUTPUT_STATE" = 'VERBOSE' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose
+
+        elif [ "$OUTPUT_STATE" = 'DEBUG' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug
+
+        fi
 
     done
     done
@@ -209,4 +197,6 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
 
 done
 
+wait
+echo "End of scan networks"
 
