@@ -1,17 +1,92 @@
 #!/bin/sh
+#
+#    File:    llnms-ping-address.sh
+#    Author:  Marvin Smith
+#    Date:    2/9/2014
+#
+#    Purpose:  Test an address using ping
+#
 
 
-#-----------------------#
-#-        Usage        -#
-#-----------------------#
+#----------------------------------------#
+#-       Print Usage Instructions       -#
+#----------------------------------------#
 usage(){
 
-    echo "$0 [options]"
-    echo ""
+    echo "`basename $0` [options]"
+    echo ''
     echo '    options:'
-    echo '        -ip4 [ip4-address]        : IP Address'
-    echo '        -c [max tries, 1 default] : Max count for ping'
+    echo '        -h, --help     :  Print usage instructions'
+    echo '        -v, --version  :  Print version information'
+    echo ''
+    echo '        -ip4 [address] :  Set the address to test.'
+    echo '        -c [max-tries] :  Set the number of attempts to try.'
+    echo '                          Note: default=1'
+    echo ''
+
 }
+
+
+#-------------------------------------#
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
+
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+error(){
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
+}
+
+
+#-------------------------------------#
+#           Version Function          #
+#-------------------------------------#
+version(){
+
+    echo "`basename $0` Information"
+    echo ''
+    echo "   LLNMS Version ${LLNMS_MAJOR}.${LLNMS_MINOR}.${LLNMS_SUBMINOR}"
+
+}
+
+
 
 #--------------------------------#
 #-       Main Function          -#
@@ -26,12 +101,15 @@ fi
 IP4_ADDRESS=''
 MAX_COUNT=1
 
+
 IP_LOCK=0
 TRY_LOCK=0
+
 LOCK_FILE="$LLNMS_HOME/run/llnms-scan-networks.lock"
 
 
-for OPTION in $@; do
+#    Iterate over command-line arguments
+for OPTION in "$@"; do
 
     case $OPTION in 
 
