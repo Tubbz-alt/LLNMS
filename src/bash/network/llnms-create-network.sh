@@ -11,6 +11,7 @@ ERROR_NO_FLAGS_PROVIDED=2
 ERROR_ADDR_START_FLAG_INVALID_FORMAT=3
 ERROR_ADDR_END_FLAG_INVALID_FORMAT=4
 
+
 #-------------------------------------#
 #-     Print usage instructions      -#
 #-------------------------------------#
@@ -210,14 +211,17 @@ fi
 #  Desired name
 NETWORK_NAME=''
 NAME_FLAG=0
+NAME_FLAG_SET=0
 
 #  Desired starting address
 ADDR_START_FLAG=0
 ADDR_START_VALUE=''
+ADDR_START_FLAG_SET=0
 
 #  Desired Ending Address
 ADDR_END_FLAG=0
 ADDR_END_VALUE=''
+ADDR_END_FLAG_SET=0
 
 #  Interactive option
 INTERACTIVE_FLAG=0
@@ -270,16 +274,19 @@ for OPTION in "$@"; do
             if [ $NAME_FLAG -eq 1 ]; then
                 NAME_FLAG=0
                 NETWORK_NAME="$OPTION"
-            
+                NAME_FLAG_SET=1
+
             #  If address start flag is set
             elif [ $ADDR_START_FLAG -eq 1 ]; then
                 ADDR_START_FLAG=0
                 ADDR_START_VALUE=$OPTION
-            
+                ADDR_START_FLAG_SET=1
+
             #  If address end flag is set
             elif [ $ADDR_END_FLAG -eq 1 ]; then
                 ADDR_END_FLAG=0
                 ADDR_END_VALUE=$OPTION
+                ADDR_END_FLAG_SET=1
 
             # if the output filename is set
             elif [ $FILE_FLAG -eq 1 ]; then
@@ -304,7 +311,7 @@ done
 #-     Make sure that either interactive is set or the other flags are set        -#
 #----------------------------------------------------------------------------------#
 if [ ! "$INTERACTIVE_FLAG" = '1' ]; then
-    if [ "$NETWORK_NAME" = '' -o "$ADDR_START_FLAG" = '' -o "$ADDR_END_FLAG" = '' ]; then
+    if [ "$NAME_FLAG_SET" = '0' -o "$ADDR_START_FLAG_SET" = '0' -o "$ADDR_END_FLAG_SET" = '0' ]; then
         error "Either interactive mode must be set or all network flags must be provided." "$LINENO"
         exit $ERROR_NO_FLAGS_PROVIDED
     fi

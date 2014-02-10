@@ -21,7 +21,7 @@ usage(){
     echo '      -v, --version :  Print Program Version Information'
     echo ''
     echo '      --verbose     :  Print program output to stdout (DEFAULT)'
-    echo '      -q, --quiet   :  Do not print program output to stdout'
+    echo '      --quiet       :  Do not print program output to stdout'
     echo ''
 
 }
@@ -79,7 +79,7 @@ for OPTION in $@; do
             ;;
 
         #  Do not print output to stdout
-        '-q' | '--quiet' )
+        '--quiet' )
             OUTPUT_STATE='QUIET'
             ;;
 

@@ -43,6 +43,11 @@ class NetworkPane : public QWidget{
         void load_network_list_table();
         
         /**
+         * Rebuild the network scan table
+         */
+        void load_network_scan_table();
+
+        /**
          * Create a new asset
          */
         void createNewNetworkDialog();
@@ -58,7 +63,11 @@ class NetworkPane : public QWidget{
          */
         void build_network_list_widget();
 
-        
+        /**
+         * Create the network scan result widget
+         */
+        void build_network_scan_widget();
+
         /*************************************/
         /*         Private Variables         */
         /*************************************/
@@ -97,6 +106,19 @@ class NetworkPane : public QWidget{
 
         // modify network
         QToolButton*   networkListModifyNetworkButton;
+    
+        /// Network Scan Label
+        QLabel*        networkScanLabel;
+
+        /// Network Scan Widget
+        QWidget*       networkScanWidget;
+
+        /// Network Scan Layout
+        QHBoxLayout*   networkScanLayout;
+
+        /// Network Scan Table
+        QTableWidget*  networkScanTable;
+        std::vector<QTableWidgetItem> networkScanTableHeaders;
 
 
 

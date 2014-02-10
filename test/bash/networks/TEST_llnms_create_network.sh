@@ -75,6 +75,17 @@ TEST_llnms_create_network_01(){
         return
     fi
 
+    #  Create a dumb with missing flags
+    echo '' >> $LLNMS_UNIT_TEST_LOG
+    echo '-> Creating third network.  This has missing parameters.' >> $LLNMS_UNIT_TEST_LOG
+    llnms-create-network -n 'Home Network' >> $LLNMS_UNIT_TEST_LOG
+    if [ ! "$?" = '2' ]; then
+        echo '  -> Network does not have correct output value.' >> $LLNMS_UNIT_TEST_LOG
+        echo '  -> Network does not have correct output value.' > /var/tmp/cause.txt
+        echo '1'
+        return
+    fi
+
     echo '0'
 }
 
