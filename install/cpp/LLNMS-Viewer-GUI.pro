@@ -112,8 +112,8 @@ SOURCES += \
             src/cpp/llnms-gui/gui/SummaryPane.cpp \
             src/cpp/llnms-gui/gui/NavigationBar.cpp \
             src/cpp/llnms-gui/gui/MainWindow.cpp \
-            src/cpp/llnms-gui/gui/LLNMS_Host.cpp \
-            src/cpp/llnms-gui/gui/LLNMS_Host_Status.cpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Host.cpp \
+            src/cpp/llnms-gui/llnms/LLNMS_Host_Status.cpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network.cpp \
             src/cpp/llnms-gui/llnms/LLNMS_Network_Container.cpp \
             src/cpp/llnms-gui/llnms/LLNMS_State.cpp \
