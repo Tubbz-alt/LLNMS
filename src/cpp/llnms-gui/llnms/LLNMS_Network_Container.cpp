@@ -56,6 +56,10 @@ void LLNMS_Network_Container::update(){
             m_network_list.push_back( tmpNetwork );
         }
     }
+
+    /// load the network status file
+     
+
 }
 
 /**
@@ -87,8 +91,8 @@ void LLNMS_Network_Container::llnms_create_network( const std::string& LLNMS_HOM
     
     new_filename = LLNMS_HOME + std::string("/networks/") + new_filename + std::string(".llnms-network.xml");
 
-    cout << "NEW FILENAME: " << new_filename << endl;
-    //new_network.write( new_filename + std::string(".llnms-network.xml"));
+    /// write the file
+    new_network.write( new_filename + std::string(".llnms-network.xml"));
 
 }
 

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../core/DataContainer.hpp"
+#include "LLNMS_Host.hpp"
 #include "LLNMS_Network.hpp"
 
 extern DataContainer settings;
@@ -47,6 +48,9 @@ class LLNMS_Network_Container{
         
         /// List of Networks
         std::vector<LLNMS_Network> m_network_list;
+        
+        /// List of hosts
+        std::vector<LLNMS_Host> m_host_list;
 
 
 }; /// End of LLNMS_Network_Container
