@@ -5,7 +5,6 @@
  */
 #include "NetworkPane.hpp"
 
-#include "../llnms/LLNMS_Network.hpp"
 #include "CreateNetworkDialog.hpp"
 
 #include <QHeaderView>
@@ -124,7 +123,7 @@ void NetworkPane::load_network_list_table(){
     networkListTable->clearContents();
     
     // refresh the LLNMS Network Table
-    llnms.network_container.update();
+    //llnms.network_container.update();
 
     // get the list of networks
     std::vector<LLNMS_Network> networklist = llnms.network_container.network_list();

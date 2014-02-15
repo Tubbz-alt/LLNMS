@@ -16,10 +16,13 @@ usage(){
     echo ''
     echo '    options:'
     echo '          -h, --help     :  Print usage instructions'
+    echo '          -j [int]       :  Build software with the specified number of threads.'
+    echo ''
     echo '          make  [system] :  Build C++ Software'
     echo ''
     echo '              system options:'
     echo '                  all = default : Build everything'
+    echo '                  core          : Build LLNMS Core Library'
     echo '                  curses        : Build Curses GUI'
     echo '                  gui           : Build Qt GUI'
     echo ''
@@ -74,6 +77,40 @@ error(){
     fi
 }
 
+
+#----------------------------------#
+#-           Make Software        -#
+#----------------------------------#
+make_core_software(){
+
+    #  Set number of threads
+    NUM_THREADS=$1
+
+    #  Print message
+    echo '->  building core LLNMS library'
+
+    #  Make sure the release directory exists
+    mkdir -p release
+
+    #  Enter release directory
+    cd release
+
+    #  Create Makefile
+    cmake ../install/cpp/core 
+
+    #  Build software 
+    make -j$NUM_THREADS
+    MAKE_RESULT="$?"
+
+    #  Exit release directory
+    cd ..
+    
+    if [ ! "$MAKE_RESULT" = "0" ]; then
+        error "make failed" $LINENO 
+        exit 1
+    fi
+
+}
 
 #----------------------------------#
 #-           Make Software        -#
@@ -214,6 +251,8 @@ RUN_MAKE=0
 MAKE_FLAG=0
 MAKE_VALUE="all"
 RUN_INSTALL=0
+NUM_THREADS=1
+THREAD_FLAG=0
 
 # Figure out qmake
 QMAKE='qmake'
@@ -233,6 +272,13 @@ for OPTION in "$@"; do
             exit 1
             ;;
         
+        #----------------------------------#
+        #-    Specify number of threads   -#
+        #----------------------------------#
+        '-j' )
+            THREAD_FLAG=1
+            ;;
+
         #----------------------------------#
         #-          Make Software         -#
         #----------------------------------#
@@ -261,6 +307,9 @@ for OPTION in "$@"; do
                     'all')
                         MAKE_VALUE='all'
                         ;;
+                    'core')
+                        MAKE_VALUE='core'
+                        ;;
                     'gui')
                         MAKE_VALUE='gui'
                         ;;
@@ -272,6 +321,11 @@ for OPTION in "$@"; do
                         exit 1
                         ;;
                 esac
+            
+            #  Look for the thread flag
+            elif [ "$THREAD_FLAG" = '1' ]; then
+                NUM_THREADS=$OPTION
+                THREAD_FLAG=0
 
             #  Otherwise throw an error for unknown option
             else
@@ -299,12 +353,16 @@ fi
 #---------------------------#
 if [ $RUN_MAKE -ne 0 ]; then
     
+    if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'core'  ]; then
+        make_core_software $NUM_THREADS
+    fi
+
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'curses' ]; then
-        make_curses_software
+        make_curses_software $NUM_THREADS
     fi
     
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'gui' ]; then
-        make_gui_software
+        make_gui_software $NUM_THREADS
     fi
     
     

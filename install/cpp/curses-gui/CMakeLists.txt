@@ -1,19 +1,23 @@
-
+#    File:    CMakeLists.txt
+#    Author:  Marvin Smith
+#    Date:    1/1/2014
+# 
+#    Purpose: Build C++ components of the LLNMS Library
+#
 
 #   Set the minimum required CMake Version
 cmake_minimum_required( VERSION 2.6 )
 
+
 #   Define our project name
-project (LLNMS-Viewer)
+project (LLNMS)
 
 
 #------------------------------------#
 #-      Import NCurses Library      -#
 #------------------------------------#
-
 SET(CURSES_NEED_NCURSES TRUE)
 FIND_PACKAGE(Curses)
-include_directories( ${CURSES_NCURSES_INCLUDE_PATH} )
 
 
 
@@ -29,6 +33,35 @@ find_package( Boost
 )
 include_directories( ${Boost_INCLUDE_DIR} )
 
+
+#----------------------------------------------------------#
+#-      Define the list of LLNMS Sources and Headers      -#
+#----------------------------------------------------------#
+set( LLNMS_SOURCES
+    src/cpp/llnms-core/networking/NetworkModule.cpp
+    src/cpp/llnms-core/networking/NetworkDefinitionContainer.cpp
+    src/cpp/llnms-core/networking/NetworkDefinition.cpp
+    src/cpp/llnms-core/thirdparty/tinyxml2/tinyxml2.cpp
+)
+
+set( LLNMS_HEADERS
+    src/cpp/llnms-core/networking/NetworkModule.hpp
+    src/cpp/llnms-core/networking/NetworkDefinitionContainer.hpp
+    src/cpp/llnms-core/networking/NetworkDefinition.hpp
+    src/cpp/llnms-core/thirdparty/tinyxml2/tinyxml2.h
+)
+
+#-------------------------------------------------#
+#-          Create the LLNMS Library             -#
+#-------------------------------------------------#
+add_library( LLNMS ${LLNMS_SOURCES} ${LLNMS_HEADERS} )
+
+
+#--------------------------------------------------------#
+#-          Create the llnms-list-networks app          -#
+#--------------------------------------------------------#
+add_executable( llnms-list-networks src/cpp/llnms-core/apps/llnms_list_networks.cpp )
+target_link_libraries( llnms-list-networks ${LLNMS} )
 
 
 #-----------------------------------------------------#
