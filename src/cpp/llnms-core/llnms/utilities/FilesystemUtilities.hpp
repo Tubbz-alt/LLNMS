@@ -9,6 +9,7 @@
 #define __SRC_CPP_LLNMSCORE_UTILITIES_FILESYSTEMUTILITES_HPP__
 
 #include <string>
+#include <vector>
 
 namespace LLNMS{
 namespace UTILITIES{
@@ -23,6 +24,10 @@ bool is_directory( const std::string& pathname );
 */
 bool exists( const std::string& pathname );
 
+/**
+ * List the contents of a directory
+*/
+std::vector<std::string> list_contents( const std::string& pathname, const std::string& pattern = "*" );
 
 } /// End of UTILITIES Namespace
 } /// End of LLNMS Namespace

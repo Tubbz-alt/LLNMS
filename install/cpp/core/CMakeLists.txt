@@ -60,6 +60,8 @@ set( LLNMS_SOURCES
     ../../../src/cpp/llnms-core/llnms/networking/NetworkModule.cpp
     ../../../src/cpp/llnms-core/llnms/networking/NetworkDefinitionContainer.cpp
     ../../../src/cpp/llnms-core/llnms/networking/NetworkDefinition.cpp
+    ../../../src/cpp/llnms-core/llnms/networking/NetworkHost.cpp
+    ../../../src/cpp/llnms-core/llnms/networking/NetworkHostContainer.cpp
     ../../../src/cpp/llnms-core/llnms/thirdparty/tinyxml2/tinyxml2.cpp
     ../../../src/cpp/llnms-core/llnms/utilities/FilesystemUtilities.cpp
 )
@@ -71,10 +73,15 @@ include_directories( ../../../src/cpp/llnms-core )
 add_library( LLNMS ${LLNMS_SOURCES} ${Boost_LIBRARIES})
 
 #--------------------------------------------------------#
-#-          Create the llnms-list-networks app          -#
+#-            Create the utility applications           -#
 #--------------------------------------------------------#
+
+#  llnms-list-hosts
+add_executable( llnms-list-hosts    ../../../src/cpp/llnms-core/apps/llnms_list_hosts.cpp )
+target_link_libraries( llnms-list-hosts LLNMS ${Boost_LIBRARIES} )
+
+#  llnms-list-networks
 add_executable( llnms-list-networks ../../../src/cpp/llnms-core/apps/llnms_list_networks.cpp )
 target_link_libraries( llnms-list-networks LLNMS ${Boost_LIBRARIES} )
-
 
 

@@ -9,6 +9,8 @@
 #include <string>
 
 namespace LLNMS{
+namespace NETWORK{
+
 
 /**
  * @class NetworkDefinition
@@ -21,6 +23,12 @@ class NetworkDefinition{
          * Default Constructor
         */
         NetworkDefinition();
+        
+        /**
+         * Parameterized Constructor given filename to load
+        */
+        NetworkDefinition( const std::string& filename );
+
 
         /**
          * Parameterized Constructor
@@ -34,9 +42,61 @@ class NetworkDefinition{
                            std::string const& address_end 
                          );
 
+        /**
+         * Get network name
+        */
+        std::string name()const;
+
+        /**
+         * Get address start
+        */
+        std::string address_start()const;
+        
+        /**
+         * Get address end
+        */
+        std::string address_end()const;
+
+        /** 
+         * Load the network from file
+        */
+        bool load();
+        
+        /**
+         * Load the network from file
+        */
+        bool load( const std::string& filename );
+
+        /** 
+         * Check if item is valid
+        */
+        bool isValid()const;
+        
+        /**
+         * Check equivalency
+        */
+        bool operator == ( const NetworkDefinition& rhs )const;
+
+        /**
+         * Check if not equal
+         *
+         * Network Definitions should be not equal if their names are different.
+        */
+        bool operator != ( const NetworkDefinition& rhs )const;
+        
+        /**
+         * Less than
+        */
+        bool operator < ( const NetworkDefinition& rhs )const;
+        
+        /**
+         * Greater than
+        */
+        bool operator > ( const NetworkDefinition& rhs )const;
+        
 
     private:
-        
+
         /// Name of the network
         std::string m_name;
 
@@ -45,10 +105,17 @@ class NetworkDefinition{
 
         /// Ending address
         std::string m_address_end;
+        
+        /// Location of file
+        std::string m_filename;
+
+        /// Validity flag
+        bool m_valid;
 
 }; /// End of NetworkDefinition class
 
 
+} /// End of NETWORK Namespace
 } /// End of LLNMS Namespace
 
 #endif

@@ -30,7 +30,7 @@ class Options{
         Options(){
             
             /// Set default LLNMS_Home
-            LLNMS_HOME="/var/tmp";
+            LLNMS_HOME="/var/tmp/llnms";
 
         }
 
@@ -60,8 +60,10 @@ void usage( const std::string& program_name ){
     cout << "usage: " << program_name << " [options]" << endl;
     cout << endl;
     cout << "    options: " << endl;
-    cout << "    -h, --help       : Print usage instructions." << endl;
-    cout << "    -v, --version    : Print version information." << endl;
+    cout << "    -h, --help            : Print usage instructions." << endl;
+    cout << "    -v, --version         : Print version information." << endl;
+    cout << "    --LLNMS_HOME <string> : Define the desired LLNMS_HOME variable." << endl;
+
     cout << endl;
 
 }
@@ -107,6 +109,24 @@ Options parse_command_line_options( int argc, char* argv[] ){
             exit(0);
         }
 
+        /// Check for LLNMS HOME Variable
+        else if( arg == "--LLNMS_HOME" ){
+            
+            // make sure there is an argument
+            if( args.size() <= 0 ){
+                throw string("No path was specified for LLNMS_HOME flag");
+            }
+            // grab the value
+            string new_llnms_home = args.front();
+            args.pop_front();
+        
+            // make sure the home path exists
+            if( LLNMS::UTILITIES::is_directory( new_llnms_home ) == false ){
+                usage(argv[1]);
+                throw string("LLNMS_HOME specified is not a valid directory.");
+            }
+            options.LLNMS_HOME = new_llnms_home;
+        }
     }
 
     return options;
@@ -114,10 +134,30 @@ Options parse_command_line_options( int argc, char* argv[] ){
 
 int main( int argc, char* argv[] ){
     
-    /// parse command-line options
-    Options options = parse_command_line_options( argc, argv );
+    try{
+        
+        /// parse command-line options
+        Options options = parse_command_line_options( argc, argv );
+        
+        /// Load a LLNMS Network Module
+        LLNMS::NETWORK::NetworkModule network_module( options.LLNMS_HOME );
+        network_module.update();
 
-    cout << "LLNMS Home: " << options.LLNMS_HOME << endl;
+        /// Get a list of all current networks
+        deque<LLNMS::NETWORK::NetworkDefinition> network_list = network_module.network_definitions();
+        
+        /// iterate through each network and print its information
+        for( size_t i=0; i<network_list.size(); i++ ){
+            cout << (i+1) << ": " << network_list[i].name() << ", " << network_list[i].address_start() << ", " << network_list[i].address_end() << endl;
+        }
+
+    } catch ( string e ){
+        cout << e << endl;
+        return 1;
+    } catch (exception e){
+        cout << e.what() << endl;
+        return 1;
+    }
 
     return 0;
 }

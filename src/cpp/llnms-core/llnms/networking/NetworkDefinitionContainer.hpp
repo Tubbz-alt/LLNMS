@@ -9,8 +9,10 @@
 #include "NetworkDefinition.hpp"
 
 #include <list>
+#include <string>
 
 namespace LLNMS{
+namespace NETWORK{
 
 /**
  * @class NetworkDefinitionContainer
@@ -24,13 +26,30 @@ class NetworkDefinitionContainer : public std::list<NetworkDefinition>{
         */
         NetworkDefinitionContainer( );
 
-        
+        /**
+         * Update the network definitions
+        */
+        void update();
 
+        /**
+         * Get LLNMS_Home
+        */
+        std::string LLNMS_HOME()const;
 
+        /**
+         * Set LLNMS_Home
+        */
+        std::string& LLNMS_HOME();
+
+    private:
+
+        /// LLNMS Home
+        std::string m_LLNMS_HOME;
 
 }; /// End of NetworkDefinitionContainer Class
 
 
+} /// End of NETWORK Namespace 
 } /// End of LLNMS Namespace
 
 
