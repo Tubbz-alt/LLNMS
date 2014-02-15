@@ -36,10 +36,53 @@ TEST_llnms_list_networks_01(){
     echo '-------------------------------------------------------------------------------' >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
+    
 
-    echo '1'
-    echo "Not Implemented Yet.  File: TEST_llnms_list_networks.sh, Line: $LINENO." > /var/tmp/cause.txt
+    #  Remove all existing network files
+    echo '  -> Removing existing networks.' >> $LLNMS_UNIT_TEST_LOG
+    rm -rf $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null
 
+
+    #  Create a few demo network files
+    echo '  -> Building the first network file' >> $LLNMS_UNIT_TEST_LOG
+    llnms-create-network -n "Google DNS" -as '8.8.8.8' -ae '8.8.8.8'
+
+    
+    #  Create the second demo network file
+    echo '  -> Building the second network file' >> $LLNMS_UNIT_TEST_LOG
+    llnms-create-network -n "Home Network" -as '192.168.0.1' -ae '192.168.0.254'
+    
+    #  Running LLNMS List Networks
+    echo '  -> Running llnms-list-networks' >> $LLNMS_UNIT_TEST_LOG
+    
+    OLDIFS=$IFS
+    IFS=$'\n'
+    NETWORK_LIST="`llnms-list-networks --name-only`"
+    for NETWORK in $NETWORK_LIST; do
+        echo "  -> Testing Network: ($NETWORK)" >> $LLNMS_UNIT_TEST_LOG
+        case $NETWORK in
+            
+            #  Check for Google DNS
+            'Google DNS' )
+                echo '  -> Google DNS Found' >> $LLNMS_UNIT_TEST_LOG
+                ;;
+
+            #  Check for home network
+            'Home Network' )
+                echo '  -> Home Network Found' >> $LLNMS_UNIT_TEST_LOG
+                ;;
+
+            #  Throw an error as there is a failure
+            *)
+                echo "Network file exists which shouldn't. Network=(${NETWORK}). File: TEST_llnms_list_networks.sh, Line: $LINENO" >> /var/tmp/cause.txt
+                return 1
+                ;;
+        esac
+    done
+    IFS=$OLDIFS
+
+    echo '0'
+    return
 }
 
 

@@ -1,27 +1,73 @@
 #!/bin/bash
-
+#
+#    File:     llnms-scan-networks.sh
+#    Author:   Marvin Smith
+#    Date:     2/9/2014
+#
+#    Purpose:  Scan networks for assets.
+#
 
 #-------------------------------------#
-#             Error Function          #
+#-         Warning Function          -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
+#-------------------------------------#
+warning(){
+
+    #  If the user only gives the warning message
+    if [ $# -eq 1 ]; then
+        echo "warning: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "warning: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "warning: $1.  Line: $2, File: $3"
+    fi
+}
+
+#-------------------------------------#
+#-            Error Function         -#
+#-                                   -#
+#-   $1 -  Error Message             -#
+#-   $2 -  Line Number (Optional).   -#
+#-   $3 -  File Name (Optional).     -$
 #-------------------------------------#
 error(){
-    echo "error $1"
-    exit 1
+
+    #  If the user only gives the error message
+    if [ $# -eq 1 ]; then
+        echo "error: $1."
+
+    #  If the user only gives the line number
+    elif [ $# -eq 2 ]; then
+        echo "error: $1.  Line: $2,  File: `basename $0`"
+
+    #  If the user gives the line number and file
+    else
+        echo "error: $1.  Line: $2, File: $3"
+    fi
 }
+
+
 
 
 #-------------------------------------#
 #          Usage Instructions         #
 #-------------------------------------#
 usage(){
-    echo "$0: [options]"
+    echo "`basename $0` [options]"
     echo ''
     echo '   options:'
     echo '      -h, --help    :  Print Usage Instructions'
     echo '      -v, --version :  Print Program Version Information'
     echo ''
     echo '      --verbose     :  Print program output to stdout (DEFAULT)'
-    echo '      -q, --quiet   :  Do not print program output to stdout'
+    echo '      --quiet       :  Do not print program output to stdout'
     echo ''
 
 }
@@ -38,7 +84,6 @@ version(){
 }
 
 
-
 #---------------------------------#
 #         Main Functions          #
 #---------------------------------#
@@ -50,14 +95,16 @@ fi
 
 
 #  Import the version info
-source $LLNMS_HOME/config/llnms-info.sh
-source $LLNMS_HOME/bin/llnms-network-utilities.bash
+. $LLNMS_HOME/config/llnms-info
+
+#  Import the configuration info
+. $LLNMS_HOME/config/llnms-config
 
 #  output state
 OUTPUT_STATE='VERBOSE'
 
 #  parse command-line options
-for OPTION in $@; do
+for OPTION in "$@"; do
 
     case $OPTION in
 
@@ -79,7 +126,7 @@ for OPTION in $@; do
             ;;
 
         #  Do not print output to stdout
-        '-q' | '--quiet' )
+        '--quiet' )
             OUTPUT_STATE='QUIET'
             ;;
 
@@ -91,15 +138,6 @@ for OPTION in $@; do
     esac
 done
 
-
-#-----------------------------------------#
-#-   Configure the Network Status File   -#
-#-----------------------------------------#
-
-#    Create an empty network status file if it does not exist
-if [ ! -f "$LLNMS_HOME/run/llnms-network-status.txt" ]; then
-    llnms-create-empty-network-status-file
-fi
 
 
 #-------------------------------------------#
@@ -115,79 +153,50 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
     #  Get the full path of the network file
     NETWORK_FILE="$LLNMS_HOME/networks/$NETWORK"
 
-    #  Grab the number of networks
-    NETWORK_DEF_CNT=$(llnms-count-network-definitions $NETWORK_FILE)
+    #  Get the network address range
+    ADDR_BEG=`llnms-print-network-info -f $NETWORK_FILE -s`
+    ADDR_END=`llnms-print-network-info -f $NETWORK_FILE -e`
     
-    #  Iterate through each network definition
-    RANGE_CNT=1
-    SINGLE_CNT=1
-    for (( x=1; x<= $NETWORK_DEF_CNT; x++ )); do
+    #  Split the address into 4 part
+    ADDR_BEG_1=`echo $ADDR_BEG | cut -d '.' -f 1`
+    ADDR_BEG_2=`echo $ADDR_BEG | cut -d '.' -f 2`
+    ADDR_BEG_3=`echo $ADDR_BEG | cut -d '.' -f 3`
+    ADDR_BEG_4=`echo $ADDR_BEG | cut -d '.' -f 4`
+    
+    ADDR_END_1=`echo $ADDR_END | cut -d '.' -f 1`
+    ADDR_END_2=`echo $ADDR_END | cut -d '.' -f 2`
+    ADDR_END_3=`echo $ADDR_END | cut -d '.' -f 3`
+    ADDR_END_4=`echo $ADDR_END | cut -d '.' -f 4`
+    
+    #  Iterate over each address range        
+    for (( a=$ADDR_BEG_1; a<=$ADDR_END_1; a++ )); do
+    for (( b=$ADDR_BEG_2; b<=$ADDR_END_2; b++ )); do
+    for (( c=$ADDR_BEG_3; c<=$ADDR_END_3; c++ )); do
+    for (( d=$ADDR_BEG_4; d<=$ADDR_END_4; d++ )); do
+
+        #  create address
+        TEST_ADDRESS="${a}.${b}.${c}.${d}"
         
-        #  Get the type
-        DEF_TYPE=$(llnms-get-network-type $NETWORK_FILE $x)
+        #  Run ping on the address
+        if [ "$OUTPUT_STATE" = 'QUIET' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet
+        
+        elif [ "$OUTPUT_STATE" = 'VERBOSE' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose
 
-        #  If single, grab the address
-        if [ "$DEF_TYPE" == "SINGLE" ]; then
+        elif [ "$OUTPUT_STATE" = 'DEBUG' ]; then
+            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug
 
-            #  Get the address
-            ADDRESS=$(llnms-get-network-address $NETWORK_FILE $SINGLE_CNT )
-
-            #  Make sure address exists inside the table
-            llnms-check-network-status-and-add-ip-entry $ADDRESS 
-            
-            #  Ping the address
-            $LLNMS_HOME/bin/llnms-ping-address.bash -ip4 $ADDRESS -c 1
-
-            #  Increment the single count
-            SINGLE_CNT=$((($SINGLE_CNT + 1)))
-
-        #  If a range, grab the range
-        elif [ "$DEF_TYPE" == "RANGE" ]; then
-            
-            #  Get the address start and end
-            ADDRESS_BEG=$(llnms-get-network-address-start $NETWORK_FILE $RANGE_CNT )
-            ADDRESS_END=$(llnms-get-network-address-end   $NETWORK_FILE $RANGE_CNT )
-            
-            ADDR_BEG_0=$(echo $ADDRESS_BEG | cut -d '.' -f 1)
-            ADDR_END_0=$(echo $ADDRESS_END | cut -d '.' -f 1)
-            ADDR_BEG_1=$(echo $ADDRESS_BEG | cut -d '.' -f 2)
-            ADDR_END_1=$(echo $ADDRESS_END | cut -d '.' -f 2)
-            ADDR_BEG_2=$(echo $ADDRESS_BEG | cut -d '.' -f 3)
-            ADDR_END_2=$(echo $ADDRESS_END | cut -d '.' -f 3)
-            ADDR_BEG_3=$(echo $ADDRESS_BEG | cut -d '.' -f 4)
-            ADDR_END_3=$(echo $ADDRESS_END | cut -d '.' -f 4)
-
-            for (( a=$ADDR_BEG_0; a<=$ADDR_END_0; a++ )); do
-            for (( b=$ADDR_BEG_1; b<=$ADDR_END_1; b++ )); do
-            for (( c=$ADDR_BEG_2; c<=$ADDR_END_2; c++ )); do
-            for (( d=$ADDR_BEG_3; d<=$ADDR_END_3; d++ )); do
-                
-                # Create the address
-                ADDRESS=${a}.${b}.${c}.${d}
-                
-                #  Make sure address exists inside the table
-                llnms-check-network-status-and-add-ip-entry $ADDRESS 
-            
-                #  Ping the address
-                $LLNMS_HOME/bin/llnms-ping-address.bash -ip4 $ADDRESS -c 1
-
-            done
-            done
-            done
-            done
-
-            # Increment the range counter
-            RANGE_CNT=$((($RANGE_CNT + 1)))
-
-        # Otherwise we have a problem
-        else
-            echo "error: Unknown network definition type of $DEF_TYPE for file $NETWORK_FILE"
-            exit 1
         fi
 
     done
+    done
+    done
+    done
+
 
 done
 
 wait
+echo "End of scan networks"
 

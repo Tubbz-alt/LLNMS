@@ -53,7 +53,7 @@ build_and_verify_filestructure(){
     if [ ! -d "$DEFAULT_LLNMS_RUN_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_RUN_PATH" 
     fi
-    
+
     # Verify the log directory exists
     if [ ! -d "$DEFAULT_LLNMS_LOG_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_LOG_PATH"
@@ -108,19 +108,27 @@ install_to_filesystem(){
 
 
     # networks
-    echo ''    
-    echo '-> Copying llnms-create-network'                
+    echo ''   
+    echo '-> Copying network module scripts'
+    
+    echo '   -> Copying llnms-create-network'                
     cp 'src/bash/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
     
-    echo '-> Copying llnms-list-networks'
+    echo '   -> Copying llnms-list-networks'
     cp 'src/bash/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
     
-    echo '-> Copying llnms-remove-network'    
-    cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
+    echo '   -> Copying llnms-scan-address' 
+    cp 'src/bash/network/llnms-scan-address.sh'           "$LLNMS_HOME/bin/llnms-scan-address"
 
-    #  llnms utilities
-    #cp src/bash/utilities/*.bash $LLNMS_HOME/bin/
-    #cp src/bash/utilities/*.sh     $LLNMS_HOME/bin/
+    echo '   -> Copying llnms-print-network-info'
+    cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
+
+    echo '   -> Copying llnms-remove-network'    
+    cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
+    
+    echo '   -> Copying llnms-scan-networks'   
+    cp 'src/bash/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
+
 
     #  Scanning utilities
     echo ''

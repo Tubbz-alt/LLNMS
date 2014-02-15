@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-#  file:    llnms-list-networks.bash
-#  author:  Marvin Smith
-#  date:    12/8/2013
+#    File:    llnms-list-networks.bash
+#    Author:  Marvin Smith
+#    Date:    12/8/2013
 #
-
+#    Purpose:  List networks registered in LLNMS
+#
 
 
 #-------------------------------------#
@@ -78,9 +79,12 @@ usage(){
     echo '      -v, --version :  Print Program Version Information'
     echo ''
     echo '      Formatting'
-    echo '         -x, --xml     :  Print in a XML format'
+    echo '         -l, --list    :  Print in a List format'
     echo '         -p, --pretty  :  Print in a human-readable format (DEFAULT)'
-
+    echo '         -x, --xml     :  Print in a XML format'
+    echo ''
+    echo '      --name-only      :  Print only network names'
+    echo '      --file-only      :  Print only filenames'
 }
 
 
@@ -96,14 +100,16 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import configuration
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 
 #  Set the output format
-OUTPUT_FORMAT="PRETTY"
+OUTPUT_FORMAT="LIST"
+NAME_ONLY=0
+FILE_ONLY=0
 
 #  parse command-line options
 for OPTION in $@; do
@@ -126,10 +132,25 @@ for OPTION in $@; do
         "-p" | "--pretty" )
             OUTPUT_FORMAT="PRETTY"
             ;;
+        
+        #  Set format to list
+        '-l' | '--list' )
+            OUTPUT_FORMAT='LIST'
+            ;;
 
         #  Set format to xml
         "-x" | "--xml" )
             OUTPUT_FORMAT="XML"
+            ;;
+        
+        #  Print only names
+        '--name-only' )
+            NAME_ONLY=1
+            ;;
+
+        #  Print only files
+        '--file-only' )
+            FILE_ONLY=1
             ;;
 
         #  Print Error
@@ -146,110 +167,41 @@ if [ "$OUTPUT_FORMAT" == "XML" ]; then
     OUTPUT="<llnms-list-network-output>\n"
 fi
 
+
 #   Iterate through each network file, printing information about each file
 NETWORK_FILES=`ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null`
 for NETWORK_FILE in $NETWORK_FILES; do
 
-    
-    # if xml, then print the header
-    if [ "$OUTPUT_FORMAT" == "XML" ]; then
-        OUTPUT+="    <network>\n"
-    
-    # if pretty, create a new list
-    elif [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
-        echo "Network"
-        echo '-------'
+   
+    #  Print the filename
+    if [ "$FILE_ONLY" = '1' ]; then
+        printf "$NETWORK_FILE"
     fi
 
     #  Print the name
-    NETWORK_NAME="$(llnms-get-network-name $NETWORK_FILE)"
-    if [ "$OUTPUT_FORMAT" == "XML" ]; then
-        OUTPUT+="        <name>$NETWORK_NAME</name>\n"
-    elif [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
-        echo "Name: $NETWORK_NAME"
-    fi
-    
-    # if xml, print the network definition lists
-    if [ "$OUTPUT_FORMAT" == "XML" ]; then
-        OUTPUT+="        <definitions>\n"
-    # if pretty, just let the user know networks are coming next
-    elif [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
-        echo 'Network Definitions'
+    NETWORK_NAME="`llnms-print-network-info -n  -f $NETWORK_FILE`"
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$NAME_ONLY" = '1' ]; then
+        printf "$NETWORK_NAME"
+
+    elif [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
+        printf "$NETWORK_NAME, "
     fi
 
-    #  Print the different network definitions
-    NETWORK_CNT="$(llnms-count-network-definitions $NETWORK_FILE)"
-    RANGE_CNT=1
-    SINGLE_CNT=1
-    for ((x=0; x<$NETWORK_CNT; x++ )); do
-        
-        #  get the type of the specific network
-        NETWORK_TYPE="$(llnms-get-network-type $NETWORK_FILE $((($x+1))))"
-        
-        # Get the addresses
-        if [ "$NETWORK_TYPE" == "SINGLE" ]; then
-            
-            ADDRESS=$(llnms-get-network-address $NETWORK_FILE $SINGLE_CNT )
-            
-            #  Increment the single count
-            SINGLE_CNT=$((($SINGLE_CNT + 1)))
-        
-        elif [ "$NETWORK_TYPE" == "RANGE" ]; then
-            
-            #  Get the address start and end
-            ADDRESS_START=$(llnms-get-network-address-start $NETWORK_FILE $RANGE_CNT )
-            ADDRESS_END=$(llnms-get-network-address-end   $NETWORK_FILE $RANGE_CNT )
-            
-            # Increment the range counter
-            RANGE_CNT=$((($RANGE_CNT + 1)))
-
-        fi
-            
-        # if xml, print everything in it
-        if [ "$OUTPUT_FORMAT" == "XML" ]; then
-            OUTPUT+="            <definition>\n"
-            OUTPUT+="                <type>$NETWORK_TYPE</type>\n"
-            if [ "$NETWORK_TYPE" == "SINGLE" ]; then
-                OUTPUT+="                <address>$ADDRESS</address>\n"
-            elif [ "$NETWORK_TYPE" == "RANGE" ]; then
-                OUTPUT+="                <address-start>$ADDRESS_START</address-start>\n"
-                OUTPUT+="                <address-end>$ADDRESS_END</address-end>\n"
-            fi
-            OUTPUT+="            </definition>\n"
-        
-        # if pretty, print in a list
-        elif [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
-            if [ "$NETWORK_TYPE" == "SINGLE" ]; then
-                echo "  - Type: $NETWORK_TYPE, Address: $ADDRESS"
-            elif [ "$NETWORK_TYPE" == "RANGE" ]; then
-                echo "  - Type: $NETWORK_TYPE, Address-Start: $ADDRESS_START, Address-End: $ADDRESS_END"
-            fi
-        fi
-    done
-    
-    # if xml, print the network definition lists
-    if [ "$OUTPUT_FORMAT" == "XML" ]; then
-        OUTPUT+="        </definitions>\n"
+    #  Print the address start
+    ADDRESS_START="`llnms-print-network-info -s -f $NETWORK_FILE`"
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
+        printf "$ADDRESS_START,  "
     fi
 
-    # if xml, then print the footer
-    if [ "$OUTPUT_FORMAT" == "XML" ]; then
-        OUTPUT+="    </network>\n"
-    # if pretty, just print a space
-    elif [ "$OUTPUT_FORMAT" == "PRETTY" ]; then
-        echo ''
+    #  Print the address end
+    ADDRESS_END="`llnms-print-network-info -e -f $NETWORK_FILE`"
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
+        printf "$ADDRESS_END"
     fi
+
+    #  Print a new line
+    printf "\n"
+
 done
 
-
-#  finish output if output type is xml
-if [ "$OUTPUT_FORMAT" == "XML" ]; then
-    OUTPUT+="</llnms-list-network-output>"
-fi
-
-# Output
-OLDIFS=$IFS
-IFS=''
-echo -e $OUTPUT
-IFS=$OLDIFS
 

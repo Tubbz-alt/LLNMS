@@ -174,5 +174,30 @@ for OPTION in "$@"; do
 done
 
 
-#  Parse options
+#--------------------------------------------#
+#-          Get a list of networks          -#
+#--------------------------------------------#
+NETWORK_FILES="`llnms-list-networks --file-only`"
+for NETWORK_FILE in $NETWORK_FILES; do
+    
+    #  Get name
+    NAME="`llnms-print-network-info -n -f $NETWORK_FILE`"
+
+    #  Get Address Range
+    ADDRESS_START="`llnms-print-network-info -s -f $NETWORK_FILE`"
+    ADDRESS_END="`llnms-print-network-info   -e -f $NETWORK_FILE`"
+    
+    # if network name matches, delete it
+    if [ "$SEARCH_NAME" = '1' -a "$NAME" = "$SEARCH_NAME_VALUE" ]; then
+        rm $NETWORK_FILE
+    fi
+
+    if [ "$SEARCH_ADDR" = '1' ]; then
+        error "Not implemented Yet." $LINENO
+        exit 1
+    fi
+
+done
+
+
 
