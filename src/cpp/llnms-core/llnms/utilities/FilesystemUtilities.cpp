@@ -61,7 +61,7 @@ std::vector<std::string> list_contents( const std::string& pathname, const std::
     boost::filesystem::directory_iterator beg_iter( dirpath );
     boost::filesystem::directory_iterator end_iter;
 
-    for( beg_iter; beg_iter != end_iter; beg_iter++ ){
+    for( ; beg_iter != end_iter; beg_iter++ ){
         
         if( boost::filesystem::is_regular_file( beg_iter->status())){
 
