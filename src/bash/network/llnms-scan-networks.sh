@@ -145,7 +145,7 @@ done
 #-------------------------------------------#
 
 #  Get the network count
-LLNMS_NETWORK_FILES=$(ls $LLNMS_HOME/networks)
+LLNMS_NETWORK_FILES=$(ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null )
 
 #  For each network
 for NETWORK in $LLNMS_NETWORK_FILES; do
