@@ -39,12 +39,12 @@ class NetworkModule{
         /**
          * Get llnms home
         */
-        std::string LLNMS_HOME()const;
+        std::string get_LLNMS_HOME()const;
 
         /**
          * Set llnms home
         */
-        std::string& LLNMS_HOME();
+        void set_LLNMS_HOME( const std::string& LLNMS_HOME );
 
         /**
          * Get a list of network definitions

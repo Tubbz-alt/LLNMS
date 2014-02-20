@@ -159,7 +159,7 @@ make_gui_software(){
 
     #  Run QMake
     echo '  -> Running QMake'
-    $QMAKE install/cpp/LLNMS-Viewer-GUI.pro
+    $QMAKE install/cpp/qt-gui/LLNMS-Viewer-GUI.pro
 
     #  Run Make
     echo '  -> Running Make'

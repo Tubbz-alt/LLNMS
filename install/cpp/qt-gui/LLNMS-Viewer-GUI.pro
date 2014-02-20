@@ -31,7 +31,10 @@ unix:!macx{
     
     # Boost Library
     LIBS += -lboost_system -lboost_filesystem -lboost_regex
-
+    
+    # LLNMS Library
+    INCLUDEPATH += release/include
+    LIBS += -lrelease/libLLNMS.a
 }
 
 #  Mac specific choices

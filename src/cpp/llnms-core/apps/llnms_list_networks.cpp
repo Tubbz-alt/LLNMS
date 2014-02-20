@@ -9,6 +9,8 @@
  * registered LLNMS Networks.
 */
 
+#include <cstdio>
+#include <cstdlib>
 #include <deque>
 #include <iostream>
 #include <string>

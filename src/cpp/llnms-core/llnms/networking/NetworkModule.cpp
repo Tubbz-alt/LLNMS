@@ -36,15 +36,19 @@ NetworkModule::NetworkModule( const std::string& LLNMS_HOME ){
 /**
  * Get the LLNMS Home
 */
-std::string NetworkModule::LLNMS_HOME()const{
+std::string NetworkModule::get_LLNMS_HOME()const{
     return m_LLNMS_HOME;
 }
 
 /**
  * Set the LLNMS Module
 */
-std::string& NetworkModule::LLNMS_HOME(){
-    return m_LLNMS_HOME;
+void NetworkModule::set_LLNMS_HOME( const std::string& LLNMS_HOME ){
+    m_LLNMS_HOME = LLNMS_HOME;
+    
+    // update the llnms home variable in each of the container
+    m_network_definitions.LLNMS_HOME() = m_LLNMS_HOME;
+    m_network_hosts.LLNMS_HOME() = m_LLNMS_HOME;
 }
 
 /**
@@ -56,8 +60,8 @@ std::deque<NetworkDefinition> NetworkModule::network_definitions()const{
     std::deque<NetworkDefinition> output;
 
     /// load the output
-    NetworkDefinitionContainer::const_iterator it = m_network_definitions.cbegin();
-    NetworkDefinitionContainer::const_iterator eit = m_network_definitions.cend();
+    NetworkDefinitionContainer::const_iterator it = m_network_definitions.begin();
+    NetworkDefinitionContainer::const_iterator eit = m_network_definitions.end();
     for( ; it != eit; it++ ){
         output.push_back( (*it) );
     }

@@ -82,7 +82,7 @@ std::vector<NetworkHost> NetworkHostContainer::scanned_network_hosts()const{
     std::vector<NetworkHost> output;
 
     NetworkHostContainer::const_iterator  it = this->begin();
-    NetworkHostContainer::const_iterator eit = this->cend();
+    NetworkHostContainer::const_iterator eit = this->end();
     for( ; it != eit; it++ ){
         
         output.push_back( (*it));

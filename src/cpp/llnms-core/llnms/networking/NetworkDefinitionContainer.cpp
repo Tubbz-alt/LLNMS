@@ -7,7 +7,10 @@
 
 #include "../utilities/FilesystemUtilities.hpp"
 
+#include <algorithm>
+#include <iostream>
 #include <vector>
+
 
 namespace LLNMS{
 namespace NETWORK{
@@ -16,7 +19,7 @@ namespace NETWORK{
  * Constructor for NetworkDefinitionContainer
 */
 NetworkDefinitionContainer::NetworkDefinitionContainer() : list(){
-
+    m_LLNMS_HOME="/var/tmp/llnms";
 }
 
 void NetworkDefinitionContainer::update(){
@@ -24,7 +27,7 @@ void NetworkDefinitionContainer::update(){
     /// get a list of files in the network directory
     std::vector<std::string> network_files = LLNMS::UTILITIES::list_contents(m_LLNMS_HOME + "/networks", ".*\\.llnms-network.xml");
     for( size_t i=0; i<network_files.size(); i++ ){
-    
+        
         // load each file into the network container
         NetworkDefinition tempNetwork( network_files[i] );
         
