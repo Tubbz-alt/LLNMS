@@ -72,6 +72,7 @@ print_banner(){
 #---------------------------------------------------#
 usage(){
 
+    echo ''
     echo "usage: $0 [options]"
     echo ''
     echo '    options:'
