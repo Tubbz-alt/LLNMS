@@ -32,14 +32,14 @@ TEST_llnms_create_asset_01(){
     $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
 
     #  make sure the file was properly created
-    if [ ! -e '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml' ]; then
+    if [ ! -e "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml" ]; then
         $ECHO "temp-asset.llnms-asset.xml does not exist after creation.  Line: $LINENO, File: $0." > /var/tmp/cause.txt
         echo "1"
         return
     fi
     
     #  make sure that the file validates properly
-    xmlstarlet val -q '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'
+    xmlstarlet val -q "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml"
     if [ $? -ne 0 ]; then
         $ECHO "temp-asset.llnms-asset.xml does not validate as proper xml.  Line: $LINENO, File: $0." > /var/tmp/cause.txt
         echo '1'
@@ -47,22 +47,22 @@ TEST_llnms_create_asset_01(){
     fi
 
     #  check the name
-    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'`" = 'temp-asset' ]; then
+    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml"`" = 'temp-asset' ]; then
         echo '1'
         $ECHO "hostname is not equal to temp-asset, at Line $LINENO, File: $0." > /var/tmp/cause.txt
         return
     fi
 
     #  check the ip address
-    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'`" = '192.168.0.1' ]; then
+    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml"`" = '192.168.0.1' ]; then
         echo "ip4-address is not equal to 192.168.0.1, at Line $LINENO, File: $0." > /var/tmp/cause.txt
         echo '1'
         return 
     fi
 
     #  Delete the file
-    if [ -e "/var/tmp/llnms/assets/temp-asset.llnms-asset.xml" ]; then
-        rm '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'
+    if [ -e "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml" ]; then
+        rm "$LLNMS_HOME/assets/temp-asset.llnms-asset.xml"
     else    
         echo "Temporary asset does not exist. Line: $LINENO, File: $0." > /var/tmp/cause.txt
         echo '1'
