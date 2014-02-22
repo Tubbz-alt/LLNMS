@@ -13,9 +13,6 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-#  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config
-
 # Initialize ANSI
 . test/bash/unit_test/unit_test_utilities.sh
 
@@ -32,7 +29,7 @@ TEST_llnms_create_network_01(){
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo '-------------------------------------------------------------------------------' >> $LLNMS_UNIT_TEST_LOG
-    echo "Starting llnms-create-network unit test at $(date)" >> $LLNMS_UNIT_TEST_LOG
+    echo "Starting llnms-create-network unit test at `date`" >> $LLNMS_UNIT_TEST_LOG
     echo '-------------------------------------------------------------------------------' >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
@@ -50,8 +47,8 @@ TEST_llnms_create_network_01(){
     #  Create network 1
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo "-> Creating first network" >> $LLNMS_UNIT_TEST_LOG
-    echo "   llnms-create-network -n \"HOME NETWORK\" -as \"192.168.0.1\" -ae \"192.168.0.254\" -o $NETWORK1" >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "HOME NETWORK" -as "192.168.0.1" -ae "192.168.0.254" -o $NETWORK1 >> $LLNMS_UNIT_TEST_LOG
+    echo "   $LLNMS_HOME/bin/llnms-create-network -n \"HOME NETWORK\" -as \"192.168.0.1\" -ae \"192.168.0.254\" -o $NETWORK1" >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-create-network -n "HOME NETWORK" -as "192.168.0.1" -ae "192.168.0.254" -o $NETWORK1 >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the network exists
@@ -64,8 +61,8 @@ TEST_llnms_create_network_01(){
     #  Create network 2
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo "-> Creating second network" >> $LLNMS_UNIT_TEST_LOG
-    echo "   llnms-create-network -n \"Google DNS\" -as \"8.8.8.8\" -ae \"8.8.8.8\" -o $NETWORK2" >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "Google DNS" -as "8.8.8.8" -ae "8.8.8.8" -o $NETWORK2 >> $LLNMS_UNIT_TEST_LOG
+    echo "   $LLNMS_HOME/bin/llnms-create-network -n \"Google DNS\" -as \"8.8.8.8\" -ae \"8.8.8.8\" -o $NETWORK2" >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-create-network -n "Google DNS" -as "8.8.8.8" -ae "8.8.8.8" -o $NETWORK2 >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the network exists
@@ -78,7 +75,7 @@ TEST_llnms_create_network_01(){
     #  Create a dumb with missing flags
     echo '' >> $LLNMS_UNIT_TEST_LOG
     echo '-> Creating third network.  This has missing parameters.' >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n 'Home Network' >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-create-network -n 'Home Network' >> $LLNMS_UNIT_TEST_LOG
     if [ ! "$?" = '2' ]; then
         echo '  -> Network does not have correct output value.' >> $LLNMS_UNIT_TEST_LOG
         echo '  -> Network does not have correct output value.' > /var/tmp/cause.txt

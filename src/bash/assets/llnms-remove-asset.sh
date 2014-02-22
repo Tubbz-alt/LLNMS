@@ -143,9 +143,6 @@ fi
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info
 
-#  Import configuration info
-. $LLNMS_HOME/config/llnms-config
-
 #   Search flags and values
 SEARCH_HOSTNAME=''
 HOSTNAME_FLAG=0
@@ -237,7 +234,7 @@ for ASSET_FILE in $ASSET_FILES; do
     
     #  If we are searching using hostname, then grab the hostname
     if [ ! "$SEARCH_HOSTNAME" = '' ]; then
-        TEMP_HOSTNAME="`llnms-print-asset-info -f $ASSET_FILE -host`"
+        TEMP_HOSTNAME="`$LLNMS_HOME/bin/llnms-print-asset-info -f $ASSET_FILE -host`"
        
         #  If the hostname of the file and our search hostname match, then remove the file
         if [ "$TEMP_HOSTNAME" = "$SEARCH_HOSTNAME" ]; then
@@ -254,7 +251,7 @@ for ASSET_FILE in $ASSET_FILES; do
 
     #  If we are searching using IP4 Address, then grab the address
     if [ "$SKIP_ASSET" = 0 -a ! "$SEARCH_IP4ADDRESS" = "" ]; then
-        TEMP_IP4ADDRESS="`llnms-print-asset-info -f $ASSET_FILE -ip4`"
+        TEMP_IP4ADDRESS="`$LLNMS_HOME/bin/llnms-print-asset-info -f $ASSET_FILE -ip4`"
         
         #  If the address of the file and our search address match, then remove the file
         if [ "$TEMP_IP4ADDRESS" = "$SEARCH_IP4ADDRESS" ]; then

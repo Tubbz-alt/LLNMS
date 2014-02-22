@@ -13,9 +13,6 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-#  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config
-
 # Initialize ANSI
 . test/bash/unit_test/unit_test_utilities.sh
 
@@ -67,15 +64,15 @@ TEST_llnms_register_asset_scanner_01(){
 
     #   Register the ping scanner and ssh scanner
     echo "Registering ping scanner" >> $LLNMS_UNIT_TEST_LOG
-    echo "llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
-    llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml
-    echo "llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
-    llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml
+    echo "$LLNMS_HOME/bin/llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-register-scanner -s $LLNMS_HOME/scanning/ping-scanner.llnms-scanner.xml
+    echo "$LLNMS_HOME/bin/llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml" >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-register-scanner -s $LLNMS_HOME/scanning/ssh-scanner.llnms-scanner.xml
 
     #   Create demo assets
     echo "Creating demo assets 'temp-asset1' and 'temp-asset2'" >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
-    llnms-create-asset  -host 'temp-asset2' -ip4 '172.16.0.1'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset2' -ip4 '172.16.0.1'
 
     ASSET1="$LLNMS_HOME/assets/temp-asset1.llnms-asset.xml"
     ASSET2="$LLNMS_HOME/assets/temp-asset2.llnms-asset.xml"
@@ -85,7 +82,7 @@ TEST_llnms_register_asset_scanner_01(){
     #-----------------------------------------#
     echo "running llnms-register-asset-scanner at $(date)" >> $LLNMS_UNIT_TEST_LOG
     echo 'llnms-register-asset-scanner -a temp-asset1 -s ping-scanner' >> $LLNMS_UNIT_TEST_LOG
-    llnms-register-asset-scanner -a temp-asset1 -s ping-scanner >> $LLNMS_UNIT_TEST_LOG
+    $LLNMS_HOME/bin/llnms-register-asset-scanner -a temp-asset1 -s ping-scanner >> $LLNMS_UNIT_TEST_LOG
 
     #  Make sure the asset is still valid xml
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset1.llnms-asset.xml" > /dev/null
@@ -111,7 +108,7 @@ TEST_llnms_register_asset_scanner_01(){
     fi
 
     #  Register the ssh scanner
-    llnms-register-asset-scanner -a temp-asset1 -s ssh-scanner > /dev/null
+    $LLNMS_HOME/bin/llnms-register-asset-scanner -a temp-asset1 -s ssh-scanner > /dev/null
 
     #  Make sure the asset is still valid
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset1.llnms-asset.xml" > /dev/null
@@ -133,7 +130,7 @@ TEST_llnms_register_asset_scanner_01(){
     #-----------------------------------------#
     #              test temp-asset 2         -#
     #-----------------------------------------#
-    llnms-register-asset-scanner -a temp-asset2 -s ping-scanner > /dev/null
+    $LLNMS_HOME/bin/llnms-register-asset-scanner -a temp-asset2 -s ping-scanner > /dev/null
 
     #  Make sure the asset is still valid xml
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset2.llnms-asset.xml" > /dev/null
@@ -158,7 +155,7 @@ TEST_llnms_register_asset_scanner_01(){
     fi
 
     #  Register the ssh scanner
-    llnms-register-asset-scanner -a temp-asset2 -s ssh-scanner > /dev/null
+    $LLNMS_HOME/bin/llnms-register-asset-scanner -a temp-asset2 -s ssh-scanner > /dev/null
 
     #  Make sure the asset is still valid
     xmlstarlet val "$LLNMS_HOME/assets/temp-asset2.llnms-asset.xml" > /dev/null

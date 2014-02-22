@@ -13,9 +13,6 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-#  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config
-
 # Initialize ANSI
 . test/bash/unit_test/unit_test_utilities.sh
 
@@ -32,7 +29,7 @@ TEST_llnms_create_asset_01(){
     rm -r $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null
 
     #  Create an asset using the create asset command
-    llnms-create-asset  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset' -ip4 '192.168.0.1' -d 'hello world'
 
     #  make sure the file was properly created
     if [ ! -e '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml' ]; then
@@ -50,14 +47,14 @@ TEST_llnms_create_asset_01(){
     fi
 
     #  check the name
-    if [ ! "$(xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml')" = 'temp-asset' ]; then
+    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'hostname' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'`" = 'temp-asset' ]; then
         echo '1'
         $ECHO "hostname is not equal to temp-asset, at Line $LINENO, File: $0." > /var/tmp/cause.txt
         return
     fi
 
     #  check the ip address
-    if [ ! "$(xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml')" = '192.168.0.1' ]; then
+    if [ ! "`xmlstarlet sel -t -m '//llnms-asset' -v 'ip4-address' -n '/var/tmp/llnms/assets/temp-asset.llnms-asset.xml'`" = '192.168.0.1' ]; then
         echo "ip4-address is not equal to 192.168.0.1, at Line $LINENO, File: $0." > /var/tmp/cause.txt
         echo '1'
         return 

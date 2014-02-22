@@ -13,9 +13,6 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-#  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config
-
 # Initialize ANSI
 . test/bash/unit_test/unit_test_utilities.sh
 
@@ -32,7 +29,7 @@ TEST_llnms_list_networks_01(){
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
     echo '-------------------------------------------------------------------------------' >> $LLNMS_UNIT_TEST_LOG
-    echo "Starting llnms-list-networks unit test at $(date)" >> $LLNMS_UNIT_TEST_LOG
+    echo "Starting llnms-list-networks unit test at `date`" >> $LLNMS_UNIT_TEST_LOG
     echo '-------------------------------------------------------------------------------' >> $LLNMS_UNIT_TEST_LOG
     echo "" >> $LLNMS_UNIT_TEST_LOG
 
@@ -45,19 +42,19 @@ TEST_llnms_list_networks_01(){
 
     #  Create a few demo network files
     echo '  -> Building the first network file' >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "Google DNS" -as '8.8.8.8' -ae '8.8.8.8'
+    $LLNMS_HOME/bin/llnms-create-network -n "Google DNS" -as '8.8.8.8' -ae '8.8.8.8'
 
     
     #  Create the second demo network file
     echo '  -> Building the second network file' >> $LLNMS_UNIT_TEST_LOG
-    llnms-create-network -n "Home Network" -as '192.168.0.1' -ae '192.168.0.254'
+    $LLNMS_HOME/bin/llnms-create-network -n "Home Network" -as '192.168.0.1' -ae '192.168.0.254'
     
     #  Running LLNMS List Networks
     echo '  -> Running llnms-list-networks' >> $LLNMS_UNIT_TEST_LOG
     
     OLDIFS=$IFS
     IFS=$'\n'
-    NETWORK_LIST="`llnms-list-networks --name-only`"
+    NETWORK_LIST="`$LLNMS_HOME/bin/llnms-list-networks --name-only`"
     for NETWORK in $NETWORK_LIST; do
         echo "  -> Testing Network: ($NETWORK)" >> $LLNMS_UNIT_TEST_LOG
         case $NETWORK in

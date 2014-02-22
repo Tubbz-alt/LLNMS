@@ -92,7 +92,7 @@ version(){
 #-     $1 - Path to add                                     -#
 #------------------------------------------------------------#
 llnms_add_scanner_to_registered_list(){
-    XMLFILE='/var/tmp/llnms/run/llnms-registered-scanners.xml'
+    XMLFILE="$LLNMS_HOME/run/llnms-registered-scanners.xml"
     xmlstarlet ed -L --subnode "/llnms-registered-scanners" --type elem -n 'llnms-scanner' -v $1 $XMLFILE
 }
 
@@ -106,12 +106,8 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info
-
-#  Import the configuration
-. $LLNMS_HOME/config/llnms-config
 
 
 #  Scanner flags
@@ -173,7 +169,7 @@ fi
 #-------------------------------------------------------------#
 #-     Make sure the scanner has not already been added      -#
 #-------------------------------------------------------------#
-SCANNER_PATHS=`llnms-list-scanners -l -f`
+SCANNER_PATHS=`$LLNMS_HOME/bin/llnms-list-scanners -l -f`
 for SCANNER in $SCANNER_PATHS; do
     if [ "$SCANNER" = "$SCANNER_FILE" ]; then
         echo 'Scanner has already been registered. Skipping registration.'

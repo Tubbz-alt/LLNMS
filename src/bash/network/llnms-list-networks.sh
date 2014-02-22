@@ -102,9 +102,6 @@ fi
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info
 
-#  Import configuration
-. $LLNMS_HOME/config/llnms-config
-
 
 #  Set the output format
 OUTPUT_FORMAT="LIST"
@@ -179,7 +176,7 @@ for NETWORK_FILE in $NETWORK_FILES; do
     fi
 
     #  Print the name
-    NETWORK_NAME="`llnms-print-network-info -n  -f $NETWORK_FILE`"
+    NETWORK_NAME="`$LLNMS_HOME/bin/llnms-print-network-info -n  -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$NAME_ONLY" = '1' ]; then
         printf "$NETWORK_NAME"
 
@@ -188,13 +185,13 @@ for NETWORK_FILE in $NETWORK_FILES; do
     fi
 
     #  Print the address start
-    ADDRESS_START="`llnms-print-network-info -s -f $NETWORK_FILE`"
+    ADDRESS_START="`$LLNMS_HOME/bin/llnms-print-network-info -s -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
         printf "$ADDRESS_START,  "
     fi
 
     #  Print the address end
-    ADDRESS_END="`llnms-print-network-info -e -f $NETWORK_FILE`"
+    ADDRESS_END="`$LLNMS_HOME/bin/llnms-print-network-info -e -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
         printf "$ADDRESS_END"
     fi

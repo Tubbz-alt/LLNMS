@@ -13,9 +13,6 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
-#  Import llnms configuration
-. $LLNMS_HOME/config/llnms-config
-
 # Initialize ANSI
 . test/bash/unit_test/unit_test_utilities.sh
  
@@ -27,9 +24,9 @@ fi
 TMP_llnms_remove_asset_create_assets(){
 
     #  Create 3 temporary assets
-    llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
-    llnms-create-asset  -host 'temp-asset2' -ip4 '10.2.10.1'   -d 'sample file'
-    llnms-create-asset  -host 'temp-asset3' -ip4 '172.16.0.1'  -d 'final test file'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset1' -ip4 '192.168.0.1' -d 'hello world'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset2' -ip4 '10.2.10.1'   -d 'sample file'
+    $LLNMS_HOME/bin/llnms-create-asset  -host 'temp-asset3' -ip4 '172.16.0.1'  -d 'final test file'
 
 }
 
@@ -111,14 +108,14 @@ TEST_llnms_remove_asset_01(){
     TMP_llnms_remove_asset_create_assets
     
     #  Remove the temp-asset1 asset by hostname
-    llnms-remove-asset -host 'temp-asset1'
+    $LLNMS_HOME/bin/llnms-remove-asset -host 'temp-asset1'
     
     #  Test asset existence
     RESULT="`TMP_llnms_remove_asset_test_assets 0 1 1`"
     if [ "$RESULT" = '1' ]; then echo '1'; return; fi
    
     #  Remove the temp-asset3 by address
-    llnms-remove-asset -ip4 '172.16.0.1'
+    $LLNMS_HOME/bin/llnms-remove-asset -ip4 '172.16.0.1'
     
     #  Test asset existence
     RESULT="`TMP_llnms_remove_asset_test_assets 0 1 0`"

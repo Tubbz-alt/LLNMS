@@ -358,6 +358,46 @@ if [ "$MAKE_FLAG" = '1' ]; then
 
 fi
 
+#-------------------------------------------------------------------------#
+#-      If test flag was set, build and release the proper library.      -#
+#-------------------------------------------------------------------------#
+if [ "$TEST_FLAG" = '1' ]; then
+
+    #  Set LLNMS Home depending on the build type
+    if [ "$MAKE_BUILD_TYPE" = 'release' ]; then
+        export LLNMS_HOME='release/llnms'
+    elif [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
+        export LLNMS_HOME='debug/llnms'
+    fi
+
+    #  If the core library was set, then run the test script there.
+    if [ "$TEST_COMPONENTS" = 'all' -o "$TEST_COMPONENTS" = 'core' ]; then
+        
+        #  Make sure the paths exist or else build them
+        if [ "$MAKE_BUILD_TYPE" = 'release' ]; then
+            if [ ! -d 'release/llnms/bin' ]; then
+                error "No release build exists, please run make first." $LINENO
+                usage
+                exit 1
+            fi
+        elif [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
+            if [ ! -d 'debug/llnms/bin' ]; then
+                error "No debug build exists, please run make first." $LINENO
+                usage
+                exit 1
+            fi
+        else
+            error "Unknown build type ($MAKE_BUILD_TYPE)" $LINENO
+            usage
+            exit 1
+        fi
+        
+        #  Run the command
+        ./test/bash/run-tests.sh 
+    fi
+
+fi
+
 
 #  Finish by printing a newline and exiting
 echo '-> end of LLNMS Installation Utility'

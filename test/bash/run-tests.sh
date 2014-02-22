@@ -34,6 +34,13 @@ if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
+#   Print some info about the program
+echo 'LLNMS Core Unit Tests'
+echo '---------------------'
+echo "-> LLNMS_HOME=$LLNMS_HOME"
+echo ''
+
+#   Make sure the installation is correct
 check_installation
 
 if [ -e "/var/tmp/llnms-halt.txt" ]; then
