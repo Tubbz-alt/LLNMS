@@ -14,11 +14,11 @@ usage(){
 
     echo "`basename $0` [options]"
     echo ''
-    echo '    options:'
-    echo '          -h, --help     :  Print usage instructions'
-    echo '          -j [int]       :  Build software with the specified number of threads.'
+    echo '    required flags (at least one must be specified): '
     echo ''
-    echo '          make  [system] :  Build C++ Software'
+    echo '          -h, --help           :  Print usage instructions'
+    echo ''
+    echo '          -m, --make [system]  :  Build C++ Software'
     echo ''
     echo '              system options:'
     echo '                  all = default : Build everything'
@@ -26,7 +26,11 @@ usage(){
     echo '                  curses        : Build Curses GUI'
     echo '                  gui           : Build Qt GUI'
     echo ''
-    echo '        install        :  Install C++ Software'
+    echo '    optional flags:'
+    echo '          -j [int]              :  Build software with the specified number of threads.'
+    echo ''
+    echo '          --debug               : Create debug build'
+    echo '          --release             : Create release build'
     echo ''
 }
 
@@ -86,17 +90,39 @@ make_core_software(){
     #  Set number of threads
     NUM_THREADS=$1
 
+    #  Set the build type
+    BUILD_TYPE=$2
+
     #  Print message
-    echo '->  building core LLNMS library'
-
+    echo '   ->  building core LLNMS library'
+    
     #  Make sure the release directory exists
-    mkdir -p release
+    if [ "$BUILD_TYPE" = 'release' ]; then
+        
+        #  Create directory
+        echo '      -> ensuring release directory exists'
+        mkdir -p release
 
-    #  Enter release directory
-    cd release
+        echo '      -> entering release directory'
+        cd release
 
-    #  Create Makefile
-    cmake ../install/cpp/core 
+        echo '      -> running CMake'
+        cmake ../install/cpp/core 
+
+    elif [ "$BUILD_TYPE" = 'debug' ]; then
+        
+        #  Create directory
+        echo '      -> ensuring debug directory exists'
+        mkdir -p debug
+
+        echo '      -> entering debug directory'
+        cd debug
+
+        # run cmake
+        echo '      -> running CMake'
+        cmake -DCMAKE_BUILD_TYPE=debug ../install/cpp/core
+    fi
+
 
     #  Build software 
     make -j$NUM_THREADS
@@ -189,19 +215,6 @@ make_gui_software(){
 }   
 
 
-#-----------------------------------#
-#-        Install Software         -#
-#-----------------------------------#
-install_software(){
-
-    #  Copy LLNMS-Viewer
-    echo "->  installing llnms-viewer to $LLNMS_HOME/bin/llnms-viewer"
-    cp "release/llnms-viewer"  "$LLNMS_HOME/bin/llnms-viewer"
-
-
-}
-
-
 #----------------------------------------#
 #-       Set the QMake Variable         -#
 #----------------------------------------#
@@ -233,24 +246,10 @@ set_qmake(){
 #-----------------------------#
 
 
-#  Source llnms home
-if [ "$LLNMS_HOME" = "" ]; then
-    LLNMS_HOME="/var/tmp/llnms"
-fi
-
-
-#  Import the version info
-. $LLNMS_HOME/config/llnms-info
-
-#  Import the configuration info
-. $LLNMS_HOME/config/llnms-config
-
-
 #   Variables
 RUN_MAKE=0
 MAKE_FLAG=0
 MAKE_VALUE="all"
-RUN_INSTALL=0
 NUM_THREADS=1
 THREAD_FLAG=0
 
@@ -258,6 +257,8 @@ THREAD_FLAG=0
 QMAKE='qmake'
 set_qmake
 
+#   Set the type of build
+BUILD_TYPE='release'
 
 #   Parse command-line options
 for OPTION in "$@"; do
@@ -280,18 +281,25 @@ for OPTION in "$@"; do
             ;;
 
         #----------------------------------#
-        #-          Make Software         -#
+        #-           Make Software        -#
         #----------------------------------#
-        'install' )
-            RUN_INSTALL=1
-            ;;
-
-        #----------------------------------#
-        #-        Install Software        -#
-        #----------------------------------#
-        'make' )
+        '-m' | '--make' )
             RUN_MAKE=1
             MAKE_FLAG=1
+            ;;
+
+        #--------------------------------------#
+        #-        Set Release Build Type      -#
+        #--------------------------------------#
+        '--release' )
+            BUILD_TYPE='release'
+            ;;
+
+        #--------------------------------------#
+        #-        Set Debug Build Type        -#
+        #--------------------------------------#
+        '--debug' )
+            BUILD_TYPE='debug'
             ;;
 
         #----------------------------------#
@@ -344,7 +352,7 @@ done
 #-------------------------------------------------#
 #      Check if at least one option was set      -#
 #-------------------------------------------------#
-if [ $RUN_MAKE -eq 0 -a $RUN_INSTALL -eq 0 ]; then
+if [ $RUN_MAKE -eq 0 ]; then
     error "Must run at least one option in the install script"  "$LINENO"
 fi
 
@@ -354,26 +362,16 @@ fi
 if [ $RUN_MAKE -ne 0 ]; then
     
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'core'  ]; then
-        make_core_software $NUM_THREADS
+        make_core_software $NUM_THREADS $BUILD_TYPE
     fi
 
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'curses' ]; then
-        make_curses_software $NUM_THREADS
+        make_curses_software $NUM_THREADS $BUILD_TYPE
     fi
     
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'gui' ]; then
-        make_gui_software $NUM_THREADS
+        make_gui_software $NUM_THREADS $BUILD_TYPE
     fi
-    
-    
+        
 fi
-
-
-#-------------------------------#
-#-       Install Software      -#
-#-------------------------------#
-if [ $RUN_INSTALL -ne 0 ]; then
-    install_software
-fi
-
 

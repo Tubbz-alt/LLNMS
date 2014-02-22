@@ -155,6 +155,29 @@ make_core_software(){
 
 }
 
+#------------------------------------#
+#-       Make CPP Core Library      -#
+#------------------------------------#
+make_cpp_core_software(){
+
+    #  Set the make build type
+    MAKE_BUILD_TYPE=$1
+
+    #  Print message
+    echo '-> building c++ core library'
+    echo "   -> build type: $MAKE_BUILD_TYPE"
+    
+    #  Set the make flag
+    MAKE_PARAMETER='--release'
+    if [ "$MAKE_BUILD_TYPE" == 'debug' ]; then
+        MAKE_PARAMETER='--debug'
+    fi
+
+    #  Run installer
+    ./install/cpp/install.sh "--make" "core" "$MAKE_PARAMETER"
+
+}
+
 #----------------------------------------#
 #-             Main Function            -#
 #----------------------------------------#
@@ -167,7 +190,8 @@ fi
 
 
 #   Main Flags
-COMPONENT_FLAG=0
+MAKE_COMPONENT_FLAG=0
+TEST_COMPONENT_FLAG=0
 MAKE_FLAG=0
 TEST_FLAG=0
 CLEAN_FLAG=0
@@ -176,12 +200,14 @@ CLEAN_FLAG=0
 THREAD_FLAG=0
 NUM_THREADS=1
 
-#   Type of make
+#   Type of make/test components
 #   all  : Everything
 #   core : Bash components
 #   cpp  : CPP Library
 #
-BUILD_COMPONENTS='all'
+MAKE_COMPONENTS='all'
+TEST_COMPONENTS='all'
+
 
 #   Type of builds
 #   release
@@ -219,9 +245,17 @@ for OPTION in "$@"; do
         #-----------------------------#
         '-m' | '--make' )
             MAKE_FLAG=1
-            COMPONENT_FLAG=1
+            MAKE_COMPONENT_FLAG=1
             ;;
         
+        #------------------------------#
+        #-       Test Software        -#
+        #------------------------------#
+        '-t' | '--test' )
+            TEST_FLAG=1
+            TEST_COMPONENT_FLAG=1
+            ;;
+
         #--------------------------------#
         #-      Make Release Build      -#
         #--------------------------------#
@@ -255,10 +289,15 @@ for OPTION in "$@"; do
         #--------------------------------------------------#
         *)
             #-    Check for the second make variable    -#
-            if [ "$COMPONENT_FLAG" = '1' ]; then
-                COMPONENT_FLAG=0
-                BUILD_COMPONENTS=$OPTION
+            if [ "$MAKE_COMPONENT_FLAG" = '1' ]; then
+                MAKE_COMPONENT_FLAG=0
+                MAKE_COMPONENTS=$OPTION
             
+            #-    Check for the second test variable    -#
+            elif [ "$TEST_COMPONENT_FLAG" = '1' ]; then
+                TEST_COMPONENT_FLAG=0
+                TEST_COMPONENTS=$OPTION
+
             #-     Get the prefix     -#
             elif [ "$PREFIX_FLAG" = '1' ]; then
                 PREFIX=$OPTION
@@ -268,7 +307,7 @@ for OPTION in "$@"; do
             elif [ "$THREAD_FLAG" = '1' ]; then
                 NUM_THREADS=$OPTION
                 THREAD_FLAG=0
-
+            
             #-    Otherwise there is an error for an unknown option   -#
             else
                 error "Unknown option $OPTION" $LINENO
@@ -308,14 +347,13 @@ fi
 if [ "$MAKE_FLAG" = '1' ]; then
 
     #  install the bash components into llnms_home
-    if [ "$BUILD_COMPONENTS" = 'all' -o "$BUILD_COMPONENTS" = 'core' ]; then
+    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'core' ]; then
         make_core_software  $MAKE_BUILD_TYPE
     fi
 
     #  build the C++ core library
-    if [ "$BUILD_COMPONENTS" = 'all' -o "$BUILD_COMPONENTS" = 'cpp' ]; then
-        error 'cpp not supported yet.' $LINENO
-        exit 1
+    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cpp' ]; then
+        make_cpp_core_software $MAKE_BUILD_TYPE
     fi
 
 fi
