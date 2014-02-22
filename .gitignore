@@ -2,6 +2,7 @@ src/cpp/llnms-core/llnms/core/Version.hpp
 *.swp
 work-samples
 *.she
+debug
 release
 Makefile
 
