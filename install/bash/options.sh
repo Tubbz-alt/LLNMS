@@ -8,7 +8,7 @@
 #
 
 #  Default Installation Location for LLNMS
-DEFAULT_LLNMS_HOME=/var/tmp/llnms
+DEFAULT_LLNMS_HOME=$LLNMS_HOME
 
 #  Default Binary Path for LLNMS
 DEFAULT_LLNMS_BIN_PATH=$DEFAULT_LLNMS_HOME/bin

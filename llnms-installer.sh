@@ -75,21 +75,35 @@ usage(){
     echo ''
     echo "usage: $0 [options]"
     echo ''
-    echo '    options:'
+    echo '    required flags (at least one must be specified):'
     echo ''
     echo '    -m, --make [system]  : Build the relevant system.'
     echo '        systems:'
     echo '            all [default]' 
-    echo '            core       - OS-specific LLNMS core scripts.'
+    echo '            core       - LLNMS core scripts.'
     echo '            cpp        - C++ Libraries'
-    echo '            curses-gui - NCurses GUI'
-    echo '            qt-gui - C++ Qt GUI'
+    echo '            curses-gui - NCurses CLI'
+    echo '            qt-gui     - Qt GUI'
     echo ''
     echo '    -i, --install        : Install LLNMS Components'
+    echo '            NOTE: Anything that was installed with make commands'
+    echo '                  will be installed.'
     echo ''
-    echo '    -t, --test           : Run all unit tests'
+    echo '    -t, --test  [system] : Run unit tests'
+    echo '         systems:'
+    echo '             all [default]'
+    echo '             core      - LLNMS core scripts'
+    echo '             cpp       - C++ Libraries'
     echo ''
     echo '    -c, --clean          : Remove all existing builds.'
+    echo ''
+    echo '   optional flags:'
+    echo '    --release            : Create release build'
+    echo '    --debug              : Create debugging build'
+    echo ''
+    echo '    -j [int]             : Set number of threads.'
+    echo ''
+    echo '    --PREFIX <new path>  : Set a new destination path.'
     echo ''
 
 }
@@ -117,6 +131,30 @@ clean_software(){
 
 }
 
+
+#-------------------------------------#
+#-        Make Core Software         -#
+#-------------------------------------#
+make_core_software(){
+
+    #  Set the make build type
+    MAKE_BUILD_TYPE=$1
+
+    #  print message
+    echo '-> building core software'
+    echo "   -> build type: $MAKE_BUILD_TYPE"
+
+    #  set destination
+    MAKE_PATH='release/llnms'
+    if [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
+        MAKE_PATH='debug/llnms'
+    fi
+    
+    #  Call the installer for bash
+    ./install/bash/install.sh "-n" "--PREFIX" "$MAKE_PATH" 
+
+}
+
 #----------------------------------------#
 #-             Main Function            -#
 #----------------------------------------#
@@ -128,29 +166,32 @@ if [ "$LLNMS_HOME" = "" ]; then
 fi
 
 
-#  Import the version info
-. $LLNMS_HOME/config/llnms-info
-
-#  Import the configuration info
-. $LLNMS_HOME/config/llnms-config
-
-
-#   Print Installation Banner
-print_banner
-
 #   Main Flags
-MAKE_TEMP_FLAG=0
+COMPONENT_FLAG=0
 MAKE_FLAG=0
 TEST_FLAG=0
 CLEAN_FLAG=0
+
+#  Thread flags
+THREAD_FLAG=0
+NUM_THREADS=1
 
 #   Type of make
 #   all  : Everything
 #   core : Bash components
 #   cpp  : CPP Library
 #
-MAKE_BUILD_TYPE='all'
+BUILD_COMPONENTS='all'
 
+#   Type of builds
+#   release
+#   debug
+#
+MAKE_BUILD_TYPE='release'
+
+#   Set the prefix
+PREFIX='/var/tmp/llnms'
+PREFIX_FLAG=0
 
 #   Parse command-line options
 for OPTION in "$@"; do
@@ -178,7 +219,35 @@ for OPTION in "$@"; do
         #-----------------------------#
         '-m' | '--make' )
             MAKE_FLAG=1
-            MAKE_TEMP_FLAG=1
+            COMPONENT_FLAG=1
+            ;;
+        
+        #--------------------------------#
+        #-      Make Release Build      -#
+        #--------------------------------#
+        '--release')
+            MAKE_BUILD_TYPE='release'
+            ;;
+
+        #---------------------------------#
+        #-       Make Debug Build        -#
+        #---------------------------------#
+        '--debug' )
+            MAKE_BUILD_TYPE='debug'
+            ;;
+        
+        #-----------------------------#
+        #-       Set the prefix      -#
+        #-----------------------------#
+        '--PREFIX' )
+            PREFIX_FLAG=1
+            ;;
+
+        #------------------------------------#
+        #-      Set number of threads       -#
+        #------------------------------------#
+        '-j' )
+            THREAD_FLAG=1
             ;;
 
         #--------------------------------------------------#
@@ -186,9 +255,19 @@ for OPTION in "$@"; do
         #--------------------------------------------------#
         *)
             #-    Check for the second make variable    -#
-            if [ "$MAKE_TEMP_FLAG" = '1' ]; then
-                MAKE_TEMP_FLAG=0
-                MAKE_BUILD_TYPE=$OPTION
+            if [ "$COMPONENT_FLAG" = '1' ]; then
+                COMPONENT_FLAG=0
+                BUILD_COMPONENTS=$OPTION
+            
+            #-     Get the prefix     -#
+            elif [ "$PREFIX_FLAG" = '1' ]; then
+                PREFIX=$OPTION
+                PREFIX_FLAG=0
+
+            #-    Set the number of threads   -#
+            elif [ "$THREAD_FLAG" = '1' ]; then
+                NUM_THREADS=$OPTION
+                THREAD_FLAG=0
 
             #-    Otherwise there is an error for an unknown option   -#
             else
@@ -201,6 +280,9 @@ for OPTION in "$@"; do
 
 done
 
+
+#   Print Installation Banner
+print_banner
 
 #---------------------------------------------------------#
 #-       Make sure at least one main flag was given      -#
@@ -226,13 +308,12 @@ fi
 if [ "$MAKE_FLAG" = '1' ]; then
 
     #  install the bash components into llnms_home
-    if [ "$MAKE_BUILD_TYPE" = 'all' -o "$MAKE_BUILD_TYPE" = 'core' ]; then
-        error 'core not supported yet.' $LINENO
-        exit 1
+    if [ "$BUILD_COMPONENTS" = 'all' -o "$BUILD_COMPONENTS" = 'core' ]; then
+        make_core_software  $MAKE_BUILD_TYPE
     fi
 
     #  build the C++ core library
-    if [ "$MAKE_BUILD_TYPE" = 'all' -o "$MAKE_BUILD_TYPE" = 'cpp' ]; then
+    if [ "$BUILD_COMPONENTS" = 'all' -o "$BUILD_COMPONENTS" = 'cpp' ]; then
         error 'cpp not supported yet.' $LINENO
         exit 1
     fi

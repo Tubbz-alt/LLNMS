@@ -16,10 +16,10 @@ usage(){
     echo ""
     echo "    options:"
     echo "      -h,  -help       :  Print usage instructions"
-    echo "      -u,  --uninstall :  Uninstall LLNMS from LLNMS_HOME (Note: Should preserve user created data)"
-    echo '      -s,  --samples   :  Install LLNMS Sample Configuration Files'
     echo '      -n,  --no-update :  Skip updating the version file.'
     echo ""
+    echo '      --PREFIX <new-path> : Set the installation location.'
+    echo ''
 
 }
 
@@ -86,68 +86,68 @@ install_to_filesystem(){
     
     # llnms assets
     echo ''
-    echo '-> Copying asset module scripts'
+    echo '   -> Copying asset module scripts'
     
-    echo '   -> llnms-create-asset.sh'
+    echo '      -> llnms-create-asset.sh'
     cp 'src/bash/assets/llnms-create-asset.sh'            "$LLNMS_HOME/bin/llnms-create-asset"
     
-    echo '   -> llnms-remove-asset.sh'
+    echo '      -> llnms-remove-asset.sh'
     cp 'src/bash/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
-    echo '   -> llnms-list-assets.sh'
+    echo '      -> llnms-list-assets.sh'
     cp 'src/bash/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-list-assets"
     
-    echo '   -> llnms-print-asset-info.sh'
+    echo '      -> llnms-print-asset-info.sh'
     cp 'src/bash/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"
     
-    echo '   -> llnms-register-asset-scanner.sh'   
+    echo '      -> llnms-register-asset-scanner.sh'   
     cp 'src/bash/assets/llnms-register-asset-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-asset-scanner"
     
-    echo '   -> llnms-scan-asset.sh'                  
+    echo '      -> llnms-scan-asset.sh'                  
     cp 'src/bash/assets/llnms-scan-asset.sh'              "$LLNMS_HOME/bin/llnms-scan-asset"
 
 
     # networks
     echo ''   
-    echo '-> Copying network module scripts'
+    echo '   -> Copying network module scripts'
     
-    echo '   -> Copying llnms-create-network'                
+    echo '      -> Copying llnms-create-network'                
     cp 'src/bash/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
     
-    echo '   -> Copying llnms-list-networks'
+    echo '      -> Copying llnms-list-networks'
     cp 'src/bash/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
     
-    echo '   -> Copying llnms-scan-address' 
+    echo '      -> Copying llnms-scan-address' 
     cp 'src/bash/network/llnms-scan-address.sh'           "$LLNMS_HOME/bin/llnms-scan-address"
 
-    echo '   -> Copying llnms-print-network-info'
+    echo '      -> Copying llnms-print-network-info'
     cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
 
-    echo '   -> Copying llnms-remove-network'    
+    echo '      -> Copying llnms-remove-network'    
     cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
     
-    echo '   -> Copying llnms-scan-networks'   
+    echo '      -> Copying llnms-scan-networks'   
     cp 'src/bash/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
 
 
     #  Scanning utilities
     echo ''
-    echo '-> Copying scanning module scripts'
+    echo '   -> Copying scanning module scripts'
     
-    echo '   -> llnms-list-scanners.sh'
+    echo '      -> llnms-list-scanners.sh'
     cp 'src/bash/scanning/llnms-list-scanners.sh'       "$LLNMS_HOME/bin/llnms-list-scanners"
 
-    echo '   -> llnms-register-scanner.sh'
+    echo '      -> llnms-register-scanner.sh'
     cp 'src/bash/scanning/llnms-register-scanner.sh'    "$LLNMS_HOME/bin/llnms-register-scanner"
     
-    echo '   -> llnms-print-scanner-info.sh' 
+    echo '      -> llnms-print-scanner-info.sh' 
     cp 'src/bash/scanning/llnms-print-scanner-info.sh'  "$LLNMS_HOME/bin/llnms-print-scanner-info"
     
-    echo '   -> llnms scanner scripts'
+    echo '      -> llnms scanner scripts'
     cp -r  src/bash/scanning/scanners/*                 "$LLNMS_HOME/scanning/"
 
     #  config utilities
-    echo '   -> llnms info script'
+    echo '      -> llnms info script'
     cp src/bash/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
 
 }
@@ -215,20 +215,16 @@ check_xmlstarlet(){
 #------------------------------------------------------#
 check_prerequisites(){
 
-    echo '-> checking LLNMS installation pre-requisites'
+    echo '   -> checking LLNMS installation pre-requisites'
 
     #  Check for xmlstarlet
-    if [ "`uname`" == "Darwin" ]; then
-        echo "   -> checking xmlstarlet : \c"
-    else
-        echo -n "  -> checking xmlstarlet :"
-    fi
+    printf "      -> checking xmlstarlet : "
 
     check_xmlstarlet
     if [ $? -eq 0 ]; then
-        echo 'found'
+        printf 'found\n'
     else
-        echo 'not found'
+        printf 'not found\n'
         echo 'error: xmlstarlet not found, please install'
         exit 1
     fi
@@ -262,24 +258,14 @@ create_configuration_file(){
 #-----------------------------#
 #-      Main Function        -#
 #-----------------------------#
-# clear the screen
-clear
 
-#  Pick header
-echo ''
-echo 'LLNMS Installer'
-echo '---------------'
-
-#  import our default configuration
-. install/bash/options.sh
-
-#  Set the LLNMS Home Directory
-export LLNMS_HOME=$DEFAULT_LLNMS_HOME
-
+#  Set LLNMS_Home to the default release location
+export LLNMS_HOME='release/llnms'
 
 #  Parse Command-Line Options
 INSTALL_SAMPLES=0
 UPDATE_LLNMS=1
+PREFIX_FLAG=0
 
 for OPTION in $@; do
     
@@ -292,39 +278,37 @@ for OPTION in $@; do
             exit 0
             ;;
         
-        #   Uninstall LLNMS
-        "-u" | "--uninstall" )
-            
-            uninstall_llnms
-            exit 0
-            ;;
-        
-        #   Install LLNMS Samples
-        '-s' | '--samples' )
-            install_samples
-            exit 1
-            ;;
-
         #   Skip update of llnms version file
         '-n' | '--no-update' )
             UPDATE_LLNMS=0
             ;;
 
+        #   Set the prefix flag
+        '--PREFIX' )
+            PREFIX_FLAG=1
+            ;;
+
         #   Default Parameter.  Usually an error
-        "*" )
-            echo "Error: Unknown option $OPTION"
-            usage
-            exit 0
+        * )
+            #  Set the prefix flag
+            if [ "$PREFIX_FLAG" = '1' ]; then
+                PREFIX_FLAG=0
+                LLNMS_HOME=$OPTION
+            
+            #  Otherwise throw an error
+            else
+                echo "Error: Unknown option $OPTION"
+                usage
+                exit 1
+            fi
             ;;
 
     esac
 
 done
 
-#  If no options are present, then do a default install
-echo "-> Configuration information"
-echo "   -> LLNMS_HOME=$LLNMS_HOME"
-echo ''
+#  import our default configuration
+. install/bash/options.sh $LLNMS_HOME
 
 #  build the baseline filestructure
 build_and_verify_filestructure
@@ -332,27 +316,22 @@ build_and_verify_filestructure
 #  Check prerequisites
 check_prerequisites
 
+
 #  Increment the version file
 echo ''
 if [ $UPDATE_LLNMS -eq 1 ]; then
-    echo "-> Updating LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
+    echo "   -> Updating LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
     ./install/bash/version.sh -i subminor
 else
-    echo "-> Skipping update of LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
+    echo "   -> Skipping update of LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
 fi
+
 
 #  copy the tools to the directory
 install_to_filesystem
 
+
 #  Create the configuration file
 create_configuration_file
 
-#  Install samples
-if [ $INSTALL_SAMPLES -eq 1 ]; then
-    install_samples
-fi
-
-echo ''
-echo 'End of LLNMS Installer'
-echo '----------------------'
 
