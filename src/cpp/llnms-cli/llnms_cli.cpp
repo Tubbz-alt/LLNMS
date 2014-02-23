@@ -1,5 +1,5 @@
 /**
- * @file    llnms_viewer.cpp
+ * @file    llnms_cli.cpp
  * @author  Marvin Smith
  * @date    12/31/2013
 */
