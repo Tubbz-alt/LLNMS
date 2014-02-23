@@ -150,7 +150,7 @@ make_curses_software(){
     BUILD_TYPE=$2
 
     #  Print message
-    echo '   ->  building curses LLNMS-Viewer'
+    echo '   ->  building c++ cli application'
 
     if [ "$BUILD_TYPE" = 'release' ]; then
     
@@ -159,11 +159,25 @@ make_curses_software(){
 
         #  Enter release directory
         cd release
+
+        #  run cmake
+        cmake ../install/cpp/cli
+
+    elif [ "$BUILD_TYPE" = 'debug' ]; then
+        
+        #  Make sure the debug directory exists
+        mkdir -p debug
+
+        #  Enter debug directory
+        cd debug
+
+        #  run cmake 
+        cmake -DCMAKE_BUILD_TYPE=debug ../install/cpp/cli
+
+    else 
+        echo "error: invalid build type: $BUILD_TYPE"
+        exit 1
     fi
-
-
-    #  Create Makefile
-    cmake ../install/cpp 
 
     #  Build software 
     make
