@@ -155,10 +155,7 @@ void Table::print_outer_table_horizontal_bar( const int& row,
 */
 void Table::print( const int& row, const int& maxX, const int& maxY, const int& currentIdx, const int& topItem ){  
   
-    // current index
-    int cIdx=0;
-
-    // compute the width of each section
+    // compute the width of each column
     int maxWidth = 1;
     vector<int> widths(headers.size());
     for( size_t i=0; i<widths.size(); i++ ){
@@ -168,17 +165,18 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
          maxWidth += widths[i];
     }
     
+
     // the max width is either maxX or the farthest width, whatever is smaller
     if( maxWidth > maxX )
         maxWidth = maxX;
 
-    
-    // print top bar
+    // current row
     int crow=row;
     
-    // print top row
+    // print top bar
     print_outer_table_horizontal_bar( crow++, 0, maxWidth, widths ); 
     
+
     // print header row
     int tidx=0;
     int cidx=0;
