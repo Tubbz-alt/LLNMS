@@ -16,6 +16,9 @@ project (LLNMS-CPP-CLI)
 set( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 set( LIBRARY_OUTPUT_PATH    ${PROJECT_BINARY_DIR}/../lib)
 
+#   Add the LLNMS CMake Module Path
+set( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" ${PROJECT_SOURCE_DIR}/../cmake )
+
 #------------------------------------#
 #-      Import NCurses Library      -#
 #------------------------------------#
@@ -43,10 +46,12 @@ set( LLNMS_CLI_MAIN
 )
 
 set( LLNMS_CLI_SOURCES
+    ../../src/cpp/llnms-cli/core/Options.cpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.cpp
 )
 
 set( LLNMS_CLI_HEADERS
+    ../../src/cpp/llnms-cli/core/Options.hpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.hpp
 )
 

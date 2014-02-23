@@ -4,7 +4,7 @@
  * @date    12/31/2013
 */
 
-/// Curses Utilities
+/// CLI Libraries
 #include <utilities/CursesUtilities.hpp>
 
 /// LLNMS Main Menu
@@ -18,6 +18,7 @@
 //#include "llnms/LLNMS_State.hpp"
 
 /// C Standard Library
+#include <iostream>
 #include <string>
 
 /// Global Options
@@ -28,6 +29,9 @@
 
 /// LLNMS State Object
 //LLNMS_State llnms_state;
+
+using namespace std;
+
 
 /**
  * Main Function
@@ -54,11 +58,12 @@ int main( int argc, char* argv[] ){
         //main_menu();
 
 
-    /*} catch( std::string e ){
-        logger.add_message( Message( std::string("String exception thrown. Exiting program. Message: ")+e, Logger::LOG_MAJOR ));
-    } catch(...){
-        logger.add_message( Message( std::string("Unknown exception thrown. Exiting program."), Logger::LOG_MAJOR ));
-    }*/ 
+    } catch( std::string e ){
+        cout << e << endl;
+        //logger.add_message( Message( std::string("String exception thrown. Exiting program. Message: ")+e, Logger::LOG_MAJOR ));
+    //} catch(...){
+    //    logger.add_message( Message( std::string("Unknown exception thrown. Exiting program."), Logger::LOG_MAJOR ));
+    } 
 
     // make sure to close up curses
     close_curses();
