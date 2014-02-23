@@ -4,6 +4,9 @@
  * @date    12/31/2013
 */
 
+/// LLNMS Core Library
+#include <LLNMS.hpp>
+
 /// CLI Libraries
 #include <core/Options.hpp>
 #include <ui/MainMenu.hpp>
@@ -19,8 +22,8 @@
 /// Global Options
 Options options;
 
-/// Logging Utility
-//Logger logger;
+/// Global LLNMS State
+LLNMS::LLNMS_State state;
 
 using namespace std;
 
@@ -37,13 +40,9 @@ int main( int argc, char* argv[] ){
 
         // initialize options
         options.init( argc, argv );
-    
-        /// set log file
-        //logger.filename() = options.log_filename;
-        //logger.priority() = options.log_priority;
-    
-        /// clear log file
-        //logger.clear_log();
+        
+        // set LLNMS Home in the state module
+        state.set_LLNMS_HOME( options.m_LLNMS_HOME );
         
         // start main program
         main_menu();

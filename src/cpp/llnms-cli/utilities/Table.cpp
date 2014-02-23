@@ -3,12 +3,15 @@
  * @author  Marvin Smith
  * @date    1/2/2014
 */
+
+/// LLNMS CLI Libraries
 #include "Table.hpp"
+#include <utilities/CursesUtilities.hpp>
 
-#include "CursesUtilities.hpp"
-
+/// NCurses
 #include <ncurses.h>
 
+/// Standard Libraries
 #include <cstdlib>
 
 using namespace std;
@@ -57,6 +60,26 @@ void Table::setHeaderName( const int& idx, const std::string& hdr ){
 
 
 /**
+ * Set header ratio
+ */
+void Table::setHeaderRatio( const int& idx, const double& ratio ){
+
+    // if the ratio is greater than 1, skip
+    if( ratio > 1 ){
+        return;
+    }
+
+    // if the index is less than max
+    if( idx > (headerRatios.size()-1) )
+        return;
+
+    // set ratio in index
+    headerRatios[idx] = ratio;
+    
+}
+
+
+/**
  * Set table data
 */
 void Table::setData( const int& x, const int& y, const string& strdata ){
@@ -88,26 +111,77 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
 }
 
 /**
+ * Print table header line
+ */
+void Table::print_header_table_line( const int& row, const int& maxWidth, std::vector<int>const& widths ){
+    
+    // print header bar
+    int tidx=0;
+    int cidx=0;
+    for( size_t i=0; i<=maxWidth; i++ ){
+        
+        /**
+         * Print corner
+         */
+        if( tidx == 0 || i == maxWidth ){
+            mvaddch( row, i, '+' );
+        }
+
+        /**
+         * Print horizontal line
+         */
+        else{
+            mvaddch( row, i, '-' );
+        }
+
+        /// increment temp index
+        tidx++;
+        if( tidx > widths[cidx] ){
+            tidx=0;
+            cidx++;
+        }
+
+    }
+
+}
+
+
+/**
  * Print table
 */
 void Table::print( const int& row, const int& maxX, const int& maxY, const int& currentIdx, const int& topItem ){  
   
     // current index
     int cIdx=0;
+
+    // compute the width of each section
+    int maxWidth = 1;
     vector<int> widths(headers.size());
     for( size_t i=0; i<widths.size(); i++ ){
-        widths[i] = headerRatios[i] * maxX;
+         
+         // set the width
+         widths[i] = headerRatios[i] * maxX;
+         maxWidth += widths[i];
     }
+    
+    // the max width is either maxX or the farthest width, whatever is smaller
+    if( maxWidth > maxX )
+        maxWidth = maxX;
 
-    // print header info
+    
+    // print top bar
+    int crow=row;
+    
+    // print top row
+    print_header_table_line( crow++, maxWidth, widths ); 
+    
+    // print header row
     int tidx=0;
     int cidx=0;
-    int crow=row;
-    for( size_t i=0; i<=maxX; i++ ){
-        
+    for( size_t i=0; i<=maxWidth; i++ ){
 
         // if starting a new block, print the bar
-        if( tidx == 0 || i == maxX ){ mvprintw( crow, i, "|" ); }
+        if( tidx == 0 || i == maxWidth ){ mvprintw( crow, i, "|" ); }
 
         // if starting a new block, print a space after the bar
         else if( tidx == 1 ){ mvprintw( crow, i, " " ); }
@@ -125,40 +199,16 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
         }
 
     }
+    crow++;
 
     // print header bar
-    tidx=0;
-    cidx=0;
-    crow++;
-    for( size_t i=0; i<=maxX; i++ ){
-        
-        /**
-         * Print corner
-         */
-        if( tidx == 0 || i == maxX ){
-            mvaddch( crow, i, '+' );
-        }
+    print_header_table_line( crow++, maxWidth, widths );
 
-        /**
-         * Print horizontal line
-         */
-        else{
-            mvaddch( crow, i, '-' );
-        }
-
-        /// increment temp index
-        tidx++;
-        if( tidx > widths[cidx] ){
-            tidx=0;
-            cidx++;
-        }
-
-    }
 
     if( data.size() <= 0 ){
         return;
     }
-
+    
     /**
      * Print data
      */
@@ -170,7 +220,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
         // turn on highlighting if requested
         if( i == currentIdx ){  attron( A_STANDOUT ); }
 
-        for( size_t j=0; j<=maxX; j++ ){
+        for( size_t j=0; j<=maxWidth; j++ ){
             
             // if starting a new block, print the bar
             if( tidx == 0 || j == maxX ){ mvprintw( crow, j, "|" ); }
@@ -195,7 +245,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
         if( i == currentIdx ){  attroff( A_STANDOUT ); }
     }
 
-    while( crow <= maxY ){
+    while( crow <= (maxY-1) ){
             
         tidx=0;
         cidx=0;
@@ -211,6 +261,12 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
                 tidx=0;
             }
         }
+    }
+    
+    // print final row
+    crow++;
+    for( size_t i=0; i<=maxX; i++ ){
+        mvaddch( crow, i, '-' );
     }
 }
 

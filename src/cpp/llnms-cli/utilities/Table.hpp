@@ -3,14 +3,14 @@
  * @author  Marvin Smith
  * @date    1/2/2014
 */
-#ifndef __SRC_CPP_LLNMS_UI_TABLE_HPP__
-#define __SRC_CPP_LLNMS_UI_TABLE_HPP__
+#ifndef __SRC_CPP_LLNMSCLI_UI_TABLE_HPP__
+#define __SRC_CPP_LLNMSCLI_UI_TABLE_HPP__
 
 #include <sstream>
 #include <string>
 #include <vector>
 
-#include "CursesUtilities.hpp"
+#include <utilities/CursesUtilities.hpp>
 
 
 /** 
@@ -36,6 +36,11 @@ class Table{
         void setHeaderName( const int& idx, const std::string& hdr );
         
         /**
+         * Set header ratio
+         */
+        void setHeaderRatio( const int& idx, const double& ratio );
+
+        /**
          * Set table data
         */
         void setData( const int& x, const int& y, const std::string& strdata );
@@ -56,6 +61,14 @@ class Table{
         int getFullTableHeight()const;
 
     private:
+        
+        /**
+         * Print table line
+         */
+        void print_header_table_line( const int& row, 
+                                      const int& maxWidth, 
+                                      const std::vector<int>& widths 
+                                    );
         
         /// Table Data
         std::vector<std::vector<std::string> > data;

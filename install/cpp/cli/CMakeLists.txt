@@ -23,7 +23,20 @@ set( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" ${PROJECT_SOURCE_DIR}/../cmake )
 #-      Import NCurses Library      -#
 #------------------------------------#
 SET(CURSES_NEED_NCURSES TRUE)
-FIND_PACKAGE(Curses)
+FIND_PACKAGE(Curses REQUIRED)
+
+#-----------------------------------#
+#-      Import LLNMS Library       -#
+#-----------------------------------#
+FIND_LIBRARY( LLNMS_LIBRARY 
+                REQUIRED
+                NAMES 
+                    LLNMS
+                    libLLNMS.a
+                HINTS
+                    ${PROJECT_BINARY_DIR}/../lib
+)
+include_directories( ${PROJECT_BINARY_DIR}/../include )
 
 #-------------------------------------#
 #-       Import Boost Library        -#
@@ -49,16 +62,20 @@ set( LLNMS_CLI_SOURCES
     ../../src/cpp/llnms-cli/core/Options.cpp
     ../../src/cpp/llnms-cli/core/Parser.cpp
     ../../src/cpp/llnms-cli/ui/MainMenu.cpp
+    ../../src/cpp/llnms-cli/ui/NetworkManagerUI.cpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.cpp
     ../../src/cpp/llnms-cli/utilities/FilesystemUtilities.cpp
+    ../../src/cpp/llnms-cli/utilities/Table.cpp
 )
 
 set( LLNMS_CLI_HEADERS
     ../../src/cpp/llnms-cli/core/Options.hpp
     ../../src/cpp/llnms-cli/core/Parser.hpp
     ../../src/cpp/llnms-cli/ui/MainMenu.hpp
+    ../../src/cpp/llnms-cli/ui/NetworkManagerUI.hpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.hpp
     ../../src/cpp/llnms-cli/utilities/FilesystemUtilities.hpp
+    ../../src/cpp/llnms-cli/utilities/Table.hpp
 )
 
 #--------------------------------------------------#
@@ -72,6 +89,7 @@ add_executable( llnms-cli
     ${LLNMS_CLI_HEADERS}
 )
 target_link_libraries( llnms-cli
+                        ${LLNMS_LIBRARY}
                         ${CURSES_NCURSES_LIBRARY}
                         ${Boost_LIBRARIES}
 )

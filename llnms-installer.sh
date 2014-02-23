@@ -180,6 +180,10 @@ make_cpp_core_software(){
 
     #  Run installer
     ./install/cpp/install.sh "--make" "core" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
+    if [ ! "$?" = '0' ]; then
+        error "C++ Core Library install failed." $LINENO
+        exit 1
+    fi
 
 }
 
@@ -207,6 +211,10 @@ make_cpp_cli_software(){
 
     #  Run installer
     ./install/cpp/install.sh "--make" "cli" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
+    if [ ! "$?" = '0' ]; then
+        error "C++ CLI install failed." $LINENO
+        exit 1
+    fi
 
 }
 

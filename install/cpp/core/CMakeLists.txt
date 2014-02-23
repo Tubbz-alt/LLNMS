@@ -59,6 +59,7 @@ include_directories( ${Boost_INCLUDE_DIR} )
 #-      Define the list of LLNMS Sources and Headers      -#
 #----------------------------------------------------------#
 set( LLNMS_SOURCES
+    ../../../src/cpp/llnms-core/llnms/LLNMS_State.cpp
     ../../../src/cpp/llnms-core/llnms/networking/NetworkModule.cpp
     ../../../src/cpp/llnms-core/llnms/networking/NetworkDefinitionContainer.cpp
     ../../../src/cpp/llnms-core/llnms/networking/NetworkDefinition.cpp

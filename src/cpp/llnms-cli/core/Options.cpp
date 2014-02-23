@@ -79,7 +79,12 @@ void Options::init( int argc, char* argv[] ){
     if( found == true ){
         log_priority = tempInt;
     }
-
+    
+    // set the llnms home
+    tempString = parser.getItem_string("LLNMS_HOME", found );
+    if( found == true ){
+        m_LLNMS_HOME=tempString;
+    }
 
 
 }

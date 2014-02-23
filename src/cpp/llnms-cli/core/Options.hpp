@@ -59,6 +59,8 @@ class Options{
         /// Log Priority
         int log_priority;
         
+        /// LLNMS Home
+        std::string m_LLNMS_HOME;
 
 }; /// End of Options class
 

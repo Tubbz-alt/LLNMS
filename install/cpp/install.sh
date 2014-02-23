@@ -129,13 +129,13 @@ make_core_software(){
     MAKE_RESULT="$?"
 
     #  Exit release directory
-    cd ..
+    cd ../..
     
     if [ ! "$MAKE_RESULT" = "0" ]; then
         error "make failed" $LINENO 
         exit 1
     fi
-
+    
 }
 
 #----------------------------------#
@@ -161,7 +161,7 @@ make_curses_software(){
         cd release/cli
 
         #  run cmake
-        cmake ../../install/cpp/cli
+        cmake -DLLNMS_LIB_PATH=../lib ../../install/cpp/cli
 
     elif [ "$BUILD_TYPE" = 'debug' ]; then
         
@@ -172,7 +172,7 @@ make_curses_software(){
         cd debug/cli
 
         #  run cmake 
-        cmake -DCMAKE_BUILD_TYPE=debug ../../install/cpp/cli
+        cmake -DCMAKE_BUILD_TYPE=debug -DLLNMS_LIB_PATH=../lib  ../../install/cpp/cli
 
     else 
         echo "error: invalid build type: $BUILD_TYPE"
@@ -184,7 +184,7 @@ make_curses_software(){
     MAKE_RESULT="$?"
 
     #  Exit release directory
-    cd ..
+    cd ../..
     
     if [ ! "$MAKE_RESULT" = "0" ]; then
         error "make failed" $LINENO 
@@ -237,6 +237,36 @@ make_gui_software(){
     fi
 
 }   
+
+#----------------------------------------#
+#-       Build Include Directory        -#
+#----------------------------------------#
+build_include_dir(){
+
+    # Set build type
+    BUILD_TYPE=$1
+    
+    #  Create the Release Include Directories
+    BASE_INCLUDE_PATH='release'
+
+    if [ "$BUILD_TYPE" = 'debug' ]; then
+        BASE_INCLUDE_PATH='debug'
+    fi
+   
+    #  Make the include directory
+    mkdir -p $BASE_INCLUDE_PATH/include/llnms/core
+    mkdir -p $BASE_INCLUDE_PATH/include/llnms/networking
+    mkdir -p $BASE_INCLUDE_PATH/include/llnms/utilities
+
+    #  Copy header files
+    cp src/cpp/llnms-core/LLNMS.hpp               $BASE_INCLUDE_PATH/include/
+    cp src/cpp/llnms-core/llnms/*.hpp             $BASE_INCLUDE_PATH/include/llnms/
+    cp src/cpp/llnms-core/llnms/core/*.hpp        $BASE_INCLUDE_PATH/include/llnms/core/
+    cp src/cpp/llnms-core/llnms/networking/*.hpp  $BASE_INCLUDE_PATH/include/llnms/networking/
+    cp src/cpp/llnms-core/llnms/utilities/*.hpp   $BASE_INCLUDE_PATH/include/llnms/utilities/
+    
+
+}
 
 
 #----------------------------------------#
@@ -387,6 +417,7 @@ if [ $RUN_MAKE -ne 0 ]; then
     
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'core'  ]; then
         make_core_software $NUM_THREADS $BUILD_TYPE
+        build_include_dir $BUILD_TYPE
     fi
 
     if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'cli' ]; then
