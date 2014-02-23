@@ -12,6 +12,9 @@ cmake_minimum_required( VERSION 2.6 )
 #   Define our project name
 project (LLNMS-CPP-CLI)
 
+#   Tell CMake where to put binaries and libs
+set( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
+set( LIBRARY_OUTPUT_PATH    ${PROJECT_BINARY_DIR}/../lib)
 
 #------------------------------------#
 #-      Import NCurses Library      -#
@@ -36,20 +39,22 @@ include_directories( ${Boost_INCLUDE_DIR} )
 #-      Define the list of LLNMS Sources and Headers      -#
 #----------------------------------------------------------#
 set( LLNMS_CLI_MAIN
-
+    ../../src/cpp/llnms-cli/llnms_cli.cpp
 )
 
 set( LLNMS_CLI_SOURCES
-
+    ../../src/cpp/llnms-cli/utilities/CursesUtilities.cpp
 )
 
 set( LLNMS_CLI_HEADERS
-
+    ../../src/cpp/llnms-cli/utilities/CursesUtilities.hpp
 )
 
 #--------------------------------------------------#
 #-      Create the LLNMS-CLI Executable        -#
 #--------------------------------------------------#
+include_directories( ../../../src/cpp/llnms-cli )
+
 add_executable( llnms-cli
     ${LLNMS_CLI_MAIN}
     ${LLNMS_CLI_SOURCES}

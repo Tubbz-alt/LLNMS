@@ -5,29 +5,29 @@
 */
 
 /// Curses Utilities
-#include "utilities/CursesUtilities.hpp"
+#include <utilities/CursesUtilities.hpp>
 
 /// LLNMS Main Menu
-#include "ui/main_menu.hpp"
+//#include "ui/main_menu.hpp"
 
 /// Options
-#include "utilities/Logger.hpp"
-#include "utilities/Options.hpp"
+//#include "utilities/Logger.hpp"
+//#include "utilities/Options.hpp"
 
 /// LLNMS_State
-#include "llnms/LLNMS_State.hpp"
+//#include "llnms/LLNMS_State.hpp"
 
 /// C Standard Library
 #include <string>
 
 /// Global Options
-Options options;
+//Options options;
 
 /// Logging Utility
-Logger logger;
+//Logger logger;
 
 /// LLNMS State Object
-LLNMS_State llnms_state;
+//LLNMS_State llnms_state;
 
 /**
  * Main Function
@@ -41,24 +41,24 @@ int main( int argc, char* argv[] ){
         init_curses();
 
         // initialize options
-        options.init( argc, argv );
+        //options.init( argc, argv );
     
         /// set log file
-        logger.filename() = options.log_filename;
-        logger.priority() = options.log_priority;
+        //logger.filename() = options.log_filename;
+        //logger.priority() = options.log_priority;
     
         /// clear log file
-        logger.clear_log();
+        //logger.clear_log();
         
         // start main program
-        main_menu();
+        //main_menu();
 
 
-    } catch( std::string e ){
+    /*} catch( std::string e ){
         logger.add_message( Message( std::string("String exception thrown. Exiting program. Message: ")+e, Logger::LOG_MAJOR ));
     } catch(...){
         logger.add_message( Message( std::string("Unknown exception thrown. Exiting program."), Logger::LOG_MAJOR ));
-    } 
+    }*/ 
 
     // make sure to close up curses
     close_curses();

@@ -101,26 +101,26 @@ make_core_software(){
         
         #  Create directory
         echo '      -> ensuring release directory exists'
-        mkdir -p release
+        mkdir -p release/core
 
         echo '      -> entering release directory'
-        cd release
+        cd release/core
 
         echo '      -> running CMake'
-        cmake ../install/cpp/core 
+        cmake ../../install/cpp/core 
 
     elif [ "$BUILD_TYPE" = 'debug' ]; then
         
         #  Create directory
         echo '      -> ensuring debug directory exists'
-        mkdir -p debug
+        mkdir -p debug/core
 
         echo '      -> entering debug directory'
-        cd debug
+        cd debug/core
 
         # run cmake
         echo '      -> running CMake'
-        cmake -DCMAKE_BUILD_TYPE=debug ../install/cpp/core
+        cmake -DCMAKE_BUILD_TYPE=debug ../../install/cpp/core
     fi
 
 
@@ -155,24 +155,24 @@ make_curses_software(){
     if [ "$BUILD_TYPE" = 'release' ]; then
     
         #  Make sure the release directory exists
-        mkdir -p release
+        mkdir -p release/cli
 
         #  Enter release directory
-        cd release
+        cd release/cli
 
         #  run cmake
-        cmake ../install/cpp/cli
+        cmake ../../install/cpp/cli
 
     elif [ "$BUILD_TYPE" = 'debug' ]; then
         
         #  Make sure the debug directory exists
-        mkdir -p debug
+        mkdir -p debug/cli
 
         #  Enter debug directory
-        cd debug
+        cd debug/cli
 
         #  run cmake 
-        cmake -DCMAKE_BUILD_TYPE=debug ../install/cpp/cli
+        cmake -DCMAKE_BUILD_TYPE=debug ../../install/cpp/cli
 
     else 
         echo "error: invalid build type: $BUILD_TYPE"
@@ -180,7 +180,7 @@ make_curses_software(){
     fi
 
     #  Build software 
-    make
+    make -j$NUM_THREADS
     MAKE_RESULT="$?"
 
     #  Exit release directory
