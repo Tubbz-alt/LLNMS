@@ -30,7 +30,10 @@ NetworkModule::NetworkModule( const std::string& LLNMS_HOME ){
 
     /// Set the new llnms_home
     m_LLNMS_HOME = LLNMS_HOME;
-
+    
+    /// set LLNMS_Home in each of the containers
+    m_network_hosts.LLNMS_HOME()       = LLNMS_HOME;
+    m_network_definitions.LLNMS_HOME() = LLNMS_HOME;
 }
 
 /**

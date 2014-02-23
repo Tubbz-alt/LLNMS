@@ -33,7 +33,6 @@ class Options{
             
             /// Set default LLNMS_Home
             LLNMS_HOME="/var/tmp/llnms";
-
         }
 
         /// Base directory of LLNMS
@@ -140,7 +139,7 @@ int main( int argc, char* argv[] ){
         
         /// parse command-line options
         Options options = parse_command_line_options( argc, argv );
-        
+
         /// Load a LLNMS Network Module
         LLNMS::NETWORK::NetworkModule network_module( options.LLNMS_HOME );
         network_module.update();
