@@ -1,10 +1,10 @@
 /**
- * @file    FileUtilities.hpp
+ * @file    FilesystemUtilities.hpp
  * @author  Marvin Smith
  * @date    1/11/2014
 */
-#ifndef __SRC_CPP_LLNMSVIEWER_UTILITIES_FILEUTILITIES_HPP__
-#define __SRC_CPP_LLNMSVIEWER_UTILITIES_FILEUTILITIES_HPP__
+#ifndef __SRC_CPP_LLNMSVIEWER_UTILITIES_FILESYSTEMUTILITIES_HPP__
+#define __SRC_CPP_LLNMSVIEWER_UTILITIES_FILESYSTEMUTILITIES_HPP__
 
 #include <string> 
 

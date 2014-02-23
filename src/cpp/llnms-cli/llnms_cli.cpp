@@ -5,33 +5,24 @@
 */
 
 /// CLI Libraries
+#include <core/Options.hpp>
+#include <ui/MainMenu.hpp>
 #include <utilities/CursesUtilities.hpp>
-
-/// LLNMS Main Menu
-//#include "ui/main_menu.hpp"
 
 /// Options
 //#include "utilities/Logger.hpp"
-//#include "utilities/Options.hpp"
-
-/// LLNMS_State
-//#include "llnms/LLNMS_State.hpp"
 
 /// C Standard Library
 #include <iostream>
 #include <string>
 
 /// Global Options
-//Options options;
+Options options;
 
 /// Logging Utility
 //Logger logger;
 
-/// LLNMS State Object
-//LLNMS_State llnms_state;
-
 using namespace std;
-
 
 /**
  * Main Function
@@ -45,7 +36,7 @@ int main( int argc, char* argv[] ){
         init_curses();
 
         // initialize options
-        //options.init( argc, argv );
+        options.init( argc, argv );
     
         /// set log file
         //logger.filename() = options.log_filename;
@@ -55,7 +46,7 @@ int main( int argc, char* argv[] ){
         //logger.clear_log();
         
         // start main program
-        //main_menu();
+        main_menu();
 
 
     } catch( std::string e ){

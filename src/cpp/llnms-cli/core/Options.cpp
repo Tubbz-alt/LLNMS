@@ -15,8 +15,8 @@
 #include <vector>
 
 /// Utilities
-#include "FileUtilities.hpp"
-#include "Parser.hpp"
+#include <core/Parser.hpp>
+#include <utilities/FilesystemUtilities.hpp>
 
 
 /**

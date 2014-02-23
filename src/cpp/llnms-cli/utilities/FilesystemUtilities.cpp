@@ -3,7 +3,7 @@
  * @author  Marvin Smith
  * @date    1/11/2014
 */
-#include "FileUtilities.hpp"
+#include "FilesystemUtilities.hpp"
 
 #include <cstdio>
 #include <cstdlib>

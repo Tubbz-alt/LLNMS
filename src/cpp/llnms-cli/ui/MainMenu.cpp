@@ -1,22 +1,21 @@
 /**
- * @file    main_menu.cpp
+ * @file    MainMenu.cpp
  * @author  Marvin Smith
  * @date    12/31/2013
  */
 
- /// User-Interface Libraries
-#include "main_menu.hpp"
-#include "asset_ui.hpp"
-#include "asset_status_ui.hpp"
-#include "network_manager_ui.hpp"
-#include "network_status_ui.hpp"
-#include "configure_ui.hpp"
-
-/// Utility Libraries
-#include "../utilities/CursesUtilities.hpp"
+/// CLI Libraries
+#include "MainMenu.hpp"
+//#include "asset_ui.hpp"
+//#include "asset_status_ui.hpp"
+//#include "network_manager_ui.hpp"
+//#include "network_status_ui.hpp"
+//#include "configure_ui.hpp"
+#include <utilities/CursesUtilities.hpp>
 
 /// NCurses
 #include <ncurses.h>
+
 
 /**
  * Print the LLNMS Main Menu Footer
@@ -29,11 +28,13 @@ void print_footer(){
 }
 
 
+/**
+ * Print the main menu
+*/
 void main_menu(){
     
     // start a loop
     bool EXIT_LOOP=false;
-
     while( EXIT_LOOP == false ){
 
         // clear the screen
@@ -66,14 +67,14 @@ void main_menu(){
              * Network status
              */
             case '1':
-                network_status_ui();
+                //network_status_ui();
                 break;
 
             /**
              * Asset Status UI
              */
             case '2':
-                asset_status_ui();
+                //asset_status_ui();
                 break;
 
             /**
@@ -81,7 +82,7 @@ void main_menu(){
              */
             case 'n':
             case 'N':
-                network_manager_ui();
+                //network_manager_ui();
                 break;
 
             /**
@@ -89,7 +90,7 @@ void main_menu(){
              */
             case 'c':
             case 'C':
-                configure_ui();
+                //configure_ui();
                 break;
 
             /**
@@ -105,7 +106,7 @@ void main_menu(){
             */
             case 'a':
             case 'A':
-                asset_ui();
+                //asset_ui();
                 break;
                 
             default:;
