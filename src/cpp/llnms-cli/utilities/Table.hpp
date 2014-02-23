@@ -63,12 +63,18 @@ class Table{
     private:
         
         /**
-         * Print table line
+         * Print header horizontal line
+         *
+         * @param[in] row    Row to print data
+         * @param[in] startX Starting x position
+         * @param[in] endX   Stopping x position
+         * @param[in] widths Widths of each column
          */
-        void print_header_table_line( const int& row, 
-                                      const int& maxWidth, 
-                                      const std::vector<int>& widths 
-                                    );
+        void print_outer_table_horizontal_bar( const int& row, 
+                                          const int& startX,
+                                          const int& endX,
+                                          const std::vector<int>& widths 
+                                         );
         
         /// Table Data
         std::vector<std::vector<std::string> > data;

@@ -113,17 +113,21 @@ void Table::print( const int& row, const int& maxX, const int& maxY ){
 /**
  * Print table header line
  */
-void Table::print_header_table_line( const int& row, const int& maxWidth, std::vector<int>const& widths ){
-    
+void Table::print_outer_table_horizontal_bar( const int& row, 
+                                              const int& startX, 
+                                              const int& endX,
+                                              std::vector<int>const& widths 
+                                            ){
+
     // print header bar
     int tidx=0;
     int cidx=0;
-    for( size_t i=0; i<=maxWidth; i++ ){
+    for( size_t i=startX; i<=endX; i++ ){
         
         /**
          * Print corner
          */
-        if( tidx == 0 || i == maxWidth ){
+        if( tidx == 0 || i == endX ){
             mvaddch( row, i, '+' );
         }
 
@@ -173,7 +177,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
     int crow=row;
     
     // print top row
-    print_header_table_line( crow++, maxWidth, widths ); 
+    print_outer_table_horizontal_bar( crow++, 0, maxWidth, widths ); 
     
     // print header row
     int tidx=0;
@@ -202,7 +206,7 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
     crow++;
 
     // print header bar
-    print_header_table_line( crow++, maxWidth, widths );
+    print_outer_table_horizontal_bar( crow++, 0, maxWidth, widths );
 
 
     if( data.size() <= 0 ){
