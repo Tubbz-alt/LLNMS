@@ -23,7 +23,7 @@ usage(){
     echo '              system options:'
     echo '                  all = default : Build everything'
     echo '                  core          : Build LLNMS Core Library'
-    echo '                  curses        : Build Curses GUI'
+    echo '                  cli           : Build NCurses CLI'
     echo '                  gui           : Build Qt GUI'
     echo ''
     echo '    optional flags:'
@@ -143,14 +143,24 @@ make_core_software(){
 #----------------------------------#
 make_curses_software(){
 
+    #  Get the number of threads
+    NUM_THREADS=$1
+
+    #  Get the build type
+    BUILD_TYPE=$2
+
     #  Print message
-    echo '->  building curses LLNMS-Viewer'
+    echo '   ->  building curses LLNMS-Viewer'
 
-    #  Make sure the release directory exists
-    mkdir -p release
+    if [ "$BUILD_TYPE" = 'release' ]; then
+    
+        #  Make sure the release directory exists
+        mkdir -p release
 
-    #  Enter release directory
-    cd release
+        #  Enter release directory
+        cd release
+    fi
+
 
     #  Create Makefile
     cmake ../install/cpp 
@@ -321,8 +331,8 @@ for OPTION in "$@"; do
                     'gui')
                         MAKE_VALUE='gui'
                         ;;
-                    'curses')
-                        MAKE_VALUE='curses'
+                    'cli')
+                        MAKE_VALUE='cli'
                         ;;
                     *)
                         error "Unknown make option $OPTION" $LINENO
@@ -365,7 +375,7 @@ if [ $RUN_MAKE -ne 0 ]; then
         make_core_software $NUM_THREADS $BUILD_TYPE
     fi
 
-    if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'curses' ]; then
+    if [ "$MAKE_VALUE" = 'all' -o "$MAKE_VALUE" = 'cli' ]; then
         make_curses_software $NUM_THREADS $BUILD_TYPE
     fi
     

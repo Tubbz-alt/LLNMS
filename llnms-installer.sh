@@ -82,7 +82,7 @@ usage(){
     echo '            all [default]' 
     echo '            core       - LLNMS core scripts.'
     echo '            cpp        - C++ Libraries'
-    echo '            curses-gui - NCurses CLI'
+    echo '            cli        - NCurses CLI'
     echo '            qt-gui     - Qt GUI'
     echo ''
     echo '    -i, --install        : Install LLNMS Components'
@@ -94,6 +94,7 @@ usage(){
     echo '             all [default]'
     echo '             core      - LLNMS core scripts'
     echo '             cpp       - C++ Libraries'
+    echo '             cli       - C++ CLI Application'
     echo ''
     echo '    -c, --clean          : Remove all existing builds.'
     echo ''
@@ -163,10 +164,14 @@ make_cpp_core_software(){
     #  Set the make build type
     MAKE_BUILD_TYPE=$1
 
+    #  Set the number of threads
+    NUM_THREADS=$2
+
     #  Print message
     echo '-> building c++ core library'
-    echo "   -> build type: $MAKE_BUILD_TYPE"
-    
+    echo "   -> build type    : $MAKE_BUILD_TYPE"
+    echo "   -> number threads: $NUM_THREADS"
+
     #  Set the make flag
     MAKE_PARAMETER='--release'
     if [ "$MAKE_BUILD_TYPE" == 'debug' ]; then
@@ -174,7 +179,34 @@ make_cpp_core_software(){
     fi
 
     #  Run installer
-    ./install/cpp/install.sh "--make" "core" "$MAKE_PARAMETER"
+    ./install/cpp/install.sh "--make" "core" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
+
+}
+
+#----------------------------------------#
+#-       Make CPP CLI Application       -#
+#----------------------------------------#
+make_cpp_cli_software(){
+
+    #  Set the make build type
+    MAKE_BUILD_TYPE=$1
+
+    #  Set the number of threads
+    NUM_THREADS=$2
+
+    #  Print message
+    echo '-> building c++ cli application'
+    echo "   -> build type    : $MAKE_BUILD_TYPE"
+    echo "   -> number threads: $NUM_THREADS"
+
+    #  Set the make flag
+    MAKE_PARAMETER='--release'
+    if [ "$MAKE_BUILD_TYPE" == 'debug' ]; then
+        MAKE_PARAMETER='--debug'
+    fi
+
+    #  Run installer
+    ./install/cpp/install.sh "--make" "cli" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
 
 }
 
@@ -353,8 +385,14 @@ if [ "$MAKE_FLAG" = '1' ]; then
 
     #  build the C++ core library
     if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cpp' ]; then
-        make_cpp_core_software $MAKE_BUILD_TYPE
+        make_cpp_core_software $MAKE_BUILD_TYPE $NUM_THREADS
     fi
+
+    #  build the C++ CLI Application
+    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cli' ]; then
+        make_cpp_cli_software $MAKE_BUILD_TYPE $NUM_THREADS
+    fi
+
 
 fi
 
