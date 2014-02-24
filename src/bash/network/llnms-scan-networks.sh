@@ -97,9 +97,6 @@ fi
 #  Import the version info
 . $LLNMS_HOME/config/llnms-info
 
-#  Import the configuration info
-. $LLNMS_HOME/config/llnms-config
-
 #  output state
 OUTPUT_STATE='VERBOSE'
 
@@ -151,11 +148,11 @@ LLNMS_NETWORK_FILES=$(ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null )
 for NETWORK in $LLNMS_NETWORK_FILES; do
 
     #  Get the full path of the network file
-    NETWORK_FILE="$LLNMS_HOME/networks/$NETWORK"
+    NETWORK_FILE="$NETWORK"
 
     #  Get the network address range
-    ADDR_BEG=`llnms-print-network-info -f $NETWORK_FILE -s`
-    ADDR_END=`llnms-print-network-info -f $NETWORK_FILE -e`
+    ADDR_BEG="`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_FILE -s`"
+    ADDR_END=`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_FILE -e`
     
     #  Split the address into 4 part
     ADDR_BEG_1=`echo $ADDR_BEG | cut -d '.' -f 1`
@@ -179,13 +176,13 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
         
         #  Run ping on the address
         if [ "$OUTPUT_STATE" = 'QUIET' ]; then
-            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet
         
         elif [ "$OUTPUT_STATE" = 'VERBOSE' ]; then
-            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose
 
         elif [ "$OUTPUT_STATE" = 'DEBUG' ]; then
-            llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug
 
         fi
 
