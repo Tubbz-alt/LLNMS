@@ -8,6 +8,7 @@
 #include "../thirdparty/tinyxml2/tinyxml2.h"
 #include "../utilities/FilesystemUtilities.hpp"
 
+#include <iostream>
 #include <iterator>
 
 namespace LLNMS{
@@ -45,13 +46,25 @@ void NetworkHostContainer::update(){
 
     // start iterating through hosts
     tinyxml2::XMLNode*  hostElement = baseElement->FirstChildElement("host");
+    std::string ip4_address;
+
     while( hostElement != NULL ){
         
         // get the ip4-address
         if( hostElement->ToElement()->Attribute("ip4-address") == NULL ){
+            
+            // get the next item
             hostElement = hostElement->NextSibling();
             continue;
         }
+
+        // get the address
+        ip4_address = hostElement->ToElement()->Attribute("ip4-address");
+        
+        // get the status
+
+        // add the network host
+        this->push_back( NetworkHost( ip4_address ));
 
         // get the next host
         hostElement = hostElement->NextSibling();

@@ -19,7 +19,15 @@ NetworkModule::NetworkModule(){
 
     /// Set the default LLNMS_HOME
     m_LLNMS_HOME = "/var/tmp/llnms";
+    
+    // look for an LLNMS_HOME Environment variable
+    if( getenv("LLNMS_HOME") != NULL ){
+        m_LLNMS_HOME = getenv("LLNMS_HOME");
+    }
 
+    // set LLNMS_Home in the different modules
+    m_network_hosts.LLNMS_HOME() = m_LLNMS_HOME;
+    m_network_definitions.LLNMS_HOME() = m_LLNMS_HOME;
 
 }
 
