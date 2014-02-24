@@ -13,6 +13,10 @@
 /// NCurses
 #include <ncurses.h>
 
+
+/// Standard Libraries
+#include <deque>
+
 /**
  * Print network manager footer
  */
@@ -47,6 +51,14 @@ void print_network_list( const int& minY, const int& maxY ){
     table.setHeaderRatio( 1, 0.35 );
     table.setHeaderRatio( 2, 0.30 );
     table.setHeaderRatio( 3, 0.30 );
+    
+    // load the data
+    std::deque<LLNMS::NETWORK::NetworkDefinition> network_definitions = state.m_network_module.network_definitions();   
+    for( size_t i=0; i<network_definitions.size(); i++ ){
+        table.setData( 1, i, network_definitions[i].name() );
+        table.setData( 2, i, network_definitions[i].address_start() );
+        table.setData( 3, i, network_definitions[i].address_end() );
+    }
 
     // print the table
     table.print( minY+1, maxY, 0, options.maxX-1 ); 

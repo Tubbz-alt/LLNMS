@@ -44,6 +44,9 @@ int main( int argc, char* argv[] ){
         // set LLNMS Home in the state module
         state.set_LLNMS_HOME( options.m_LLNMS_HOME );
         
+        // update llnms
+        state.update();
+
         // start main program
         main_menu();
 

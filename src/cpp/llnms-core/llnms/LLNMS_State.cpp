@@ -16,6 +16,16 @@ LLNMS_State::LLNMS_State(){
 }
 
 /**
+ * Update LLNMS 
+ */
+void LLNMS_State::update(){
+    
+    // update the network module
+    m_network_module.update();
+
+}
+
+/**
  * Set LLNMS_HOME
  */
 void LLNMS_State::set_LLNMS_HOME( const std::string& LLNMS_HOME ){
@@ -27,6 +37,7 @@ void LLNMS_State::set_LLNMS_HOME( const std::string& LLNMS_HOME ){
     m_network_module.set_LLNMS_HOME( LLNMS_HOME );
 
 }
+
 
 }
 

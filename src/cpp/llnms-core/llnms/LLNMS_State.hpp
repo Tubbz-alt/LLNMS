@@ -23,14 +23,18 @@ class LLNMS_State{
          * Default Constructor
          */
         LLNMS_State();
+        
+        /**
+         * Update the LLNMS State
+         */
+        void update();
 
         /**
          * Set LLNMS HOME
          */
         void set_LLNMS_HOME( const std::string& LLNMS_HOME );
 
-    private:
-
+        
         /// LLNMS HOME Variable
         std::string m_LLNMS_HOME;
 

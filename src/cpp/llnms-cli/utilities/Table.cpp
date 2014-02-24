@@ -268,29 +268,39 @@ void Table::print_table_data( const int& minRow,
     int crow = minRow;
     int tableWidth = maxCol - minCol;
 
-    /*
+    
     // iterate over the data, printing
     for( size_t i=0; i<m_data[0].size(); i++ ){
         tidx=0;
         cidx=0;
-        crow++;
 
         // turn on highlighting if requested
-        if( i == currentIdx ){  attron( A_STANDOUT ); }
+        if( i == currentIdx ){  
+            attron( A_STANDOUT ); 
+        }
 
+        // print over the table
         for( size_t j=0; j<=tableWidth; j++ ){
             
-            // if starting a new block, print the bar
-            if( tidx == 0 || j == tableWidth ){ mvprintw( crow, j+minCol, "|" ); }
+            // if starting a new block, print the vertical bar
+            if( tidx == 0 || j == tableWidth ){ 
+                mvprintw( crow, j+minCol, "|" ); 
+            }
 
             // if starting a new block, print a space after the bar
-            else if( tidx == 1 ){ mvprintw( crow, j+minCol, " " ); }
+            else if( tidx == 1 ){ 
+                mvprintw( crow, j+minCol, " " ); 
+            }
         
             // if ending a new block, print another space
-            else if( tidx == (m_headerWidths[cidx])){ mvprintw( crow, j+minCol, " "); }
+            else if( tidx == (m_headerWidths[cidx])){ 
+                mvprintw( crow, j+minCol, " "); 
+            }
 
             // otherwise print the string
-            else{ mvaddch( crow, j+minCol, parse_string(m_data[cidx][i], tidx-2, m_headerWidths[cidx]-3, "LEFT") ); }
+            else{ 
+                mvaddch( crow, j+minCol, parse_string(m_data[cidx][i], tidx-2, m_headerWidths[cidx]-3, "LEFT") ); 
+            }
 
             tidx++;
             if( tidx > m_headerWidths[cidx] ){
@@ -300,8 +310,13 @@ void Table::print_table_data( const int& minRow,
         }
         
         // turn off highlighting if requested
-        if( i == currentIdx ){  attroff( A_STANDOUT ); }
-    }*/
+        if( i == currentIdx ){  
+            attroff( A_STANDOUT ); 
+        }
+        
+        // increment the row
+        crow++;
+    }
 
     while( crow <= (maxRow-1) ){
             
