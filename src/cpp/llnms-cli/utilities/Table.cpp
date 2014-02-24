@@ -16,52 +16,68 @@
 
 using namespace std;
 
-/**
- * Default Constructor
-*/
+/**************************************************/
+/*                Default Constructor             */
+/**************************************************/
 Table::Table(){
 
     // initialize data
-    data.clear();
-    headers.resize(1);
-    headerRatios.resize(1);
+    m_data.clear();
+    m_headers.resize(1);
+    m_headerRatios.resize(1);
     
-    headerRatios[0] = 1;
+    m_headerRatios[0] = 1;
 }
 
-/**
- * Reset ratios
-*/
-void Table::resetRatios(){
-    for( size_t i=0; i<headerRatios.size(); i++ ){
-        headerRatios[i] = ((double)1/headerRatios.size());
+/***************************************************/
+/*               Reset Header Ratios               */
+/***************************************************/
+void Table::resetHeaderRatios(){
+    
+    for( size_t i=0; i<m_headerRatios.size(); i++ ){
+        m_headerRatios[i] = ((double)1/m_headerRatios.size());
+    }
+
+}
+
+
+/**********************************************/
+/*           Update Header Widths             */
+/**********************************************/
+void Table::updateHeaderWidths( const int& maxTableWidth ){
+
+    // resize the header width
+    m_headerWidths.resize(m_headerRatios.size());
+    for( size_t i=0; i<m_headerRatios.size(); i++ ){
+         m_headerWidths[i] = m_headerRatios[i] * maxTableWidth;
     }
 }
 
-/**
- * Set header name
-*/
+
+/*********************************************/
+/*            Set header name                */
+/*********************************************/
 void Table::setHeaderName( const int& idx, const std::string& hdr ){
     
     // if the header list is not big enough, resize
-    if( data.size() <= (idx+1) ){
-        data.resize(idx+1);
-        headers.resize(idx+1);
-        headerRatios.resize(idx+1);
+    if( m_data.size() <= (idx+1) ){
+        m_data.resize(idx+1);
+        m_headers.resize(idx+1);
+        m_headerRatios.resize(idx+1);
 
         // reset the header ratios
-        resetRatios();
+        resetHeaderRatios();
     }
 
     // set text
-    headers[idx] = hdr;
+    m_headers[idx] = hdr;
 
 }
 
 
-/**
- * Set header ratio
- */
+/*********************************************************/
+/*                  Set header ratio                     */
+/*********************************************************/
 void Table::setHeaderRatio( const int& idx, const double& ratio ){
 
     // if the ratio is greater than 1, skip
@@ -70,64 +86,145 @@ void Table::setHeaderRatio( const int& idx, const double& ratio ){
     }
 
     // if the index is less than max
-    if( idx > (headerRatios.size()-1) )
+    if( idx > (m_headerRatios.size()-1) )
         return;
 
     // set ratio in index
-    headerRatios[idx] = ratio;
+    m_headerRatios[idx] = ratio;
     
 }
 
 
-/**
- * Set table data
-*/
-void Table::setData( const int& x, const int& y, const string& strdata ){
+/***************************************************************************/
+/*                          Set Table Data Item                            */
+/***************************************************************************/
+void Table::setData( const int& col, const int& row, const string& strdata ){
 
-    if( data.size() <= x ){
-        data.resize(x+1);
-        for( size_t i=0; i<data.size(); i++ ){
-            if( data[i].size() <= y ){
-                data[i].resize(y+1);
+    if( m_data.size() <= col ){
+        m_data.resize(col+1);
+        for( size_t i=0; i<m_data.size(); i++ ){
+            if( m_data[i].size() <= row ){
+                m_data[i].resize(row+1);
             }
         }
     }
-    if( data[x].size() <= y ){
-        for( size_t i=0; i<data.size(); i++ ){
-            if( data[i].size() <= y ){
-                data[i].resize(y+1);
+    if( m_data[col].size() <= row ){
+        for( size_t i=0; i<m_data.size(); i++ ){
+            if( m_data[i].size() <= row ){
+                m_data[i].resize(row+1);
             }
         }
     }
     
-    data[x][y]=strdata;
+    m_data[col][row]=strdata;
 }
 
-/**
- * Print table
-*/
-void Table::print( const int& row, const int& maxX, const int& maxY ){
-    print( row, maxX, maxY, -1, 0 );
+
+/**********************************************/
+/*                 Print Table                */
+/**********************************************/
+void Table::print( const int& minRow, 
+                   const int& maxRow,
+                   const int& minCol,
+                   const int& maxCol, 
+                   const int& currentIdx, 
+                   const int& topItem ){  
+
+    
+    /// update header widths
+    updateHeaderWidths( maxCol-minCol );
+
+    // compute the maximum width
+    // the max width is either maxX or the farthest width, whatever is smaller
+    int maxWidth = 1;
+    for( size_t i=0; i<m_headerWidths.size(); i++ ){
+         maxWidth += m_headerWidths[i];
+    }
+    if( maxWidth > (maxCol - minCol) )
+        maxWidth = (maxCol - minCol);
+
+
+    // current row
+    int crow=minRow;
+    
+    // print top bar
+    print_outer_table_horizontal_bar( crow++, minCol, maxWidth  ); 
+    
+    // print table header
+    print_table_header( crow++, minCol, maxWidth );
+    
+    // print header bar
+    print_outer_table_horizontal_bar( crow++, minCol, maxWidth );
+    
+    // print data table
+    print_table_data( crow, maxRow, minCol, maxWidth  );
+
+     
+    // print final row
+    print_outer_table_horizontal_bar( maxRow, minCol, maxWidth );
 }
 
-/**
- * Print table header line
- */
+
+/******************************************************************/
+/*                       Print Table Header                       */
+/******************************************************************/
+void Table::print_table_header( const int& row,
+                                const int& minCol,
+                                const int& maxCol
+                              ){
+    
+    // print header row
+    int tidx=0;
+    int cidx=0;
+    for( size_t i=minCol; i<=maxCol; i++ ){
+
+        // if starting a new block, print a vertical bar
+        if( tidx == 0 || i == maxCol ){ 
+            mvprintw( row, i, "|" ); 
+        }
+
+        // if starting a new block, print a space after the bar
+        else if( tidx == 1 ){ 
+            mvprintw( row, i, " " ); 
+        }
+        
+        // if ending a new block, print another space
+        else if( tidx == (m_headerWidths[cidx])){ 
+            mvprintw( row, i, " "); 
+        }
+
+        // otherwise print the string
+        else{ 
+            mvaddch( row, i, parse_string(m_headers[cidx], tidx-2, m_headerWidths[cidx]-3, "LEFT") ); 
+        }
+        
+        tidx++;
+        if( tidx > m_headerWidths[cidx] ){
+            cidx++;
+            tidx=0;
+        }
+
+    }
+}
+
+
+/******************************************************************************/
+/*                           Print table header line                          */
+/******************************************************************************/
 void Table::print_outer_table_horizontal_bar( const int& row, 
-                                              const int& startX, 
-                                              const int& endX,
-                                              std::vector<int>const& widths 
+                                              const int& minCol, 
+                                              const int& maxCol
                                             ){
 
     // print header bar
     int tidx=0;
     int cidx=0;
-    for( size_t i=startX; i<=endX; i++ ){
+    for( size_t i=minCol; i<=maxCol; i++ ){
         
         /**
          * Print corner
          */
-        if( tidx == 0 || i == endX ){
+        if( tidx == 0 || i == maxCol ){
             mvaddch( row, i, '+' );
         }
 
@@ -140,7 +237,7 @@ void Table::print_outer_table_horizontal_bar( const int& row,
 
         /// increment temp index
         tidx++;
-        if( tidx > widths[cidx] ){
+        if( tidx > m_headerWidths[cidx] ){
             tidx=0;
             cidx++;
         }
@@ -150,71 +247,30 @@ void Table::print_outer_table_horizontal_bar( const int& row,
 }
 
 
-/**
- * Print table
-*/
-void Table::print( const int& row, const int& maxX, const int& maxY, const int& currentIdx, const int& topItem ){  
-  
-    // compute the width of each column
-    int maxWidth = 1;
-    vector<int> widths(headers.size());
-    for( size_t i=0; i<widths.size(); i++ ){
-         
-         // set the width
-         widths[i] = headerRatios[i] * maxX;
-         maxWidth += widths[i];
-    }
+/*************************************************************************/
+/*                              Print Table Data                         */
+/*************************************************************************/
+void Table::print_table_data( const int& minRow, 
+                              const int& maxRow,
+                              const int& minCol,
+                              const int& maxCol,
+                              const int& currentIdx,
+                              const int& topItem
+                             ){
     
-
-    // the max width is either maxX or the farthest width, whatever is smaller
-    if( maxWidth > maxX )
-        maxWidth = maxX;
-
-    // current row
-    int crow=row;
-    
-    // print top bar
-    print_outer_table_horizontal_bar( crow++, 0, maxWidth, widths ); 
-    
-
-    // print header row
-    int tidx=0;
-    int cidx=0;
-    for( size_t i=0; i<=maxWidth; i++ ){
-
-        // if starting a new block, print the bar
-        if( tidx == 0 || i == maxWidth ){ mvprintw( crow, i, "|" ); }
-
-        // if starting a new block, print a space after the bar
-        else if( tidx == 1 ){ mvprintw( crow, i, " " ); }
-        
-        // if ending a new block, print another space
-        else if( tidx == (widths[cidx])){ mvprintw( crow, i, " "); }
-
-        // otherwise print the string
-        else{ mvaddch( crow, i, parse_string(headers[cidx], tidx-2, widths[cidx]-3, "LEFT") ); }
-        
-        tidx++;
-        if( tidx > widths[cidx] ){
-            cidx++;
-            tidx=0;
-        }
-
-    }
-    crow++;
-
-    // print header bar
-    print_outer_table_horizontal_bar( crow++, 0, maxWidth, widths );
-
-
-    if( data.size() <= 0 ){
+    // if no data exists, then exit
+    if( m_data.size() <= 0 ){
         return;
     }
     
-    /**
-     * Print data
-     */
-    for( size_t i=0; i<data[0].size(); i++ ){
+    // temporary indeces 
+    int tidx, cidx;
+    int crow = minRow;
+    int tableWidth = maxCol - minCol;
+
+    /*
+    // iterate over the data, printing
+    for( size_t i=0; i<m_data[0].size(); i++ ){
         tidx=0;
         cidx=0;
         crow++;
@@ -222,22 +278,22 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
         // turn on highlighting if requested
         if( i == currentIdx ){  attron( A_STANDOUT ); }
 
-        for( size_t j=0; j<=maxWidth; j++ ){
+        for( size_t j=0; j<=tableWidth; j++ ){
             
             // if starting a new block, print the bar
-            if( tidx == 0 || j == maxX ){ mvprintw( crow, j, "|" ); }
+            if( tidx == 0 || j == tableWidth ){ mvprintw( crow, j+minCol, "|" ); }
 
             // if starting a new block, print a space after the bar
-            else if( tidx == 1 ){ mvprintw( crow, j, " " ); }
+            else if( tidx == 1 ){ mvprintw( crow, j+minCol, " " ); }
         
             // if ending a new block, print another space
-            else if( tidx == (widths[cidx])){ mvprintw( crow, j, " "); }
+            else if( tidx == (m_headerWidths[cidx])){ mvprintw( crow, j+minCol, " "); }
 
             // otherwise print the string
-            else{ mvaddch( crow, j, parse_string(data[cidx][i], tidx-2, widths[cidx]-3, "LEFT") ); }
+            else{ mvaddch( crow, j+minCol, parse_string(m_data[cidx][i], tidx-2, m_headerWidths[cidx]-3, "LEFT") ); }
 
             tidx++;
-            if( tidx > widths[cidx] ){
+            if( tidx > m_headerWidths[cidx] ){
                 cidx++;
                 tidx=0;
             }
@@ -245,31 +301,27 @@ void Table::print( const int& row, const int& maxX, const int& maxY, const int& 
         
         // turn off highlighting if requested
         if( i == currentIdx ){  attroff( A_STANDOUT ); }
-    }
+    }*/
 
-    while( crow <= (maxY-1) ){
+    while( crow <= (maxRow-1) ){
             
         tidx=0;
         cidx=0;
-        crow++;
-        for( size_t j=0; j<=maxX; j++ ){
+        for( size_t j=0; j<=tableWidth; j++ ){
 
             // if starting a new block, print the bar
-            if( tidx == 0 || j == maxX ){ mvprintw( crow, j, "|" ); }
+            if( tidx == 0 || j == tableWidth ){ mvprintw( crow, j+minCol, "|" ); }
 
             tidx++;
-            if( tidx > widths[cidx] ){
+            if( tidx > m_headerWidths[cidx] ){
                 cidx++;
                 tidx=0;
             }
         }
+        crow++;
     }
     
-    // print final row
-    crow++;
-    for( size_t i=0; i<=maxX; i++ ){
-        mvaddch( crow, i, '-' );
-    }
+
 }
 
 
@@ -280,7 +332,7 @@ int Table::getFullTableHeight()const{
     
     int headerHeight = 2;
     int dataHeight   = 0;
-    if( data.size() > 0 ){ dataHeight = data[0].size(); }
+    if( m_data.size() > 0 ){ dataHeight = m_data[0].size(); }
 
     return headerHeight + dataHeight;
 }

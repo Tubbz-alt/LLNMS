@@ -49,7 +49,7 @@ void print_network_list( const int& minY, const int& maxY ){
     table.setHeaderRatio( 3, 0.30 );
 
     // print the table
-    table.print( minY+1, options.maxX-1, maxY  ); 
+    table.print( minY+1, maxY, 0, options.maxX-1 ); 
 
 }
 
