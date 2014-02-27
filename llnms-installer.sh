@@ -83,7 +83,7 @@ usage(){
     echo '            core       - LLNMS core scripts.'
     echo '            cpp        - C++ Libraries'
     echo '            cli        - NCurses CLI'
-    echo '            qt-gui     - Qt GUI'
+    echo '            gui        - Qt GUI'
     echo ''
     echo '    -i, --install        : Install LLNMS Components'
     echo '            NOTE: Anything that was installed with make commands'
@@ -216,6 +216,32 @@ make_cpp_cli_software(){
         exit 1
     fi
 
+}
+
+#-----------------------------------------#
+#-        Make CPP GUI Application       -#
+#-----------------------------------------#
+make_cpp_gui_software(){
+
+    #  set the make build type
+    MAKE_BUILD_TYPE=$1
+
+    #  set the number of threads
+    NUM_THREADS=$2
+
+    #  Print message
+    echo '-> building c++ gui application'
+    echo "   -> build type    : $MAKE_BUILD_TYPE"
+    echo "   -> number threads: $NUM_THREADS"
+
+    #  Set the make flag
+    MAKE_PARAMETER="--release"
+    if [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
+        MAKE_PARAMETER="--debug"
+    fi
+
+    #  Run installer
+    ./install/cpp/install.sh "--make" "gui" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
 }
 
 #----------------------------------------#
@@ -400,7 +426,11 @@ if [ "$MAKE_FLAG" = '1' ]; then
     if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cli' ]; then
         make_cpp_cli_software $MAKE_BUILD_TYPE $NUM_THREADS
     fi
-
+    
+    #  build the C++ GUI Application
+    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'gui' ]; then
+        make_cpp_gui_software $MAKE_BUILD_TYPE $NUM_THREADS
+    fi
 
 fi
 
