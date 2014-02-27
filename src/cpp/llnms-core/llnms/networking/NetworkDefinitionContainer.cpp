@@ -18,7 +18,7 @@ namespace NETWORK{
 /*
  * Constructor for NetworkDefinitionContainer
 */
-NetworkDefinitionContainer::NetworkDefinitionContainer() : list(){
+NetworkDefinitionContainer::NetworkDefinitionContainer(){
     m_LLNMS_HOME="/var/tmp/llnms";
 }
 

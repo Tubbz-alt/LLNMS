@@ -17,7 +17,7 @@ namespace NETWORK{
 /**
  * Default Constructor
 */
-NetworkHostContainer::NetworkHostContainer():list(){
+NetworkHostContainer::NetworkHostContainer(){
 
 }
 
