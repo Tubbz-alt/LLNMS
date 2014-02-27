@@ -6,6 +6,7 @@
 
 /// LLNMS CLI Libraries
 #include "NetworkManagerUI.hpp"
+#include "CreateNetworkDefinitionUI.hpp"
 #include <utilities/CursesUtilities.hpp>
 #include <utilities/Table.hpp>
 
@@ -89,7 +90,7 @@ void print_network_manager_footer( const int& maxX, const int& maxY ){
 
     // print the first row
     mvprintw( maxY-2, 0, "q/Q: Back to main menu.  u/U: Update Tables. ");
-    mvprintw( maxY-1, 0, "s/S: Switch to network list.");
+    mvprintw( maxY-1, 0, "s/S: Switch to network list.  c/C: Create Network Definition.");
 
 }
 
@@ -188,13 +189,21 @@ void network_manager_ui(){
         switch(ch){
             
             /// Update 
+            case 'U':
             case 'u':
                 state.m_network_module.update();
                 update_network_definition_table( networkDefinitionTable );
                 update_network_scanning_table( networkScanningTable );
                 break;
 
+            /// create network definition
+            case 'c':
+            case 'C':
+                create_network_definition_ui();
+                break;
+
             /// Exit Menu
+            case 'Q':
             case 'q':
                 EXIT_LOOP=true;
                 break;

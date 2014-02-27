@@ -244,6 +244,37 @@ make_cpp_gui_software(){
     ./install/cpp/install.sh "--make" "gui" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
 }
 
+#----------------------------------#
+#-        Install Software        -#
+#----------------------------------#
+install_software(){
+
+    #  Set the make build type
+    MAKE_BUILD_TYPE=$1
+
+    #  Print header
+    echo '-> installing software'
+    echo "   -> Build: $MAKE_BUILD_TYPE"
+    echo "   -> Destination: $PREFIX"
+
+    #  Find directory to copy
+    BASE_DIR='release'
+    if [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
+        BASE_DIR='debug'
+    fi
+
+    #  Look for LLNMS Core
+    if [ -d "$BASE_DIR/llnms" ]; then
+        cp -r "$BASE_DIR/llnms" $PREFIX/
+    fi
+
+    #  Look for executables
+    cp -r $BASE_DIR/bin/* $PREFIX/llnms/bin/
+    
+
+}
+
+
 #----------------------------------------#
 #-             Main Function            -#
 #----------------------------------------#
@@ -283,7 +314,7 @@ TEST_COMPONENTS='all'
 MAKE_BUILD_TYPE='release'
 
 #   Set the prefix
-PREFIX='/var/tmp/llnms'
+PREFIX='/var/tmp'
 PREFIX_FLAG=0
 
 #   Parse command-line options
@@ -400,7 +431,7 @@ print_banner
 #---------------------------------------------------------#
 #-       Make sure at least one main flag was given      -#
 #---------------------------------------------------------#
-if [ "$MAKE_FLAG" = '0' -a "$TEST_FLAG" = '0' -a "$CLEAN_FLAG" = '0' ]; then
+if [ "$MAKE_FLAG" = '0' -a "$TEST_FLAG" = '0' -a "$CLEAN_FLAG" = '0' -a "$INSTALL_FLAG" = '0' ]; then
     error "At least one flag must be given." $LINENO
     usage
     exit 1
@@ -487,17 +518,8 @@ fi
 #----------------------------#
 if [ "$INSTALL_FLAG" = '1' ]; then
 
-    #  Make sure the path exists for release
-    if [ "$MAKE_BUILD_TYPE" = 'release' -a ! -d 'release' ]; then
-
-        
-
-    #  Make sure the path exists for debug
-    elif [ "$MAKE_BUILD_TYPE" = 'debug' -a ! -d 'debug' ]; then
-
-
-
-    fi
+    #  run install command
+    install_software $MAKE_BUILD_TYPE
 
 fi
 
