@@ -259,6 +259,7 @@ fi
 MAKE_COMPONENT_FLAG=0
 TEST_COMPONENT_FLAG=0
 MAKE_FLAG=0
+INSTALL_FLAG=0
 TEST_FLAG=0
 CLEAN_FLAG=0
 
@@ -314,6 +315,13 @@ for OPTION in "$@"; do
             MAKE_COMPONENT_FLAG=1
             ;;
         
+        #------------------------------#
+        #-      Install Software      -#
+        #------------------------------#
+        '-i' | '--install' )
+            INSTALL_FLAG=1
+            ;;
+
         #------------------------------#
         #-       Test Software        -#
         #------------------------------#
@@ -473,6 +481,26 @@ if [ "$TEST_FLAG" = '1' ]; then
     fi
 
 fi
+
+#----------------------------#
+#-     Install Software     -#
+#----------------------------#
+if [ "$INSTALL_FLAG" = '1' ]; then
+
+    #  Make sure the path exists for release
+    if [ "$MAKE_BUILD_TYPE" = 'release' -a ! -d 'release' ]; then
+
+        
+
+    #  Make sure the path exists for debug
+    elif [ "$MAKE_BUILD_TYPE" = 'debug' -a ! -d 'debug' ]; then
+
+
+
+    fi
+
+fi
+
 
 
 #  Finish by printing a newline and exiting
