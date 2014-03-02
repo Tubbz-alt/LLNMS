@@ -22,8 +22,8 @@ MACRO (TODAY DATESTRING)
         EXECUTE_PROCESS(COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE ${DATESTRING})
         string(REGEX REPLACE "(..)/(..)/..(..).*" "\\1/\\2/\\3" ${DATESTRING} ${${DATESTRING}})
     ELSEIF(UNIX)
-        EXECUTE_PROCESS(COMMAND "date" "+%d/%m/%Y" OUTPUT_VARIABLE ${DATESTRING})
-        string(REGEX REPLACE "(..)/(..)/..(..).*" "\\1/\\2/\\3" ${DATESTRING} ${${DATESTRING}})
+        EXECUTE_PROCESS(COMMAND "date" "+%d/%m/%Y - %H:%M:%S" OUTPUT_VARIABLE ${DATESTRING})
+        string(REGEX REPLACE "(..)/(..)/..(..) - (..):(..):(..).*" "\\1/\\2/\\3 - \\4:\\5:\\6" ${DATESTRING} ${${DATESTRING}})
     ELSE (WIN32)
         MESSAGE(SEND_ERROR "date not implemented")
         SET(${DATESTRING} 000000)
@@ -35,6 +35,8 @@ TODAY(DATESTRING)
 set( LLNMS_VERSION_MAJOR 1 )
 set( LLNMS_VERSION_MINOR 0 )
 set( LLNMS_VERSION_DATE  "\"${DATESTRING}\"")
+
+message("VERSION DATE: ${LLNMS_VERSION_DATE}")
 
 #   Configure our LLNMS Version Header File
 configure_file (

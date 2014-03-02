@@ -277,7 +277,9 @@ install_software(){
     cp -r $BASE_DIR/bin/* $PREFIX/llnms/bin/
     
     #  Look for GUI materials
-    cp -rf $BASE_DIR/share/llnms $PREFIX/llnms/gui
+    if [ -d $BASE_DIR/share/llnms ]; then
+        cp -rf $BASE_DIR/share/llnms $PREFIX/llnms/gui
+    fi
 
 }
 

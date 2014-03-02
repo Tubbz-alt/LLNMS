@@ -5,12 +5,9 @@
  */
 
 /// CLI Libraries
-#include "MainMenu.hpp"
-#include "NetworkManagerUI.hpp"
-//#include "asset_ui.hpp"
-//#include "asset_status_ui.hpp"
-//#include "network_status_ui.hpp"
-//#include "configure_ui.hpp"
+#include <ui/AboutUI.hpp>
+#include <ui/MainMenu.hpp>
+#include <ui/NetworkManagerUI.hpp>
 #include <utilities/CursesUtilities.hpp>
 
 /// NCurses
@@ -45,8 +42,10 @@ void main_menu(){
         
         // print content
         int i=2;
-        mvprintw( i++, 0, "n: Network Management");
-        mvprintw( i++, 0, "q: Quit LLNMS Manager");
+        mvprintw( i++, 0, "n: Network Management.");
+        mvprintw( i++, 0, "c: Configuration Window.");
+        mvprintw( i++, 0, "h: Help/Usage/About.");
+        mvprintw( i++, 0, "q: Quit LLNMS Manager.");
 
         // print footer
         print_main_menu_footer( i );
@@ -65,6 +64,14 @@ void main_menu(){
             case 'n':
             case 'N':
                 network_manager_ui();
+                break;
+
+            /**
+             * About Window.
+             */
+            case 'h':
+            case 'H':
+                about_ui();
                 break;
 
 

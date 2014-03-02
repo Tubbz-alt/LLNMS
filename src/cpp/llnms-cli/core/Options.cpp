@@ -14,9 +14,13 @@
 #include <iostream>
 #include <vector>
 
+/// LLNMS Core Library
+#include <LLNMS.hpp>
+
 /// Utilities
 #include <core/Parser.hpp>
 #include <utilities/FilesystemUtilities.hpp>
+#include <utilities/StringUtilities.hpp>
 
 
 /**
@@ -86,6 +90,8 @@ void Options::init( int argc, char* argv[] ){
         m_LLNMS_HOME=tempString;
     }
 
+    // initialize the about pane data
+    init_about_pane_data();
 
 }
 
@@ -116,4 +122,18 @@ void Options::write_config_file(){
 
 }
 
+/**
+ * Initialize about pane data
+ */
+void Options::init_about_pane_data(){
+
+    // create empty string
+    aboutPaneData.push_back("");
+
+    // show build data
+    aboutPaneData.push_back("\n");
+    aboutPaneData.push_back(std::string("Version   : ") + num2str(LLNMS_VERSION_MAJOR) + std::string(".") + num2str(LLNMS_VERSION_MINOR) + "\n");
+    aboutPaneData.push_back(std::string("Build Date: ") + LLNMS_VERSION_DATE);
+
+}
 
