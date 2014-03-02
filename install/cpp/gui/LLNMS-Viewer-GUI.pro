@@ -4,7 +4,7 @@
 ######################################################################
 
 QT += core gui widgets
-TARGET = bin/LLNMS-Viewer
+TARGET = ../share/llnms/bin/llnms-gui
 
 #  Add Console Support to allow cout statements to propogate to the terminal
 CONFIG += console

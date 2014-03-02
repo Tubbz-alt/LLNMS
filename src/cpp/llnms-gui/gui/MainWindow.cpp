@@ -81,7 +81,7 @@ void MainWindow::build_ui(){
  * Move to summary panel
  */
 void MainWindow::moveToSummaryPanel(){
-    llnms.update();
+    //llnms.update();
     stackedWidget->setCurrentIndex(0);
 }
 
@@ -90,7 +90,7 @@ void MainWindow::moveToSummaryPanel(){
  * Move to network panel
  */
 void MainWindow::moveToNetworkPanel(){
-    llnms.update();
+    //llnms.update();
     stackedWidget->setCurrentIndex(1);
 }
 
@@ -99,7 +99,7 @@ void MainWindow::moveToNetworkPanel(){
  * Move to asset panel
  */
 void MainWindow::moveToAssetPanel(){
-    llnms.update();
+    //llnms.update();
     stackedWidget->setCurrentIndex(2);
 }
 
@@ -108,7 +108,7 @@ void MainWindow::moveToAssetPanel(){
  * Move to config panel
  */
 void MainWindow::moveToConfigPanel(){
-    llnms.update();
+    //llnms.update();
     stackedWidget->setCurrentIndex(3);
 }
 

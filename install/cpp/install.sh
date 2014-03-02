@@ -198,43 +198,28 @@ make_curses_software(){
 #----------------------------------#
 make_gui_software(){
     
+    #  Get Number of Threads
+    NUM_THREADS=$1
 
-    #  Print message
-    if [ "`uname`" = 'Darwin' ]; then
-        echo '->  Cleaning old gui builds'
-        rm -rf release/bin/LLNMS-Viewer.app
+    #  Get build type
+    MAKE_BUILD_TYPE=$2
+
+    #  Create structure
+    if [ ! -d "$MAKE_BUILD_TYPE/gui" ]; then
+        mkdir -p "$MAKE_BUILD_TYPE/gui" 
     fi
-    
-    echo '->  building Qt LLNMS-Viewer'
 
-    #  Run QMake
-    echo '  -> Running QMake'
-    $QMAKE install/cpp/qt-gui/LLNMS-Viewer-GUI.pro
+    #  Entering structure
+    cd $MAKE_BUILD_TYPE/gui
+
+    #  Run CMake
+    if [ "$MAKE_BUILD_TYPE" = 'release' ]; then
+        cmake ../../install/cpp/gui
+    fi
 
     #  Run Make
-    echo '  -> Running Make'
-    make 
+    make -j$NUM_THREADS
 
-    #  Create the release
-    echo '  -> Building the release'
-    if [ "`uname`" = 'Darwin' ]; then
-        
-        #  Add the icons
-        mkdir -p release/bin/LLNMS-Viewer.app/Contents/MacOS/icons
-        cp -r src/cpp/llnms-gui/icons/*  release/bin/LLNMS-Viewer.app/Contents/MacOS/icons/
-        
-        #  Set the executables
-        mkdir -p release/bin/LLNMS-Viewer.app/Contents/MacOS/bin
-        mv  release/bin/LLNMS-Viewer.app/Contents/MacOS/LLNMS-Viewer  release/bin/LLNMS-Viewer.app/Contents/MacOS/bin/LLNMS-Viewer.out
-        cp  install/cpp/LLNMS-Viewer.sh                               release/bin/LLNMS-Viewer.app/Contents/MacOS/LLNMS-Viewer
-        
-    else
-        mkdir -p release/share/llnms-viewer/bin
-        mkdir -p release/share/llnms-viewer/icons
-        cp -r src/cpp/llnms-gui/icons/* release/share/llnms-viewer/icons/
-        cp  release/bin/LLNMS-Viewer     release/share/llnms-viewer/bin/LLNMS-Viewer.out
-        cp  install/cpp/LLNMS-Viewer.sh  release/share/llnms-viewer/LLNMS-Viewer
-    fi
 
 }   
 
@@ -269,32 +254,6 @@ build_include_dir(){
 }
 
 
-#----------------------------------------#
-#-       Set the QMake Variable         -#
-#----------------------------------------#
-set_qmake(){
-
-    which qmake 2> /dev/null
-    if [ "$?" = 0 ]; then 
-        QMAKE='qmake'
-        return
-    fi
-
-    which qmake-qt4 2> /dev/null
-    if [ "$?" = 0 ]; then 
-        QMAKE='qmake-qt4'
-        return
-    fi
-    
-    which qmake-qt5 2> /dev/null
-    if [ "$?" = 0 ]; then 
-        QMAKE='qmake-qt5'
-        return
-    fi
-
-}
-
-
 #-----------------------------#
 #-       Main Function       -#
 #-----------------------------#
@@ -306,10 +265,6 @@ MAKE_FLAG=0
 MAKE_VALUE="all"
 NUM_THREADS=1
 THREAD_FLAG=0
-
-# Figure out qmake
-QMAKE='qmake'
-set_qmake
 
 #   Set the type of build
 BUILD_TYPE='release'

@@ -16,9 +16,6 @@
 
 #include <vector>
 
-#include "../llnms/LLNMS_State.hpp"
-
-extern LLNMS_State   llnms;
 
 /**
  * @class NetworkPane

@@ -167,8 +167,9 @@ void NetworkPane::load_network_list_table(){
     // refresh the LLNMS Network Table
     //llnms.network_container.update();
 
+    /*
     // get the list of networks
-    std::vector<LLNMS_Network> networklist = llnms.network_container.network_list();
+    std::vector<LLNMS_Network> networklist;// = llnms.network_container.network_list();
     
     // resize the table
     networkListTable->setRowCount( networklist.size()+1 );
@@ -181,7 +182,7 @@ void NetworkPane::load_network_list_table(){
         networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
         networkListTable->setItem( i+1, 1, new QTableWidgetItem( networklist[i].address_start().c_str()));
         networkListTable->setItem( i+1, 2, new QTableWidgetItem( networklist[i].address_end().c_str()));
-    }
+    }*/
 
 #if QT_VERSION > 0x050000
     networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
@@ -212,7 +213,7 @@ void NetworkPane::load_network_scan_table(){
     networkScanTable->clearContents();
     
     // refresh the LLNMS Network Table
-    llnms.network_container.update();
+    //llnms.network_container.update();
     
     /*
     // get the list of networks
