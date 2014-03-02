@@ -9,17 +9,29 @@
 #include <QtGui>
 #include <QWidget>
 
+//  LLNMS-Core Library
+#include <LLNMS.hpp>
+
 //  LLNMS-Viewer Libraries
 #include <core/DataContainer.hpp>
 #include <core/MessagingService.hpp>
 #include <gui/MainWindow.hpp>
 
+// C++ STL
 #include <iostream>
 
+/// Program Settings
 DataContainer settings;
+
+/// LLNMS State Container
+LLNMS::LLNMS_State llnms;
+
+/// Messaging Services
 MessagingService message_service;
 
+
 using namespace std;
+
 
 /**
  * Main Function
@@ -27,14 +39,14 @@ using namespace std;
 int main( int argc, char* argv[] ){
 
     try{
-        /// load the config parser
+        
+        /// Set the filename for the config file
         string filename;
-#ifdef _WIN32
-        filename = "options.cfg";
-#else
-        filename = string(getenv("HOME"))+string("/.gis_viewer/options.cfg");
-#endif
+        filename = string(getenv("HOME"))+string("/.llnms-gui/options.cfg");
+        
+        /// load the config parser
         settings.load( argc, argv, filename);
+    
     } catch ( string e ){
         cout << e << endl;
         return 1;

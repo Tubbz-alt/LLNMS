@@ -28,14 +28,30 @@ set( CMAKE_INCLUDE_CURRENT_DIR ON )
 include_directories(${Qt5Widgets_INCLUDES})
 
 
+#-----------------------------------#
+#-      Import LLNMS Library       -#
+#-----------------------------------#
+FIND_LIBRARY( LLNMS_LIBRARY 
+                REQUIRED
+                NAMES 
+                    LLNMS
+                    libLLNMS.a
+                HINTS
+                    ${PROJECT_BINARY_DIR}/../lib
+)
+include_directories( ${PROJECT_BINARY_DIR}/../include )
+
+
+
 #---------------------------------------#
 #-        Find Boost Libraries         -#
 #---------------------------------------#
 find_package( Boost
                 REQUIRED
                 COMPONENTS
-                    system 
                     filesystem
+                    regex
+                    system 
 )
 
 #----------------------------------------#
@@ -88,6 +104,7 @@ add_executable( llnms-gui
 target_link_libraries( llnms-gui
                 ${Qt5Widgets_LIBRARIES}
                 ${Boost_LIBRARIES}
+                ${LLNMS_LIBRARY}
 )
 
 
