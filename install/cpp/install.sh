@@ -219,7 +219,16 @@ make_gui_software(){
 
     #  Run Make
     make -j$NUM_THREADS
+    
+    #  Exit make directory
+    cd ../..
+    
+    #  Copy the Start Script
+    cp install/cpp/gui/llnms-gui.sh  $MAKE_BUILD_TYPE/share/llnms/llnms-gui
 
+    #  Copy the icon directory
+    mkdir -p $MAKE_BUILD_TYPE/share/llnms/icons
+    cp -r src/cpp/llnms-gui/icons/*  $MAKE_BUILD_TYPE/share/llnms/icons/
 
 }   
 

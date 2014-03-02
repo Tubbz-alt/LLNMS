@@ -14,21 +14,28 @@
 #include <QStackedWidget>
 #include <QWidget> 
 
+/// LLNMS Core Libraries
+#include <LLNMS.hpp>
 
 /// LLNMS GUI Libraries
 #include <core/DataContainer.hpp>
 #include <core/MessagingService.hpp>
-
-#include <gui/ConfigPane.hpp>
-#include <gui/SummaryPane.hpp>
-#include <gui/NetworkPane.hpp>
 #include <gui/AssetPane.hpp>
-
+#include <gui/ConfigPane.hpp>
 #include <gui/NavigationBar.hpp>
+#include <gui/NetworkPane.hpp>
+#include <gui/SummaryPane.hpp>
 
 
+/// Main Settings
 extern DataContainer settings;
+
+/// Global Messaging Service
 extern MessagingService message_service;
+
+/// LLNMS Status
+extern LLNMS::LLNMS_State llnms;
+
 
 /**
  * @class MainWindow
@@ -40,9 +47,9 @@ class MainWindow : public QMainWindow {
     public:
 		
         /** 
-	 * Default Constructor 
-	*/
-	MainWindow(  );
+	     * Default Constructor 
+	    */
+	    MainWindow(  );
 	
     private slots:
         

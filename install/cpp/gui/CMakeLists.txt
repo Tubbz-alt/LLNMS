@@ -11,6 +11,9 @@ cmake_minimum_required( VERSION 2.6 )
 #   Define our project name
 project (LLNMS_GUI)
 
+#   Tell CMake where to put binaries and libs
+set( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../share/llnms/bin)
+set( LIBRARY_OUTPUT_PATH    ${PROJECT_BINARY_DIR}/../share/llnms/lib)
 
 #----------------------------------#
 #-       Find QT5 Libraries       -#
@@ -95,13 +98,13 @@ include_directories( ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui )
 #-----------------------------------------#
 #-        Start Building Software        -#
 #-----------------------------------------#
-add_executable( llnms-gui
+add_executable( llnms-gui.out
                 ${LLNMS_GUI_MAIN}
                 ${LLNMS_GUI_SOURCES}
                 ${LLNMS_GUI_HEADERS}
 )
 
-target_link_libraries( llnms-gui
+target_link_libraries( llnms-gui.out
                 ${Qt5Widgets_LIBRARIES}
                 ${Boost_LIBRARIES}
                 ${LLNMS_LIBRARY}
