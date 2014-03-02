@@ -52,6 +52,10 @@ int main( int argc, char* argv[] ){
         return 1;
     }
     
+    ///  Set LLNMS Home
+    llnms.set_LLNMS_HOME( settings.gui_settings.LLNMS_HOME );
+    llnms.update();
+    
     ///   Create the Qt Application
     QApplication app(argc, argv);
 

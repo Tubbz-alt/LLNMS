@@ -98,7 +98,7 @@ include_directories( ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui )
 #-----------------------------------------#
 #-        Start Building Software        -#
 #-----------------------------------------#
-add_executable( llnms-gui.out
+add_executable( llnms-gui.out 
                 ${LLNMS_GUI_MAIN}
                 ${LLNMS_GUI_SOURCES}
                 ${LLNMS_GUI_HEADERS}

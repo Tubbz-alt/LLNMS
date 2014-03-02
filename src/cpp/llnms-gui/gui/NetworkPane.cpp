@@ -7,7 +7,10 @@
 
 #include "CreateNetworkDialog.hpp"
 
+#include <core/StringUtilities.hpp>
+
 #include <QHeaderView>
+#include <QMessageBox>
 
 #include <iostream>
 #include <vector>
@@ -165,24 +168,23 @@ void NetworkPane::load_network_list_table(){
     networkListTable->clearContents();
     
     // refresh the LLNMS Network Table
-    //llnms.network_container.update();
+    llnms.update();
 
-    /*
     // get the list of networks
-    std::vector<LLNMS_Network> networklist;// = llnms.network_container.network_list();
+    std::deque<LLNMS::NETWORK::NetworkDefinition> network_definitions = llnms.m_network_module.network_definitions();
     
     // resize the table
-    networkListTable->setRowCount( networklist.size()+1 );
+    networkListTable->setRowCount( network_definitions.size()+1 );
     
     // create the all item
     networkListTable->setItem( 0, 0, new QTableWidgetItem("All Networks"));
 
     // load the table
-    for( size_t i=0; i<networklist.size(); i++ ){
-        networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
-        networkListTable->setItem( i+1, 1, new QTableWidgetItem( networklist[i].address_start().c_str()));
-        networkListTable->setItem( i+1, 2, new QTableWidgetItem( networklist[i].address_end().c_str()));
-    }*/
+    for( size_t i=0; i<network_definitions.size(); i++ ){
+        networkListTable->setItem( i+1, 0, new QTableWidgetItem( network_definitions[i].name().c_str()));
+        networkListTable->setItem( i+1, 1, new QTableWidgetItem( network_definitions[i].address_start().c_str()));
+        networkListTable->setItem( i+1, 2, new QTableWidgetItem( network_definitions[i].address_end().c_str()));
+    }
 
 #if QT_VERSION > 0x050000
     networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );

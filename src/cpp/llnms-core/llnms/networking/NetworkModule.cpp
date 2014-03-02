@@ -5,8 +5,10 @@
 */
 #include "NetworkModule.hpp"
 #include "../utilities/FilesystemUtilities.hpp"
+#include "../utilities/StringUtilities.hpp"
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
 namespace LLNMS{
@@ -102,6 +104,36 @@ void NetworkModule::update(){
     m_network_hosts.update();
 
 }
+
+/**
+ * Create a new network
+ */
+void NetworkModule::create_network( const std::string& network_name,
+                                    const std::string& address_start,
+                                    const std::string& address_end ){
+
+
+    // create a new filename
+    std::string header = string_toLower(network_name);
+    for( size_t i=0; i<header.size(); i++ ){
+        if( header[i] = ' ' ){
+            header[i] = '_';
+        }
+    }
+    
+    std::string filename = m_LLNMS_HOME + std::string("/") + header + ".llnms-network.xml";
+
+    std::ofstream fout;
+    fout.open(filename.c_str());
+    fout << "<llnms-network>" << std::endl;
+    fout << "    <name>" << network_name << "</name>" << std::endl;
+    fout << "    <address_start>" << address_start << "</address_start>" << std::endl;
+    fout << "    <address_end>" << address_end << "</address_end>" << std::endl;
+    fout << "</llnms-network>" << std::endl;
+    fout.close();
+
+}
+
 
 
 } /// End of NETWORK Namespace

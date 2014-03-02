@@ -242,6 +242,11 @@ make_cpp_gui_software(){
 
     #  Run installer
     ./install/cpp/install.sh "--make" "gui" "$MAKE_PARAMETER" "-j" "$NUM_THREADS"
+    if [ ! "$?" = '0' ]; then
+        echo 'error with make.'
+        exit 1
+    fi
+
 }
 
 #----------------------------------#
@@ -268,9 +273,11 @@ install_software(){
         cp -r "$BASE_DIR/llnms" $PREFIX/
     fi
 
-    #  Look for executables
+    #  Look for CLI executables
     cp -r $BASE_DIR/bin/* $PREFIX/llnms/bin/
     
+    #  Look for GUI materials
+    cp -rf $BASE_DIR/share/llnms $PREFIX/llnms/gui
 
 }
 
@@ -387,6 +394,8 @@ for OPTION in "$@"; do
         #------------------------------------#
         '-j' )
             THREAD_FLAG=1
+            MAKE_COMPONENT_FLAG=0
+            TEST_COMPONENT_FLAG=0
             ;;
 
         #--------------------------------------------------#

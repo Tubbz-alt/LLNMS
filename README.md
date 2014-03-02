@@ -45,17 +45,24 @@ Installation
 ------------
 
 ### Linux (shell)
-Most Linux systems contain a basic shell system.  For 
-most this will be Bash or Dash (Ubuntu).  To install, 
-run the script from the base directory.
 
-    ./install/bash/install.sh
+LLNMS Uses a single shell script to manage its build system.
 
-run with -h or -help for more options.
+To get assistance with the installer
 
-The primary installation option is the destination for `LLNMS_HOME` which 
-should be defaulted to `/var/tmp/llnms`.  Given this installation destination,
-all components will be installed there. 
+    ./llnms-installer.sh -h
+
+To build the full LLNMS system
+
+    ./llnms-installer.sh -m all
+
+To install LLNMS
+
+    ./llnms-installer.sh -i --PREFIX /var/tmp/llnms
+
+To run unit tests
+
+    ./llnms-installer.sh -t
 
 
 ### Windows (PowerShell)

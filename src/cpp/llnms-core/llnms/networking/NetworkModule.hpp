@@ -61,6 +61,13 @@ class NetworkModule{
         */
         void update();
 
+        /**
+         * Create a new network
+         */
+        void create_network( const std::string& network_name,
+                             const std::string& address_start,
+                             const std::string& address_end );
+
 
     private:
         

@@ -67,6 +67,7 @@ set( LLNMS_SOURCES
     ../../../src/cpp/llnms-core/llnms/networking/NetworkHostContainer.cpp
     ../../../src/cpp/llnms-core/llnms/thirdparty/tinyxml2/tinyxml2.cpp
     ../../../src/cpp/llnms-core/llnms/utilities/FilesystemUtilities.cpp
+    ../../../src/cpp/llnms-core/llnms/utilities/StringUtilities.cpp
 )
 include_directories( ../../../src/cpp/llnms-core )
 

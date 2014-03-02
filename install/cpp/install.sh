@@ -219,7 +219,11 @@ make_gui_software(){
 
     #  Run Make
     make -j$NUM_THREADS
-    
+    if [ ! "$?" = '0' ]; then
+        echo 'Error with Make. Aborting.'
+        exit 1
+    fi
+
     #  Exit make directory
     cd ../..
     

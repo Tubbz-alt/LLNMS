@@ -6,6 +6,7 @@
 #ifndef __SRC_CPP_LLNMSGUI_GUI_NETWORKPANE_HPP__
 #define __SRC_CPP_LLNMSGUI_GUI_NETWORKPANE_HPP__
 
+///  Qt Libraries
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QTableWidget>
@@ -14,7 +15,14 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+/// LLNMS Core Library
+#include <LLNMS.hpp>
+
+/// C++ Libraries 
 #include <vector>
+
+/// LLNMS State Object
+extern LLNMS::LLNMS_State llnms;
 
 
 /**
