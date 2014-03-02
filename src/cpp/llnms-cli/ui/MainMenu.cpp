@@ -6,6 +6,7 @@
 
 /// CLI Libraries
 #include <ui/AboutUI.hpp>
+#include <ui/ConfigurationUI.hpp>
 #include <ui/MainMenu.hpp>
 #include <ui/NetworkManagerUI.hpp>
 #include <utilities/CursesUtilities.hpp>
@@ -43,6 +44,8 @@ void main_menu(){
         // print content
         int i=2;
         mvprintw( i++, 0, "n: Network Management.");
+        
+        i++;
         mvprintw( i++, 0, "c: Configuration Window.");
         mvprintw( i++, 0, "h: Help/Usage/About.");
         mvprintw( i++, 0, "q: Quit LLNMS Manager.");
@@ -73,7 +76,14 @@ void main_menu(){
             case 'H':
                 about_ui();
                 break;
-
+            
+            /**
+             * Configuration UI
+             */
+            case 'c':
+            case 'C':
+                configuration_ui();
+                break;
 
             /**
              * Quit Program
