@@ -65,6 +65,7 @@ set( LLNMS_CLI_SOURCES
     ../../src/cpp/llnms-cli/ui/ConfigurationUI.cpp
     ../../src/cpp/llnms-cli/ui/CreateNetworkDefinitionUI.cpp
     ../../src/cpp/llnms-cli/ui/MainMenu.cpp
+    ../../src/cpp/llnms-cli/ui/MessageDialog.cpp
     ../../src/cpp/llnms-cli/ui/NetworkManagerUI.cpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.cpp
     ../../src/cpp/llnms-cli/utilities/FilesystemUtilities.cpp
@@ -78,6 +79,7 @@ set( LLNMS_CLI_HEADERS
     ../../src/cpp/llnms-cli/ui/ConfigurationUI.hpp
     ../../src/cpp/llnms-cli/ui/CreateNetworkDefinitionUI.hpp
     ../../src/cpp/llnms-cli/ui/MainMenu.hpp
+    ../../src/cpp/llnms-cli/ui/MessageDialog.hpp
     ../../src/cpp/llnms-cli/ui/NetworkManagerUI.hpp
     ../../src/cpp/llnms-cli/utilities/CursesUtilities.hpp
     ../../src/cpp/llnms-cli/utilities/FilesystemUtilities.hpp

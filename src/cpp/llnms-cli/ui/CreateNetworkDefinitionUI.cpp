@@ -6,6 +6,7 @@
 #include "CreateNetworkDefinitionUI.hpp"
 
 #include <core/Options.hpp>
+#include <ui/MessageDialog.hpp>
 #include <utilities/CursesUtilities.hpp>
 
 #include <ncurses.h>
@@ -142,6 +143,17 @@ void create_network_definition_ui(){
             // enter key
             case KEY_ENTER:
             case 10:
+                
+                // if we are over the save key, just exit
+                if( cursorIdx == 3 ){
+                    
+                    int result = message_dialog();
+                    if( result == 1 ){
+
+                    }
+
+                    EXIT_LOOP=true;
+                }
 
                 // if we are over the cancel key, just exit
                 if( cursorIdx == 4 ){
