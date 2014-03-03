@@ -67,7 +67,7 @@ void DataContainer::write_config_file( ){
     config_filename="options.cfg";
 #else
     // if linux, then check for the home directory
-    config_filename=string(getenv("HOME"))+string("/.llnms_viewer/options.cfg");
+    config_filename=string(getenv("HOME"))+string("/.llnms-gui/options.cfg");
     
     // if the file does not exist for linux, then create it
     create_file_structure( );
@@ -95,8 +95,8 @@ void DataContainer::write_config_file( ){
 void DataContainer::create_file_structure( ){
     
 #ifndef _WIN32
-    if( path_exists(string(string(getenv("HOME"))+string("/.llnms_viewer"))) == false ){
-        system("mkdir $HOME/.llnms_viewer");
+    if( path_exists(string(string(getenv("HOME"))+string("/.llnms-gui"))) == false ){
+        system("mkdir $HOME/.llnms-gui");
     }
 #endif
 

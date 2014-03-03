@@ -14,8 +14,16 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+/// Data Container
 #include "../core/DataContainer.hpp"
 
+/// LLNMS Core Library
+#include <LLNMS.hpp>
+
+/// LLNMS State Object
+extern LLNMS::LLNMS_State llnms;
+
+/// Global Settings
 extern DataContainer settings;
 
 /**

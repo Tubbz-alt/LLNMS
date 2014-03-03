@@ -149,9 +149,10 @@ void CreateNetworkDialog::build_toolbar_widget(){
 
 void CreateNetworkDialog::saveAndClose(){
     
-    llnms.network_container.llnms_create_network( networkNameEdit->text().toLocal8Bit().constData(),
-                                                  networkStartEdit->text().toLocal8Bit().constData(),
-                                                  networkEndEdit->text().toLocal8Bit().constData()
-                                                );
+    llnms.m_network_module.create_network( networkNameEdit->text().toLocal8Bit().constData(),
+                                           networkStartEdit->text().toLocal8Bit().constData(),
+                                           networkEndEdit->text().toLocal8Bit().constData()
+                                          );
+    llnms.update();
     close();
 }
