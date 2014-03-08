@@ -246,3 +246,17 @@ void NetworkPane::load_network_scan_table(){
     */
  
 }
+
+/**
+ * Update the panel
+ */
+void NetworkPane::updatePanel(){
+    
+    // reload the network list table
+    load_network_list_table();
+
+    // reload the network scan table
+    load_network_scan_table();
+
+}
+

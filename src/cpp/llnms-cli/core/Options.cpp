@@ -29,7 +29,7 @@
 Options::Options(){
 
     // set default config file
-    config_filename = getenv("HOME")+std::string("/.llnms-viewer.cfg");
+    config_filename = getenv("HOME")+std::string("/.llnms/cli/options.cfg");
 
     // set the log filename
     log_filename = "/var/tmp/llnms/log/llnms-viewer.log";
@@ -90,6 +90,11 @@ void Options::init( int argc, char* argv[] ){
         m_LLNMS_HOME=tempString;
     }
 
+    // check if the LLNMS Home is already set
+    if( getenv("LLNMS_HOME") != NULL ){
+        m_LLNMS_HOME = getenv("LLNMS_HOME");
+    }
+    
     // initialize the about pane data
     init_about_pane_data();
 
@@ -99,6 +104,9 @@ void Options::init( int argc, char* argv[] ){
  * Write the logfile
  */
 void Options::write_config_file(){
+    
+    /// make sure the directory structure exists
+    boost::filesystem::create_directories( boost::filesystem::path( config_filename ).parent_path() );
 
     /**
      * Open the log file and insert all information
@@ -107,6 +115,10 @@ void Options::write_config_file(){
     fout.open( config_filename.c_str() );
     
     // write log file
+    fout << "#  Desired LLNMS_HOME path" << std::endl;
+    fout << "LLNMS_HOME=" << m_LLNMS_HOME << std::endl;
+    fout << std::endl;
+
     fout << "#  Log File to Write Data To" << std::endl;
     fout << "LOG_FILENAME=" << log_filename << std::endl;
     fout << std::endl;

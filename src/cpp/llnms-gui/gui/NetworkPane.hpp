@@ -43,6 +43,11 @@ class NetworkPane : public QWidget{
     public slots:
         
         /**
+         * Update Widget
+         */
+        void updatePanel();
+
+        /**
          * Rebuild the network list table
          */
         void load_network_list_table();

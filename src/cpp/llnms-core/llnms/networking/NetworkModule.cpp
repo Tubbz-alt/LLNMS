@@ -122,7 +122,6 @@ void NetworkModule::create_network( const std::string& network_name,
     }
     
     std::string filename = m_LLNMS_HOME + std::string("/") + header + ".llnms-network.xml";
-
     std::ofstream fout;
     fout.open(filename.c_str());
     fout << "<llnms-network>" << std::endl;

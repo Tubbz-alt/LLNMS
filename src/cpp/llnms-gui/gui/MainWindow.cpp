@@ -21,7 +21,8 @@ MainWindow::MainWindow() : QMainWindow() {
 
     // initialize all of our connections
     connect( &message_service, SIGNAL(quit_program_signal()), this, SLOT(quit_program()));
-    
+    connect( &message_service, SIGNAL(update_llnms()), this, SLOT(updateLLNMS()));
+
     connect( navigationBar, SIGNAL(summaryPaneButtonSignal()), this, SLOT(moveToSummaryPanel()));
     connect( navigationBar, SIGNAL(networkPaneButtonSignal()), this, SLOT(moveToNetworkPanel()));
     connect( navigationBar, SIGNAL(  assetPaneButtonSignal()), this, SLOT(moveToAssetPanel()));
@@ -112,4 +113,16 @@ void MainWindow::moveToConfigPanel(){
     stackedWidget->setCurrentIndex(3);
 }
 
+/**
+ * Update LLNMS
+ */
+void MainWindow::updateLLNMS(){
+    
+    // update llnms
+    llnms.update();
+    
+    // update the network management window
+    networkPane->updatePanel();
+
+}
 

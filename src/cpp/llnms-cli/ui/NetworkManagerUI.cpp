@@ -64,6 +64,7 @@ void update_network_definition_table( Table& table ){
         table.setData( 2, i, network_definitions[i].address_start() );
         table.setData( 3, i, network_definitions[i].address_end() );
     }
+    
 }
 
 /**

@@ -19,10 +19,11 @@
 void print_create_network_footer(){
 
     /// print the horizontal line
-    print_single_char_line( '-', options.maxY-3, 0, options.maxX );
+    print_single_char_line( '-', options.maxY-4, 0, options.maxX );
 
     // print the first row
-    mvprintw( options.maxY-2, 0, " Up/Down/Left/Right Arrows to Navigate Fields." );
+    mvprintw( options.maxY-3, 0, "Type the appropriate values in the fields provided.");
+    mvprintw( options.maxY-2, 0, "Up/Down/Left/Right Arrows to Navigate Fields.  Tab: Next field." );
     mvprintw( options.maxY-1, 0, "ESC: back.  Press Save Button to save and Cancel to discard changes." );
 
 }
@@ -89,8 +90,7 @@ void create_network_definition_ui(){
         int ch =getch();
 
         switch(ch){
-
-
+            
             // Up Key
             case KEY_UP:
                 if( cursorIdx > 0 ){
@@ -99,9 +99,13 @@ void create_network_definition_ui(){
                 break;
 
             // Down Key
+            case 9:
             case KEY_DOWN:
                 if( cursorIdx < 4 ){
                     cursorIdx++;
+                }
+                else{
+                    cursorIdx = 0;
                 }
                 break;
 
@@ -140,6 +144,19 @@ void create_network_definition_ui(){
                 EXIT_LOOP=true;
                 break;
             
+            // backspace key
+            case KEY_BACKSPACE:
+                
+                // if we are over a field, back up the cursor and erase the character
+                if( cursorIdx >= 0 && cursorIdx < 3 ){
+                    if( cursorPositions[cursorIdx] > 0 ){
+                        cursorPositions[cursorIdx]--;
+                        valueList[cursorIdx].erase( valueList[cursorIdx].begin() + cursorPositions[cursorIdx]);
+                    }
+                }
+    
+                break;
+
             // enter key
             case KEY_ENTER:
             case 10:

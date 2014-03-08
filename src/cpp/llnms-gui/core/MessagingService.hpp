@@ -31,6 +31,11 @@ class MessagingService : public QObject{
          * Tell the program to quit
          */
         void quit_program_signal();
+        
+        /**
+         * Tell LLNMS to update itself
+         */
+        void update_llnms();
 
 };
 

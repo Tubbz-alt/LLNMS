@@ -77,6 +77,11 @@ class MainWindow : public QMainWindow {
          * Move to the configuration panel
          */
         void moveToConfigPanel();
+        
+        /**
+         * Update LLNMS GUI
+         */
+        void updateLLNMS();
 
     private:
 	
