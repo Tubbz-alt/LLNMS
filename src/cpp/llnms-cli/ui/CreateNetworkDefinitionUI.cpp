@@ -164,12 +164,12 @@ void create_network_definition_ui(){
                 // if we are over the save key, just exit
                 if( cursorIdx == 3 ){
                     
-                    int result = message_dialog();
+                    int result = message_dialog("Are you sure you wish to create the new network?", BUTTON_SAVE | BUTTON_CANCEL );
                     if( result == 1 ){
-
+                        state.m_network_module.create_network( valueList[0], valueList[1], valueList[2] );
+                        EXIT_LOOP=true;
                     }
 
-                    EXIT_LOOP=true;
                 }
 
                 // if we are over the cancel key, just exit
