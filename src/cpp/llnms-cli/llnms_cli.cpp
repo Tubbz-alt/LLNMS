@@ -13,10 +13,8 @@
 #include <ui/MainMenu.hpp>
 #include <utilities/CursesUtilities.hpp>
 
-/// Options
-//#include "utilities/Logger.hpp"
-
 /// C Standard Library
+#include <exception>
 #include <iostream>
 #include <string>
 
@@ -38,6 +36,9 @@ int main( int argc, char* argv[] ){
 
     try{
         
+        // initialize curses
+        init_curses();
+        
         // initialize options
         options.init( argc, argv );
 
@@ -46,25 +47,22 @@ int main( int argc, char* argv[] ){
 
         // print configuration to logger
         options.printToLogger();
-
-        // initialize curses
-        init_curses();
         
         // set LLNMS Home in the state module
+        logger.add_message("Setting LLNMS_HOME in LLNMS Core.", LOG_DEBUG );
         state.set_LLNMS_HOME( options.m_LLNMS_HOME );
         
         // update llnms
+        logger.add_message("Updating LLNMS Core.", LOG_DEBUG );
         state.update();
 
         // start main program
         main_menu();
 
 
-    } catch( std::string e ){
-        cout << e << endl;
-        //logger.add_message( Message( std::string("String exception thrown. Exiting program. Message: ")+e, Logger::LOG_MAJOR ));
-    //} catch(...){
-    //    logger.add_message( Message( std::string("Unknown exception thrown. Exiting program."), Logger::LOG_MAJOR ));
+    } catch( exception& e ){
+        logger.add_message( e.what(), LOG_MAJOR );
+        cout << e.what() << endl;
     } 
 
     // make sure to close up curses

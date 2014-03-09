@@ -6,6 +6,11 @@
 #ifndef __SRC_CPP_LLNMSCLI_MAINMENU_HPP__
 #define __SRC_CPP_LLNMSCLI_MAINMENU_HPP__
 
+/// LLNMS CLI Libraries
+#include <core/Logger.hpp>
+
+extern Logger logger;
+
 /**
  * Print the main menu
 */

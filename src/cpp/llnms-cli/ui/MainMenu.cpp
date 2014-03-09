@@ -31,6 +31,9 @@ void print_main_menu_footer( const int& idx ){
 */
 void main_menu(){
     
+    // add debug message
+    logger.add_message( "Entering Main Menu.", LOG_DEBUG );
+
     // start a loop
     bool EXIT_LOOP=false;
     while( EXIT_LOOP == false ){
@@ -100,6 +103,7 @@ void main_menu(){
 
     }
 
-
+    // add exit message
+    logger.add_message("Exiting Main Menu.", LOG_DEBUG );
 }
 

@@ -13,6 +13,18 @@
 
 #include <string>
 
+/**
+ * Write the log message when creating a new network
+ */
+std::string create_network_log_message( std::string const& name, 
+                                 std::string const& address_start,
+                                 std::string const& address_end ){
+
+    return (std::string("Creating new LLNMS Network where name=[") + name 
+                        + std::string("], Address-Start=[") + address_start
+                        + std::string("], Address-End=[") + address_end + std::string("]"));
+}
+
 /***
  * Print the footer
  */
@@ -49,11 +61,14 @@ bool networkAddressValidKey( const int& key ){
 /**
  * create a network definition user interface
  */
-void create_network_definition_ui(){
+int create_network_definition_ui(){
+    
+    logger.add_message( "Entering Create Network Defition UI", LOG_DEBUG );
 
     int cursorIdx = 0;
     std::vector<int> cursorPositions( 3, 0);
     std::vector<std::string> valueList( 3, "");
+    int status = 0;
 
     // start a loop
     bool EXIT_LOOP=false;
@@ -166,8 +181,13 @@ void create_network_definition_ui(){
                     
                     int result = message_dialog("Are you sure you wish to create the new network?", BUTTON_SAVE | BUTTON_CANCEL );
                     if( result == 1 ){
-                        state.m_network_module.create_network( valueList[0], valueList[1], valueList[2] );
+                        
+                        // print log message
+                        logger.add_message( std::string("  -> ") + create_network_log_message( valueList[0], valueList[1], valueList[2] ), LOG_INFO );
+                        std::string newFilename = state.m_network_module.create_network( valueList[0], valueList[1], valueList[2] );
+                        logger.add_message( std::string("  -> ") + std::string("New LLNMS Network saved to ") + newFilename, LOG_INFO );
                         EXIT_LOOP=true;
+                        status = true;
                     }
 
                 }
@@ -203,7 +223,9 @@ void create_network_definition_ui(){
         }
 
     }
+    logger.add_message( "Exiting Create Network Definition UI", LOG_DEBUG );
 
-
+    // return true if changes were made, otherwise false
+    return status;
 }
 

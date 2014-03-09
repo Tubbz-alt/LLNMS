@@ -3,6 +3,7 @@
 
 #include "Logger.hpp"
 
+#include <exception>
 #include <fstream>
 
 using namespace std;
@@ -61,8 +62,10 @@ std::ostream& operator << ( std::ostream& ostr, LogMessage const& log_message ){
        ostr << LogColor(YELLOW) << "[ WARNING ]" << color_end;
    else if( log_message.level == LOG_INFO )
        ostr << LogColor(WHITE) << "[  INFO   ]" << color_end;
+   else if( log_message.level == LOG_DEBUG )
+       ostr << LogColor(GREEN) << "[  DEBUG  ]" << color_end;
    else 
-       throw LogMessage( LOG_MAJOR, "ERROR: Unknown log message level in operator << ");
+       throw std::runtime_error("Unknown log message level in operator << ");
 
     //print the message
     ostr << " :  " << log_message.message;

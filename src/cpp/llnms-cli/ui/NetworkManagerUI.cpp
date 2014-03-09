@@ -26,6 +26,8 @@ void initialize_tables( Table& networkDefinitionTable,
                         Table& networkScanningTable
                       ){
 
+    logger.add_message( "  -> Initializing Network Management Tables.", LOG_DEBUG );
+
     // initialize the network definition table
     networkDefinitionTable.setHeaderName( 0, "Select" );
     networkDefinitionTable.setHeaderName( 1, "Network Name" );
@@ -57,6 +59,7 @@ void initialize_tables( Table& networkDefinitionTable,
  */
 void update_network_definition_table( Table& table ){
     
+    logger.add_message("  -> Updating the network definition table.", LOG_DEBUG );
     // load the data
     std::deque<LLNMS::NETWORK::NetworkDefinition> network_definitions = state.m_network_module.network_definitions();   
     for( size_t i=0; i<network_definitions.size(); i++ ){
@@ -73,6 +76,7 @@ void update_network_definition_table( Table& table ){
 void update_network_scanning_table( Table& table ){
 
     // update LLNMS
+    logger.add_message("  -> Updating the network scanning table.", LOG_DEBUG );
     std::vector<LLNMS::NETWORK::NetworkHost> network_hosts = state.m_network_module.scanned_network_hosts();
     for( size_t i=0; i<network_hosts.size(); i++ ){
         table.setData( 1, i, network_hosts[i].ip4_address() );
@@ -144,6 +148,9 @@ void print_network_scan_results( Table& table,
  */
 void network_manager_ui(){
     
+    // print debugging message
+    logger.add_message("Entering Network Management UI", LOG_DEBUG );
+
     // list of indeces for managing where stuff is
     int networkListWindowTop=3;
     int networkListWindowBot = (options.maxY / 2)-2;
@@ -158,6 +165,7 @@ void network_manager_ui(){
     update_network_definition_table( networkDefinitionTable );
 
     // start a loop
+    logger.add_message("  -> starting Network Management UI loop", LOG_DEBUG );
     bool EXIT_LOOP=false;
     while( EXIT_LOOP == false ){
 
@@ -200,7 +208,11 @@ void network_manager_ui(){
             /// create network definition
             case 'c':
             case 'C':
-                create_network_definition_ui();
+                if( create_network_definition_ui() == true ){
+                    state.m_network_module.update();
+                    update_network_definition_table( networkDefinitionTable );
+                    update_network_scanning_table( networkScanningTable );
+                }
                 break;
 
             /// Exit Menu
@@ -208,12 +220,12 @@ void network_manager_ui(){
             case 'q':
                 EXIT_LOOP=true;
                 break;
-
-
-
         }
 
     }
+    
+    // print debugging message
+    logger.add_message("Exiting Network Management UI", LOG_DEBUG );
 
 
 }

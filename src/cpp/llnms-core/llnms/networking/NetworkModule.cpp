@@ -108,29 +108,51 @@ void NetworkModule::update(){
 /**
  * Create a new network
  */
-void NetworkModule::create_network( const std::string& network_name,
-                                    const std::string& address_start,
-                                    const std::string& address_end ){
+std::string NetworkModule::create_network( const std::string& network_name,
+                                           const std::string& address_start,
+                                           const std::string& address_end ){
 
 
     // create a new filename
     std::string header = string_toLower(network_name);
     for( size_t i=0; i<header.size(); i++ ){
-        if( header[i] = ' ' ){
+        if( header[i] == ' ' ){
             header[i] = '_';
         }
     }
-    
-    std::string filename = m_LLNMS_HOME + std::string("/") + header + ".llnms-network.xml";
+
+    // if the solo path does not exist, then create it, otherwise create a unique name
+    std::string filename = m_LLNMS_HOME + std::string("/networks/") + header + ".llnms-network.xml";
+    if( boost::filesystem::exists( filename ) != false ){
+        
+        int index = 1;
+        std::string tempFilename;
+
+        while( true ){
+
+            tempFilename = m_LLNMS_HOME + std::string("/networks/") + header + num2str(index) + ".llnms-network.xml";
+            if( boost::filesystem::exists( tempFilename ) == true ){
+                index++;
+            }
+            else{
+                filename = tempFilename;
+                break;
+            }
+        }
+    }
+
+
+    // open and write out the file 
     std::ofstream fout;
     fout.open(filename.c_str());
     fout << "<llnms-network>" << std::endl;
     fout << "    <name>" << network_name << "</name>" << std::endl;
-    fout << "    <address_start>" << address_start << "</address_start>" << std::endl;
-    fout << "    <address_end>" << address_end << "</address_end>" << std::endl;
+    fout << "    <address-start>" << address_start << "</address-start>" << std::endl;
+    fout << "    <address-end>" << address_end << "</address-end>" << std::endl;
     fout << "</llnms-network>" << std::endl;
     fout.close();
 
+    return filename;
 }
 
 

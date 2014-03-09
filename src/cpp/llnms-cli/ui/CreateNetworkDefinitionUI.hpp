@@ -10,17 +10,22 @@
 #include <LLNMS.hpp>
 
 /// LLNMS CLI Libraries
+#include <core/Logger.hpp>
 #include <core/Options.hpp>
 
+extern Logger logger;
 extern Options options;
-
 extern LLNMS::LLNMS_State state;
 
 
 
 /**
  * Create Network Definition User Interface
+ *
+ * @returns{ 0 if no changes were made
+ *           1 if we should update the tables
+ *         }
  */
-void create_network_definition_ui();
+int create_network_definition_ui();
 
 #endif

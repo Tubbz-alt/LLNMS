@@ -10,10 +10,11 @@
 #include <LLNMS.hpp>
 
 /// LLNMS CLI Libraries
+#include <core/Logger.hpp>
 #include <core/Options.hpp>
 
+extern Logger logger;
 extern Options options;
-
 extern LLNMS::LLNMS_State state;
 
 /**
