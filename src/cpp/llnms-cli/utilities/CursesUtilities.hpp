@@ -9,8 +9,10 @@
 #include <sstream>
 #include <string>
 
+#include <core/Logger.hpp>
 #include <core/Options.hpp>
 
+extern Logger logger;
 extern Options options;
 
 /**

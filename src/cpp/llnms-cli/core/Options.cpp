@@ -27,22 +27,28 @@
  * Default Constructor
  */
 Options::Options(){
-
+    
     // set default config file
     config_filename = getenv("HOME")+std::string("/.llnms/cli/options.cfg");
-
-    // set the log filename
-    log_filename = "/var/tmp/llnms/log/llnms-viewer.log";
-
-    // set the desired log priority
-    log_priority = 0;
-
+    
+    // set the default LLNMS Home
+    if( getenv("LLNMS_HOME") != NULL ){
+        m_LLNMS_HOME=getenv("LLNMS_HOME");
+    } else {
+        m_LLNMS_HOME="/var/tmp/llnms";
+    }
 }
 
 /**
  * Initialize Options Container
 */
 void Options::init( int argc, char* argv[] ){
+    
+    // set the log filename
+    logger.setLogFilename( std::string(getenv("HOME"))+std::string("/.llnms/cli/llnms-cli.log"));
+    logger.setLoggingLevel( LOG_INFO );
+    logger.setLoggingMode( LOG_MODE_LOGFILE );
+
     
     // look for config file value
     for( int i=1; i<argc; i++ ){
@@ -75,13 +81,25 @@ void Options::init( int argc, char* argv[] ){
     // load the log file
     tempString = parser.getItem_string( "LOG_FILENAME", found ); 
     if( found == true ){
-        log_filename = tempString;
+        logger.setLogFilename( tempString );
     }
 
     // load the log priority
-    tempInt = parser.getItem_int( "LOG_PRIORITY", found );
+    tempString = parser.getItem_string( "LOG_PRIORITY", found );
     if( found == true ){
-        log_priority = tempInt;
+        if( tempString == "LOG_MAJOR" ){
+            logger.setLoggingLevel( LOG_MAJOR );
+        } else if( tempString == "LOG_MINOR" ){
+            logger.setLoggingLevel( LOG_MINOR );
+        } else if( tempString == "LOG_WARNING" ){
+            logger.setLoggingLevel( LOG_WARNING );
+        } else if( tempString == "LOG_INFO" ){
+            logger.setLoggingLevel( LOG_INFO );
+        } else if( tempString == "LOG_DEBUG" ){
+            logger.setLoggingLevel( LOG_DEBUG );
+        } else {
+            logger.setLoggingLevel( LOG_NONE );
+        }
     }
     
     // set the llnms home
@@ -120,12 +138,19 @@ void Options::write_config_file(){
     fout << std::endl;
 
     fout << "#  Log File to Write Data To" << std::endl;
-    fout << "LOG_FILENAME=" << log_filename << std::endl;
+    fout << "LOG_FILENAME=" << logger.getLogFilename() << std::endl;
     fout << std::endl;
 
     // write log priority
     fout << "#  Max Log Priority to Output" << std::endl;
-    fout << "LOG_PRIORITY=" << log_priority << std::endl;
+    fout << "#" << std::endl;
+    fout << "#  Available Options:" << std::endl;
+    fout << "#  LOG_NONE" << std::endl;
+    fout << "#  LOG_MAJOR" << std::endl;
+    fout << "#  LOG_MINOR" << std::endl;
+    fout << "#  LOG_INFO" << std::endl;
+    fout << "#  LOG_DEBUG" << std::endl;
+    fout << "LOG_PRIORITY=" << logger.getLoggingLevelAsString() << std::endl;
     fout << std::endl;
 
     // close file
@@ -146,6 +171,21 @@ void Options::init_about_pane_data(){
     aboutPaneData.push_back("\n");
     aboutPaneData.push_back(std::string("Version   : ") + num2str(LLNMS_VERSION_MAJOR) + std::string(".") + num2str(LLNMS_VERSION_MINOR) + "\n");
     aboutPaneData.push_back(std::string("Build Date: ") + LLNMS_VERSION_DATE);
+
+}
+
+/**
+ * Print Logger
+ */
+void Options::printToLogger()const{
+
+    // print the header
+    logger.add_message(std::string("LLNMS Command-Line Utility\n               --------------------------"), LOG_INFO);
+    logger.add_message("Configuration:", LOG_INFO);
+    logger.add_message(std::string(" -> LLNMS_HOME=")+m_LLNMS_HOME, LOG_INFO );
+    logger.add_message(std::string(" -> LLNMS Version: ") + num2str(LLNMS_VERSION_MAJOR) + std::string(".") + num2str(LLNMS_VERSION_MINOR), LOG_INFO);
+    logger.add_message(std::string(" -> LLNMS Build Date: ")+LLNMS_VERSION_DATE);
+    logger.add_message("", LOG_INFO);
 
 }
 

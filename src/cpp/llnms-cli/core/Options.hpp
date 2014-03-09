@@ -6,8 +6,15 @@
 #ifndef __SRC_CPP_LLNMSVIEWER_UTILITIES_OPTIONS_HPP__
 #define __SRC_CPP_LLNMSVIEWER_UTILITIES_OPTIONS_HPP__
 
+/// LLNMS CLI Libraries
+#include <core/Logger.hpp>
+
+/// C++ Standard Library
 #include <string>
 #include <vector>
+
+/// Logger
+extern Logger logger;
 
 /**
  * @class Options
@@ -49,6 +56,11 @@ class Options{
          * Write Configuration File
          */
         void write_config_file();
+    
+        /**
+         * Print Logger
+         */
+        void printToLogger()const;
 
         /// Configuration File
         std::string config_filename;
@@ -58,9 +70,6 @@ class Options{
 
         /// Max Window Height
         int maxY;
-
-        /// Log filename
-        std::string log_filename;
 
         /// Log Priority
         int log_priority;

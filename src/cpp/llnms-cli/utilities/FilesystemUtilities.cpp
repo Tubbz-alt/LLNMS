@@ -53,3 +53,10 @@ bool file_exists( const std::string& filename ){
     return bf::exists( bf::path( filename ));
 }
 
+/**
+ * Create a directory if does not exist.
+ */
+void path_mkdir( const boost::filesystem::path& pathname ){
+    bf::create_directories( pathname );
+}
+

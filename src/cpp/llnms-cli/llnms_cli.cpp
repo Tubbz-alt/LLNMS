@@ -8,6 +8,7 @@
 #include <LLNMS.hpp>
 
 /// CLI Libraries
+#include <core/Logger.hpp>
 #include <core/Options.hpp>
 #include <ui/MainMenu.hpp>
 #include <utilities/CursesUtilities.hpp>
@@ -22,6 +23,9 @@
 /// Global Options
 Options options;
 
+/// Logger
+Logger logger;
+
 /// Global LLNMS State
 LLNMS::LLNMS_State state;
 
@@ -32,14 +36,19 @@ using namespace std;
 */
 int main( int argc, char* argv[] ){
 
-
     try{
+        
+        // initialize options
+        options.init( argc, argv );
+
+        // clear the current logfile
+        logger.clearLogfile();
+
+        // print configuration to logger
+        options.printToLogger();
 
         // initialize curses
         init_curses();
-
-        // initialize options
-        options.init( argc, argv );
         
         // set LLNMS Home in the state module
         state.set_LLNMS_HOME( options.m_LLNMS_HOME );

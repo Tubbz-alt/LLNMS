@@ -21,6 +21,9 @@ std::string ERROR_FUNCTION(){
  * Initialize Curses
 */
 void init_curses(){
+    
+    // logger
+    logger.add_message( LogMessage( "Initializing Curses", LOG_INFO ));
 
     // initialize the screen
     initscr();
@@ -50,6 +53,8 @@ void init_curses(){
 
 void close_curses(){
 
+    logger.add_message( LogMessage( "Closing Curses", LOG_INFO ));
+    
     // close the window
     endwin();
 

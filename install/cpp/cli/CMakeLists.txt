@@ -59,6 +59,7 @@ set( LLNMS_CLI_MAIN
 )
 
 set( LLNMS_CLI_SOURCES
+    ../../src/cpp/llnms-cli/core/Logger.cpp
     ../../src/cpp/llnms-cli/core/Options.cpp
     ../../src/cpp/llnms-cli/core/Parser.cpp
     ../../src/cpp/llnms-cli/ui/AboutUI.cpp
@@ -73,6 +74,7 @@ set( LLNMS_CLI_SOURCES
 )
 
 set( LLNMS_CLI_HEADERS
+    ../../src/cpp/llnms-cli/core/Logger.hpp
     ../../src/cpp/llnms-cli/core/Options.hpp
     ../../src/cpp/llnms-cli/core/Parser.hpp
     ../../src/cpp/llnms-cli/ui/AboutUI.hpp
