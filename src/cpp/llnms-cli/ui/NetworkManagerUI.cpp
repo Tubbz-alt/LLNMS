@@ -7,6 +7,7 @@
 /// LLNMS CLI Libraries
 #include "NetworkManagerUI.hpp"
 #include "CreateNetworkDefinitionUI.hpp"
+#include "DeleteNetworkDefinitionUI.hpp"
 #include <utilities/CursesUtilities.hpp>
 #include <utilities/Table.hpp>
 
@@ -90,14 +91,20 @@ void update_network_scanning_table( Table& table ){
 /**
  * Print network manager footer
  */
-void print_network_manager_footer( const int& maxX, const int& maxY, std::string const& networkPane ){
+void print_network_manager_footer( const int& maxX, const int& maxY, int const& networkPaneIndex ){
     
     /// print the horizontal line
     print_single_char_line( '-', maxY-3, 0, maxX );
 
-    // print the first row
-    mvprintw( maxY-2, 0, std::string("Arrow Keys: Navigate Rows.  q/Q: Back to main menu.  u/U: Update Tables. ").c_str());
-    mvprintw( maxY-1, 0, std::string(std::string("s/S: Switch to ") + networkPane + ".  c/C: Create Network Definition.").c_str());
+    // if we are on the Network Definition Table
+    if( networkPaneIndex == 0 ){
+        mvprintw( maxY-2, 0, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. ").c_str());
+        mvprintw( maxY-1, 0, std::string("s: Switch to Network Scanning Table.  c: Create Network Definition.  d: Delete Network Definition").c_str());
+    } else if( networkPaneIndex == 1 ){
+        mvprintw( maxY-2, 0, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. ").c_str());
+        mvprintw( maxY-1, 0, std::string("s: Switch to Network Definition Table.  c: Create Network Definition.").c_str());
+    }
+
 
 }
 
@@ -180,9 +187,6 @@ void network_manager_ui(){
 
     // current network pane 
     int currentNetworkPaneIndex = 0;
-    std::vector<std::string> currentNetworkPane;
-    currentNetworkPane.push_back("Network Scanning List");
-    currentNetworkPane.push_back("Network Definition List");
     std::vector<int> networkPaneIndeces(2,0);
 
 
@@ -215,7 +219,7 @@ void network_manager_ui(){
                                   );
         
         // print footer
-        print_network_manager_footer( options.maxX, options.maxY, currentNetworkPane[currentNetworkPaneIndex] );
+        print_network_manager_footer( options.maxX, options.maxY, currentNetworkPaneIndex );
 
         // refresh the screen
         refresh();
@@ -260,6 +264,14 @@ void network_manager_ui(){
                     currentNetworkPaneIndex = 0;
                 }
 
+                break;
+
+            /// delete
+            case 'd':
+            case 'D':
+                if( currentNetworkPaneIndex == 0 ){
+                    delete_network_definition_ui();
+                }
                 break;
 
             /// Update 
