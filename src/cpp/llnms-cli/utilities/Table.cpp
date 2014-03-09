@@ -29,6 +29,22 @@ Table::Table(){
     m_headerRatios[0] = 1;
 }
 
+/*************************************************/
+/*            Get Number of Table Rows           */
+/*************************************************/
+int Table::rows()const{
+    if( cols() == 0 ){ return 0; }
+
+    return m_data[0].size();
+}
+
+/*************************************************/
+/*            Get Number of Table Columns        */
+/*************************************************/
+int Table::cols()const{
+    return m_data.size();
+}
+
 /***************************************************/
 /*               Reset Header Ratios               */
 /***************************************************/
@@ -157,7 +173,7 @@ void Table::print( const int& minRow,
     print_outer_table_horizontal_bar( crow++, minCol, maxWidth );
     
     // print data table
-    print_table_data( crow, maxRow, minCol, maxWidth  );
+    print_table_data( crow, maxRow, minCol, maxWidth, currentIdx  );
 
      
     // print final row

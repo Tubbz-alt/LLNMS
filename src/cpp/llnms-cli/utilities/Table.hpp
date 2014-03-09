@@ -25,7 +25,16 @@ class Table{
         */
         Table();
         
-        
+        /**
+         * Get number of rows
+         */
+        int rows()const;
+
+        /**
+         * Get number of columns
+         */
+        int cols()const;
+
         /**
          * Set header name
          *
