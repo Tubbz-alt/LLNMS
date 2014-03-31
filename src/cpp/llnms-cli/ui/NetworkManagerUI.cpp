@@ -225,15 +225,15 @@ void network_manager_ui(){
                             networkListWindowTop, 
                             networkListWindowBot, 
                             (currentNetworkPaneIndex == 0),
-                            networkPaneIndeces[currentNetworkPaneIndex]
+                            networkPaneIndeces[0]
                           );
 
         // print the network scanning results
         print_network_scan_results( networkScanningTable, 
                                     networkScanWindowTop, 
                                     networkScanWindowBot,
-                                    (currentNetworkPaneIndex == 0),
-                                    networkPaneIndeces[currentNetworkPaneIndex]
+                                    (currentNetworkPaneIndex == 1),
+                                    networkPaneIndeces[1]
                                   );
         
         // print footer
