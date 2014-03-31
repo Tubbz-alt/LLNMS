@@ -45,6 +45,27 @@ int Table::cols()const{
     return m_data.size();
 }
 
+/**
+ * Clear
+ */
+void Table::clear(){
+
+    for( int x=0; x<cols(); x++ )
+    for( int y=0; y<rows(); y++ )
+        this->setData( x, y, "");
+
+}
+
+/**
+ * Set the row count
+ */
+void Table::setRowCount( const int& rowCount ){
+    
+    for( size_t i=0; i<m_data.size(); i++ ){
+        m_data[i].resize(rowCount);
+    }
+}
+
 /***************************************************/
 /*               Reset Header Ratios               */
 /***************************************************/

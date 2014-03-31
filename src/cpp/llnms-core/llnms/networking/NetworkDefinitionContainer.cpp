@@ -43,7 +43,7 @@ void NetworkDefinitionContainer::update(){
             // if it wasn't found then add it
             if( it == this->end() ){
                 this->push_back( tempNetwork );
-                this->sort();
+                std::sort(this->begin(), this->end());
             }
         }
     }

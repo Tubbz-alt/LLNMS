@@ -8,7 +8,7 @@
 
 #include "NetworkDefinition.hpp"
 
-#include <list>
+#include <vector>
 #include <string>
 
 namespace LLNMS{
@@ -17,7 +17,7 @@ namespace NETWORK{
 /**
  * @class NetworkDefinitionContainer
 */
-class NetworkDefinitionContainer : public std::list<NetworkDefinition>{
+class NetworkDefinitionContainer : public std::vector<NetworkDefinition>{
 
     public:
         

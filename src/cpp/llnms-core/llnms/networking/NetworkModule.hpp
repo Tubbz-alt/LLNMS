@@ -55,6 +55,11 @@ class NetworkModule{
          * Get a list of network hosts
         */
         std::vector<NetworkHost> scanned_network_hosts()const;
+        
+        /**
+         * Start a network scan
+         */
+        void start_scan( );
 
         /**
          * Update the network list
@@ -67,6 +72,11 @@ class NetworkModule{
         std::string create_network( const std::string& network_name,
                                     const std::string& address_start,
                                     const std::string& address_end );
+        
+        /**
+         * Delete a Network
+         */
+        void delete_network( const int& network_index, std::string& message_output );
 
 
     private:

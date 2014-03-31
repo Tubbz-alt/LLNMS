@@ -65,6 +65,7 @@ void update_network_definition_table( Table& table ){
     
     // load the data
     std::deque<LLNMS::NETWORK::NetworkDefinition> network_definitions = state.m_network_module.network_definitions();   
+    table.setRowCount( network_definitions.size()+1);
     for( size_t i=0; i<network_definitions.size(); i++ ){
         table.setData( 1, i+1, network_definitions[i].name() );
         table.setData( 2, i+1, network_definitions[i].address_start() );
@@ -81,6 +82,7 @@ void update_network_scanning_table( Table& table ){
     // update LLNMS
     logger.add_message("  -> Updating the network scanning table.", LOG_DEBUG );
     std::vector<LLNMS::NETWORK::NetworkHost> network_hosts = state.m_network_module.scanned_network_hosts();
+    table.setRowCount( network_hosts.size()+1);
     for( size_t i=0; i<network_hosts.size(); i++ ){
         table.setData( 0, i, network_hosts[i].ip4_address() );
     }
@@ -91,18 +93,32 @@ void update_network_scanning_table( Table& table ){
 /**
  * Print network manager footer
  */
-void print_network_manager_footer( const int& maxX, const int& maxY, int const& networkPaneIndex ){
+void print_network_manager_footer( const int& maxX, const int& maxY, int const& networkPaneIndex, const bool& showScanningOptions ){
     
     /// print the horizontal line
-    print_single_char_line( '-', maxY-3, 0, maxX );
+    print_single_char_line( '-', maxY-4, 0, maxX );
 
-    // if we are on the Network Definition Table
-    if( networkPaneIndex == 0 ){
-        mvprintw( maxY-2, 0, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. ").c_str());
-        mvprintw( maxY-1, 0, std::string("s: Switch to Network Scanning Table.  c: Create Network Definition.  d: Delete Network Definition").c_str());
-    } else if( networkPaneIndex == 1 ){
-        mvprintw( maxY-2, 0, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. ").c_str());
-        mvprintw( maxY-1, 0, std::string("s: Switch to Network Definition Table.  c: Create Network Definition.").c_str());
+ 
+    // if we need to show scanning options
+    if( showScanningOptions == true ){
+        
+        mvprintw( maxY-3, 2, "Network Scanning Options");
+        mvprintw( maxY-2, 2, "a: Scan highlighted network, x: back to main options.");
+
+    }
+
+    // otherwise, print the standard table
+    else{
+    
+        // if we are on the Network Definition Table
+        mvprintw( maxY-3, 2, "Main Menu");
+        if( networkPaneIndex == 0 ){
+            mvprintw( maxY-2, 2, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. x: Show Scanning Options.").c_str());
+            mvprintw( maxY-1, 2, std::string("s: Switch to Network Scanning Table.  c: Create Network Definition.  d: Delete Network Definition").c_str());
+        } else if( networkPaneIndex == 1 ){
+            mvprintw( maxY-2, 2, std::string("Arrow Keys: Navigate Rows.  q: Back to main menu.  u: Update Tables. x: Show Scanning Options.").c_str());
+            mvprintw( maxY-1, 2, std::string("s: Switch to Network Definition Table.  c: Create Network Definition.").c_str());
+        }
     }
 
 
@@ -177,7 +193,7 @@ void network_manager_ui(){
     int networkListWindowBot = (options.maxY / 2)-2;
 
     int networkScanWindowTop = networkListWindowBot+2;
-    int networkScanWindowBot = options.maxY - 4;
+    int networkScanWindowBot = options.maxY - 5;
     
     // Network Tables
     Table networkDefinitionTable;
@@ -189,6 +205,8 @@ void network_manager_ui(){
     int currentNetworkPaneIndex = 0;
     std::vector<int> networkPaneIndeces(2,0);
 
+    // menu viewing options
+    bool showScanningOptions = false;
 
     // start a loop
     logger.add_message("  -> starting Network Management UI loop", LOG_DEBUG );
@@ -219,7 +237,7 @@ void network_manager_ui(){
                                   );
         
         // print footer
-        print_network_manager_footer( options.maxX, options.maxY, currentNetworkPaneIndex );
+        print_network_manager_footer( options.maxX, options.maxY, currentNetworkPaneIndex, showScanningOptions );
 
         // refresh the screen
         refresh();
@@ -270,7 +288,30 @@ void network_manager_ui(){
             case 'd':
             case 'D':
                 if( currentNetworkPaneIndex == 0 && networkPaneIndeces[0] != 0 ){
+                    
+                    // delete the network definition
                     delete_network_definition_ui(networkPaneIndeces[0]-1);
+
+                    // decrement the counter
+                    if( networkPaneIndeces[0] > 0 ){
+                        networkPaneIndeces[0]--;
+                    }
+                    
+                    // update the network module
+                    state.m_network_module.update();
+                    update_network_definition_table( networkDefinitionTable );
+                    update_network_scanning_table( networkScanningTable );
+                }
+                break;
+
+            /// Show Scanning Options Flag
+            case 'X':
+            case 'x':
+                
+                if( showScanningOptions == true ){
+                    showScanningOptions = false;
+                } else {
+                    showScanningOptions = true;
                 }
                 break;
 
@@ -290,6 +331,15 @@ void network_manager_ui(){
                     update_network_definition_table( networkDefinitionTable );
                     update_network_scanning_table( networkScanningTable );
                 }
+                break;
+            
+            /// Scan Highlighted Network
+            case 'a':
+            case 'A':
+                
+                // tell the llnms network module to start a scan
+                state.m_network_module.start_scan( );
+
                 break;
 
             /// Exit Menu

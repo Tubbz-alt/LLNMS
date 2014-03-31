@@ -34,6 +34,16 @@ class Table{
          * Get number of columns
          */
         int cols()const;
+        
+        /**
+         * Clear Table Data
+         */
+        void clear();
+        
+        /**
+         * Set the row count
+         */
+        void setRowCount( const int& rowCount );
 
         /**
          * Set header name

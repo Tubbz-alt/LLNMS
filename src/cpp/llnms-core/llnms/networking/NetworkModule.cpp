@@ -8,6 +8,7 @@
 #include "../utilities/StringUtilities.hpp"
 
 #include <algorithm>
+#include <exception>
 #include <fstream>
 #include <iostream>
 
@@ -93,6 +94,19 @@ std::vector<NetworkHost> NetworkModule::scanned_network_hosts()const{
 }
 
 /**
+ * Start a network scan
+ */
+void NetworkModule::start_scan(){
+
+    // create the command
+    std::string command = m_LLNMS_HOME + std::string("/bin/llnms-scan-networks") + std::string(" &");
+    
+    std::string message_output;
+    LLNMS::UTILITIES::run_command( command, message_output  );
+
+}
+
+/**
  * Update the network list
  */
 void NetworkModule::update(){
@@ -153,6 +167,27 @@ std::string NetworkModule::create_network( const std::string& network_name,
     fout.close();
 
     return filename;
+}
+
+/**
+ * Delete a network
+ */
+void NetworkModule::delete_network( const int& index, std::string& message_output ){
+    
+    // make sure the bounds are correct
+    if( index < 0 || index >= m_network_definitions.size() ){
+        throw std::runtime_error("Referenced network module does not exist.");
+    }
+
+    // delete the file
+    std::string command = m_LLNMS_HOME + std::string("/bin/llnms-remove-network -n \"") + (*(m_network_definitions.begin()+index)).name() + std::string("\"");
+    
+    // run the system command
+    LLNMS::UTILITIES::run_command(command, message_output);
+
+    // erase the entry
+    m_network_definitions.erase( m_network_definitions.begin() + index );
+
 }
 
 

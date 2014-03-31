@@ -16,6 +16,12 @@
 namespace LLNMS{
 namespace UTILITIES{
 
+
+/**
+ * Run a standard system command and grab output.
+*/
+bool run_command( const std::string& command, std::string& message );
+
 /**
  * Check if a path is a directory
 */
