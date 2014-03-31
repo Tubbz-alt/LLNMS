@@ -20,6 +20,6 @@ extern LLNMS::LLNMS_State state;
 /**
  * Delete the network definition table
  */
-void delete_network_definition_ui();
+void delete_network_definition_ui( const int& networkDefinitionIndex );
 
 #endif

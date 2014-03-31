@@ -269,8 +269,8 @@ void network_manager_ui(){
             /// delete
             case 'd':
             case 'D':
-                if( currentNetworkPaneIndex == 0 ){
-                    delete_network_definition_ui();
+                if( currentNetworkPaneIndex == 0 && networkPaneIndeces[0] != 0 ){
+                    delete_network_definition_ui(networkPaneIndeces[0]-1);
                 }
                 break;
 

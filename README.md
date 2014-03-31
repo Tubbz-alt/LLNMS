@@ -64,6 +64,10 @@ To run unit tests
 
     ./llnms-installer.sh -t
 
+Here is a list of packages you will need to build everything
+
+1.  Qt5
+2.  xmlstarlet 
 
 ### Windows (PowerShell)
 Windows 7 and later ship with Windows PowerShell.

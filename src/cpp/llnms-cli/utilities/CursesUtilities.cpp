@@ -9,6 +9,9 @@
 /// NCurses
 #include <ncurses.h>
 
+/// C++ Standard Library
+#include <exception>
+
 /**
  * Error Function
 */
@@ -103,7 +106,7 @@ char parse_string( std::string const& str, const int& idx, const int& maxWidth, 
 
     }
     else{
-        throw std::string("ERROR: Unknown condition");
+        throw std::runtime_error("Unsupported string alignment");
     }
 
     return ' ';

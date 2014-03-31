@@ -65,6 +65,7 @@ set( LLNMS_CLI_SOURCES
     ../../src/cpp/llnms-cli/ui/AboutUI.cpp
     ../../src/cpp/llnms-cli/ui/ConfigurationUI.cpp
     ../../src/cpp/llnms-cli/ui/CreateNetworkDefinitionUI.cpp
+    ../../src/cpp/llnms-cli/ui/DeleteNetworkDefinitionUI.cpp
     ../../src/cpp/llnms-cli/ui/MainMenu.cpp
     ../../src/cpp/llnms-cli/ui/MessageDialog.cpp
     ../../src/cpp/llnms-cli/ui/NetworkManagerUI.cpp
@@ -80,6 +81,7 @@ set( LLNMS_CLI_HEADERS
     ../../src/cpp/llnms-cli/ui/AboutUI.hpp
     ../../src/cpp/llnms-cli/ui/ConfigurationUI.hpp
     ../../src/cpp/llnms-cli/ui/CreateNetworkDefinitionUI.hpp
+    ../../src/cpp/llnms-cli/ui/DeleteNetworkDefinitionUI.hpp
     ../../src/cpp/llnms-cli/ui/MainMenu.hpp
     ../../src/cpp/llnms-cli/ui/MessageDialog.hpp
     ../../src/cpp/llnms-cli/ui/NetworkManagerUI.hpp
