@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #   File:    llnms-remove-asset.sh
 #   Author:  Marvin Smith

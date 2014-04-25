@@ -76,7 +76,10 @@ include_directories( ../../../src/cpp/llnms-core )
 #-------------------------------------------------#
 #-          Create the LLNMS Library             -#
 #-------------------------------------------------#
-add_library( LLNMS ${LLNMS_SOURCES} ${Boost_LIBRARIES})
+add_library( LLNMS 
+             ${LLNMS_SOURCES} 
+             ${Boost_LIBRARIES}
+           )
 
 #--------------------------------------------------------#
 #-            Create the utility applications           -#

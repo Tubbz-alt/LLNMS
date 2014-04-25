@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #   File:    run_tests.sh
 #   Author:  Marvin Smith

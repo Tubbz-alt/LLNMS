@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #  File:   llnms-list-scanners.sh
 #  Author: Marvin Smith

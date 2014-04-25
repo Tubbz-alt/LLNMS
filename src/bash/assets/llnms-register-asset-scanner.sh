@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #   File:    llnms-register-asset-scanner.sh
 #   Author:  Marvin Smith

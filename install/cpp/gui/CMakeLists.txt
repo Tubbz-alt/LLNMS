@@ -49,6 +49,7 @@ include_directories( ${PROJECT_BINARY_DIR}/../include )
 #---------------------------------------#
 #-        Find Boost Libraries         -#
 #---------------------------------------#
+set(Boost_USE_STATIC_LIBS   ON)
 find_package( Boost
                 REQUIRED
                 COMPONENTS
@@ -94,6 +95,8 @@ set( LLNMS_GUI_HEADERS
 )
 
 include_directories( ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui )
+
+message("LIBS: ${Boost_LIBRARIES}")
 
 #-----------------------------------------#
 #-        Start Building Software        -#

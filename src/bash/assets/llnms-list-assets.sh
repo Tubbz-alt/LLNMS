@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #   File:    llnms-list-assets.sh
 #   Author:  Marvin Smith
