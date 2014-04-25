@@ -176,13 +176,13 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
         
         #  Run ping on the address
         if [ "$OUTPUT_STATE" = 'QUIET' ]; then
-            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet &
         
         elif [ "$OUTPUT_STATE" = 'VERBOSE' ]; then
-            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --verbose &
 
         elif [ "$OUTPUT_STATE" = 'DEBUG' ]; then
-            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug
+            $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug & 
 
         fi
 

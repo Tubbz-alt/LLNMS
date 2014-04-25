@@ -149,7 +149,9 @@ install_to_filesystem(){
     #  config utilities
     echo '      -> llnms info script'
     cp src/bash/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
-
+    
+    echo '      -> llnms-locking-manager'
+    cp 'src/bash/utilities/llnms-locking-manager.sh'    "$LLNMS_HOME/bin/llnms-locking-manager"
 }
 
 #----------------------------#

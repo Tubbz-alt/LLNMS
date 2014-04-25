@@ -7,7 +7,6 @@
 #    Purpose:  Test an address using ping
 #
 
-
 #----------------------------------------#
 #-       Print Usage Instructions       -#
 #----------------------------------------#
@@ -93,17 +92,22 @@ version(){
 }
 
 
-
 #--------------------------------------------------#
 #-        Create Empty Network Status File        -#
 #--------------------------------------------------#
 create_empty_network_status_file(){
-
+    
+    #  Create the lockfile for the status file
+    $LLNMS_HOME/bin/llnms-locking-manager lock --lockdir $LLNMS_HOME/run/llnms-network-status.lock
+    
     #  Create file
     touch $STAT_FILE
 
     echo '<llnms-network-status>' >   $STAT_FILE
     echo '</llnms-network-status>' >> $STAT_FILE
+    
+    #  Wipe out the lockfile
+    $LLNMS_HOME/bin/llnms-locking-manager unlock --lockdir $LLNMS_HOME/run/llnms-network-status.lock
 
 }
 
@@ -111,6 +115,9 @@ create_empty_network_status_file(){
 #-           Update the network status file           -#
 #------------------------------------------------------#
 update_network_status(){
+    
+    #  Create the lockfile for the status file
+    $LLNMS_HOME/bin/llnms-locking-manager lock --lockdir $LLNMS_HOME/run/llnms-network-status.lock -w
     
     #  Get arguments
     ADDRESS=$1
@@ -157,6 +164,9 @@ update_network_status(){
     
     #  Set the date
     xmlstarlet ed -L -i "/llnms-network-status/host[@ip4-address=\"$ADDRESS\"]/status-log/status[not(@timestamp)]" -t attr -n 'timestamp' -v `date +"%Y-%m-%d-%H:%M:%S"` $STAT_FILE
+    
+    #  Wipe out the lockfile
+    $LLNMS_HOME/bin/llnms-locking-manager unlock --lockdir $LLNMS_HOME/run/llnms-network-status.lock
 
 }
 
