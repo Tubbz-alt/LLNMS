@@ -47,13 +47,13 @@ configure_file (
 #-------------------------------------#
 #-       Import Boost Library        -#
 #-------------------------------------#
-set( Boost_USE_STATIC_LIBS ON)
 find_package( Boost  
                 COMPONENTS
+                    regex
                     system
                     filesystem
-                    regex
                     date_time
+                REQUIRED
 )
 include_directories( ${Boost_INCLUDE_DIR} )
 
@@ -78,8 +78,10 @@ include_directories( ../../../src/cpp/llnms-core )
 #-------------------------------------------------#
 add_library( LLNMS 
              ${LLNMS_SOURCES} 
-             ${Boost_LIBRARIES}
            )
+target_link_libraries( LLNMS
+             ${Boost_LIBRARIES}
+)
 
 #--------------------------------------------------------#
 #-            Create the utility applications           -#
