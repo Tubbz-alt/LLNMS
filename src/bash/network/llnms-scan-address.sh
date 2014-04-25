@@ -286,4 +286,5 @@ elif [ "$PRINT_MODE"  ]; then
     
 fi
 
+$LLNMS_HOME/bin/llnms-locking-manager unlock -l /tmp/llnms-lock
 exit $PING_RESULT

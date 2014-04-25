@@ -144,6 +144,8 @@ done
 #  Get the network count
 LLNMS_NETWORK_FILES=$(ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null )
 
+MAX_PIDS=1
+
 #  For each network
 for NETWORK in $LLNMS_NETWORK_FILES; do
 
@@ -174,6 +176,9 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
         #  create address
         TEST_ADDRESS="${a}.${b}.${c}.${d}"
         
+        #  Prevent no more than x processes from running
+        $LLNMS_HOME/bin/llnms-locking-manager lock -w -l /tmp/llnms-lock -m 2 -p $$
+        
         #  Run ping on the address
         if [ "$OUTPUT_STATE" = 'QUIET' ]; then
             $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --quiet &
@@ -185,6 +190,7 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
             $LLNMS_HOME/bin/llnms-scan-address -ip4 ${TEST_ADDRESS} -c 1 --debug & 
 
         fi
+
 
     done
     done
