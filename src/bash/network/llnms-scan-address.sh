@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#    File:    llnms-ping-address.sh
+#    File:    llnms-scan-address.sh
 #    Author:  Marvin Smith
 #    Date:    2/9/2014
 #

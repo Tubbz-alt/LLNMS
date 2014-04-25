@@ -99,7 +99,7 @@ std::vector<NetworkHost> NetworkModule::scanned_network_hosts()const{
 void NetworkModule::start_scan(){
 
     // create the command
-    std::string command = m_LLNMS_HOME + std::string("/bin/llnms-scan-networks") + std::string(" &");
+    std::string command = m_LLNMS_HOME + std::string("/bin/llnms-scan-networks &");
     
     std::string message_output;
     LLNMS::UTILITIES::run_command( command, message_output  );
