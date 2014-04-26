@@ -16,6 +16,7 @@
 
 /// Data Container
 #include "../core/DataContainer.hpp"
+#include "../core/MessagingService.hpp"
 
 /// LLNMS Core Library
 #include <LLNMS.hpp>
@@ -26,13 +27,16 @@ extern LLNMS::LLNMS_State llnms;
 /// Global Settings
 extern DataContainer settings;
 
+/// Message Service
+extern MessagingService message_service;
+
 /**
  * @class CreateNetworkDialog
  */
 class CreateNetworkDialog : public QDialog {
 
     Q_OBJECT
-
+    
     public:
         
         /**

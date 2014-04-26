@@ -21,8 +21,14 @@
 /// C++ Libraries 
 #include <vector>
 
+/// LLNMS Gui Libraries
+#include "../core/MessagingService.hpp"
+
 /// LLNMS State Object
 extern LLNMS::LLNMS_State llnms;
+
+/// Messaging Services
+extern MessagingService message_service;
 
 
 /**
@@ -58,9 +64,15 @@ class NetworkPane : public QWidget{
         void load_network_scan_table();
 
         /**
-         * Create a new asset
+         * Create a new network
          */
         void createNewNetworkDialog();
+        
+        /**
+         * Delete selected networks
+         */
+         void deleteSelectedNetworks();
+
 
     private:    
         
@@ -77,6 +89,11 @@ class NetworkPane : public QWidget{
          * Create the network scan result widget
          */
         void build_network_scan_widget();
+
+        /**
+         * Uncheck all items in the network list table
+        */
+        void uncheckNetworkListTable();
 
         /*************************************/
         /*         Private Variables         */

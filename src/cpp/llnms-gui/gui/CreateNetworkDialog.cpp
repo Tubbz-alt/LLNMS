@@ -153,6 +153,12 @@ void CreateNetworkDialog::saveAndClose(){
                                            networkStartEdit->text().toLocal8Bit().constData(),
                                            networkEndEdit->text().toLocal8Bit().constData()
                                           );
+    // update the llnms module
     llnms.update();
+
+    // update the gui
+    emit message_service.update_llnms();
+
+
     close();
 }

@@ -39,6 +39,9 @@ NetworkPane::NetworkPane( QWidget*  parent ) : QWidget( parent ){
     
     // set layout
     setLayout( mainLayout );
+    
+    // connect our main messages
+    connect( &message_service, SIGNAL(update_llnms()), this, SLOT(updatePanel()));
 
 }
 
@@ -61,11 +64,12 @@ void NetworkPane::build_network_list_widget(){
     networkListLayout = new QHBoxLayout;
 
     // create the table
-    networkListTable = new QTableWidget(0, 3, networkListWidget);
-    networkListTableHeaders.resize(3);
-    networkListTableHeaders[0].setText("Name");
-    networkListTableHeaders[1].setText("Address-Start");
-    networkListTableHeaders[2].setText("Address-End");
+    networkListTable = new QTableWidget(0, 4, networkListWidget);
+    networkListTableHeaders.resize(4);
+    networkListTableHeaders[0].setText("Select");
+    networkListTableHeaders[1].setText("Name");
+    networkListTableHeaders[2].setText("Address-Start");
+    networkListTableHeaders[3].setText("Address-End");
     for( int i=0; i<networkListTableHeaders.size(); i++ ){
         networkListTable->setHorizontalHeaderItem( i, &networkListTableHeaders[i] );
     }
@@ -94,7 +98,8 @@ void NetworkPane::build_network_list_widget(){
     networkListRemoveNetworkButton->setIconSize(QSize(40,40));
     networkListRemoveNetworkButton->setToolTip("Delete a Network Definition");
     networkListToolbarLayout->addWidget( networkListRemoveNetworkButton );
-    
+    connect( networkListRemoveNetworkButton, SIGNAL(clicked()), this, SLOT(deleteSelectedNetworks()));
+
     
     // create the modify network button
     networkListModifyNetworkButton = new QToolButton;
@@ -177,25 +182,42 @@ void NetworkPane::load_network_list_table(){
     networkListTable->setRowCount( network_definitions.size()+1 );
     
     // create the all item
-    networkListTable->setItem( 0, 0, new QTableWidgetItem("All Networks"));
+    networkListTable->setItem( 0, 0, new QTableWidgetItem( ));
+    networkListTable->item(0, 0)->setCheckState(Qt::Unchecked);
+    networkListTable->setItem( 0, 1, new QTableWidgetItem("All Networks"));
 
     // load the table
     for( size_t i=0; i<network_definitions.size(); i++ ){
-        networkListTable->setItem( i+1, 0, new QTableWidgetItem( network_definitions[i].name().c_str()));
-        networkListTable->setItem( i+1, 1, new QTableWidgetItem( network_definitions[i].address_start().c_str()));
-        networkListTable->setItem( i+1, 2, new QTableWidgetItem( network_definitions[i].address_end().c_str()));
+        networkListTable->setItem( i+1, 0, new QTableWidgetItem( ));
+        networkListTable->item(i+1, 0)->setCheckState(Qt::Unchecked);
+        networkListTable->setItem( i+1, 1, new QTableWidgetItem( network_definitions[i].name().c_str()));
+        networkListTable->setItem( i+1, 2, new QTableWidgetItem( network_definitions[i].address_start().c_str()));
+        networkListTable->setItem( i+1, 3, new QTableWidgetItem( network_definitions[i].address_end().c_str()));
     }
 
+    networkListTable->setColumnWidth(0, 40);
+
 #if QT_VERSION > 0x050000
-    networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
     networkListTable->horizontalHeader()->setSectionResizeMode( 1, QHeaderView::Stretch );
     networkListTable->horizontalHeader()->setSectionResizeMode( 2, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setSectionResizeMode( 3, QHeaderView::Stretch );
 #else
-    networkListTable->horizontalHeader()->setResizeMode( 0, QHeaderView::Stretch );
     networkListTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
     networkListTable->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setResizeMode( 3, QHeaderView::Stretch );
 #endif
  
+}
+
+/**
+ * Iterate through all networks in the network list and make sure
+ * they are unchecked.
+*/
+void NetworkPane::uncheckNetworkListTable(){
+
+    for( size_t i=0; i<networkListTable->rowCount(); i++ ){
+        networkListTable->item(i,0)->setCheckState(Qt::Unchecked);
+    }
 }
 
 void NetworkPane::createNewNetworkDialog(){
@@ -205,6 +227,57 @@ void NetworkPane::createNewNetworkDialog(){
     networkDialog.exec();
     
 }
+
+/**
+ * Delete networks which have been selected
+*/
+void NetworkPane::deleteSelectedNetworks(){
+    
+    // sign to update the gui
+    bool guiUpdated = false;
+    bool deleteEverything = false;
+    int  networkReferenceIndex = 0;
+
+    // if the all network box is checked then delete everything
+    if( networkListTable->item(0, 0)->checkState() == Qt::Checked ){
+        deleteEverything = true;
+    }
+
+    // iterate through the list looking for networks which are checked
+    for( size_t i=1; i<networkListTable->rowCount(); i++ ){
+        if( deleteEverything == true || networkListTable->item(i, 0)->checkState() == Qt::Checked ){
+
+            // check if we really want to delete this
+            std::string note = std::string("Do you wish to delete the network \"") + networkListTable->item(i, 1)->text().toLocal8Bit().constData() + std::string("\"?");
+            QMessageBox msgBox;
+            msgBox.setText(note.c_str());
+            msgBox.setInformativeText("Do you want to delete the network?");
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No );
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+            int ret = msgBox.exec();
+
+            if( ret == QMessageBox::Yes ){
+
+                // delete the network inside llnms
+                std::string message;
+                llnms.m_network_module.delete_network(networkReferenceIndex, message);
+                guiUpdated = true;
+            } else {
+                networkReferenceIndex++;
+            }
+        }
+    }
+
+    // if the gui was updated, then update llnms
+    if( guiUpdated == true ){
+        llnms.update();
+        updatePanel();
+    }
+    else{
+        uncheckNetworkListTable();
+    }
+}
+
 
 /**
  * Load the network scan table
