@@ -35,7 +35,7 @@ llnms-get-network-type(){
     
     num=1
     for TYPE in $XMLDATA; do
-        if [ "$num" == "$2" ]; then
+        if [ "$num" = "$2" ]; then
             echo $TYPE
         fi
         num=$(($num + 1))

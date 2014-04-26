@@ -89,7 +89,7 @@ version(){
 #---------------------------------#
 
 #  Source llnms home
-if [ "$LLNMS_HOME" == "" ]; then
+if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 

@@ -78,7 +78,7 @@ std::vector<std::string> list_contents( const std::string& pathname, const std::
     std::vector<std::string> output;
     
     // build a regex from the pattern input
-    boost::regex expression(pattern);
+    //boost::regex expression(pattern);
     
     // make sure if the path does not exist, then return
     if( boost::filesystem::exists( pathname ) == false ){
@@ -100,9 +100,9 @@ std::vector<std::string> list_contents( const std::string& pathname, const std::
         if( boost::filesystem::is_regular_file( beg_iter->status())){
 
             // compare with the pattern
-            if( boost::regex_match( beg_iter->path().string(), expression ) == true ){
+            //if( boost::regex_match( beg_iter->path().string(), expression ) == true ){
                 output.push_back( beg_iter->path().string() );
-            }
+            //}
         }
 
     }

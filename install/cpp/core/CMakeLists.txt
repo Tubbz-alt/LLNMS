@@ -76,7 +76,7 @@ include_directories( ../../../src/cpp/llnms-core )
 #-------------------------------------------------#
 #-          Create the LLNMS Library             -#
 #-------------------------------------------------#
-add_library( LLNMS 
+add_library( LLNMS SHARED
              ${LLNMS_SOURCES} 
            )
 target_link_libraries( LLNMS

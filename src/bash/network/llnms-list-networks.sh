@@ -94,7 +94,7 @@ usage(){
 #-------------------------------------#
 
 #  Source llnms home
-if [ "$LLNMS_HOME" == "" ]; then
+if [ "$LLNMS_HOME" = "" ]; then
     LLNMS_HOME="/var/tmp/llnms"
 fi
 
@@ -160,7 +160,7 @@ done
 
 
 #  Start printing xml info if output type is xml
-if [ "$OUTPUT_FORMAT" == "XML" ]; then
+if [ "$OUTPUT_FORMAT" = "XML" ]; then
     OUTPUT="<llnms-list-network-output>\n"
 fi
 

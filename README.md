@@ -3,10 +3,16 @@ LLNMS
 
 Low-Level Network Management System
 
-NOTE:  This is mostly a tool for me to learn and practice on the Linux
+Disclaimers
+-----------
+This is mostly a tool for me to learn and practice on the Linux
 command-line. This is not meant to be used in a production environment or 
 in anything which you hold dear to your heart as I have a unique ability
 to render mostly anything completely unusable...
+
+Recommended for Fedora/RHEL Systems.  Ubuntu's Dash is far to rigid for my bashisms
+and is still very much having issues dealing with my shell scripts.  I am trying to 
+convert it though and hopefully will have it working soon.
 
 Thanks and please feel free to let me know what you think or how I can improve it!
 

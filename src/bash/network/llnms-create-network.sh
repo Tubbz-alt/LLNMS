@@ -102,7 +102,7 @@ version(){
 #--------------------------------------------#
 get_input_network_name(){
      
-     while [ "$NETWORK_NAME" == "" ]; do
+     while [ "$NETWORK_NAME" = "" ]; do
         NEW_NAME=''
         clear
         echo -n 'Enter desired network name: '
@@ -110,7 +110,7 @@ get_input_network_name(){
 
         echo -n "Do you wish to set the network name to \"$NEW_NAME\"? (y/n - default): "
         read ANS
-        if [ "$ANS" == 'y' -o "$ANS" == 'Y' ]; then
+        if [ "$ANS" = 'y' -o "$ANS" = 'Y' ]; then
             NETWORK_NAME=$NEW_NAME
         fi
         
@@ -147,7 +147,7 @@ get_input_networks(){
             read ANS
 
             #  make sure it fits the pattern
-            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" = "" ]; then
                 ADDRESS_START=$ANS
                 EXIT_ADDR_LOOP=1
             fi
@@ -163,7 +163,7 @@ get_input_networks(){
             read ANS
 
             #  make sure it fits the pattern
-            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+            if [ "$(echo $ANS | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" = "" ]; then
                 ADDRESS_END=$ANS
                 EXIT_ADDR_LOOP=1
             fi
@@ -180,7 +180,7 @@ get_input_networks(){
         echo -n 'Do you wish to save the network? (y/n - default): '
         read ANS
 
-        if [ "$ANS" == 'y' -o "$ANS" == 'Y' ]; then
+        if [ "$ANS" = 'y' -o "$ANS" = 'Y' ]; then
             OUTPUT+="   <address-start>$ADDRESS_START</address-start>\n"
             OUTPUT+="   <address-end>$ADDRESS_END</address-end>\n"
             EXIT_LOOP=1
@@ -322,7 +322,7 @@ fi
 #-       Make sure the input addresses are in the correct format         -#
 #-------------------------------------------------------------------------#
 if [ ! "$ADDR_START_VALUE" = '' ]; then
-    if [ ! "$(echo $ADDR_START_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+    if [ ! "$(echo $ADDR_START_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" = "" ]; then
         error "The address-start flag must be in a proper ip4 address format." "$LINENO"
         exit $ERROR_ADDR_START_FLAG_INVALID_FORMAT
     else
@@ -332,7 +332,7 @@ if [ ! "$ADDR_START_VALUE" = '' ]; then
 fi
 
 if [ ! "$ADDR_END_VALUE" = '' ]; then
-    if [ ! "$(echo $ADDR_END_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" == "" ]; then
+    if [ ! "$(echo $ADDR_END_VALUE | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$//g')" = "" ]; then
         error "The address-end flag must be in a proper ip4 address format." "$LINENO"
         exit $ERROR_ADDR_END_FLAG_INVALID_FORMAT
     else    

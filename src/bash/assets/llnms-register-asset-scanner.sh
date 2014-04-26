@@ -120,7 +120,7 @@ llnms_add_registered_scanner_to_asset(){
 
     #  Make sure the asset has the scanners xml element
     SCANNERS_OUTPUT=`xmlstarlet el $ASSET_PATH | grep scanners`
-    if [ "$SCANNERS_OUTPUT" == '' ]; then
+    if [ "$SCANNERS_OUTPUT" = '' ]; then
         xmlstarlet ed -L --subnode "/llnms-asset" --type elem -n 'scanners' -v '' $ASSET_PATH
     fi
 
@@ -246,13 +246,13 @@ done
 #-    Dependency Checking    -#
 #-----------------------------#
 #  make sure asset and scanner values are not blank
-if [ "$ASSET_VALUE" == '' ]; then
+if [ "$ASSET_VALUE" = '' ]; then
     error "Asset flag (-a, --asset) was not called or called incorrectly."
     usage
     exit 1
 fi
 
-if [ "$SCANNER_VALUE" == '' ]; then
+if [ "$SCANNER_VALUE" = '' ]; then
     error "Scanner flag (-s, --scanner) was not called or called incorrectly."
     usage
     exit 1

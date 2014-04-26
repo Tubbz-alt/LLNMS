@@ -33,14 +33,14 @@ llnms_validate_asset_structure(){
             IP4_ADDR_1=`llnms_get_asset_ip4_address $DISCOVERED_ASSET_FILE`
             
             # Check if the ip addresses are the same
-            if [ "$IP4_ADDR_0" == "$IP4_ADDR_1" ]; then
+            if [ "$IP4_ADDR_0" = "$IP4_ADDR_1" ]; then
                 ASSET_FOUND=1
             fi
 
         done
         
         #  If the asset has not been found, then create a discovery asset
-        if [ "$ASSET_FOUND" == "0" ]; then
+        if [ "$ASSET_FOUND" = "0" ]; then
             cp $DEFINED_ASSET_FILE $LLNMS_HOME/assets/discovered/
         fi
 

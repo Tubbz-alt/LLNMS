@@ -174,7 +174,7 @@ make_cpp_core_software(){
 
     #  Set the make flag
     MAKE_PARAMETER='--release'
-    if [ "$MAKE_BUILD_TYPE" == 'debug' ]; then
+    if [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
         MAKE_PARAMETER='--debug'
     fi
 
@@ -205,7 +205,7 @@ make_cpp_cli_software(){
 
     #  Set the make flag
     MAKE_PARAMETER='--release'
-    if [ "$MAKE_BUILD_TYPE" == 'debug' ]; then
+    if [ "$MAKE_BUILD_TYPE" = 'debug' ]; then
         MAKE_PARAMETER='--debug'
     fi
 
