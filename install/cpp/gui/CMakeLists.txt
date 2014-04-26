@@ -73,6 +73,7 @@ set( LLNMS_GUI_SOURCES
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/ConfigPane.cpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/CreateNetworkDialog.cpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/MainWindow.cpp
+    ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/ModifyNetworkDialog.cpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/NavigationBar.cpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/NetworkPane.cpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/SummaryPane.cpp
@@ -88,6 +89,7 @@ set( LLNMS_GUI_HEADERS
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/ConfigPane.hpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/CreateNetworkDialog.hpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/MainWindow.hpp
+    ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/ModifyNetworkDialog.hpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/NavigationBar.hpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/NetworkPane.hpp
     ${CMAKE_BINARY_DIR}/../../src/cpp/llnms-gui/gui/SummaryPane.hpp

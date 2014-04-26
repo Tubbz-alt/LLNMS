@@ -6,6 +6,7 @@
 #include "NetworkPane.hpp"
 
 #include "CreateNetworkDialog.hpp"
+#include "ModifyNetworkDialog.hpp"
 
 #include <core/StringUtilities.hpp>
 
@@ -107,6 +108,7 @@ void NetworkPane::build_network_list_widget(){
     networkListModifyNetworkButton->setIconSize(QSize(40,40));
     networkListModifyNetworkButton->setToolTip("Modify a Network Definition");
     networkListToolbarLayout->addWidget( networkListModifyNetworkButton );
+    connect( networkListModifyNetworkButton, SIGNAL(clicked()), this, SLOT(modifySelectedNetworks()));
 
     // set the layout
     networkListToolbar->setLayout( networkListToolbarLayout );
@@ -220,6 +222,50 @@ void NetworkPane::uncheckNetworkListTable(){
     }
 }
 
+
+
+/**
+ * Load the network scan table
+ */
+void NetworkPane::load_network_scan_table(){
+    
+    // clear the table
+    networkScanTable->clearContents();
+    
+    // refresh the LLNMS Network Table
+    //llnms.network_container.update();
+    
+    /*
+    // get the list of networks
+    std::vector<LLNMS_Network> networkScanningList = llnms.network_container.network_list();
+    
+    // resize the table
+    networkListTable->setRowCount( networklist.size()+1 );
+    
+    // create the all item
+    networkListTable->setItem( 0, 0, new QTableWidgetItem("All Networks"));
+
+    // load the table
+    for( size_t i=0; i<networklist.size(); i++ ){
+        networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
+        networkListTable->setItem( i+1, 1, new QTableWidgetItem( networklist[i].address_start().c_str()));
+        networkListTable->setItem( i+1, 2, new QTableWidgetItem( networklist[i].address_end().c_str()));
+    }
+
+#if QT_VERSION > 0x050000
+    networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setSectionResizeMode( 1, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setSectionResizeMode( 2, QHeaderView::Stretch );
+#else
+    networkListTable->horizontalHeader()->setResizeMode( 0, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
+    networkListTable->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
+#endif
+    */
+ 
+}
+
+
 void NetworkPane::createNewNetworkDialog(){
     
     // load the new network dialog
@@ -278,47 +324,26 @@ void NetworkPane::deleteSelectedNetworks(){
     }
 }
 
-
 /**
- * Load the network scan table
- */
-void NetworkPane::load_network_scan_table(){
+ * Modify Selected Networks
+*/
+void NetworkPane::modifySelectedNetworks(){
     
-    // clear the table
-    networkScanTable->clearContents();
-    
-    // refresh the LLNMS Network Table
-    //llnms.network_container.update();
-    
-    /*
-    // get the list of networks
-    std::vector<LLNMS_Network> networkScanningList = llnms.network_container.network_list();
-    
-    // resize the table
-    networkListTable->setRowCount( networklist.size()+1 );
-    
-    // create the all item
-    networkListTable->setItem( 0, 0, new QTableWidgetItem("All Networks"));
+    // iterate through the networks and check if any are selected
+    for( size_t i=1; i<networkListTable->rowCount(); i++ ){
+        
+        // if the network is selected, open up the dialog
+        if( networkListTable->item(i,0)->checkState() == Qt::Checked ){
+            
+            // create the ui
+            ModifyNetworkDialog dialog(this);
+            dialog.exec();
 
-    // load the table
-    for( size_t i=0; i<networklist.size(); i++ ){
-        networkListTable->setItem( i+1, 0, new QTableWidgetItem( networklist[i].name().c_str()));
-        networkListTable->setItem( i+1, 1, new QTableWidgetItem( networklist[i].address_start().c_str()));
-        networkListTable->setItem( i+1, 2, new QTableWidgetItem( networklist[i].address_end().c_str()));
+        }
     }
 
-#if QT_VERSION > 0x050000
-    networkListTable->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
-    networkListTable->horizontalHeader()->setSectionResizeMode( 1, QHeaderView::Stretch );
-    networkListTable->horizontalHeader()->setSectionResizeMode( 2, QHeaderView::Stretch );
-#else
-    networkListTable->horizontalHeader()->setResizeMode( 0, QHeaderView::Stretch );
-    networkListTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
-    networkListTable->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
-#endif
-    */
- 
 }
+
 
 /**
  * Update the panel

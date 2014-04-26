@@ -72,6 +72,11 @@ class NetworkPane : public QWidget{
          * Delete selected networks
          */
          void deleteSelectedNetworks();
+    
+        /**
+         * Modify Selected Networks
+        */
+        void modifySelectedNetworks();
 
 
     private:    
