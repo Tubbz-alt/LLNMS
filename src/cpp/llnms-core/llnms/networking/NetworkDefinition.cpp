@@ -8,6 +8,8 @@
 #include "../thirdparty/tinyxml2/tinyxml2.h"
 #include "../utilities/FilesystemUtilities.hpp"
 
+#include <fstream>
+
 namespace LLNMS{
 namespace NETWORK{
 
@@ -52,9 +54,23 @@ std::string NetworkDefinition::name()const{
 }
 
 /**
+ * Set name
+*/
+std::string& NetworkDefinition::name(){
+    return m_name;
+}
+
+/**
  * Get address start
 */
 std::string NetworkDefinition::address_start()const{
+    return m_address_start;
+}
+
+/**
+ * Set the address start
+*/
+std::string& NetworkDefinition::address_start(){
     return m_address_start;
 }
 
@@ -63,6 +79,32 @@ std::string NetworkDefinition::address_start()const{
 */
 std::string NetworkDefinition::address_end()const{
     return m_address_end;
+}
+
+/**
+ * Set the address end
+*/
+std::string& NetworkDefinition::address_end(){
+    return m_address_end;
+}
+
+/**
+ * Update the network file
+*/
+void NetworkDefinition::updateFile(){
+
+    // open the file
+    std::ofstream fout;
+    fout.open(m_filename.c_str());
+
+    fout << "<llnms-network>" << std::endl;
+    fout << "    <name>" << m_name << "</name>" << std::endl;
+    fout << "    <address-start>" << m_address_start << "</address-start>" << std::endl;
+    fout << "    <address-end>" << m_address_end << "</address-end>" << std::endl;
+    fout << "</llnms-network>" << std::endl;
+
+    fout.close();
+
 }
 
 /**

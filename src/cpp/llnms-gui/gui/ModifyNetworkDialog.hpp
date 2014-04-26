@@ -43,7 +43,31 @@ class ModifyNetworkDialog : public QDialog {
         /**
          * Default Constructor
         */
-        ModifyNetworkDialog( QWidget* parent = NULL );
+        ModifyNetworkDialog( LLNMS::NETWORK::NetworkDefinition const& network_definition, 
+                             QWidget* parent = NULL );
+    
+    public slots:
+        
+        /**
+         * Save settings
+        */
+        void updateNetwork();
+        
+        /**
+         * Toggle Name Edit
+        */
+        void toggleNameEdit();
+
+        /**
+         * Toggle Start Address Edit
+        */
+        void toggleStartAddressEdit();
+
+        /**
+         * Toggle End Address Edit
+        */
+        void toggleEndAddressEdit();
+
 
     private:
         
@@ -133,7 +157,9 @@ class ModifyNetworkDialog : public QDialog {
 
         /// Toolbar Cancel button
         QToolButton* cancelButton;
-
+        
+        /// LLNMS Network to write to
+        LLNMS::NETWORK::NetworkDefinition m_networkDefinition;
 
 }; /// End of ModifyNetworkDialog Class
 

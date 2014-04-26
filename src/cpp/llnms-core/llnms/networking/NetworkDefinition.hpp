@@ -46,6 +46,11 @@ class NetworkDefinition{
          * Get network name
         */
         std::string name()const;
+        
+        /**
+         * Set the network name
+        */
+        std::string& name();
 
         /**
          * Get address start
@@ -53,9 +58,24 @@ class NetworkDefinition{
         std::string address_start()const;
         
         /**
+         * Set the address start
+        */
+        std::string& address_start();
+
+        /**
          * Get address end
         */
         std::string address_end()const;
+        
+        /**
+         * Set the address end
+        */
+        std::string& address_end();
+        
+        /**
+         * Update the file contents
+        */
+        void updateFile();
 
         /** 
          * Load the network from file

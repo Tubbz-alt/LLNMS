@@ -197,7 +197,7 @@ void NetworkPane::load_network_list_table(){
         networkListTable->setItem( i+1, 3, new QTableWidgetItem( network_definitions[i].address_end().c_str()));
     }
 
-    networkListTable->setColumnWidth(0, 40);
+    networkListTable->setColumnWidth(0, 50);
 
 #if QT_VERSION > 0x050000
     networkListTable->horizontalHeader()->setSectionResizeMode( 1, QHeaderView::Stretch );
@@ -336,7 +336,7 @@ void NetworkPane::modifySelectedNetworks(){
         if( networkListTable->item(i,0)->checkState() == Qt::Checked ){
             
             // create the ui
-            ModifyNetworkDialog dialog(this);
+            ModifyNetworkDialog dialog(llnms.m_network_module.network_definitions()[i-1], this);
             dialog.exec();
 
         }
