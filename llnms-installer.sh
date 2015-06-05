@@ -83,7 +83,7 @@ usage(){
     echo '            core       - LLNMS core scripts.'
     echo '            cpp        - C++ Libraries'
     echo '            cli        - NCurses CLI'
-    echo '            gui        - Qt GUI'
+    #echo '            gui        - Qt GUI'
     echo ''
     echo '    -i, --install        : Install LLNMS Components'
     echo '            NOTE: Anything that was installed with make commands'
@@ -478,9 +478,9 @@ if [ "$MAKE_FLAG" = '1' ]; then
     fi
     
     #  build the C++ GUI Application
-    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'gui' ]; then
-        make_cpp_gui_software $MAKE_BUILD_TYPE $NUM_THREADS
-    fi
+    #if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'gui' ]; then
+    #    make_cpp_gui_software $MAKE_BUILD_TYPE $NUM_THREADS
+    #fi
 
 fi
 
