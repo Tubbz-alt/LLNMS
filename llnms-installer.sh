@@ -81,8 +81,8 @@ usage(){
     echo '        systems:'
     echo '            all [default]' 
     echo '            core       - LLNMS core scripts.'
-    echo '            cpp        - C++ Libraries'
-    echo '            cli        - NCurses CLI'
+    #echo '            cpp        - C++ Libraries'
+    #echo '            cli        - NCurses CLI'
     #echo '            gui        - Qt GUI'
     echo ''
     echo '    -i, --install        : Install LLNMS Components'
@@ -93,8 +93,8 @@ usage(){
     echo '         systems:'
     echo '             all [default]'
     echo '             core      - LLNMS core scripts'
-    echo '             cpp       - C++ Libraries'
-    echo '             cli       - C++ CLI Application'
+#    echo '             cpp       - C++ Libraries'
+#    echo '             cli       - C++ CLI Application'
     echo ''
     echo '    -c, --clean          : Remove all existing builds.'
     echo ''
@@ -152,7 +152,8 @@ make_core_software(){
     fi
     
     #  Call the installer for bash
-    ./install/bash/install.sh "-n" "--PREFIX" "$MAKE_PATH" 
+    ./install/bash/install.sh "-n" "--PREFIX" "$MAKE_PATH"
+
 
 }
 
@@ -273,13 +274,12 @@ install_software(){
         cp -r "$BASE_DIR/llnms" $PREFIX/
     fi
 
-    #  Look for CLI executables
-    cp -r $BASE_DIR/bin/* $PREFIX/llnms/bin/
-    
-    #  Look for GUI materials
-    if [ -d $BASE_DIR/share/llnms ]; then
-        cp -rf $BASE_DIR/share/llnms $PREFIX/llnms/gui
-    fi
+    #  Install Python materials
+    cp -r $BASE_DIR/llnms/bin/python $LLNMS_HOME/bin/python
+
+    #  Add extra symlinks
+    ln -sf $LLNMS_HOME/bin/python/llnms-viewer.py $LLNMS_HOME/bin/llnms-viewer
+
 
 }
 
@@ -468,14 +468,14 @@ if [ "$MAKE_FLAG" = '1' ]; then
     fi
 
     #  build the C++ core library
-    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cpp' ]; then
-        make_cpp_core_software $MAKE_BUILD_TYPE $NUM_THREADS
-    fi
+    #if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cpp' ]; then
+    #    make_cpp_core_software $MAKE_BUILD_TYPE $NUM_THREADS
+    #fi
 
     #  build the C++ CLI Application
-    if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cli' ]; then
-        make_cpp_cli_software $MAKE_BUILD_TYPE $NUM_THREADS
-    fi
+    #if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'cli' ]; then
+    #    make_cpp_cli_software $MAKE_BUILD_TYPE $NUM_THREADS
+    #fi
     
     #  build the C++ GUI Application
     #if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'gui' ]; then

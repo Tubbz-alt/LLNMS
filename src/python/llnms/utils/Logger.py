@@ -1,78 +1,20 @@
 #!/usr/bin/env python
-import time
 
-INFO=0
-MINOR=1
-MAJOR=2
+#  Python Libraries
+import logging
 
-#-------------------------------------#
-#-        LLNMS Log Message          -#
-#-------------------------------------#
-class Message:
+# ---------------------------------------------- #
+# -       Initialize the Logging Module        - #
+# ---------------------------------------------- #
+def Initialize_Logging( log_file, log_level = logging.INFO ):
 
-	#-     Constructor       -#
-	def __init__(self, message, priority, ltime ):
-		
-		# set message
-		self.message = message
+    #  Create the logger
+    FORMAT = '%(asctime)-15s %(message)s'
 
-		# set priority
-		self.priority = priority
+    #  Configure the logger
+    logging.basicConfig(format=FORMAT,
+                        filename=log_file,
+                        filemode='w',
+                        level=logging.DEBUG)
 
-		# set time
-		self.ltime = ltime
-	
-	
-	#---------------------------------------#
-	#-     Print the Message to String     -#
-	#---------------------------------------#
-	def __str__(self):
-		
-		return self.ltime + "  " + self.message
-
-
-
-#-------------------------------------#
-#-        LLNMS Logging Tool         -#
-#-------------------------------------#
-class Logger:
-	
-	#---------------------#
-	#-     Constructor   -#
-    #---------------------#
-	def __init__(self, LOG_PATH):
-
-		#  set the log path
-		self.LOG_PATH = LOG_PATH;
-
-		#  set the log data priority
-		self.MIN_PRIORITY = 0;
-
-		#  set the data
-		self.messages = []
-	
-	
-	#---------------------------------#
-	#-     Add Message to Logger     -#
-	#---------------------------------#
-	def addMessage(self, message, priority ):
-		
-		# add the message
-		self.messages.append(Message( message, priority, time.strftime("%Y-%m-%d %H:%M:%S") ));
-
-
-	#------------------------------------#
-	#-         Write Log File           -#
-	#------------------------------------#
-	def writeLogFile(self):
-		
-		#  open the file
-		f = open( self.LOG_PATH, 'w')
-		
-		for message in self.messages:
-			f.write(str(message)+"\n")
-
-		#  close the file
-		f.close()
-
-
+    logging.info('logging initialized.')

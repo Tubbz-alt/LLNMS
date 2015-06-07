@@ -20,20 +20,57 @@ Thanks and please feel free to let me know what you think or how I can improve i
 Overview
 --------
 A network management system designed to operate as an independent collection
-of utilities merged into a cohesive NMS solution.
+of utilities merged into a _someday_ cohesive NMS solution.  
+
+The primary objective is to provide the bare essential structure such that the entire package can be installed 
+in a non-root locations, and provide minimal functionality.  Expanded functionality can 
+then be added on through additional extensions.  Most core utilities are written in Bash
+with the `llnms-viewer` application written in Python.  The C++ api will most likely be removed as it is
+like pounding a nail in with a screwdriver.
 
 Commands
 --------
 
 LLNMS does everything through a set of command-line tools.  Commands to run the LLNMS suite
-are generally defined as llnms-**action**-**target**.  
+are generally defined as llnms-**action**-**item**.  
 
 ###  Network Management
 
+In LLNMS, networks are a ranges of IP addresses.  A network has a start and end address.  For a single
+address, just set the two to the same address. For example, a home router network may look like
 
+    192.168.0.1 to 192.168.0.254
+    
+If you just need to hit Google, then target
 
+    8.8.8.8 to 8.8.8.8
+
+Networks can be scanned to locate endpoints and other hosts.
+
+To create a new network, run 
+
+    llnms-create-network -n <name> -as <start-address> -ae <end-address>
+    
+To list available networks
+
+    llnms-list-networks
+    
+To print information about a network
+
+    llnms-print-network-info -f $LLNMS_HOME/network/<file>.llnms-network.xml
+    
+To delete a network
+
+    llnms-remove-network
+    
+To scan a network
+
+    llnms-scan-network
 
 ###  Asset Management
+
+LLNMS assets serve to represent single endpoints on a network.  They are known artifacts that will
+not raise red flags if detected during a network scan.
 
 To create an asset, 
 
@@ -80,8 +117,7 @@ To run unit tests
 
 Here is a list of packages you will need to build everything
 
-1.  Qt5
-2.  xmlstarlet 
+1.  xmlstarlet 
 
 ### Windows (PowerShell)
 Windows 7 and later ship with Windows PowerShell.
@@ -99,16 +135,8 @@ First, install LLNMS
 
     ./install/bash/install -n
 
-Next, build LLNMS-Viewer and install
-
-    ./install/cpp/install make install
-
 Next, run the llnms unit test suite.  You should have complete passes or else there is a bug.
 
     ./test/bash/run_tests.sh
-
-Finally, run the llnms-viewer unit-test suite.  You should have complete passes or else there is a bug.
-    
-    ./release/llnms-viewer-unit-test
 
 

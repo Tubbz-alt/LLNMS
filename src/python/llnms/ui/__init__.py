@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
-from network_summary_page import view_network_summary 
-from network_configuration_page import view_network_configuration
+from MainWindow import *
+from network_summary_page import NetworkSummaryWindow
+from network_configuration_page import NetworkConfigurationWindow
+from NetworkAddWindow import NetworkAddWindow
 

@@ -1,18 +1,18 @@
-#!/usr/bin/env python
+__author__ = 'marvinsmith'
 
-# System Libraries
+#  Python Libraries
 import curses
 
-# LLNMS Libraries
-import CursesTable
-from NetworkAddWindow import NetworkAddWindow
+#  LLNMS Libraries
 from UI_Window_Base import Base_Window_Type
+from AssetAddWindow import AssetAddWindow
+import CursesTable
 
 
 # ---------------------------------------- #
-# -       Network Summary Window         - #
+# -         Asset Summary Window         - #
 # ---------------------------------------- #
-class NetworkSummaryWindow(Base_Window_Type):
+class AssetSummaryWindow(Base_Window_Type):
 
     # Default NCurses Screen
     screen = []
@@ -24,7 +24,7 @@ class NetworkSummaryWindow(Base_Window_Type):
     sub_windows = []
 
     #  Add network subwindow
-    ADD_NETWORK_INDEX = 0
+    ADD_ASSET_INDEX = 0
 
     # ------------------------------- #
     # -        Constructor          - #
@@ -32,13 +32,13 @@ class NetworkSummaryWindow(Base_Window_Type):
     def __init__(self, screen ):
 
         #  Build the Parent
-        Base_Window_Type.__init__(self, "Network Summary Window")
+        Base_Window_Type.__init__(self, "Asset Summary Window")
 
         #  Set the screen
         self.screen = screen
 
         #  Add the add network window
-        self.sub_windows.append(NetworkAddWindow(screen))
+        self.sub_windows.append(AssetAddWindow(screen))
 
     # ----------------------------- #
     # -    Process the window     - #
@@ -79,9 +79,6 @@ class NetworkSummaryWindow(Base_Window_Type):
             #  Add network
             elif c == ord('a'):
                 llnms_state = self.sub_windows[self.ADD_NETWORK_INDEX].Process(llnms_state)
-
-        #  Return the state
-        return llnms_state
 
     # ------------------------- #
     # -     Render Header     - #

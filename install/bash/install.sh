@@ -152,6 +152,16 @@ install_to_filesystem(){
     
     echo '      -> llnms-locking-manager'
     cp 'src/bash/utilities/llnms-locking-manager.sh'    "$LLNMS_HOME/bin/llnms-locking-manager"
+
+    #  Python Utilities
+    mkdir -p "$LLNMS_HOME/bin/python"
+
+    echo '      -> llnms-viewer'
+    cp 'src/python/llnms-viewer.py'                     "$LLNMS_HOME/bin/python/"
+    cp -r 'src/python/llnms'                            "$LLNMS_HOME/bin/python/"
+
+
+
 }
 
 #----------------------------#
