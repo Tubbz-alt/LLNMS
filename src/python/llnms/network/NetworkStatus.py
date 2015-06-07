@@ -7,29 +7,57 @@
 import Network
 
 #  Python Libraries
-import os
+import os, xml.etree.ElementTree as et
+
+bool_list = ['True', 'true','t',1]
+def Bool_Value( value ):
+
+    if value in bool_list:
+        return True
+    return False
 
 # -------------------------------- #
 # -      Network Host Class      - #
 # -------------------------------- #
 class NetworkHost:
 
-    def __init__(self, ip_address, hostname, network_name, status, date_scanned ):
+    #  Hostname
+    hostname = None
+
+    #  IP Address
+    ip_address = None
+
+    #  Network Name
+    network_name = None
+
+    #  Status List
+    status_list = []
+
+    # ------------------------- #
+    # -      Constructor      - #
+    # ------------------------- #
+    def __init__( self,
+                  ip_address = None,
+                  hostname   = None,
+                  network_name = None,
+                  status_list = None):
 
         # set the ip address
-        self.ip_address = ip_address
+        if ip_address is not None:
+            self.ip_address = ip_address
 
         # set the hostname
-        self.hostname = hostname
+        if hostname is not None:
+            self.hostname = hostname
 
         # set if responding to ping
-        self.respond_ping = status
+        if status_list is not None:
+            self.status_list = status_list
 
         # set the network name
-        self.network_name = network_name
+        if network_name is not None:
+            self.network_name = network_name
 
-        # set the date scanned
-        self.date_scanned = date_scanned
 
 
 # ----------------------------------------- #
@@ -37,16 +65,25 @@ class NetworkHost:
 # ----------------------------------------- #
 class NetworkStatus:
 
+    #  Network Assets
+    network_assets = []
+
+
+    # ---------------------------- #
+    # -        Constructor       - #
+    # ---------------------------- #
     def __init__(self, status_path, networks):
 
         #  set the base directory of the status path
         self.status_path = status_path
 
         #  set the filenames we are looking for
-        self.status_file = status_path + '/llnms-network-status.txt'
+        self.status_file = status_path + '/run/llnms-network-status.xml'
         self.load_network_status(networks)
 
-
+    # ---------------------------------------- #
+    # -     Load the Network Status File     - #
+    # ---------------------------------------- #
     def load_network_status(self, networks):
 
         # create an empty table of items
@@ -54,71 +91,39 @@ class NetworkStatus:
 
         #  Make sure the status file exists
         if os.path.exists(self.status_file) != True:
-            return;
-
-        # open the status file
-        status_file = open(self.status_file, 'r')
-
-        # iterate through each line
-        for line in status_file:
-
-            # Make sure the line does not start with a pound and has data
-            if line.strip()[0] != '#' and len(line.strip()) > 0:
-
-                # split the line into parts
-                line_parts = line.strip().split()
-
-                if len(line_parts) >= 3:
-
-                    ip_address = line_parts[0]
-                    hostname   = Network.llnms_query_hostname( ip_address )
-                    stat = line_parts[1]
-                    if stat == '1':
-                        status = True
-                    else:
-                        status = False
-                    date_scanned = line_parts[2]
-                    network_name = Network.llnms_query_name_from_networks( networks, ip_address )
-
-                    self.network_assets.append( NetworkHost( ip_address, hostname, network_name, status, date_scanned ));
-
-    # --------------------------------------------- #
-    # -      Reload the Network Status File       - #
-    # --------------------------------------------- #
-    def reload_network_status( self, networks):
-
-        #  make sure the network status file exists
-        if os.path.exists( self.status_file ) != True:
             return
 
-        # open the status file
-        status_file = open( self.status_file, 'r')
+         # load the xml parser
+        tree = et.parse(self.status_file)
 
-        # iterate through each line
-        for line in status_file:
+        # get root
+        root = tree.getroot()
 
-            # make sure the line is not a comment and has information
-            if line.strip()[0] != '#' and len(line.strip()) > 0:
+        # get all host nodes
+        for host_node in root.findall('host'):
 
-                line_parts = line.strip().split()
+            #  Create the new node
+            temp_host = NetworkHost()
 
-                if len(line_parts) >= 3:
+            #  Get the host address
+            address = host_node.get('ip4-address')
+            if address is not None:
+                temp_host.ip_address = address
 
-                    ip_address = line_parts[0]
-                    hostname   = Network.llnms_query_hostname( ip_address )
-                    stat = line_parts[1]
-                    if stat == '1':
-                        status = True
-                    else:
-                        status = False
-                    date_scanned = line_parts[2]
-                    network_name = Network.llnms_query_name_from_networks( networks, ip_address )
+            #  Get the status list
+            status_list_node = host_node.find('status-log')
 
-                    tempHost = NetworkHost( ip_address, hostname, network_name, status, date_scanned);
+            #  Iterate over the status nodes
+            for status_node in status_list_node.findall('status'):
 
-                    # Check if ip_address is already in host list
-                    for asset in self.network_assets:
-                        if asset.ip_address == tempHost.ip_address:
-                            asset.respond_ping = tempHost.respond_ping
-                            asset.date_scanned = tempHost.date_scanned
-                            break
+                #  Get the responsiveness
+                responsive = Bool_Value(status_node.get('responsive'))
+
+                #  Get the timestamp
+                timestamp = status_node.get('timestamp')
+
+                if responsive is not None and timestamp is not None:
+                    temp_host.status_list.append((responsive, timestamp))
+
+            #  Add the node
+            self.network_assets.append(temp_host)

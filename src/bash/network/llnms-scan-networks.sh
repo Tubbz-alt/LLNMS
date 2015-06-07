@@ -177,7 +177,7 @@ for NETWORK in $LLNMS_NETWORK_FILES; do
         TEST_ADDRESS="${a}.${b}.${c}.${d}"
         
         #  Prevent no more than x processes from running
-        $LLNMS_HOME/bin/llnms-locking-manager lock -w -l /tmp/llnms-lock -m 2 -p $$
+        $LLNMS_HOME/bin/llnms-locking-manager lock -w -l /tmp/llnms-lock -m 4 -p $$
         
         #  Run ping on the address
         if [ "$OUTPUT_STATE" = 'QUIET' ]; then

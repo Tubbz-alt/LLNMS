@@ -18,7 +18,7 @@ class LLNMS:
     networks = []
 
     # List of assets
-    assets = []
+    network_status = []
 
     # -------------------------------- #
     # -          Constructor         - #
@@ -35,7 +35,7 @@ class LLNMS:
         logging.info('Networks loaded from ' + network_path )
 
         # load the scanning list
-        status_path = self.LLNMS_HOME + "/run"
+        status_path = self.LLNMS_HOME
         self.network_status = network.NetworkStatus(status_path, self.networks )
         logging.info('Network Status Loaded')
 
@@ -68,3 +68,12 @@ class LLNMS:
         logging.info('Removing network.')
         network.llnms_remove_network(rm_network, self.LLNMS_HOME)
         self.Reload_Networks()
+
+    # ------------------------------ #
+    # -       Scan  Network        - #
+    # ------------------------------ #
+    def Scan_Network( self, sc_network ):
+        
+        logging.info("Scanning network.")
+        network.llnms_scan_network(sc_network, self.LLNMS_HOME)
+

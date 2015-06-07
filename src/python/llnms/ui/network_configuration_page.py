@@ -72,7 +72,7 @@ class NetworkConfigurationWindow(object):
 
         #  create bar
         bar = '-' * (curses.COLS-1)
-        self.addstr( 1, 0, bar)
+        self.screen.addstr( 1, 0, bar)
 
     # --------------------------------------- #
     # -     Print Network Summary Footer    - #
@@ -90,4 +90,44 @@ class NetworkConfigurationWindow(object):
     # -      Render the Status Window        - #
     # ---------------------------------------- #
     def Render_Status_Window(self, llnms_state ):
-        return
+
+        #  Create the table
+        table = CursesTable.CursesTable( 5, 1 )
+
+        #  Set the column headers
+        table.Set_Column_Header_Item( 0, 'IP Address', 0.20)
+        table.Set_Column_Header_Item( 1, 'Hostname',   0.20)
+        table.Set_Column_Header_Item( 2, 'Network',    0.20)
+        table.Set_Column_Header_Item( 3, 'Last Scan',  0.20)
+        table.Set_Column_Header_Item( 4, 'Status',     0.20)
+
+        table.Set_Column_Alignment( 0, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 1, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 2, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 3, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 4, CursesTable.StringAlignment.ALIGN_LEFT )
+
+
+
+        #  Load the table
+        for x in xrange( 0, len(llnms_state.network_status.network_assets)):
+
+            #  Set the Name
+            table.Set_Item( 0, x+1, llnms_state.network_status.network_assets[x].hostname )
+
+            #  Set the start address
+            table.Set_Item( 1, x+1, llnms_state.network_status.network_assets[x].ip_address )
+
+            #  Set the end address
+            table.Set_Item( 2, x+1, llnms_state.network_status.network_assets[x].network_name )
+
+
+        #  Print the Table
+        min_col = 2
+        max_col = curses.COLS-1 - min_col
+
+        table.Render_Table( self.screen,
+                            min_col,
+                            max_col,
+                            5,
+                            curses.LINES-4, -1)

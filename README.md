@@ -67,6 +67,10 @@ To scan a network
 
     llnms-scan-network
 
+This is a very slow operation currently.  I basically just do ping here, but with multiple threads.  I 
+need to clean this implementation up and replace it with a better concept.  The good part is that
+the bash script is now thread safe when writing to the config file.
+
 ###  Asset Management
 
 LLNMS assets serve to represent single endpoints on a network.  They are known artifacts that will

@@ -43,43 +43,39 @@ run_lock(){
     local pidval=$PID_VALUE
     local LOCKDIR_LOCAL=$LOCKDIR
 
-    #  set the lock directory
-    if mkdir "${LOCKDIR_LOCAL}" &> /dev/null; then
-        
-        echo 'directory does not exist'
-        #  Create PID if necessary
-        if [ "${usepid}" = '1' ]; then
-            echo "Created pid file at ${LOCKDIR_LOCAL}/${pidval}.pid"
-            echo "$pidval" > "${LOCKDIR_LOCAL}/${pidval}.`date "+%s"`.${RANDOM}.pid"
-        else
-            echo "$$" > "${LOCKDIR_LOCAL}/$$.`date "+%s"`.pid"
-        fi
-
-        return 0;
     
-    #  If the lock failed, but we are below the count, then create the subdirectories
-    elif [ ! "${usepid}" = '0' -a "`ls ${LOCKDIR_LOCAL} | wc -l`" -lt ${MAXPIDS} ]; then
+    # Start Main Loop
+    while [ 1 ]; do
         
-        #  Create the pid
-        echo 'directory exists.'
-        echo "$pidval" > "${LOCKDIR_LOCAL}/${pidval}.`date "+%s"`.${RANDOM}.pid"
-
-        return 0;
-
-    #  The lock failed, wait
-    elif [ "$WAIT_FLAG" = '1' ]; then
+        #  set the lock directory
+        if mkdir "${LOCKDIR_LOCAL}" &> /dev/null; then
         
-        echo "waiting"
-        while [ "`run_lock`" = '1' ]; do
-            sleep 0.2
-        done
+            #  Create PID if necessary
+            if [ "${usepid}" = '1' ]; then
+                echo "$pidval" > "${LOCKDIR_LOCAL}/${pidval}.`date "+%s"`.${RANDOM}.pid"
+            else
+                echo "$$" > "${LOCKDIR_LOCAL}/$$.`date "+%s"`.pid"
+            fi
 
-    #  The lock failed
-    else
-        echo 'lock failed'
-        return 1;
-    fi
+            return 0;
+    
+        #  If the lock failed, but we are below the count, then create the subdirectories
+        elif [ ! "${usepid}" = '0' -a "`ls ${LOCKDIR_LOCAL} | wc -l`" -lt ${MAXPIDS} ]; then
         
+            #  Create the pid
+            echo "$pidval" > "${LOCKDIR_LOCAL}/${pidval}.`date "+%s"`.${RANDOM}.pid"
+
+            return 0;
+
+        #  The lock failed, wait
+        elif [ "$WAIT_FLAG" = '0' ]; then
+            echo 'lock failed'
+            return 1;
+        fi
+        
+        #  Otherwise, sleep
+        sleep 0.2
+    done
 
 }
 
@@ -92,14 +88,11 @@ run_unlock(){
 
     #  Get rid of the lock directory
     if [ "`ls ${LOCKDIR} | wc -l`" -le '1' ]; then
-        echo 'aaaa'
         rm -rf "$LOCKDIR" &> /dev/null
     elif [ ! "${pidval}" = '0' ]; then
-        echo 'bbbb'
         echo "${pidval}"
         rm  ${LOCKDIR}/"`ls ${LOCKDIR} ${pidval}.* | tail -1`"
     else
-        echo 'cccc'
         rm ${LOCKDIR}/"`ls ${LOCKDIR} | tail -1`"
     fi
 

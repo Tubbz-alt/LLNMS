@@ -95,7 +95,11 @@ class CursesTable:
             while len(self.data) <= row:
                 self.data.append( [ '' for x in xrange(len(self.data[0]))] )
 
-        self.data[row][col] = text
+        val = text
+        if text is None:
+            val = ''
+
+        self.data[row][col] = val
 
     # ------------------------------------------- #
     # -     Lay out the table for printing      - #
