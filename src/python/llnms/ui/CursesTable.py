@@ -207,7 +207,7 @@ class CursesTable:
     # ----------------------------- #
     # -     Render the Table      - #
     # ----------------------------- #
-    def Render_Table(self, screen, min_col, max_col, min_row, max_row ):
+    def Render_Table(self, screen, min_col, max_col, min_row, max_row, cursor_idx ):
 
         # Format the table
         self.Format_Table( max_col - min_col )
@@ -215,10 +215,16 @@ class CursesTable:
         # print header row
         header_line = self.Print_Header( screen, min_col, min_row - 3)
 
+        cpair = 0
+
         # Print table rows
         current_table_row = 1
         for row in xrange(min_row, max_row):
-            screen.addstr( row, min_col, self.Format_Row(current_table_row))
+            if current_table_row == cursor_idx:
+                cpair = curses.color_pair(1)
+            else:
+                cpair = curses.color_pair(0)
+            screen.addstr( row, min_col, self.Format_Row(current_table_row), cpair)
             current_table_row += 1
 
         #  Print header row again

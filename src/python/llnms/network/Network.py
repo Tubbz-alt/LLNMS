@@ -143,3 +143,16 @@ def llnms_create_network( network, llnms_home ):
     logging.info("Command Executed: " + command + '\n  STDOUT: ' + out + '\n  STDERR: ' + err)
 
 
+# --------------------------------------------------- #
+# -      Remove a network to the LLNMS system       - #
+# --------------------------------------------------- #
+def llnms_remove_network( network, llnms_home ):
+
+    #  Make the system call
+    command = llnms_home + '/bin/' + 'llnms-remove-network '
+    command += ' -n ' + network.name
+
+    #   Call
+    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    out, err = p.communicate()
+    logging.info("Command Executed: " + command + '\n  STDOUT: ' + out + '\n  STDERR: ' + err)

@@ -7,6 +7,7 @@ import curses
 import CursesTable
 from NetworkAddWindow import NetworkAddWindow
 from UI_Window_Base import Base_Window_Type
+from WarningWindow import WarningWindow
 
 
 # ---------------------------------------- #
@@ -25,6 +26,9 @@ class NetworkSummaryWindow(Base_Window_Type):
 
     #  Add network subwindow
     ADD_NETWORK_INDEX = 0
+
+    #  Current Network
+    current_network = 0
 
     # ------------------------------- #
     # -        Constructor          - #
@@ -74,11 +78,26 @@ class NetworkSummaryWindow(Base_Window_Type):
 
             #  If user wants to refresh network screen
             elif c == ord('r'):
-                llnms_state.refresh_networks()
+                llnms_state.Reload_Networks()
 
             #  Add network
             elif c == ord('a'):
                 llnms_state = self.sub_windows[self.ADD_NETWORK_INDEX].Process(llnms_state)
+
+            #  Delete network
+            elif c == ord('d'):
+                result = WarningWindow().Process(self.screen)
+                if result == True:
+                    llnms_state.Remove_Network( llnms_state.networks[self.current_network] )
+
+            #  Arrow Keys
+            elif c == curses.KEY_UP:
+                self.current_network = max(0, self.current_network-1)
+
+            # Arrow Keys
+            elif c == curses.KEY_DOWN:
+                self.current_network = min( len(llnms_state.networks)-1, self.current_network+1)
+
 
         #  Return the state
         return llnms_state
@@ -103,8 +122,8 @@ class NetworkSummaryWindow(Base_Window_Type):
         self.screen.addstr( curses.LINES-4, 0, '-' * (curses.COLS-1))
 
         #  Render Menu
-        self.screen.addstr( curses.LINES-3, 0, 'q) Return to main menu, r) Refresh')
-        self.screen.addstr( curses.LINES-2, 0, 'a) Add network definition')
+        self.screen.addstr( curses.LINES-3, 0, 'q) Return to main menu, r) Refresh, Up/Down Arrows) Switch Networks')
+        self.screen.addstr( curses.LINES-2, 0, 'a) Add network definition, d) Delete network')
 
     # ------------------------------------------ #
     # -    Print the Network Summary Table     - #
@@ -140,5 +159,10 @@ class NetworkSummaryWindow(Base_Window_Type):
         max_col = curses.COLS-1 - min_col
         min_print_row = min_row+2
 
-        table.Render_Table( self.screen, min_col, max_col, min_print_row, max_row)
+        table.Render_Table( self.screen,
+                            min_col,
+                            max_col,
+                            min_print_row,
+                            max_row,
+                            self.current_network+1)
 

@@ -80,7 +80,7 @@ class MainWindow(Base_Window_Type):
         self.screen.addstr(1, 0, '----------------------')
         self.screen.addstr(2, 0, '1.  Network Summary')
         self.screen.addstr(3, 0, '2.  Asset Summary')
-        self.screen.addstr(4, 0, '3.  Network Configuration')
+        self.screen.addstr(4, 0, '3.  Network Status')
         self.screen.addstr(5, 0, 'q.  Quit LLNMS-Viewer')
         self.screen.addstr(6, 0, 'option:')
         self.screen.refresh()
@@ -112,12 +112,11 @@ class MainWindow(Base_Window_Type):
             # Open asset page
             llnms_state = self.sub_windows[self.ASSET_CONFIGURATION_INDEX].Process(llnms_state)
 
-
         # check if user wants to view the network configuration page
         elif input_key == ord('3'):
 
             #  Print a basic message telling the user you got their response
-            print_response_message( self.screen, 'Loading Network Configuration Page')
+            print_response_message( self.screen, 'Loading Network Status Page')
 
             #  open network summary page
             llnms_state = self.sub_windows[self.NETWORK_CONFIGURATION_INDEX].Process( llnms_state )

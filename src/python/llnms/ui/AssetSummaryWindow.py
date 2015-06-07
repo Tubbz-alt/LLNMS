@@ -56,7 +56,7 @@ class AssetSummaryWindow(Base_Window_Type):
 
             #  Print the tables
             max_network_row = curses.LINES - 5
-            self.Render_Network_Summary_Table( llnms_state,  3, max_network_row )
+            self.Render_Asset_Summary_Table( llnms_state,  3, max_network_row )
 
             #  Print the footer
             self.Render_Footer()
@@ -78,7 +78,9 @@ class AssetSummaryWindow(Base_Window_Type):
 
             #  Add network
             elif c == ord('a'):
-                llnms_state = self.sub_windows[self.ADD_NETWORK_INDEX].Process(llnms_state)
+                llnms_state = self.sub_windows[self.ADD_ASSET_INDEX].Process(llnms_state)
+
+        return llnms_state
 
     # ------------------------- #
     # -     Render Header     - #
@@ -101,24 +103,20 @@ class AssetSummaryWindow(Base_Window_Type):
 
         #  Render Menu
         self.screen.addstr( curses.LINES-3, 0, 'q) Return to main menu, r) Refresh')
-        self.screen.addstr( curses.LINES-2, 0, 'a) Add network definition')
+        self.screen.addstr( curses.LINES-2, 0, 'a) Add asset')
 
     # ------------------------------------------ #
     # -    Print the Network Summary Table     - #
     # ------------------------------------------ #
-    def Render_Network_Summary_Table(self, llnms_state, min_row, max_row ):
+    def Render_Asset_Summary_Table(self, llnms_state, min_row, max_row ):
 
         #  Create the table
-        table = CursesTable.CursesTable( 3, 1 )
+        table = CursesTable.CursesTable( 1, 1 )
 
         #  Set the column headers
-        table.Set_Column_Header_Item( 0, ' Network Name', 0.40)
-        table.Set_Column_Header_Item( 1, ' Min Address', 0.30)
-        table.Set_Column_Header_Item( 2, ' Max Address', 0.30)
+        table.Set_Column_Header_Item( 0, ' Asset Name', 0.40)
 
         table.Set_Column_Alignment( 0, CursesTable.StringAlignment.ALIGN_LEFT )
-        table.Set_Column_Alignment( 1, CursesTable.StringAlignment.ALIGN_LEFT )
-        table.Set_Column_Alignment( 2, CursesTable.StringAlignment.ALIGN_LEFT )
 
         #  Load the table
         for x in xrange( 0, len(llnms_state.networks)):
@@ -127,15 +125,19 @@ class AssetSummaryWindow(Base_Window_Type):
             table.Set_Item( 0, x+1, llnms_state.networks[x].name )
 
             #  Set the start address
-            table.Set_Item( 1, x+1, llnms_state.networks[x].address_start )
+            #table.Set_Item( 1, x+1, llnms_state.networks[x].address_start )
 
             #  Set the end address
-            table.Set_Item( 2, x+1, llnms_state.networks[x].address_end )
+            #table.Set_Item( 2, x+1, llnms_state.networks[x].address_end )
 
         #  Print the Table
         min_col = 2
         max_col = curses.COLS-1 - min_col
         min_print_row = min_row+2
 
-        table.Render_Table( self.screen, min_col, max_col, min_print_row, max_row)
+        table.Render_Table( self.screen,
+                            min_col,
+                            max_col,
+                            min_print_row,
+                            max_row, -1)
 

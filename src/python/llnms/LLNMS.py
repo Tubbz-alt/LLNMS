@@ -17,6 +17,9 @@ class LLNMS:
     # List of networks
     networks = []
 
+    # List of assets
+    assets = []
+
     # -------------------------------- #
     # -          Constructor         - #
     # -------------------------------- #
@@ -39,12 +42,11 @@ class LLNMS:
     # ----------------------------------------- #
     # -       Refresh the network list        - #
     # ----------------------------------------- #
-    def refresh_networks(self):
+    def Reload_Networks(self):
 
-        if self.network_status !=  None:
-            network_path = self.LLNMS_HOME + "/networks"
-            self.network_status.reload_network_status( self.networks )
-
+        network_path = self.LLNMS_HOME + "/networks"
+        self.networks = network.llnms_load_networks( network_path)
+        logging.info('Networks loaded from ' + network_path )
 
     # -------------------------- #
     # -       Add network      - #
@@ -53,6 +55,16 @@ class LLNMS:
 
         #  Add the network file
         network.llnms_create_network(new_network, self.LLNMS_HOME)
+        logging.info('Reloading networks.')
 
         #  Reload the network
-        self.refresh_networks()
+        self.Reload_Networks()
+
+    # ----------------------------- #
+    # -      Remove Network       - #
+    # ----------------------------- #
+    def Remove_Network(self, rm_network ):
+
+        logging.info('Removing network.')
+        network.llnms_remove_network(rm_network, self.LLNMS_HOME)
+        self.Reload_Networks()
