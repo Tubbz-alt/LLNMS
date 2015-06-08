@@ -117,6 +117,7 @@ PRINT_IP4ADDRESS=0
 PRINT_DESCRIPTION=0
 PRINT_SCANNERS=0
 PRINT_PATHNAME=0
+SKIP_LIST_ASSET_SCRIPT=1
 
 #   Parse Command-Line Options
 for OPTION in $@; do
@@ -155,24 +156,28 @@ for OPTION in $@; do
         '-host' | '--hostname' )
             PRINT_EVERYTHING=0
             PRINT_HOSTNAME=1
+            SKIP_LIST_ASSET_SCRIPT=0
             ;;
 
         #  Print ip4 address
         '-ip4' | '--ip4-address' )
             PRINT_EVERYTHING=0
             PRINT_IP4ADDRESS=1
+            SKIP_LIST_ASSET_SCRIPT=0
             ;;
         
         #  Print description
         '-d' | '--description' )
             PRINT_EVERYTHING=0
             PRINT_DESCRIPTION=1
+            SKIP_LIST_ASSET_SCRIPT=0
             ;;
 
         #  Print scanners
         '-s' | '--scanners' )
             PRINT_EVERYTHING=0
             PRINT_SCANNERS=1
+            SKIP_LIST_ASSET_SCRIPT=0
             ;;
 
         #  Print pathname
@@ -224,6 +229,11 @@ else
     if [ "$PRINT_IP4ADDRESS" = '1' ]; then
         PAI_FLAGS="$PAI_FLAGS -ip4"
     fi
+
+    #  Scanners
+    if [ "$PRINT_SCANNERS" = '1' ]; then
+        PAI_FLAGS="$PAI_FLAGS -s"
+    fi
 fi
 
 #  Get a list of assets in the asset folder
@@ -240,8 +250,9 @@ for ASSET_FILE in $ASSET_LIST; do
     fi
 
     #  Print asset
-    printf "`$LLNMS_HOME/bin/llnms-print-asset-info $PAI_FLAGS -f $ASSET_FILE $FMT_FLAG`"
-
+    if [ "$SKIP_LIST_ASSET_SCRIPT" = '0' ]; then
+        printf "`$LLNMS_HOME/bin/llnms-print-asset-info $PAI_FLAGS -f $ASSET_FILE $FMT_FLAG`"
+    fi
     
     #  If we are done with the asset and in list output format, then start a new line
     if [ "$OUTPUT_FORMAT" = "LIST" ]; then

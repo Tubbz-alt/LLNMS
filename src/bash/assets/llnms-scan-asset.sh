@@ -204,7 +204,6 @@ if [ "$ASSET_PATH" = '' ]; then
     exit 1
 fi
 
-
 #-----------------------------------------------------#
 #-       Get the list of scanners and run each       -#
 #-----------------------------------------------------#
@@ -240,11 +239,23 @@ for ASSET_SCANNER in $ASSET_SCANNERS; do
     
     #  Running command
     echo "Running $COMMAND_RUN"
-    $COMMAND_RUN &> $LLNMS_HOME/log/llnms-scan-asset.log
+    CMD_OUTPUT=`$COMMAND_RUN`
+    
+    echo $CMD_OUTPUT &> $LLNMS_HOME/log/llnms-scan-asset.log
     
     #  Grab the output
     RESULT="$?"
     
+    if [ "$VERBOSE_FLAG" = '1' ]; then
+        echo "$CMD_OUTPUT"
+    else
+        if [ "$RESULT" = '0' ]; then
+            echo 'PASSED'
+        else
+            echo 'FAILED'
+        fi
+    fi
+
 
 done
 
