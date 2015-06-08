@@ -214,6 +214,16 @@ else
     if [ "$PRINT_HOSTNAME" = "1" ]; then
         PAI_FLAGS="$PAI_FLAGS -host"
     fi
+
+    #  Description
+    if [ "$PRINT_DESCRIPTION" = '1' ]; then
+        PAI_FLAGS="$PAI_FLAGS -d"
+    fi
+
+    #  Address
+    if [ "$PRINT_IP4ADDRESS" = '1' ]; then
+        PAI_FLAGS="$PAI_FLAGS -ip4"
+    fi
 fi
 
 #  Get a list of assets in the asset folder
@@ -225,7 +235,7 @@ for ASSET_FILE in $ASSET_LIST; do
         if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
             printf "    Pathname:  $ASSET_FILE\n"
         else
-            print "$ASSET_FILE "
+            printf "$ASSET_FILE "
         fi
     fi
 
