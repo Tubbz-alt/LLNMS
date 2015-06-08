@@ -192,6 +192,11 @@ for OPTION in $@; do
     esac
 done
 
+#  Setup the print format flag
+FMT_FLAG='-list'
+if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+    FMT_FLAG='-pretty'
+fi
 
 # Print a header if in pretty format
 if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
@@ -200,67 +205,34 @@ if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
     echo ''
 fi
 
+#  Configure Print Asset Info Flags
+if [ "$PRINT_EVERYTHING" = '1' ]; then
+    PAI_FLAGS='-a'
+else
+    
+    #  Hostname
+    if [ "$PRINT_HOSTNAME" = "1" ]; then
+        PAI_FLAGS="$PAI_FLAGS -host"
+    fi
+fi
 
 #  Get a list of assets in the asset folder
 ASSET_LIST=`ls $LLNMS_HOME/assets/*.llnms-asset.xml 2> /dev/null`
 for ASSET_FILE in $ASSET_LIST; do
+   
+    #  Print the path
+    if [ "$PRINT_PATHNAME" = '1' -o $PRINT_EVERYTHING = '1' ]; then
+        if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
+            printf "    Pathname:  $ASSET_FILE\n"
+        else
+            print "$ASSET_FILE "
+        fi
+    fi
+
+    #  Print asset
+    printf "`$LLNMS_HOME/bin/llnms-print-asset-info $PAI_FLAGS -f $ASSET_FILE $FMT_FLAG`"
+
     
-
-    DATA_PRINTED=0
-    #  If we are in pretty format, print header
-    if [ "$OUTPUT_FORMAT" = 'PRETTY' ]; then
-        echo "- Asset,  Path: `basename $ASSET_FILE`"
-    fi
-
-    #  Print pathname
-    if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_PATHNAME" = '1' ]; then
-        if [ "$OUTPUT_FORMAT" = "LIST" ]; then
-            printf "$ASSET_FILE"
-            DATA_PRINTED=1
-        fi
-    fi
-
-    #  Print Hostname
-    if [ "$PRINT_EVERYTHING" = "1" -o "$PRINT_HOSTNAME" = "1" ]; then
-        if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            printf "      Hostname: `$LLNMS_HOME/bin/llnms-print-asset-info -host -f $ASSET_FILE`\n"
-        elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
-            if [ "$DATA_PRINTED" = "1" ]; then
-                printf " "
-            fi
-            printf "`$LLNMS_HOME/bin/llnms-print-asset-info -host -f $ASSET_FILE`"
-            DATA_PRINTED=1
-        fi
-    fi
-
-
-    #  Print IP4 Address
-    if [ "$PRINT_EVERYTHING" = '1' -o "$PRINT_IP4ADDRESS" = '1' ]; then
-        if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            echo "      IP4 Address: `$LLNMS_HOME/bin/llnms-print-asset-info -ip4 -f $ASSET_FILE`"
-        elif [ "$OUTPUT_FORMAT" = "LIST" ]; then
-            if [ "$DATA_PRINTED" = "1" ]; then
-                printf " "
-            fi
-            printf "`$LLNMS_HOME/bin/llnms-print-asset-info -ip4 -f $ASSET_FILE`"
-            DATA_PRINTED=1
-        fi
-    fi
-    
-    
-    #  Print description
-    if [ "$PRINT_EVERYTHING" = "1" -o "$PRINT_DESCRIPTION" = '1' ]; then
-        if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-            echo "      Description: `$LLNMS_HOME/bin/llnms-print-asset-info -d -f $ASSET_FILE`"
-        elif [ "$OUTPUT_FORMAT" = "LIST" ]; then    
-            if [ "$DATA_PRINTED" = '1' ]; then
-                printf ' '
-            fi
-            printf "\"`$LLNMS_HOME/bin/llnms-print-asset-info -d -f $ASSET_FILE`\""
-            DATA_PRINTED=1
-        fi
-    fi
-
     #  If we are done with the asset and in list output format, then start a new line
     if [ "$OUTPUT_FORMAT" = "LIST" ]; then
         echo ''
@@ -268,6 +240,7 @@ for ASSET_FILE in $ASSET_LIST; do
 
     #  Otherwise, if we are in prett format, create a new line
     if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
+        echo ''
         echo ''
     fi
 

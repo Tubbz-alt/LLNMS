@@ -439,7 +439,7 @@ fi
 #  Description
 if [ "$DESCRIPTION_FLAG" = '1' -o "$EVERYTHING_FLAG" = '1' ]; then
     PRINT_INFO="`xmlstarlet sel -t -m '//llnms-asset' -v 'description' -n $FILE_VALUE`"
-    Print_Data $PRINT_INFO 'Description'
+    Print_Data "$PRINT_INFO" 'Description'
     DATA_PRINTED=1
 fi
 
