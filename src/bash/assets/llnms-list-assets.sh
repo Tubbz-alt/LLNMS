@@ -150,6 +150,7 @@ for OPTION in $@; do
         #  Print everything
         '-a' | '--all' )
             PRINT_EVERYTHING=1
+            SKIP_LIST_ASSET_SCRIPT=0
             ;;
 
         #  Print hostname
@@ -261,7 +262,6 @@ for ASSET_FILE in $ASSET_LIST; do
 
     #  Otherwise, if we are in prett format, create a new line
     if [ "$OUTPUT_FORMAT" = "PRETTY" ]; then
-        echo ''
         echo ''
     fi
 

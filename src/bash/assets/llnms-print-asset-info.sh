@@ -473,10 +473,15 @@ fi
 
 #  Scanners
 if [ "$SCANNER_FLAG" = '1' ]; then
+    
+    # Get the scanner list
+    SCANNER_NAMES="`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`"
 
-    PRINT_INFO="`xmlstarlet sel -t -m '//llnms-asset/scanners/scanner' -n -v '.' -n $FILE_VALUE | sed 's/ *//g' | sed '/^\s*$/d'`"
-    Print_Data $PRINT_INFO 'Scanners'
-    DATA_PRINTED=1
+    #  Iterate
+    for SCANNER_NAME in $SCANNER_NAMES; do
+        Print_Data "$SCANNER_NAME" 'Scanners'
+        DATA_PRINTED=1
+    done
 fi
 
 #  Scanner argument name
