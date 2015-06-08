@@ -2,8 +2,9 @@ __author__ = 'marvinsmith'
 
 #  LLNMS Libraries
 from network_configuration_page import *
-from network_summary_page import *
-from AssetSummaryWindow import *
+from network_summary_page       import *
+from AssetSummaryWindow         import *
+from ScannerSummaryWindow       import *
 from UI_Window_Base import Base_Window_Type
 
 #  Python Libraries
@@ -28,9 +29,6 @@ class MainWindow(Base_Window_Type):
     #  Default LLNMS state
     llnms_state = None
 
-    #  Default NCurses screen
-    screen = None
-
     #  Flag if we want to exit the main loop
     exit_main_loop = False
 
@@ -43,8 +41,11 @@ class MainWindow(Base_Window_Type):
     #  Asset configuration index
     ASSET_CONFIGURATION_INDEX = 1
 
+    #  Scanner Summary Index
+    SCANNER_SUMMARY_INDEX = 2
+
     #  Network Configuration Page Index
-    NETWORK_CONFIGURATION_INDEX = 2
+    NETWORK_CONFIGURATION_INDEX = 3
 
 
     # -------------------------------- #
@@ -53,19 +54,21 @@ class MainWindow(Base_Window_Type):
     def __init__(self, screen, title = None ):
 
         #   Build child
-        Base_Window_Type.__init__( self, "LLNMS Main Window")
-
-        #  Set the screen
-        self.screen = screen
+        Base_Window_Type.__init__( self,
+                                   title="LLNMS Main Window",
+                                   screen=screen)
 
         #  Create the network summary window
-        self.sub_windows.append(NetworkSummaryWindow(screen))
+        self.sub_windows.append(NetworkSummaryWindow(title=None, screen=self.screen))
 
         #  Create the asset configuration window
-        self.sub_windows.append(AssetSummaryWindow(screen))
+        self.sub_windows.append(AssetSummaryWindow(title=None, screen=self.screen))
+
+        #  Create the scanner window
+        self.sub_windows.append(ScannerSummaryWindow(title=None, screen=self.screen))
 
         #  Create the network configuration Window
-        self.sub_windows.append(NetworkConfigurationWindow(screen))
+        self.sub_windows.append(NetworkConfigurationWindow(title=None, screen=self.screen))
 
     # ---------------------------- #
     # -    Render the Screen     - #
@@ -80,9 +83,10 @@ class MainWindow(Base_Window_Type):
         self.screen.addstr(1, 0, '----------------------')
         self.screen.addstr(2, 0, '1.  Network Summary')
         self.screen.addstr(3, 0, '2.  Asset Summary')
-        self.screen.addstr(4, 0, '3.  Network Status')
-        self.screen.addstr(5, 0, 'q.  Quit LLNMS-Viewer')
-        self.screen.addstr(6, 0, 'option:')
+        self.screen.addstr(4, 0, '3.  Scanner Summary')
+        self.screen.addstr(5, 0, '4.  Network Status')
+        self.screen.addstr(6, 0, 'q.  Quit LLNMS-Viewer')
+        self.screen.addstr(7, 0, 'option:')
         self.screen.refresh()
 
     # ----------------------------------- #
@@ -112,8 +116,17 @@ class MainWindow(Base_Window_Type):
             # Open asset page
             llnms_state = self.sub_windows[self.ASSET_CONFIGURATION_INDEX].Process(llnms_state)
 
-        # check if user wants to view the network configuration page
+        #  Check if the user wants to view the scanner summary page
         elif input_key == ord('3'):
+
+            #  Print message
+            print_response_message( self.screen, 'Loading Scanner Summary Page')
+
+            #  Open page
+            llnms_state = self.sub_windows[self.SCANNER_SUMMARY_INDEX].Process( llnms_state )
+
+        # check if user wants to view the network configuration page
+        elif input_key == ord('4'):
 
             #  Print a basic message telling the user you got their response
             print_response_message( self.screen, 'Loading Network Status Page')

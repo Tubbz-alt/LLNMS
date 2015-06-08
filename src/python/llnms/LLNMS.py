@@ -17,8 +17,14 @@ class LLNMS:
     # List of networks
     networks = []
 
-    # List of assets
+    # List of discovered systems
     network_status = []
+
+    #  List of assets
+    assets = []
+
+    #  List of scanners
+    scanners = []
 
     # -------------------------------- #
     # -          Constructor         - #
@@ -34,10 +40,16 @@ class LLNMS:
         self.networks = network.llnms_load_networks( network_path)
         logging.info('Networks loaded from ' + network_path )
 
-        # load the scanning list
+        # load the status list
         status_path = self.LLNMS_HOME
         self.network_status = network.NetworkStatus(status_path, self.networks )
         logging.info('Network Status Loaded')
+
+        #  Add the assets
+        self.assets = network.llnms_load_assets( self.LLNMS_HOME )
+
+        #  Add the scanners
+        self.scanners = network.llnms_load_scanners(self.LLNMS_HOME)
 
     # ----------------------------------------- #
     # -       Refresh the network list        - #

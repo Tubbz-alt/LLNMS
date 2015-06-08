@@ -15,10 +15,11 @@ usage(){
     echo "`basename $0` [options]"
     echo ''
     echo '    options:'
-    echo '        -h, --help    :  Print usage instructions'
-    echo '        -v, --version :  Print version information'
+    echo '        -h, --help    :  Print usage instructions.'
+    echo '        -v, --version :  Print version information.'
+    echo '        -V, --verbose :  Print with verbose output.'
     echo ''
-    echo '        -a, --asset [asset hostname] : Asset to run with'
+    echo '        -a, --asset [asset hostname] : Asset hostname to run scans against.'
     echo ''
 }
 
@@ -89,10 +90,10 @@ version(){
 get_scanner_path_from_id(){
 
     #  Get a list of scanners
-    SCANNER_LIST=`llnms-list-scanners.sh -f -l`
+    SCANNER_LIST=`llnms-list-scanners -f -l`
 
     for SCANNER in $SCANNER_LIST; do
-        if [ "`llnms-print-scanner-info.sh -f $SCANNER -i`" = "$1" ]; then
+        if [ "`llnms-print-scanner-info -f $SCANNER -i`" = "$1" ]; then
             echo $SCANNER
             return
         fi
@@ -112,16 +113,18 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import asset utilities
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 
 #  Asset name and path
 ASSET_HOSTNAME=''
 ASSET_PATH=''
 ASSET_FLAG=0
+
+VERBOSE_FLAG=0
 
 
 #   Parse Command-Line Options
@@ -135,6 +138,10 @@ for OPTION in "$@"; do
             exit 1
             ;;
 
+        #  Print verbose output
+        '-V' | '--verbose' )
+            VERBOSE_FLAG=1
+            ;;
 
         #  Print version information
         '-v' | '--version' )
@@ -181,11 +188,11 @@ fi
 #-    Make sure the asset exists     -#
 #-------------------------------------#
 # get a list of assets
-ASSET_LIST=`llnms-list-assets.sh -l -path`
+ASSET_LIST=`llnms-list-assets -l -path`
 
 for ASSET_FILE in $ASSET_LIST; do
     #  check the hostname.  if they match, then retrieve the asset filename
-    if [ "`llnms-print-asset-info.sh -f $ASSET_FILE -host`" = "$ASSET_HOSTNAME" ]; then
+    if [ "`llnms-print-asset-info -f $ASSET_FILE -host`" = "$ASSET_HOSTNAME" ]; then
         ASSET_PATH=$ASSET_FILE
     fi
 done
@@ -203,27 +210,27 @@ fi
 #-----------------------------------------------------#
 
 #   - get a list of registered scanners
-ASSET_SCANNERS=`llnms-print-asset-info.sh  -f $ASSET_PATH -s`
+ASSET_SCANNERS=`llnms-print-asset-info  -f $ASSET_PATH -s`
 for ASSET_SCANNER in $ASSET_SCANNERS; do
     
     #  get the file pathname for the scanner
     SCANNER_PATH=`get_scanner_path_from_id $ASSET_SCANNER`
     
     #  Get the command we have to run
-    SCANNER_CMD=`llnms-print-scanner-info.sh -f $SCANNER_PATH -c`
-    SCANNER_BASE_PATH=`llnms-print-scanner-info.sh -f $SCANNER_PATH -b`
+    SCANNER_CMD=`llnms-print-scanner-info -f $SCANNER_PATH -c`
+    SCANNER_BASE_PATH=`llnms-print-scanner-info -f $SCANNER_PATH -b`
 
     #  Get the number of arguments to query
-    NUMARGS=`llnms-print-scanner-info.sh -f $SCANNER_PATH -num`
+    NUMARGS=`llnms-print-scanner-info -f $SCANNER_PATH -num`
 
     #  get the argument-list for the scanner
-    ARGC=`llnms-print-asset-info.sh -f $ASSET_PATH -sac $ASSET_SCANNER`
+    ARGC=`llnms-print-asset-info -f $ASSET_PATH -sac $ASSET_SCANNER`
     ARGLIST=''
     for ((x=1; x<=$ARGC; x++ )); do
         
         #  Get the arg value
-        ARGFLG=`llnms-print-asset-info.sh -f $ASSET_PATH -san $ASSET_SCANNER $x`
-        ARGVAL=`llnms-print-asset-info.sh -f $ASSET_PATH -sav $ASSET_SCANNER $x`
+        ARGFLG=`llnms-print-asset-info -f $ASSET_PATH -san $ASSET_SCANNER $x`
+        ARGVAL=`llnms-print-asset-info -f $ASSET_PATH -sav $ASSET_SCANNER $x`
 
         ARGLIST="$ARGLIST --$ARGFLG $ARGVAL"
     done
@@ -233,7 +240,7 @@ for ASSET_SCANNER in $ASSET_SCANNERS; do
     
     #  Running command
     echo "Running $COMMAND_RUN"
-    $COMMAND_RUN > $LLNMS_HOME/log/llnms-scan-asset.log
+    $COMMAND_RUN &> $LLNMS_HOME/log/llnms-scan-asset.log
     
     #  Grab the output
     RESULT="$?"

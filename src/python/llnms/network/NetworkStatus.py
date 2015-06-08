@@ -123,7 +123,7 @@ class NetworkStatus:
                 timestamp = status_node.get('timestamp')
 
                 if responsive is not None and timestamp is not None:
-                    temp_host.status_list.append((responsive, timestamp))
+                    temp_host.status_list.append((timestamp, responsive))
 
             #  Add the node
             self.network_assets.append(temp_host)

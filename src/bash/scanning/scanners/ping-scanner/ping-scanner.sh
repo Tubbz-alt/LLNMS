@@ -97,10 +97,10 @@ fi
 
 
 #  Import the version info
-. $LLNMS_HOME/config/llnms-info.sh
+. $LLNMS_HOME/config/llnms-info
 
 #  Import the configuration info
-. $LLNMS_HOME/config/llnms-config.sh
+. $LLNMS_HOME/config/llnms-config
 
 #  Flags
 IP4ADDRESS_FLAG=0
@@ -125,6 +125,11 @@ for OPTION in "$@"; do
         '-v' | '--version' )
             version
             exit 1
+            ;;
+
+        #  Print verbose output
+        '-V' | '--verbose' )
+            VERBOSE=1
             ;;
 
         #  Max Tries flag
@@ -161,6 +166,16 @@ for OPTION in "$@"; do
 done
 
 
-#  Run the ping command
-ping $IP4ADDRESS_VALUE -c $MAX_TRIES_VALUE 
+#  Build the Ping Command
+CMD="ping -c $MAX_TRIES_VALUE $IP4ADDRESS_VALUE"
+
+$CMD
+
+#  Check result
+if [ "$?" = '0' ]; then
+    exit 0
+else
+    exit 1
+fi
+
 

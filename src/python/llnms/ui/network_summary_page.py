@@ -33,10 +33,12 @@ class NetworkSummaryWindow(Base_Window_Type):
     # ------------------------------- #
     # -        Constructor          - #
     # ------------------------------- #
-    def __init__(self, screen ):
+    def __init__(self, screen, title = None):
 
         #  Build the Parent
-        Base_Window_Type.__init__(self, "Network Summary Window")
+        Base_Window_Type.__init__(self,
+                                  title="Network Summary Window",
+                                  screen=screen)
 
         #  Set the screen
         self.screen = screen

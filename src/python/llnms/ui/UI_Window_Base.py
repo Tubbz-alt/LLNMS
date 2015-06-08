@@ -12,11 +12,18 @@ class Base_Window_Type(object):
     #  Window Title
     window_title = ''
 
+    #  Window render screen
+    screen = None
+
     # --------------------------- #
     # -      Constructor        - #
     # --------------------------- #
-    def __init__(self, title = None):
+    def __init__(self, title = None, screen = None):
 
         #  Set the title
-        if title != None:
+        if title is not None:
             self.window_title = title
+
+        #  Set the screen
+        if screen is not None:
+            self.screen = screen

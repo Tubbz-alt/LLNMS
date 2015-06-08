@@ -4,12 +4,13 @@
 import curses
 
 #  LLNMS Libraries
-import CursesTable 
+import CursesTable
+from UI_Window_Base import Base_Window_Type
 
 # ---------------------------------------- #
 # -     Network Configuration Window     - #
 # ---------------------------------------- #
-class NetworkConfigurationWindow(object):
+class NetworkConfigurationWindow(Base_Window_Type):
 
     #  Default screen
     screen = None
@@ -23,10 +24,10 @@ class NetworkConfigurationWindow(object):
     # -------------------------- #
     # -      Constructor       - #
     # -------------------------- #
-    def __init__(self, screen ):
+    def __init__(self, title = None, screen = None ):
 
-        #  Set the screen
-        self.screen = screen
+        #  Build the parent
+        Base_Window_Type.__init__(self, screen=screen, title="LLNMS Network Status")
 
     # ------------------------------------ #
     # -      Print Network Summary       - #
@@ -56,8 +57,17 @@ class NetworkConfigurationWindow(object):
              # get input
             c = self.screen.getch()
 
+            #  Check for exit
             if c == ord('q'):
                 self.exit_network_configuration_page = True
+
+            #  Check for up arrow
+            elif c == curses.KEY_UP:
+                self.current_status = max( self.current_status-1, 0)
+
+            #  Check the down arrow
+            elif c == curses.KEY_DOWN:
+                self.current_status = min( self.current_status+1, len(llnms_state.network_status.network_assets))
 
         #  Return the update llnms state
         return llnms_state
@@ -107,20 +117,27 @@ class NetworkConfigurationWindow(object):
         table.Set_Column_Alignment( 3, CursesTable.StringAlignment.ALIGN_LEFT )
         table.Set_Column_Alignment( 4, CursesTable.StringAlignment.ALIGN_LEFT )
 
-
-
         #  Load the table
         for x in xrange( 0, len(llnms_state.network_status.network_assets)):
 
-            #  Set the Name
+            #  Set the hostname
             table.Set_Item( 0, x+1, llnms_state.network_status.network_assets[x].hostname )
 
-            #  Set the start address
+            #  Set the ip address
             table.Set_Item( 1, x+1, llnms_state.network_status.network_assets[x].ip_address )
 
-            #  Set the end address
+            #  Set the network name
             table.Set_Item( 2, x+1, llnms_state.network_status.network_assets[x].network_name )
 
+            #  Set the time
+            table.Set_Item( 3, x+1, llnms_state.network_status.network_assets[x].status_list[-1][0] )
+
+            #  Set the status
+            state = llnms_state.network_status.network_assets[x].status_list[-1][1]
+            value = 'Non-Responsive'
+            if state == True:
+                value = 'Responsive'
+            table.Set_Item( 4, x+1,  value)
 
         #  Print the Table
         min_col = 2

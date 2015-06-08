@@ -14,9 +14,6 @@ import CursesTable
 # ---------------------------------------- #
 class AssetSummaryWindow(Base_Window_Type):
 
-    # Default NCurses Screen
-    screen = []
-
     #  Exit loop variable
     exit_window = False
 
@@ -29,13 +26,10 @@ class AssetSummaryWindow(Base_Window_Type):
     # ------------------------------- #
     # -        Constructor          - #
     # ------------------------------- #
-    def __init__(self, screen ):
+    def __init__(self, screen = None, title=None ):
 
         #  Build the Parent
-        Base_Window_Type.__init__(self, "Asset Summary Window")
-
-        #  Set the screen
-        self.screen = screen
+        Base_Window_Type.__init__(self, title="Asset Summary Window", screen=screen)
 
         #  Add the add network window
         self.sub_windows.append(AssetAddWindow(screen))
@@ -111,24 +105,41 @@ class AssetSummaryWindow(Base_Window_Type):
     def Render_Asset_Summary_Table(self, llnms_state, min_row, max_row ):
 
         #  Create the table
-        table = CursesTable.CursesTable( 1, 1 )
+        table = CursesTable.CursesTable( 4, 1 )
 
         #  Set the column headers
-        table.Set_Column_Header_Item( 0, ' Asset Name', 0.40)
+        table.Set_Column_Header_Item( 0, ' Hostname',    0.20)
+        table.Set_Column_Header_Item( 1, ' IP Address',  0.25)
+        table.Set_Column_Header_Item( 2, ' Description', 0.40)
+        table.Set_Column_Header_Item( 3, ' Scanners',    0.15)
 
         table.Set_Column_Alignment( 0, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 1, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 2, CursesTable.StringAlignment.ALIGN_LEFT )
+        table.Set_Column_Alignment( 3, CursesTable.StringAlignment.ALIGN_LEFT )
+
+        #  Get the asset list
+        assets = llnms_state.assets
 
         #  Load the table
-        for x in xrange( 0, len(llnms_state.networks)):
+        counter = 1
+        for x in xrange( 0, len(assets)):
 
-            #  Set the Name
-            table.Set_Item( 0, x+1, llnms_state.networks[x].name )
+            #  Set the Hostname
+            table.Set_Item( 0, counter, assets[x].hostname )
 
-            #  Set the start address
-            #table.Set_Item( 1, x+1, llnms_state.networks[x].address_start )
+            #  Set the IP Address
+            table.Set_Item( 1, counter, assets[x].address )
 
-            #  Set the end address
-            #table.Set_Item( 2, x+1, llnms_state.networks[x].address_end )
+            #  Set the description
+            table.Set_Item( 2, counter, assets[x].description )
+
+            #  Set the scanners
+            scanners = assets[x].scanners
+            for y in xrange(0, len(scanners)):
+                table.Set_Item( 3, counter, scanners[y].id )
+                counter += 1
+            counter += 1
 
         #  Print the Table
         min_col = 2
