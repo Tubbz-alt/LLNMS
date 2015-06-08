@@ -6,6 +6,8 @@ from network_summary_page       import *
 from AssetSummaryWindow         import *
 from ScannerSummaryWindow       import *
 from UI_Window_Base import Base_Window_Type
+from EventManager import EventManager
+import handlers
 
 #  Python Libraries
 import time
@@ -35,6 +37,9 @@ class MainWindow(Base_Window_Type):
     #  List of subwindows
     sub_windows = []
 
+    #  Current window
+    current_window = -1
+
     #  Network Summary Page Index
     NETWORK_SUMMARY_INDEX = 0
 
@@ -47,6 +52,9 @@ class MainWindow(Base_Window_Type):
     #  Network Configuration Page Index
     NETWORK_CONFIGURATION_INDEX = 3
 
+    #  Event Manager
+    event_manager = EventManager()
+
 
     # -------------------------------- #
     # -        Constructor           - #
@@ -58,6 +66,16 @@ class MainWindow(Base_Window_Type):
                                    title="LLNMS Main Window",
                                    screen=screen)
 
+        #  Initialize Sub-Windows
+        self.Initialize_Sub_Windows()
+
+        #  Initialize Event Manager
+        self.Initialize_Event_Manager()
+
+    # ----------------------------------- #
+    # -     Initialize Sub-Windows      - #
+    # ----------------------------------- #
+    def Initialize_Sub_Windows(self):
         #  Create the network summary window
         self.sub_windows.append(NetworkSummaryWindow(title=None, screen=self.screen))
 
@@ -70,12 +88,20 @@ class MainWindow(Base_Window_Type):
         #  Create the network configuration Window
         self.sub_windows.append(NetworkConfigurationWindow(title=None, screen=self.screen))
 
+    # ---------------------------------------- #
+    # -     Initialize the event manager     - #
+    # ---------------------------------------- #
+    def Initialize_Event_Manager(self):
+
+        #  Create the main window handler
+        self.event_manager.Register_Handler( handlers.Main_Window_Handler(self) )
+
     # ---------------------------- #
     # -    Render the Screen     - #
     # ---------------------------- #
     def Render(self):
 
-        #  clear the screen
+       #  clear the screen
         self.screen.clear()
 
         #  Print the main menu
@@ -106,6 +132,7 @@ class MainWindow(Base_Window_Type):
             print_response_message( self.screen, 'Loading Network Summary Page')
 
             #  open network summary page
+            self.current_window = self.NETWORK_SUMMARY_INDEX
             llnms_state = self.sub_windows[self.NETWORK_SUMMARY_INDEX].Process( llnms_state )
 
         #  Check if the user wants to view the asset page
@@ -114,6 +141,7 @@ class MainWindow(Base_Window_Type):
             print_response_message( self.screen, 'Loading Asset Configuration Page')
 
             # Open asset page
+            self.current_window = self.ASSET_CONFIGURATION_INDEX
             llnms_state = self.sub_windows[self.ASSET_CONFIGURATION_INDEX].Process(llnms_state)
 
         #  Check if the user wants to view the scanner summary page
@@ -123,6 +151,7 @@ class MainWindow(Base_Window_Type):
             print_response_message( self.screen, 'Loading Scanner Summary Page')
 
             #  Open page
+            self.current_window = self.SCANNER_SUMMARY_INDEX
             llnms_state = self.sub_windows[self.SCANNER_SUMMARY_INDEX].Process( llnms_state )
 
         # check if user wants to view the network configuration page
@@ -132,6 +161,7 @@ class MainWindow(Base_Window_Type):
             print_response_message( self.screen, 'Loading Network Status Page')
 
             #  open network summary page
+            self.current_window = self.NETWORK_CONFIGURATION_INDEX
             llnms_state = self.sub_windows[self.NETWORK_CONFIGURATION_INDEX].Process( llnms_state )
 
         #  Return the updated state
@@ -152,6 +182,7 @@ class MainWindow(Base_Window_Type):
             c = self.screen.getch()
 
             #  Process the input
-            llnms_state = self.Process_Keyboard_Input( c, llnms_state )
+            llnms_state = self.event_manager.Process_Input(c, llnms_state )
+
 
         return llnms_state

@@ -168,3 +168,8 @@ class NetworkSummaryWindow(Base_Window_Type):
                             max_row,
                             self.current_network+1)
 
+    # -------------------------------------------------- #
+    # -    Command for externally closing the window   - #
+    # -------------------------------------------------- #
+    def Close_Window(self):
+        self.exit_window = True

@@ -134,3 +134,9 @@ class ScannerSummaryWindow(Base_Window_Type):
                             min_print_row,
                             curses.LINES-5,
                             self.current_scanner+1)
+
+    # -------------------------------------------------- #
+    # -    Command for externally closing the window   - #
+    # -------------------------------------------------- #
+    def Close_Window(self):
+        self.exit_window = True
