@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LLNMS Assets &mdash; LLNMS 1.0 documentation</title>
+  <title>LLNMS Installer Script &mdash; LLNMS 1.0 documentation</title>
   
 
   
@@ -30,9 +30,7 @@
   
 
   
-    <link rel="top" title="LLNMS 1.0 documentation" href="../index.html"/>
-        <link rel="next" title="LLNMS Commands" href="Commands.html"/>
-        <link rel="prev" title="LLNMS - Low-Level Network Management System" href="../index.html"/> 
+    <link rel="top" title="LLNMS 1.0 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -63,9 +61,9 @@
         
           
           
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Assets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#llnms-create-asset">llnms-create-asset</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Assets.html">LLNMS Assets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-create-asset">llnms-create-asset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Commands.html">LLNMS Commands</a></li>
@@ -93,10 +91,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>LLNMS Assets</li>
+    <li>LLNMS Installer Script</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../sources/llnms/Assets.txt" rel="nofollow"> View page source</a>
+          <a href="../sources/llnms/llnms_installer.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -104,28 +102,50 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="llnms-assets">
-<span id="llnms-asset-main"></span><h1>LLNMS Assets<a class="headerlink" href="#llnms-assets" title="Permalink to this headline">¶</a></h1>
-<p>Assets represent endpoints on a network.  For examples, an IP address
-would be an Asset.</p>
-<div class="section" id="llnms-create-asset">
-<h2>llnms-create-asset<a class="headerlink" href="#llnms-create-asset" title="Permalink to this headline">¶</a></h2>
-<p>Creates an LLNMS Asset.</p>
+  <div class="section" id="llnms-installer-script">
+<span id="llnms-installer"></span><h1>LLNMS Installer Script<a class="headerlink" href="#llnms-installer-script" title="Permalink to this headline">¶</a></h1>
+<p>The LLNMS Installer script can be run with the following command from the base
+directory.:</p>
+<div class="highlight-python"><div class="highlight"><pre>./llnms-installer.sh
+</pre></div>
+</div>
+<p>An output of help is given below.:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt;./llnms-installer.sh -h
+
+usage: ./llnms-installer.sh [options]
+
+     required flags (at least one must be specified):
+
+     -m, --make [system]  : Build the relevant system.
+         systems:
+         all [default]
+         core       - LLNMS core scripts.
+
+     -i, --install        : Install LLNMS Components
+         NOTE: Anything that was installed with make commands
+         will be installed.
+
+     -t, --test  [system] : Run unit tests
+         systems:
+         all [default]
+         core      - LLNMS core scripts
+
+     -c, --clean          : Remove all existing builds.
+
+     optional flags:
+         --release            : Create release build
+         --debug              : Create debugging build
+
+         -j [int]             : Set number of threads.
+
+         --PREFIX &lt;new path&gt;  : Set a new destination path.
+</pre></div>
 </div>
 </div>
 
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Commands.html" class="btn btn-neutral float-right" title="LLNMS Commands">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral" title="LLNMS - Low-Level Network Management System"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
