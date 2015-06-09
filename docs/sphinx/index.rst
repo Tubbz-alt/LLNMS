@@ -40,6 +40,20 @@ as a hostname, ip address, and description.  You bind scans to assets
 as well as run tasks on them.  For more information on creating and
 manipulating assets, see the :ref:`llnms_asset_main` page.
 
+Assets are currently provided the following attributes
+
+===========   =====================================
+Attribute     Description
+===========   =====================================
+hostname      Name of the system.
+ip4-address   Where on the network.
+description   Description of the system or purpose.
+===========   =====================================
+
+In addition, assets can have scans and tasks registered to them.
+This will be described later in further detail.  
+
+
 Contents:
 
 
