@@ -13,6 +13,7 @@ Contents:
    :maxdepth: 2
 
    llnms/Assets
+   llnms/Commands
 
 Indices and tables
 ==================
