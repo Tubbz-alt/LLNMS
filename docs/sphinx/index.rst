@@ -98,6 +98,7 @@ Contents:
     
    llnms/Assets
    llnms/Commands
+   llnms/Examples
 
 
 Indices and tables
