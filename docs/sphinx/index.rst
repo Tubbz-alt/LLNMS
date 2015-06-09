@@ -11,6 +11,19 @@ to work with minimal infrastructure.  It is essentially a series of shell comman
 run together, allow for more comprehensive monitoring capabilities.  It seeks to build on the 
 strengths of the Unix pipes and allow for simple (not necessarily easy) scripting.
 
+Installation
+============
+
+Since LLNMS is meant to be low-level, it does not have a heavy-duty installation process.  The only current
+requirement is xmlstarlet.  Hopefully, it will be removed with a pure Python XML utility.
+
+To install, the ``llnms-installer.sh`` script is provided.  This will build, then install any software. 
+See the :ref:`llnms_installer` page for more details.
+
+
+Overview
+========
+
 LLNMS uses these as the core elements.
 
  - Assets
@@ -35,6 +48,7 @@ Contents:
     
    llnms/Assets
    llnms/Commands
+
 
 Indices and tables
 ==================
