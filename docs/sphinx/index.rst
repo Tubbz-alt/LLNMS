@@ -54,6 +54,42 @@ In addition, assets can have scans and tasks registered to them.
 This will be described later in further detail.  
 
 
+Networks
+--------
+
+Networks represent a range of network addresses or locations.  Assets
+may reside in a network and a network may detect many potential assets, 
+some of which are not registered with LLNMS.  Networks currently have the following
+characteristics.
+
+============== ===================================
+Attribute      Description
+============== ===================================
+name            Name of network for identification
+address-start   Starting address for network
+address-end     Ending address for network
+============== ===================================
+
+
+Scanners
+---------
+
+Scanners are technically a subset of llnms tasks, however they differ
+in that they are not meant to modify the state of the system they are 
+operating on.  Like tasks, scanners are essentially commands that are run
+with a required and optional set of parameters. Due to the nature of operating
+on the shell-scripting layer, scanners can have configurations
+for different operating system, primarily Linux and Windows.
+
+
+
+Tasks
+------
+
+Tasks are jobs that can be run both on the scanning system and potentially on assets.
+
+
+
 Contents:
 
 
