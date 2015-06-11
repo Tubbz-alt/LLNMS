@@ -170,30 +170,34 @@ NETWORK_FILES=`ls $LLNMS_HOME/networks/*.llnms-network.xml 2> /dev/null`
 for NETWORK_FILE in $NETWORK_FILES; do
 
    
-    #  Print the filename
-    if [ "$FILE_ONLY" = '1' ]; then
-        printf "$NETWORK_FILE"
-    fi
-
+    
     #  Print the name
     NETWORK_NAME="`$LLNMS_HOME/bin/llnms-print-network-info -n  -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$NAME_ONLY" = '1' ]; then
         printf "$NETWORK_NAME"
 
     elif [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
-        printf "$NETWORK_NAME, "
+        printf "$NETWORK_NAME "
     fi
 
     #  Print the address start
     ADDRESS_START="`$LLNMS_HOME/bin/llnms-print-network-info -s -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
-        printf "$ADDRESS_START,  "
+        printf "$ADDRESS_START  "
     fi
 
     #  Print the address end
     ADDRESS_END="`$LLNMS_HOME/bin/llnms-print-network-info -e -f $NETWORK_FILE`"
     if [ "$OUTPUT_FORMAT" = 'LIST' -a "$FILE_ONLY" = '0' -a "$NAME_ONLY" = '0' ]; then
-        printf "$ADDRESS_END"
+        printf "$ADDRESS_END "
+    fi
+    
+    #  Print the filename
+    if [ "$OUTPUT_FORMAT" = 'LIST' -a "$NAME_ONLY" = '0' ]; then
+        printf "$NETWORK_FILE "
+    fi
+    if [ "$FILE_ONLY" = '1' ]; then
+        printf "$NETWORK_FILE"
     fi
 
     #  Print a new line

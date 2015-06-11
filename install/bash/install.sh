@@ -123,8 +123,14 @@ install_to_filesystem(){
     echo '      -> Copying llnms-print-network-info'
     cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
 
+    echo '      -> llnms-register-network-scanner.sh'   
+    cp 'src/bash/network/llnms-register-network-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-network-scanner"
+    
     echo '      -> Copying llnms-remove-network'    
     cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
+    
+    echo '      -> Copying llnms-scan-network'   
+    cp 'src/bash/network/llnms-scan-network.sh'          "$LLNMS_HOME/bin/llnms-scan-network"
     
     echo '      -> Copying llnms-scan-networks'   
     cp 'src/bash/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
