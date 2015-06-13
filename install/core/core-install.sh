@@ -1,11 +1,12 @@
 #!/bin/sh
 #
-#  Name:    install.sh
-#  Author:  Marvin Smith
-#  Date:    11/23/2013
+#    File:    core-install.sh
+#    Author:  Marvin Smith
+#    Date:    11/23/2013
 #
-#  Purpose:  LLNMS shell-script installer
+#    Purpose: Install core LLNMS components.
 #
+
 
 #------------------------------#
 #-     Usage Instructions     -#
@@ -78,7 +79,6 @@ build_and_verify_filestructure(){
 
 }
 
-
 #-----------------------------------------------#
 #-     Install all tools to the filesystem     -#
 #-----------------------------------------------#
@@ -89,22 +89,22 @@ install_to_filesystem(){
     echo '   -> Copying asset module scripts'
     
     echo '      -> llnms-create-asset.sh'
-    cp 'src/bash/assets/llnms-create-asset.sh'            "$LLNMS_HOME/bin/llnms-create-asset"
+    cp 'src/core/assets/llnms-create-asset.sh'            "$LLNMS_HOME/bin/llnms-create-asset"
     
     echo '      -> llnms-remove-asset.sh'
-    cp 'src/bash/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
+    cp 'src/core/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
     echo '      -> llnms-list-assets.sh'
-    cp 'src/bash/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-list-assets"
+    cp 'src/core/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-list-assets"
     
     echo '      -> llnms-print-asset-info.sh'
-    cp 'src/bash/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"
+    cp 'src/core/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"
     
     echo '      -> llnms-register-asset-scanner.sh'   
-    cp 'src/bash/assets/llnms-register-asset-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-asset-scanner"
+    cp 'src/core/assets/llnms-register-asset-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-asset-scanner"
     
     echo '      -> llnms-scan-asset.sh'                  
-    cp 'src/bash/assets/llnms-scan-asset.sh'              "$LLNMS_HOME/bin/llnms-scan-asset"
+    cp 'src/core/assets/llnms-scan-asset.sh'              "$LLNMS_HOME/bin/llnms-scan-asset"
 
 
     # networks
@@ -112,28 +112,28 @@ install_to_filesystem(){
     echo '   -> Copying network module scripts'
     
     echo '      -> Copying llnms-create-network'                
-    cp 'src/bash/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
+    cp 'src/core/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
     
     echo '      -> Copying llnms-list-networks'
-    cp 'src/bash/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
+    cp 'src/core/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
     
     echo '      -> Copying llnms-scan-address' 
-    cp 'src/bash/network/llnms-scan-address.sh'           "$LLNMS_HOME/bin/llnms-scan-address"
+    cp 'src/core/network/llnms-scan-address.sh'           "$LLNMS_HOME/bin/llnms-scan-address"
 
     echo '      -> Copying llnms-print-network-info'
-    cp 'src/bash/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
+    cp 'src/core/network/llnms-print-network-info.sh'     "$LLNMS_HOME/bin/llnms-print-network-info"
 
     echo '      -> llnms-register-network-scanner.sh'   
-    cp 'src/bash/network/llnms-register-network-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-network-scanner"
+    cp 'src/core/network/llnms-register-network-scanner.sh'  "$LLNMS_HOME/bin/llnms-register-network-scanner"
     
     echo '      -> Copying llnms-remove-network'    
-    cp 'src/bash/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
+    cp 'src/core/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
     
     echo '      -> Copying llnms-scan-network'   
-    cp 'src/bash/network/llnms-scan-network.sh'          "$LLNMS_HOME/bin/llnms-scan-network"
+    cp 'src/core/network/llnms-scan-network.sh'          "$LLNMS_HOME/bin/llnms-scan-network"
     
     echo '      -> Copying llnms-scan-networks'   
-    cp 'src/bash/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
+    cp 'src/core/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
 
 
     #  Scanning utilities
@@ -141,30 +141,30 @@ install_to_filesystem(){
     echo '   -> Copying scanning module scripts'
     
     echo '      -> llnms-list-scanners.sh'
-    cp 'src/bash/scanning/llnms-list-scanners.sh'       "$LLNMS_HOME/bin/llnms-list-scanners"
+    cp 'src/core/scanning/llnms-list-scanners.sh'       "$LLNMS_HOME/bin/llnms-list-scanners"
 
     echo '      -> llnms-register-scanner.sh'
-    cp 'src/bash/scanning/llnms-register-scanner.sh'    "$LLNMS_HOME/bin/llnms-register-scanner"
+    cp 'src/core/scanning/llnms-register-scanner.sh'    "$LLNMS_HOME/bin/llnms-register-scanner"
     
     echo '      -> llnms-print-scanner-info.sh' 
-    cp 'src/bash/scanning/llnms-print-scanner-info.sh'  "$LLNMS_HOME/bin/llnms-print-scanner-info"
+    cp 'src/core/scanning/llnms-print-scanner-info.sh'  "$LLNMS_HOME/bin/llnms-print-scanner-info"
     
     echo '      -> llnms scanner scripts'
-    cp -r  src/bash/scanning/scanners/*                 "$LLNMS_HOME/scanning/"
+    cp -r  src/core/scanning/scanners/*                 "$LLNMS_HOME/scanning/"
 
     #  config utilities
     echo '      -> llnms info script'
-    cp src/bash/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
+    cp src/core/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
     
     echo '      -> llnms-locking-manager'
-    cp 'src/bash/utilities/llnms-locking-manager.sh'    "$LLNMS_HOME/bin/llnms-locking-manager"
+    cp 'src/core/utilities/llnms-locking-manager.sh'    "$LLNMS_HOME/bin/llnms-locking-manager"
 
     #  Python Utilities
     mkdir -p "$LLNMS_HOME/bin/python"
 
     echo '      -> llnms-viewer'
-    cp 'src/python/llnms-viewer.py'                     "$LLNMS_HOME/bin/python/"
-    cp -r 'src/python/llnms'                            "$LLNMS_HOME/bin/python/"
+    cp 'src/core/llnms-viewer.py'                     "$LLNMS_HOME/bin/python/"
+    cp -r 'src/core/llnms'                            "$LLNMS_HOME/bin/python/"
 
 
 
@@ -263,11 +263,11 @@ create_configuration_file(){
 
     #  If we are using Darwin, then build the Darwin-specific options
     if [ "`uname`" = "Darwin" ]; then
-        ./install/bash/darwin-config.sh "$LLNMS_HOME"
+        ./install/core/darwin-config.sh "$LLNMS_HOME"
 
     #  If we are using Linux, add the -e to the echo
     else
-        ./install/bash/linux-config.sh "$LLNMS_HOME"
+        ./install/core/linux-config.sh "$LLNMS_HOME"
     fi
 
 
@@ -326,7 +326,7 @@ for OPTION in $@; do
 done
 
 #  import our default configuration
-. install/bash/options.sh $LLNMS_HOME
+. install/core/options.sh $LLNMS_HOME
 
 #  build the baseline filestructure
 build_and_verify_filestructure
@@ -339,7 +339,7 @@ check_prerequisites
 echo ''
 if [ $UPDATE_LLNMS -eq 1 ]; then
     echo "   -> Updating LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
-    ./install/bash/version.sh -i subminor
+    ./install/core/version.sh -i subminor
 else
     echo "   -> Skipping update of LLNMS Version Information in $LLNMS_HOME/config/llnms-info.sh"
 fi

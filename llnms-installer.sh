@@ -151,8 +151,8 @@ make_core_software(){
         MAKE_PATH='debug/llnms'
     fi
     
-    #  Call the installer for bash
-    ./install/bash/install.sh "-n" "--PREFIX" "$MAKE_PATH"
+    #  Call the installer for core
+    ./install/core/core-install.sh "-n" "--PREFIX" "$MAKE_PATH"
 
 
 }
@@ -462,7 +462,7 @@ fi
 #----------------------------------------------------------#
 if [ "$MAKE_FLAG" = '1' ]; then
 
-    #  install the bash components into llnms_home
+    #  install the core components into llnms_home
     if [ "$MAKE_COMPONENTS" = 'all' -o "$MAKE_COMPONENTS" = 'core' ]; then
         make_core_software  $MAKE_BUILD_TYPE
     fi
@@ -519,7 +519,7 @@ if [ "$TEST_FLAG" = '1' ]; then
         fi
         
         #  Run the command
-        ./test/bash/run-tests.sh 
+        ./test/core/run-tests.sh 
     fi
 
 fi
