@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LLNMS Assets &mdash; LLNMS 1.0 documentation</title>
+  <title>LLNMS Networks &mdash; LLNMS 1.0 documentation</title>
   
 
   
@@ -31,8 +31,8 @@
 
   
     <link rel="top" title="LLNMS 1.0 documentation" href="../index.html"/>
-        <link rel="next" title="LLNMS Networks" href="Networks.html"/>
-        <link rel="prev" title="LLNMS - Low-Level Network Management System" href="../index.html"/> 
+        <link rel="next" title="LLNMS Commands" href="Commands.html"/>
+        <link rel="prev" title="LLNMS Assets" href="Assets.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,15 +64,15 @@
           
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Assets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#llnms-create-asset">llnms-create-asset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assets.html">LLNMS Assets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-create-asset">llnms-create-asset</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Networks.html">LLNMS Networks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-create-network">llnms-create-network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-list-networks">llnms-list-networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-print-network-info">llnms-print-network-info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-scan-network">llnms-scan-network</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-create-network">llnms-create-network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-list-networks">llnms-list-networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-print-network-info">llnms-print-network-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-scan-network">llnms-scan-network</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Commands.html">LLNMS Commands</a></li>
@@ -104,10 +104,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>LLNMS Assets</li>
+    <li>LLNMS Networks</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../sources/llnms/Assets.txt" rel="nofollow"> View page source</a>
+          <a href="../sources/llnms/Networks.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -115,13 +115,55 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="llnms-assets">
-<span id="llnms-asset-main"></span><h1>LLNMS Assets<a class="headerlink" href="#llnms-assets" title="Permalink to this headline">¶</a></h1>
-<p>Assets represent single endpoints on a network.  For examples, an IP address
-would be an Asset.</p>
-<div class="section" id="llnms-create-asset">
-<h2>llnms-create-asset<a class="headerlink" href="#llnms-create-asset" title="Permalink to this headline">¶</a></h2>
-<p>Creates an LLNMS Asset.</p>
+  <div class="section" id="llnms-networks">
+<span id="llnms-network-main"></span><h1>LLNMS Networks<a class="headerlink" href="#llnms-networks" title="Permalink to this headline">¶</a></h1>
+<p>Networks represent a range of endpoints on a network.  The endpoints
+may or may not be registered assets.</p>
+<div class="section" id="llnms-create-network">
+<h2>llnms-create-network<a class="headerlink" href="#llnms-create-network" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Create an LLNMS Network.</div></blockquote>
+<div class="topic">
+<p class="topic-title first">-h &#8211;help</p>
+<p>Print usage options and exit.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-v &#8211;version</p>
+<p>Print LLNMS version information.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-i &#8211;interactive</p>
+<p>Run create network in interactive mode.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-o [output path]</p>
+<p>Save the LLNMS network to the specified output path. Otherwise,
+a default path will be generated.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-n &#8211;name [new-name]</p>
+<p>Set the name of the new network.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-as &#8211;address-start [address]</p>
+<p>Set the starting address of the network.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-ae &#8211;address-end [address]</p>
+<p>Set the ending address of the network.</p>
+</div>
+</div>
+<div class="section" id="llnms-list-networks">
+<h2>llnms-list-networks<a class="headerlink" href="#llnms-list-networks" title="Permalink to this headline">¶</a></h2>
+<p>List the registered LLNMS networks.</p>
+</div>
+<div class="section" id="llnms-print-network-info">
+<h2>llnms-print-network-info<a class="headerlink" href="#llnms-print-network-info" title="Permalink to this headline">¶</a></h2>
+<p>Print info about LLNMS networks.</p>
+</div>
+<div class="section" id="llnms-scan-network">
+<h2>llnms-scan-network<a class="headerlink" href="#llnms-scan-network" title="Permalink to this headline">¶</a></h2>
+<p>Scan the LLNMS network.</p>
 </div>
 </div>
 
@@ -131,10 +173,10 @@ would be an Asset.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Networks.html" class="btn btn-neutral float-right" title="LLNMS Networks">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Commands.html" class="btn btn-neutral float-right" title="LLNMS Commands">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="LLNMS - Low-Level Network Management System"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Assets.html" class="btn btn-neutral" title="LLNMS Assets"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LLNMS Assets &mdash; LLNMS 1.0 documentation</title>
+  <title>LLNMS Examples &mdash; LLNMS 1.0 documentation</title>
   
 
   
@@ -31,8 +31,7 @@
 
   
     <link rel="top" title="LLNMS 1.0 documentation" href="../index.html"/>
-        <link rel="next" title="LLNMS Networks" href="Networks.html"/>
-        <link rel="prev" title="LLNMS - Low-Level Network Management System" href="../index.html"/> 
+        <link rel="prev" title="LLNMS Commands" href="Commands.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,20 +63,13 @@
           
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Assets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#llnms-create-asset">llnms-create-asset</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Networks.html">LLNMS Networks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-create-network">llnms-create-network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-list-networks">llnms-list-networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-print-network-info">llnms-print-network-info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Networks.html#llnms-scan-network">llnms-scan-network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assets.html">LLNMS Assets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-create-asset">llnms-create-asset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Commands.html">LLNMS Commands</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">LLNMS Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Examples.html#setting-up-a-home-network">Setting up a Home Network</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-home-network">Setting up a Home Network</a></li>
 </ul>
 </li>
 </ul>
@@ -104,10 +96,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>LLNMS Assets</li>
+    <li>LLNMS Examples</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../sources/llnms/Assets.txt" rel="nofollow"> View page source</a>
+          <a href="../sources/llnms/Examples.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -115,13 +107,30 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="llnms-assets">
-<span id="llnms-asset-main"></span><h1>LLNMS Assets<a class="headerlink" href="#llnms-assets" title="Permalink to this headline">¶</a></h1>
-<p>Assets represent single endpoints on a network.  For examples, an IP address
-would be an Asset.</p>
-<div class="section" id="llnms-create-asset">
-<h2>llnms-create-asset<a class="headerlink" href="#llnms-create-asset" title="Permalink to this headline">¶</a></h2>
-<p>Creates an LLNMS Asset.</p>
+  <div class="section" id="llnms-examples">
+<span id="id1"></span><h1>LLNMS Examples<a class="headerlink" href="#llnms-examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-a-home-network">
+<h2>Setting up a Home Network<a class="headerlink" href="#setting-up-a-home-network" title="Permalink to this headline">¶</a></h2>
+<p>This first part will show you the basic steps to getting a basic LLNMS setup
+for a home network.</p>
+<div class="section" id="define-authorized-systems">
+<h3>Define Authorized Systems<a class="headerlink" href="#define-authorized-systems" title="Permalink to this headline">¶</a></h3>
+<p>Given a typical home network with the network range of say <code class="docutils literal"><span class="pre">192.168.1.1</span></code> to <code class="docutils literal"><span class="pre">192.168.1.254</span></code>,
+first define the network and its key assets.:</p>
+<div class="highlight-python"><div class="highlight"><pre>#  Create the network
+llnms-create-network -n &quot;Home Network&quot; -as 192.168.1.1 -ae 192.168.1.254
+
+#  Create an asset for the router
+llnms-create-asset -host my-router -ip4 192.168.1.1 -d &#39;Home router&#39;
+
+#  Create an asset for ourselves
+llnms-create-asset -host me  -ip4 192.168.1.8 -d &#39;My laptop&#39;
+</pre></div>
+</div>
+</div>
+<div class="section" id="register-scanners-with-llnms">
+<h3>Register Scanners with LLNMS<a class="headerlink" href="#register-scanners-with-llnms" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 </div>
 
@@ -131,10 +140,8 @@ would be an Asset.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Networks.html" class="btn btn-neutral float-right" title="LLNMS Networks">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="../index.html" class="btn btn-neutral" title="LLNMS - Low-Level Network Management System"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Commands.html" class="btn btn-neutral" title="LLNMS Commands"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
