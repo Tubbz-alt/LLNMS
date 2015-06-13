@@ -9,6 +9,23 @@
 
 
 #------------------------------------------#
+#-       Install the Python Library       -#
+#------------------------------------------#
+install_llnms_python_library(){
+
+    #  Copy the python library
+    echo "installing llnms python library to $LLNMS_HOME/lib/llnms"
+
+    #  Create destination
+    mkdir -p $LLNMS_HOME/lib
+
+    #  Copy all files
+    cp -r src/core/python/llnms $LLNMS_HOME/lib/
+
+}
+
+
+#------------------------------------------#
 #-       Install the Python Viewer        -#
 #------------------------------------------#
 install_llnms_python_viewer(){
@@ -92,6 +109,8 @@ done
 
 if [ "$INSTALL_MODE" == "INSTALL" ]; then
     install_llnms_python_viewer
+    install_llnms_python_library
+
 elif [ "$INSTALL_MODE" == "UNINSTALL" ]; then
     uninstall_llnms_python_viewer
 fi

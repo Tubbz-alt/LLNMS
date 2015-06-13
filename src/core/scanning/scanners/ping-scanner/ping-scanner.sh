@@ -212,9 +212,9 @@ CMD="ping -c $MAX_TRIES_VALUE -t $TIMEOUT_VALUE $IP4ADDRESS_VALUE $QUIET_COMP"
 
 #  Run the command
 if [ "$VERBOSE" = '1' ]; then
-    $CMD &> /dev/null
+    $CMD
 else
-    $CMD 
+    $CMD &> /dev/null
 fi
 RES="$?"
 
@@ -222,8 +222,10 @@ RES="$?"
 ECODE=""
 if [ "$RES" = '0' ]; then
     ECODE=0
+    echo 'PASSED'
 else
     ECODE=1
+    echo 'FAILED'
 fi
 
 

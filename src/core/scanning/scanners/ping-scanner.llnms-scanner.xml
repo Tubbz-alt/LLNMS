@@ -7,7 +7,7 @@
     <configuration>
         <linux>
             <command>ping-scanner.sh</command>
-            <base-path>/var/tmp/llnms/scanning/ping-scanner</base-path>
+            <base-path>scanning/ping-scanner</base-path>
             <number-arguments>2</number-arguments>
             <!-- 
                 ASSET SCANNER ARGUMENT NOTES

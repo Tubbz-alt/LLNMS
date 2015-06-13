@@ -19,7 +19,7 @@ fi
 echo 'Scanning Networks'
 for NETWORK in $NETWORK_LIST; do
     echo "    Scanning Network: $NETWORK"
-    #llnms-scan-network -n $NETWORK -s ping-scanner &> $LLNMS_HOME/temp/llnms-scan-results-temp.txt
+    llnms-scan-network -n $NETWORK -s ping-scanner &> $LLNMS_HOME/temp/llnms-scan-results-temp.txt
 done
 
 

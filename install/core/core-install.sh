@@ -130,7 +130,7 @@ install_to_filesystem(){
     cp 'src/core/network/llnms-remove-network.sh'         "$LLNMS_HOME/bin/llnms-remove-network"
     
     echo '      -> Copying llnms-scan-network'   
-    cp 'src/core/network/llnms-scan-network.sh'          "$LLNMS_HOME/bin/llnms-scan-network"
+    cp 'src/core/network/llnms-scan-network.py'          "$LLNMS_HOME/bin/llnms-scan-network"
     
     echo '      -> Copying llnms-scan-networks'   
     cp 'src/core/network/llnms-scan-networks.sh'          "$LLNMS_HOME/bin/llnms-scan-networks"
@@ -166,8 +166,11 @@ install_to_filesystem(){
     cp 'src/core/viewer/llnms-viewer.py'              "$LLNMS_HOME/bin/python/"
     cp -r 'src/core/viewer/llnms'                     "$LLNMS_HOME/bin/python/"
 
-
-
+    #  Python Library
+    echo '      -> llnms python libraries'
+    mkdir -p $LLNMS_HOME/lib/llnms
+    cp -r 'src/core/python/llnms'                     "$LLNMS_HOME/lib/"
+    cp 'src/core/python/__init__.py'                  "$LLNMS_HOME/lib/"
 }
 
 #----------------------------#
