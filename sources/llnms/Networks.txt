@@ -6,6 +6,7 @@ LLNMS Networks
 Networks represent a range of endpoints on a network.  The endpoints 
 may or may not be registered assets.
 
+.. _llnms_create_network_def:
 
 llnms-create-network
 --------------------
@@ -41,6 +42,8 @@ llnms-create-network
 
     Set the ending address of the network.
 
+
+.. _llnms-list-networks-def:
 
 llnms-list-networks
 -------------------

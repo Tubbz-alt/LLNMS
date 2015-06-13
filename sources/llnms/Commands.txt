@@ -6,8 +6,8 @@ LLNMS Commands
 
 Below is a list of all current LLNMS commands.  
 
- - llnms-create-asset
- - llnms-create-network
+ - :ref:`llnms-create-asset-def`
+ - :ref:`llnms_create_network_def`
  - llnms-list-assets
  - llnms-list-networks
  - llnms-list-scanners
