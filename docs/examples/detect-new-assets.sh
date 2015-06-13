@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+
+#  Define LLNMS Home for good measure
+LLNMS_HOME=/var/tmp/llnms
 
 #  Get the current network list
+echo 'Fetching Network List'
 NETWORK_LIST=`llnms-list-networks --name-only`
 
 
@@ -12,7 +16,26 @@ fi
 
 
 #  Scan each network
+echo 'Scanning Networks'
 for NETWORK in $NETWORK_LIST; do
-    llnms-scan-network -n $NETWORK -s ping-scanner -l
+    echo "    Scanning Network: $NETWORK"
+    #llnms-scan-network -n $NETWORK -s ping-scanner &> $LLNMS_HOME/temp/llnms-scan-results-temp.txt
 done
+
+
+#   Compare the list against assets
+DETECTED_NETWORK_ASSETS=`cat $LLNMS_HOME/temp/llnms-scan-results-temp.txt | grep 'PASSED' | awk '{ print $1; }'`
+
+
+#   Compare against asset list
+ASSET_LIST=`llnms-list-assets -l -ip4`
+
+
+#  Compute New Item List
+NEW_ASSETS=`comm -23  <(cat $LLNMS_HOME/temp/llnms-scan-results-temp.txt | grep PASSED | awk '{print $1;}' | sort) <(llnms-list-assets -l -ip4 | sort)`
+
+
+#  Print New Assets
+printf "\nNew Assets\n"
+echo "$NEW_ASSETS"
 

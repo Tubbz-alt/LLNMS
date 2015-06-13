@@ -23,6 +23,8 @@ usage(){
     echo ''
     echo '    Optional Flags:'
     echo '        -m, --max-tries [integer > 0] : Max number of failures before quitting.'
+    echo '        -t, --timeout   [integer > 0] : Timeout in seconds before quitting.'
+    echo '        -l, --lock                    : Use locks.'
     echo ''
 }
 
@@ -107,7 +109,14 @@ IP4ADDRESS_FLAG=0
 IP4ADDRESS_VALUE=''
 
 MAX_TRIES_FLAG=0
-IP4ADDRESS_VALUE='3'
+MAX_TRIES_VALUE='3'
+
+TIMEOUT_FLAG=0
+TIMEOUT_VALUE=1
+
+LOCK_FLAG=0
+LOCK_VALUE=0
+LOCK_MAX_PROCESSES='4'
 
 #   Parse Command-Line Options
 for OPTION in "$@"; do
@@ -142,6 +151,17 @@ for OPTION in "$@"; do
             IP4ADDRESS_FLAG=1
             ;;
 
+        # Timeout Flag
+        '-t' | '--timeout')
+            TIMEOUT_FLAG=1
+            ;;
+
+        #  Lock Flag
+        '-l'|'--lock')
+            LOCK_FLAG=1
+            LOCK_VALUE=1
+            ;;
+
         #  Process flag values or print error message
         *)
             
@@ -149,9 +169,17 @@ for OPTION in "$@"; do
                 MAX_TRIES_FLAG=0
                 MAX_TRIES_VALUE="$OPTION"
             
+            elif [ "$TIMEOUT_FLAG" = '1' ]; then
+                TIMEOUT_FLAG=0
+                TIMEOUT_VALUE=$OPTION
+
             elif [ "$IP4ADDRESS_FLAG" = '1' ]; then
                 IP4ADDRESS_FLAG=0
                 IP4ADDRESS_VALUE=$OPTION
+            
+            elif [ "$LOCK_FLAG" = '1' ]; then
+                LOCK_FLAG=0
+                LOCK_DIR=$OPTION
 
             else
                 error "Unknown option $OPTION"
@@ -165,17 +193,45 @@ for OPTION in "$@"; do
     esac
 done
 
-
-#  Build the Ping Command
-CMD="ping -c $MAX_TRIES_VALUE $IP4ADDRESS_VALUE"
-
-$CMD
-
-#  Check result
-if [ "$?" = '0' ]; then
-    exit 0
-else
+#  Make sure the user provided an IP Address
+if [ "$IP4ADDRESS_VALUE" = '' ]; then
+    error 'No ip4 address provided.'
+    usage
     exit 1
 fi
 
+
+#  Set the lock
+if [ "$LOCK_VALUE" = '1' ]; then
+    llnms-locking-manager lock -w -l $LLNMS_HOME/temp/lock-manager -m $LOCK_MAX_PROCESSES -p $$
+fi
+
+#  Build the Ping Command
+CMD="ping -c $MAX_TRIES_VALUE -t $TIMEOUT_VALUE $IP4ADDRESS_VALUE $QUIET_COMP"
+
+
+#  Run the command
+if [ "$VERBOSE" = '1' ]; then
+    $CMD &> /dev/null
+else
+    $CMD 
+fi
+RES="$?"
+
+#  Check result
+ECODE=""
+if [ "$RES" = '0' ]; then
+    ECODE=0
+else
+    ECODE=1
+fi
+
+
+#  Unlock
+if [ "$LOCK_VALUE" = '1' ]; then
+    llnms-locking-manager unlock -w -l $LLNMS_HOME/temp/lock-manager -m $LOCK_MAX_PROCESSES -p $$
+fi
+
+# Quit
+exit $ECODE
 

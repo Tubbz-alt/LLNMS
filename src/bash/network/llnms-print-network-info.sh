@@ -165,7 +165,7 @@ Get_Scanner_Argument_Count()
     IDX="`Get_Scanner_ID $1`"
 
     #  Get the value of the argument
-    echo "`xmlstarlet sel -t -m //llnms-network/scanners/scanner[$IDX]/argument -n -v @value $FILE_VALUE | sed '/^\s*$/d' | wc -l | sed 's/ *//g'`"
+    echo "`xmlstarlet sel -t -m //llnms-network/scanners/scanner[$IDX]/argument -n -v @name $FILE_VALUE | sed '/^\s*$/d' | wc -l | sed 's/ *//g'`"
 }
 
 
@@ -174,9 +174,14 @@ Get_Scanner_Argument_Count()
 #------------------------#
 Print_Data()
 {
+    #  Set the values
+    val1="$val1"
+    val2="$val2"
+   
+
     #  Get the format
     if [ "$FORMAT" = 'pretty' ]; then
-        printf "%12s:  %-12s\n" "$2" "$1"
+        printf "%12s:  %-12s\n" "$val2" "$val1"
     else
 
         #  Add space for gap
@@ -197,15 +202,15 @@ Print_Data()
 Print_Scanner_Data()
 {
     #  Get the arguments
-    IDX=$1
+    TIDX=$1
     SCANNER_NAME=$2
     ARG_CNT=$3
 
     #  Get the format
     if [ "$FORMAT" = 'pretty' ]; then
         #  Print the name and id
-        printf  "%12s:  %-29s\n"  "Scanner" "$1"
-        printf  "%20s  %-14s\n"  "-name    " "$2"
+        printf  "%12s:  %-29s\n"  "Scanner" "$TIDX"
+        printf  "%20s  %-14s\n"  "-name    " "$SCANNER_NAME"
         
         # Iterate over arguments
         for ((X=1;X<=${ARG_CNT};X++)); do
@@ -496,6 +501,9 @@ fi
 #  Scanner Argument Value
 if [ "$SCANNER_ARG_VALUE_FLAG" = '1' ]; then
     PRINT_INFO=`Get_Scanner_Argument_Value $SCANNER_ARG_ID $SCANNER_ARG_NO`
+    if [ "$PRINT_INFO" = '' ]; then
+        PRINT_INFO='__NULL__'
+    fi
     Print_Data $PRINT_INFO 'Scanner Argument Value'
     DATA_PRINTED=1
 fi

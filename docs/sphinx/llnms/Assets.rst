@@ -3,7 +3,7 @@
 LLNMS Assets
 ============
 
-Assets represent endpoints on a network.  For examples, an IP address
+Assets represent single endpoints on a network.  For examples, an IP address
 would be an Asset.
 
 

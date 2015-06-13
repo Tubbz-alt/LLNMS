@@ -69,6 +69,7 @@ usage(){
     echo '      --verbose     :  Print program output to stdout (DEFAULT)'
     echo '      --quiet       :  Do not print program output to stdout'
     echo ''
+    echo '      -n <network>     : Specify network name.'
     echo '      -s <scanner-id>  : Run a specific scanner on network.'
     echo ''
     echo '      -l | --list   :  Print results in list format.'
@@ -112,16 +113,22 @@ get_scanner_path_from_id(){
 Run_Scan(){
     
     #  Grab address
-    ADDRESS=$ADDRESS
+    ADDRESS=$TEST_ADDRESS
     
     #  get the argument-list for the scanner
-    ARGC=`llnms-print-network-info -f $NETWORK_PATH -sac $SCANNER`
+    ARGC=`llnms-print-network-info -f $NETWORK_PATH -sac $SCANNER_VALUE`
     ARGLIST=''
+
     for ((x=1; x<=$ARGC; x++ )); do
         
         #  Get the arg value
-        ARGFLG=`llnms-print-network-info -f $NETWORK_PATH -san $SCANNER $x`
-        ARGVAL=`llnms-print-network-info -f $NETWORK_PATH -sav $SCANNER $x`
+        ARGFLG=`llnms-print-network-info -f $NETWORK_PATH -san $SCANNER_VALUE $x`
+        ARGVAL=`llnms-print-network-info -f $NETWORK_PATH -sav $SCANNER_VALUE $x`
+
+        #  Check if the argument is the ip4-address
+        if [ "$ARGFLG" = 'ip4-address' ]; then
+            ARGVAL=$ADDRESS
+        fi
 
         ARGLIST="$ARGLIST --$ARGFLG $ARGVAL"
     done
@@ -130,22 +137,20 @@ Run_Scan(){
     COMMAND_RUN="$SCANNER_BASE_PATH/$SCANNER_CMD $ARGLIST"
     
     #  Running command
-    echo "Running $COMMAND_RUN"
     CMD_OUTPUT=`$COMMAND_RUN`
-    
-    echo $CMD_OUTPUT 
-    #&> $LLNMS_HOME/log/llnms-scan-asset.log
-    
-    #  Grab the output
     RESULT="$?"
     
+    #  Log Output
+    echo $CMD_OUTPUT &> $LLNMS_HOME/log/llnms-scan-asset.log
+    
     if [ "$VERBOSE_FLAG" = '1' ]; then
+        echo "Running: $COMMAND_RUN"
         echo "$CMD_OUTPUT"
     else
         if [ "$RESULT" = '0' ]; then
-            echo 'PASSED'
+            printf '%s PASSED\n' $TEST_ADDRESS
         else
-            echo 'FAILED'
+            printf '%s FAILED\n' $TEST_ADDRESS
         fi
     fi
 }
@@ -237,15 +242,31 @@ for OPTION in "$@"; do
     esac
 done
 
+#---------------------------------#
+#-     Check required inputs     -#
+#---------------------------------#
+if [ "$NETWORK_VALUE" = '' ]; then
+    error "No network value specified."
+    usage
+    exit 1
+fi
+if [ "$SCANNER_VALUE" = '' ]; then
+    error "No scanner value specified."
+    usage
+    exit 1
+fi
+
 #----------------------------------------#
 #-     Make sure the network exists     -#
 #----------------------------------------#
 if [ ! "`llnms-list-networks --name-only | grep $NETWORK_VALUE`" = "$NETWORK_VALUE" ]; then
     error "No network found matching $NETWORK_VALUE"
+    exit 1
 fi
 NETWORK_PATH=`llnms-list-networks -l | grep $NETWORK_VALUE | awk '{print $4;}'`
 if [ ! -f "$NETWORK_PATH" ]; then
     error "No LLNMS network file found matching $NETWORK_VALUE"
+    exit 1
 fi
 
 
@@ -260,13 +281,12 @@ if [ "$SCANNER_RESULT" = '' ]; then
 fi
 
 #  Grab the scanner path
-SCANNER_PATH=`get_scanner_path_from_id $SCANNER`
- 
+SCANNER_PATH=`get_scanner_path_from_id $SCANNER_VALUE`
+
  #  Get the command we have to run
 SCANNER_CMD=`llnms-print-scanner-info -f $SCANNER_PATH -c`
  
 SCANNER_BASE_PATH=`llnms-print-scanner-info -f $SCANNER_PATH -b`
-
  
 #  Get the number of arguments to query
 NUMARGS=`llnms-print-scanner-info -f $SCANNER_PATH -num`
@@ -277,8 +297,8 @@ NUMARGS=`llnms-print-scanner-info -f $SCANNER_PATH -num`
 #---------------------------------------------#
 
 #  Get the address range
-ADDR_BEG=`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_FILE -s`
-ADDR_END=`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_FILE -e`
+ADDR_BEG=`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_PATH -s`
+ADDR_END=`$LLNMS_HOME/bin/llnms-print-network-info -f $NETWORK_PATH -e`
 
 
 #  Split the addresses into 4 parts
@@ -302,15 +322,15 @@ for (( d=$ADDR_BEG_4; d<=$ADDR_END_4; d++ )); do
     #  create address
     TEST_ADDRESS="${a}.${b}.${c}.${d}"
         
-    #  Prevent no more than x processes from running
-    $LLNMS_HOME/bin/llnms-locking-manager lock -w -l /tmp/llnms-lock -m $MAX_PROCESSES -p $$
         
     #  Run scan on address
     Run_Scan $TEST_ADDRESS
-
+    
 done
 done
 done
 done
 
+#  Wait for all jobs to finish
+wait
 

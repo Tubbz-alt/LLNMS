@@ -70,6 +70,7 @@ address-start   Starting address for network
 address-end     Ending address for network
 ============== ===================================
 
+More info can be found in the :ref:`llnms_network_main` Section.
 
 Scanners
 ---------
@@ -97,6 +98,7 @@ Contents:
    :maxdepth: 2
     
    llnms/Assets
+   llnms/Networks
    llnms/Commands
    llnms/Examples
 

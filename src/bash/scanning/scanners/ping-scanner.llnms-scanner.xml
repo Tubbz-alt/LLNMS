@@ -18,6 +18,7 @@
             -->
             <argument id="1" name="ip4-address" type="ASSET_ELEMENT"      value="ip4-address"  default=''   />
             <argument id="2" name="max-tries"   type="ASSET_SCANNER_FLAG" value=""             default="2"  />
+            <argument id="3" name="timeout"     type="ASSET_SCANNER_FLAG" value=""             default="1"  />
         </linux>
         <windows>
             <command>ping-scanner.ps1</command>
