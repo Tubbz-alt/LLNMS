@@ -30,3 +30,6 @@ first define the network and its key assets.::
 Register Scanners with LLNMS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Now that there is a network with a few registered systems, now scanners should be created
+and attached to LLNMS networks and assets.
+

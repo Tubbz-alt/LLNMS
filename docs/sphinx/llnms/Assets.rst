@@ -7,6 +7,8 @@ Assets represent single endpoints on a network.  For examples, an IP address
 would be an Asset.
 
 
+.. _llnms-create-asset-def:
+
 llnms-create-asset
 ------------------
 
