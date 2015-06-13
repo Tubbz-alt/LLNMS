@@ -5,4 +5,5 @@ work-samples
 debug
 release
 Makefile
+*.pyc
 

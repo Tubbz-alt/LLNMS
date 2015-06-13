@@ -1,5 +1,16 @@
 #!/bin/bash
+#
+#    File:    python_install.bash
+#    Author:  Marvin Smith
+#    Date:    11/12/2013
+#
+#    Purpose:  Install the required Python Modules
+#
 
+
+#------------------------------------------#
+#-       Install the Python Viewer        -#
+#------------------------------------------#
 install_llnms_python_viewer(){
     
     # print message
@@ -11,7 +22,7 @@ install_llnms_python_viewer(){
     fi
 
     #  Copy all script to the directory
-    cp -r src/python/*  "$LLNMS_HOME/bin/python/"
+    cp -r src/core/viewer/*  "$LLNMS_HOME/bin/python/"
 
     #  Create symbolic link
     if [ -f "$LLNMS_HOME/bin/python/llnms-viewer" ]; then
