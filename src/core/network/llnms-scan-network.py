@@ -119,8 +119,6 @@ def Main():
     for x in xrange(0, len(results)):
         print(addresses[x] + ' - ' + str(results[x]))
 
-    raw_input('pause')
-
 # ----------------------------- #
 # -     Run Main Script       - #
 # ----------------------------- #

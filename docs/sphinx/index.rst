@@ -20,6 +20,10 @@ requirement is xmlstarlet.  Hopefully, it will be removed with a pure Python XML
 To install, the ``llnms-installer.sh`` script is provided.  This will build, then install any software. 
 See the :ref:`llnms_installer` page for more details.
 
+Once LLNMS has been installed, it is imperative that the environment variable ``LLNMS_HOME`` be specified in either
+your scripts or in your bashrc.  ``LLNMS_HOME`` is used as the base path for many of the internal scripts.  All
+LLNMS executables will be located in ``$LLNMS_HOME/bin`` so its recommended to add that to your system or user path.
+
 
 Overview
 ========
@@ -48,6 +52,7 @@ Attribute     Description
 hostname      Name of the system.
 ip4-address   Where on the network.
 description   Description of the system or purpose.
+scanners      List of registered scanners and args
 ===========   =====================================
 
 In addition, assets can have scans and tasks registered to them.
@@ -68,6 +73,7 @@ Attribute      Description
 name            Name of network for identification
 address-start   Starting address for network
 address-end     Ending address for network
+scanners      List of registered scanners and args
 ============== ===================================
 
 More info can be found in the :ref:`llnms_network_main` Section.
@@ -99,6 +105,7 @@ Contents:
     
    llnms/Assets
    llnms/Networks
+   llnms/Scanners
    llnms/Commands
    llnms/Examples
 
