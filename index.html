@@ -65,13 +65,26 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Assets.html">LLNMS Assets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-create-asset">llnms-create-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-list-assets">llnms-list-assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-print-asset-info">llnms-print-asset-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-register-asset-scanner">llnms-register-asset-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-remove-asset">llnms-remove-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-scan-asset">llnms-scan-asset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Networks.html">LLNMS Networks</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-create-network">llnms-create-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-list-networks">llnms-list-networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-print-network-info">llnms-print-network-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-register-network-scanner">llnms-register-network-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-remove-network">llnms-remove-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-scan-network">llnms-scan-network</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llnms/Scanners.html">LLNMS Scanners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-list-scanners">llnms-list-scanners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-print-scanner-info">llnms-print-scanner-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-register-scanner">llnms-register-scanner</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Commands.html">LLNMS Commands</a></li>
@@ -127,6 +140,9 @@ strengths of the Unix pipes and allow for simple (not necessarily easy) scriptin
 requirement is xmlstarlet.  Hopefully, it will be removed with a pure Python XML utility.</p>
 <p>To install, the <code class="docutils literal"><span class="pre">llnms-installer.sh</span></code> script is provided.  This will build, then install any software.
 See the <a class="reference internal" href="llnms/llnms_installer.html#llnms-installer"><span>LLNMS Installer Script</span></a> page for more details.</p>
+<p>Once LLNMS has been installed, it is imperative that the environment variable <code class="docutils literal"><span class="pre">LLNMS_HOME</span></code> be specified in either
+your scripts or in your bashrc.  <code class="docutils literal"><span class="pre">LLNMS_HOME</span></code> is used as the base path for many of the internal scripts.  All
+LLNMS executables will be located in <code class="docutils literal"><span class="pre">$LLNMS_HOME/bin</span></code> so its recommended to add that to your system or user path.</p>
 </div>
 <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
@@ -166,6 +182,9 @@ manipulating assets, see the <a class="reference internal" href="llnms/Assets.ht
 <tr class="row-even"><td>description</td>
 <td>Description of the system or purpose.</td>
 </tr>
+<tr class="row-odd"><td>scanners</td>
+<td>List of registered scanners and args</td>
+</tr>
 </tbody>
 </table>
 <p>In addition, assets can have scans and tasks registered to them.
@@ -176,28 +195,6 @@ This will be described later in further detail.</p>
 may reside in a network and a network may detect many potential assets,
 some of which are not registered with LLNMS.  Networks currently have the following
 characteristics.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="29%" />
-<col width="71%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Attribute</th>
-<th class="head">Description</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>name</td>
-<td>Name of network for identification</td>
-</tr>
-<tr class="row-odd"><td>address-start</td>
-<td>Starting address for network</td>
-</tr>
-<tr class="row-even"><td>address-end</td>
-<td>Ending address for network</td>
-</tr>
-</tbody>
-</table>
 <p>More info can be found in the <a class="reference internal" href="llnms/Networks.html#llnms-network-main"><span>LLNMS Networks</span></a> Section.</p>
 </div>
 <div class="section" id="scanners">
@@ -217,13 +214,26 @@ for different operating system, primarily Linux and Windows.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Assets.html">LLNMS Assets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-create-asset">llnms-create-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-list-assets">llnms-list-assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-print-asset-info">llnms-print-asset-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-register-asset-scanner">llnms-register-asset-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-remove-asset">llnms-remove-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Assets.html#llnms-scan-asset">llnms-scan-asset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Networks.html">LLNMS Networks</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-create-network">llnms-create-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-list-networks">llnms-list-networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-print-network-info">llnms-print-network-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-register-network-scanner">llnms-register-network-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-remove-network">llnms-remove-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llnms/Networks.html#llnms-scan-network">llnms-scan-network</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llnms/Scanners.html">LLNMS Scanners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-list-scanners">llnms-list-scanners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-print-scanner-info">llnms-print-scanner-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llnms/Scanners.html#llnms-register-scanner">llnms-register-scanner</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="llnms/Commands.html">LLNMS Commands</a></li>

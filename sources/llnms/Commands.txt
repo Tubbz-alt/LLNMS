@@ -8,19 +8,18 @@ Below is a list of all current LLNMS commands.
 
  - :ref:`llnms-create-asset-def`
  - :ref:`llnms_create_network_def`
- - llnms-list-assets
- - llnms-list-networks
- - llnms-list-scanners
- - llnms-locking-manager
- - llnms-print-asset-info
- - llnms-print-network-info
- - llnms-print-scanner-info
- - llnms-register-asset-scanner
- - llnms-register-scanner
- - llnms-remove-asset
- - llnms-remove-network
- - llnms-scan-address
- - llnms-scan-asset
- - llnms-scan-networks
- - llnms-viewer
+ - :ref:`llnms-list-assets-def`
+ - :ref:`llnms-list-networks-def`
+ - :ref:`llnms-list-scanners-def`
+ - :ref:`llnms-locking-manager-def`
+ - :ref:`llnms-print-asset-info-def`
+ - :ref:`llnms-print-network-info-def`
+ - :ref:`llnms-print-scanner-info-def`
+ - :ref:`llnms-register-asset-scanner-def`
+ - :ref:`llnms-register-scanner-def`
+ - :ref:`llnms-remove-asset-def`
+ - :ref:`llnms-remove-network-def`
+ - :ref:`llnms-scan-asset-def`
+ - :ref:`llnms-scan-network-def`
+ - :ref:`llnms-viewer-def`
 

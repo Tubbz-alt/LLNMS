@@ -50,12 +50,49 @@ llnms-list-networks
 
 List the registered LLNMS networks.
 
+.. _llnms-print-network-info-def:
 
 llnms-print-network-info
 ------------------------
 
 Print info about LLNMS networks.
 
+
+llnms-register-network-scanner
+------------------------------
+
+Bind a scanner which has been registered with LLNMS with the network.  It will
+enable the scanner to be run via ``llnms-scan-network``.
+
+.. topic:: -h --help
+
+    Print help / usage information.
+
+.. topic:: -v --version
+
+    Print version information.
+
+.. topic:: -n --network [network-name]
+
+    Select the network to scan.
+
+.. topic:: -s --scanner [scanner-id]
+
+    Select the scanner by its id.
+
+.. topic:: -p --parameter [key] [value]
+
+    Override an argument for the scanner.
+
+.. _llnms-remove-network-def:
+
+llnms-remove-network
+---------------------
+
+Remove an LLNMS network.
+
+
+.. _llnms-scan-network-def:
 
 llnms-scan-network
 ------------------

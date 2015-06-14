@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="LLNMS 1.0 documentation" href="../index.html"/>
-        <link rel="next" title="LLNMS Commands" href="Commands.html"/>
+        <link rel="next" title="LLNMS Scanners" href="Scanners.html"/>
         <link rel="prev" title="LLNMS Assets" href="Assets.html"/> 
 
   
@@ -66,13 +66,26 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Assets.html">LLNMS Assets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-create-asset">llnms-create-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-list-assets">llnms-list-assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-print-asset-info">llnms-print-asset-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-register-asset-scanner">llnms-register-asset-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-remove-asset">llnms-remove-asset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assets.html#llnms-scan-asset">llnms-scan-asset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">LLNMS Networks</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#llnms-create-network">llnms-create-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#llnms-list-networks">llnms-list-networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#llnms-print-network-info">llnms-print-network-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-register-network-scanner">llnms-register-network-scanner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#llnms-remove-network">llnms-remove-network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#llnms-scan-network">llnms-scan-network</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Scanners.html">LLNMS Scanners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Scanners.html#llnms-list-scanners">llnms-list-scanners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scanners.html#llnms-print-scanner-info">llnms-print-scanner-info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scanners.html#llnms-register-scanner">llnms-register-scanner</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Commands.html">LLNMS Commands</a></li>
@@ -158,11 +171,40 @@ a default path will be generated.</p>
 <p>List the registered LLNMS networks.</p>
 </div>
 <div class="section" id="llnms-print-network-info">
-<h2>llnms-print-network-info<a class="headerlink" href="#llnms-print-network-info" title="Permalink to this headline">¶</a></h2>
+<span id="llnms-print-network-info-def"></span><h2>llnms-print-network-info<a class="headerlink" href="#llnms-print-network-info" title="Permalink to this headline">¶</a></h2>
 <p>Print info about LLNMS networks.</p>
 </div>
+<div class="section" id="llnms-register-network-scanner">
+<h2>llnms-register-network-scanner<a class="headerlink" href="#llnms-register-network-scanner" title="Permalink to this headline">¶</a></h2>
+<p>Bind a scanner which has been registered with LLNMS with the network.  It will
+enable the scanner to be run via <code class="docutils literal"><span class="pre">llnms-scan-network</span></code>.</p>
+<div class="topic">
+<p class="topic-title first">-h &#8211;help</p>
+<p>Print help / usage information.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-v &#8211;version</p>
+<p>Print version information.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-n &#8211;network [network-name]</p>
+<p>Select the network to scan.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-s &#8211;scanner [scanner-id]</p>
+<p>Select the scanner by its id.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">-p &#8211;parameter [key] [value]</p>
+<p>Override an argument for the scanner.</p>
+</div>
+</div>
+<div class="section" id="llnms-remove-network">
+<span id="llnms-remove-network-def"></span><h2>llnms-remove-network<a class="headerlink" href="#llnms-remove-network" title="Permalink to this headline">¶</a></h2>
+<p>Remove an LLNMS network.</p>
+</div>
 <div class="section" id="llnms-scan-network">
-<h2>llnms-scan-network<a class="headerlink" href="#llnms-scan-network" title="Permalink to this headline">¶</a></h2>
+<span id="llnms-scan-network-def"></span><h2>llnms-scan-network<a class="headerlink" href="#llnms-scan-network" title="Permalink to this headline">¶</a></h2>
 <p>Scan the LLNMS network.</p>
 </div>
 </div>
@@ -173,7 +215,7 @@ a default path will be generated.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Commands.html" class="btn btn-neutral float-right" title="LLNMS Commands">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Scanners.html" class="btn btn-neutral float-right" title="LLNMS Scanners">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Assets.html" class="btn btn-neutral" title="LLNMS Assets"><span class="fa fa-arrow-circle-left"></span> Previous</a>
