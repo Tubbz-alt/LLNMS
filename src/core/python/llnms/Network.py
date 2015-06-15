@@ -10,6 +10,8 @@ __author__ = 'Marvin Smith'
 import os, xml.etree.ElementTree as ET
 import logging, subprocess, glob, itertools
 
+#  LLNMS Libraries
+import Globals, Utilities
 
 # ----------------------------------- #
 # -      LLNMS Network Object       - #
@@ -25,8 +27,14 @@ class Network(object):
     #  End address
     address_end = ''
 
+    #  Description
+    description = None
+
     #  Registered Scanner List
     registered_scanners = []
+
+    #  Output Filename
+    filename = None
 
     # --------------------------- #
     # -       Constructor       - #
@@ -35,12 +43,14 @@ class Network(object):
                         name = None,
                         address_start = None,
                         address_end = None,
+                        description = None,
                         registered_scanners = [] ):
 
         #  Set the internal parameters
         self.name                = name
         self.address_start       = address_start
         self.address_end         = address_end
+        self.description         = description
         self.registered_scanners = registered_scanners
 
         # set the filename if provided
@@ -102,7 +112,87 @@ class Network(object):
             #  Add to list
             self.registered_scanners.append(temp_arg)
 
+    # ---------------------------------------- #
+    # -        Write the Network File        - #
+    # ---------------------------------------- #
+    def Write_Network_File(self, filename = None):
 
+        #  Check the filename
+        if filename is not None:
+            self.filename = filename
+
+        # load the xml parser
+        if os.path.exists(self.filename):
+            tree = ET.parse(self.filename)
+            root = tree.getroot()
+        else:
+            root = ET.Element('llnms-network')
+            tree = ET.ElementTree(root)
+
+
+        # set name
+        name_node = root.find('name')
+        if name_node is None:
+            name_node = ET.SubElement(root, "name")
+        name_node.text = self.name
+
+
+        #  Get min and max address
+        start_node = root.find('address-start')
+        if start_node is None:
+            start_node = ET.SubElement(root, 'address-start')
+        start_node.text = self.address_start
+
+
+        end_node = root.find('address-end')
+        if end_node is None:
+            end_node = ET.SubElement(root, 'address-end')
+        end_node.text = self.address_end
+
+
+        #  Get description node
+        des_node = root.find('description')
+        if des_node is None:
+            des_node = ET.SubElement(root, 'description')
+        des_node.text = self.description
+
+        #  Get the scanner id list
+        #scanners_node = root.find('scanners')
+        #if scanners_node is None:
+        #    self.registered_scanners = []
+        #    return
+
+        #  Iterate over scanner nodes
+        #for scanner_node in scanners_node.findall('scanner'):
+
+            #  Get the id
+            #id = scanner_node.find('id').text
+            #if id is None:
+            #    continue
+
+            #  Create node
+            #temp_arg = [id, []]
+
+            #  Get all arguments
+            #args = scanner_node.findall('argument')
+            #for arg in args:
+
+                #  Get the name and value
+                #argname = arg.get('name')
+                #argval  = arg.get('value')
+
+                #  Make sure they exist
+                #if argname is not None:
+                #    temp_arg[1].append([argname, argval])
+
+            #  Add to list
+            #self.registered_scanners.append(temp_arg)
+
+        #  Indent the file
+        Utilities.XML_Indent(root)
+
+        #  Write the file
+        tree.write(self.filename)
 
     # --------------------------------------------------------------------------- #
     # -        Check if the network has a particular scanner registered         - #
@@ -175,6 +265,31 @@ class Network(object):
                     if host_3 >= net_beg_3 and host_3 <= net_end_3:
                         return True
         return False
+
+    # ---------------------------------------------- #
+    # -       Check if the network is valid        - #
+    # ---------------------------------------------- #
+    def Is_Valid(self):
+
+        #  Make sure addresses are valid
+        if Utilities.Is_Valid_IP4_Address(self.address_start) is False:
+            return False
+        if Utilities.Is_Valid_IP4_Address(self.address_end) is False:
+            return False
+
+        #  Check the range
+        beg_comps = self.address_start.split('.')
+        end_comps = self.address_end.split('.')
+
+        #  Iterate over range
+        if len(beg_comps) != 4 or len(end_comps) != 4:
+            return False
+        for x in xrange(0, len(beg_comps)):
+            if end_comps[x] < beg_comps[x]:
+                return False
+
+        #  Otherwise, passed
+        return True
 
     # --------------------------------------- #
     # -       Print to a Debug String       - #

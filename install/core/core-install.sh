@@ -116,7 +116,7 @@ install_to_filesystem(){
     echo '   -> Copying network module scripts'
     
     echo '      -> Copying llnms-create-network'                
-    cp 'src/core/network/llnms-create-network.sh'         "$LLNMS_HOME/bin/llnms-create-network"
+    cp 'src/core/network/llnms-create-network.py'         "$LLNMS_HOME/bin/llnms-create-network"
     
     echo '      -> Copying llnms-list-networks'
     cp 'src/core/network/llnms-list-networks.sh'          "$LLNMS_HOME/bin/llnms-list-networks"
