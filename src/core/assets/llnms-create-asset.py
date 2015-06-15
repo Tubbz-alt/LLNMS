@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 #
-#    File:    llnms-create-network
+#    File:    llnms-create-asset
 #    Author:  Marvin Smith
-#    Date:    6/14/2015
+#    Date:    6/15/2015
 #
-#    Purpose:  Create an LLNMS Network
+#    Purpose:  Create an LLNMS Asset
 #
 __author__ = 'Marvin Smith'
 
@@ -23,7 +23,7 @@ import llnms
 def Parse_Command_Line():
 
     #  Create parser
-    parser = argparse.ArgumentParser(description="Create an LLNMS Network.")
+    parser = argparse.ArgumentParser(description="Create an LLNMS Asset.")
 
     #  Version Info
     parser.add_argument('-v', '--version',
@@ -55,33 +55,28 @@ def Parse_Command_Line():
                         help='Run in interactive mode.',)
 
     #  Network Name
-    parser.add_argument('-n', '--name',
+    parser.add_argument('-host', '--hostname',
                         required=False,
-                        dest='network_name',
+                        dest='asset_hostname',
                         help='Name of the network to scan.')
 
-    #  Address Start
-    parser.add_argument('-as','--address-start',
-                        required=False,
-                        dest='network_address_start',
-                        help='Starting Address.')
-
-    #  Address End
-    parser.add_argument('-ae','--address-end',
-                        required=False,
-                        dest='network_address_end',
-                        help='Ending address.')
-
-    #  Description
+	#  Description
     parser.add_argument('-d','--description',
                         required=False,
-                        dest='network_description',
-                        help='Description of network.')
+                        dest='asset_description',
+                        help='Asset description.')
+	
+	#  Address
+    parser.add_argument('-a','--address',
+						required=False,
+						dest='asset_addresses',
+						action='append',
+						help='Address for the particular network.'
 
     #  Output Pathname
     parser.add_argument('-o','--output-path',
                         required=False,
-                        dest='network_output_path',
+                        dest='asset_output_path',
                         help='Output pathname.  If not provided on will be generated.')
 
     #  Return Parser
@@ -90,43 +85,25 @@ def Parse_Command_Line():
 # ------------------------------ #
 # -       Process Inputs       - #
 # ------------------------------ #
-def Process_Inputs( options, network_list, llnms_home ):
+def Process_Inputs( options, asset_list, llnms_home ):
 
-    #  Get the name
-    network_name = options.network_name
-    if options.interactive_mode is True and network_name is None:
-        network_name = raw_input('Please enter network name: ')
+    #  Get the hostname
+    asset_hostname = options.asset_hostname
+    if options.interactive_mode is True and asset_hostname is None:
+        asset_hostname = raw_input('Please enter the desired asset name: ')
 
 
-    #  Compare the network list to see if the name is set
-    for network in network_list:
-        if network.name == network_name:
-            raise Exception('Network with name (' + network_name + ') already exists.')
+    #  Compare the asset list to see if the name is set
+    for asset in asset_list:
+        if asset.hostname == asset_hostname:
+            raise Exception('Asset with hostname (' + asset_hostname + ') already exists.')
 
-    #  Get the address start
-    valid_flag = False
-    network_address_start = options.network_address_start
-    if options.interactive_mode is True and network_address_start is None:
-        while valid_flag is False:
-            network_address_start = raw_input('Please enter address start: ')
-            valid_flag = llnms.Utilities.Is_Valid_IP4_Address(network_address_start)
-            if valid_flag is False:
-                print('error: Invalid input.')
-
-    #  Get the address end
-    valid_flag=False
-    network_address_end = options.network_address_end
-    if options.interactive_mode is True and network_address_end is None:
-        while valid_flag is False:
-            network_address_end = raw_input('Please enter address end: ')
-            valid_flag = llnms.Utilities.Is_Valid_IP4_Address(network_address_end)
-            if valid_flag is False:
-                print('error: Invalid input.')
 
     #  Get the description
-    network_description = options.network_description
+    asset_description = options.asset_description
     if options.interactive_mode is True and network_description is None:
         network_description = raw_input('Please enter description of network: ')
+
 
     #  Get the network path
     network_output_path = options.network_output_path

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<!-- Top-Level Parent Node -->
+<llnms-asset>
+
+    <!-- Name of the asset -->
+    <hostname>laptop</hostname>
+    
+    <!-- Addresses of the system -->
+    <addresses>
+
+        <!-- Local IP4 Address -->
+        <address type="ip4" value="192.168.0.5" >
+            <remote-access configured="true" 
+                           remote-driver="llnms-ssh-remote-connector">
+                
+                <!-- SSH Remote Driver Configuration Options -->
+                <llnms-ssh-remote-connector>
+                    
+                    <!-- Required authentication for access -->
+                    <login  username="marvin" />
+            
+                </llnms-ssh-remote-connector>
+
+            </remote-access>
+
+    </addresses>
+
+    <!-- Asset Description -->
+    <description>Google DNS</description>
+  
+    <!-- List of supported scanners -->
+    <scanners>
+    
+        <!-- Ping Scanner -->
+        <scanner>
+            
+            <!-- ID of the scanner -->
+            <id>ping-scanner</id>
+    
+        </scanner>
+    </scanners>
+</llnms-asset>

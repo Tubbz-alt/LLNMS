@@ -1,11 +1,31 @@
 <?xml version="1.0"?>
+<!-- Top-Level Parent Node -->
 <llnms-asset>
-  <hostname>google</hostname>
-  <ip4-address>8.8.8.8</ip4-address>
-  <description>Google DNS</description>
-  <scanners>
-    <scanner>
-      <id>ping-scanner</id>
-    </scanner>
-  </scanners>
+
+    <!-- Name of the asset -->
+    <hostname>google</hostname>
+    
+    <!-- Addresses of the system -->
+    <addresses>
+
+        <!-- Local IP4 Address -->
+        <address type="ip4"
+                 value="8.8.8.8" />
+
+    </addresses>
+
+    <!-- Asset Description -->
+    <description>Google DNS</description>
+  
+    <!-- List of supported scanners -->
+    <scanners>
+    
+        <!-- Ping Scanner -->
+        <scanner>
+            
+            <!-- ID of the scanner -->
+            <id>ping-scanner</id>
+    
+        </scanner>
+    </scanners>
 </llnms-asset>
