@@ -73,7 +73,11 @@ build_and_verify_filestructure(){
     # Verify the scanner path exists
     if [ ! -d "$DEFAULT_LLNMS_SCAN_PATH" ]; then
         mkdir -p "$DEFAULT_LLNMS_SCAN_PATH"
-        mkdir -p "$DEFAULT_LLNMS_SCAN_PATH/scanners"
+    fi
+
+    # Verify the task path exists
+    if [ ! -d "$DEFAULT_LLNMS_TASK_PATH" ]; then
+        mkdir -p "$DEFAULT_LLNMS_TASK_PATH"
     fi
 
 
@@ -152,7 +156,17 @@ install_to_filesystem(){
     echo '      -> llnms scanner scripts'
     cp -r  src/core/scanning/scanners/*                 "$LLNMS_HOME/scanning/"
 
+
+    #  Tasking Utilities
+    echo ''
+    echo '   -> Copying Task Module Scripts'
+    echo '      -> llnms task scripts'
+    cp -r src/core/tasking/tasks/*                      "$LLNMS_HOME/tasks/"
+
+
     #  config utilities
+    echo ''
+    echo '   -> Copying Utility Module Script'
     echo '      -> llnms info script'
     cp src/core/llnms-info.sh                           "$LLNMS_HOME/config/llnms-info"
     

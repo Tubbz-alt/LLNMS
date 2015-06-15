@@ -1,14 +1,21 @@
+<!-- systemd control script.-->
 <llnms-task>
+
+    <!-- ID -->
     <id>command-systemctl</id>
 
+    <!-- Configuration -->
     <configuration>
+
+        <!-- Linux Configuration -->
         <linux>
 
             <!-- Flag if we are supporting the task for the requested OS-->
             <supported value="true" />
 
             <!-- Command -->
-            <command name="systemctl"
+            <command name="tasks/command-systemctl/command-systemctl.py" />
+            
         </linux>
     </configuration>
 </llnms-task>
