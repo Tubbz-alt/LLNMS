@@ -11,7 +11,6 @@ Below is a list of all current LLNMS commands.
  - :ref:`llnms-list-assets-def`
  - :ref:`llnms-list-networks-def`
  - :ref:`llnms-list-scanners-def`
- - :ref:`llnms-locking-manager-def`
  - :ref:`llnms-print-asset-info-def`
  - :ref:`llnms-print-network-info-def`
  - :ref:`llnms-print-scanner-info-def`

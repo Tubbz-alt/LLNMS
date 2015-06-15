@@ -1,0 +1,14 @@
+<llnms-task>
+    <id>command-systemctl</id>
+
+    <configuration>
+        <linux>
+
+            <!-- Flag if we are supporting the task for the requested OS-->
+            <supported value="true" />
+
+            <!-- Command -->
+            <command name="systemctl"
+        </linux>
+    </configuration>
+</llnms-task>
