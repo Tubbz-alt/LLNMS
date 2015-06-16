@@ -7,11 +7,16 @@
 __author__ = 'Marvin Smith'
 
 #  Python Libraries
-import os, xml.etree.ElementTree as ET
-import logging, subprocess, glob, itertools
+import os
+import xml.etree.ElementTree as ET
+import logging
+import subprocess
+import glob
+import itertools
+
 
 #  LLNMS Libraries
-import Globals, Utilities
+from llnms.utility import XML_Utilities
 
 # ----------------------------------- #
 # -      LLNMS Network Object       - #
@@ -189,7 +194,7 @@ class Network(object):
             #self.registered_scanners.append(temp_arg)
 
         #  Indent the file
-        Utilities.XML_Indent(root)
+        XML_Utilities.XML_Indent(root)
 
         #  Write the file
         tree.write(self.filename)
@@ -272,9 +277,9 @@ class Network(object):
     def Is_Valid(self):
 
         #  Make sure addresses are valid
-        if Utilities.Is_Valid_IP4_Address(self.address_start) is False:
+        if XML_Utilities.Is_Valid_IP4_Address(self.address_start) is False:
             return False
-        if Utilities.Is_Valid_IP4_Address(self.address_end) is False:
+        if XML_Utilities.Is_Valid_IP4_Address(self.address_end) is False:
             return False
 
         #  Check the range
