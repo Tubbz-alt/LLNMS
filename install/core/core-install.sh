@@ -93,13 +93,13 @@ install_to_filesystem(){
     echo '   -> Copying asset module scripts'
     
     echo '      -> llnms-create-asset.sh'
-    cp 'src/core/assets/llnms-create-asset.sh'            "$LLNMS_HOME/bin/llnms-create-asset"
+    cp 'src/core/assets/llnms-create-asset.py'            "$LLNMS_HOME/bin/llnms-create-asset"
     
     echo '      -> llnms-remove-asset.sh'
     cp 'src/core/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
     echo '      -> llnms-list-assets.sh'
-    cp 'src/core/assets/llnms-list-assets.sh'             "$LLNMS_HOME/bin/llnms-list-assets"
+    cp 'src/core/assets/llnms-list-assets.py'             "$LLNMS_HOME/bin/llnms-list-assets"
     
     echo '      -> llnms-print-asset-info.sh'
     cp 'src/core/assets/llnms-print-asset-info.sh'        "$LLNMS_HOME/bin/llnms-print-asset-info"

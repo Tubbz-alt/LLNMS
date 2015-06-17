@@ -110,7 +110,26 @@ def Process_Inputs( options, asset_list, llnms_home ):
     asset_output_path = options.asset_output_path
     if asset_output_path is None:
         asset_output_path = llnms_home + '/assets/' + datetime.datetime.now().strftime('%Y%M%d_%H%m%s') + '.llnms-asset.xml'
-    print('writing to : ' + asset_output_path)
+
+    #  Get the Addresses
+    asset_address_list = []
+    if options.interactive_mode is True:
+
+        # Ask user to enter IP address type
+        temp_ip_type = raw_input('Please enter address type\n  1.  ipv4\n  2.  ipv6\n  $> : ')
+        if temp_ip_type == 'ipv4' or temp_ip_type == 'ip4' or temp_ip_type == '1':
+            temp_ip_type = llnms.utility.Network_Utilities.IP_Address_Type.IPV4
+        elif temp_ip_type == 'ipv6' or temp_ip_type == 'ip6' or temp_ip_type == '2':
+            temp_ip_type = llnms.utility.Network_Utilities.IP_Address_Type.IPV6
+        else:
+            raise Exception('error: Unknown IP Address Type.')
+
+        #  Get the address
+        temp_ip_value = raw_input('Please enter address value: ')
+
+        #  Add to network
+        asset.address_list.append(llnms.Asset.AssetAddress(ip_type=temp_ip_type,
+                                                           ip_value=temp_ip_value))
 
     #  Return new asset
     return llnms.Asset.Asset( hostname    = asset_hostname,

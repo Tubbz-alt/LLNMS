@@ -34,7 +34,7 @@ class AssetAddress(object):
     # --------------------------- #
     def __init__(self, ip_type=None,
                        ip_value=None,
-                        remote_access = None):
+                       remote_access = None):
 
         #  Set the type
         self.ip_type = ip_type
@@ -277,42 +277,25 @@ class Asset(object):
             des_node = ET.SubElement(root, 'description')
         des_node.text = self.description
 
-        #  Get the scanner id list
-        scanners_node = root.find('scanners')
-        if scanners_node is None:
-            self.registered_scanners = []
-            return
+        #  Get address node
+        addr_node = root.find('addresses')
+        if addr_node is None:
+            addr_node = ET.SubElement(root, 'addresses')
 
-        #  Iterate over scanner nodes
-        for scanner_node in scanners_node.findall('scanner'):
+        #  Iterate over each address you already have
+        for address in self.address_list:
 
-            #  Get the id
-            id = scanner_node.find('id').text
-            if id is None:
-                continue
+            #  Check if the address is already there
+            res = addr_node.findall('./address[@ip-value=\'' + address.ip_value + ']' )
 
-            #  Create node
-            temp_arg = [id, []]
-
-            #  Get all arguments
-            args = scanner_node.findall('argument')
-            for arg in args:
-
-                #  Get the name and value
-                argname = arg.get('name')
-                argval  = arg.get('value')
-
-                #  Make sure they exist
-                if argname is not None:
-                    temp_arg[1].append([argname, argval])
-
-            #  Add to list
-            self.registered_scanners.append(temp_arg)
+            if res is not None:
+                pass
 
         #  Indent the file
         utility.XML_Utilities.XML_Indent(root)
 
         #  Write the file
+        print('Writing asset to ' + self.filename)
         tree.write(self.filename)
 
     # ----------------------------------------- #

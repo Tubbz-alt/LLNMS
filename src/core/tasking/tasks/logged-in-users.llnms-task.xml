@@ -1,0 +1,22 @@
+<!-- systemd control script.-->
+<llnms-task>
+
+    <!-- ID -->
+    <id>logged-in</id>
+
+    <!-- Configuration -->
+    <configuration>
+
+        <!-- Linux Configuration -->
+        <linux>
+
+            <!-- Flag if we are supporting the task for the requested OS-->
+            <supported value="true" />
+
+            <!-- Command -->
+            <command name="who" />
+            
+        </linux>
+
+    </configuration>
+</llnms-task>
