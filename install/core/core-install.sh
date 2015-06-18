@@ -177,9 +177,9 @@ install_to_filesystem(){
     mkdir -p "$LLNMS_HOME/bin/python"
 
     echo '      -> llnms-viewer'
-    cp 'src/core/viewer/llnms-viewer.py'              "$LLNMS_HOME/bin/python/"
-    cp -r 'src/core/viewer/llnms'                     "$LLNMS_HOME/bin/python/"
+    cp 'src/core/viewer/llnms-viewer.py'              "$LLNMS_HOME/bin/llnms-viewer"
 
+    
     #  Python Library
     echo '      -> llnms python libraries'
     mkdir -p $LLNMS_HOME/lib/llnms

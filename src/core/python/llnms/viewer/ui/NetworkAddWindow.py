@@ -5,7 +5,7 @@ import curses, logging, sys
 
 #  LLNMS Utilities
 import CursesTable
-from ..network import Network
+from ...Network import Network
 
 class NetworkAddWindow(object):
 

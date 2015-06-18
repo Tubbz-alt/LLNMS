@@ -119,23 +119,23 @@ class AssetSummaryWindow(Base_Window_Type):
         table.Set_Column_Alignment( 3, CursesTable.StringAlignment.ALIGN_LEFT )
 
         #  Get the asset list
-        assets = llnms_state.assets
+        asset_list = llnms_state.asset_list
 
         #  Load the table
         counter = 1
-        for x in xrange( 0, len(assets)):
+        for x in xrange( 0, len(asset_list)):
 
             #  Set the Hostname
-            table.Set_Item( 0, counter, assets[x].hostname )
+            table.Set_Item( 0, counter, asset_list[x].hostname )
 
             #  Set the IP Address
-            table.Set_Item( 1, counter, assets[x].address )
+            table.Set_Item( 1, counter, asset_list[x].address )
 
             #  Set the description
-            table.Set_Item( 2, counter, assets[x].description )
+            table.Set_Item( 2, counter, asset_list[x].description )
 
             #  Set the scanners
-            scanners = assets[x].scanners
+            scanners = asset_list[x].scanners
             for y in xrange(0, len(scanners)):
                 table.Set_Item( 3, counter, scanners[y].id )
                 counter += 1

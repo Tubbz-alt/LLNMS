@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 #  System Libraries
-import curses
+import curses, os, sys
 
 #  LLNMS Libraries
+if os.environ['LLNMS_HOME'] is not None:
+    sys.path.append(os.environ['LLNMS_HOME'] + '/lib')
 import llnms
+
 
 # ------------------------------ #
 # -     Initialize Curses      - #
@@ -21,11 +24,15 @@ def main(stdscr):
     #  Initialize Curses
     Initialize_Curses()
 
+
     #  grab the current context
-    llnms_state = llnms.LLNMS()
+    LLNMS_HOME=os.environ['LLNMS_HOME']
+    llnms_state = llnms.viewer.LLNMS_State(llnms_home=LLNMS_HOME)
+
 
     #  Create the Main Window
-    main_window = llnms.ui.MainWindow(stdscr)
+    main_window = llnms.viewer.ui.MainWindow(stdscr)
+
 
     #  Process the input
     llnms_state = main_window.Process(llnms_state)
@@ -38,3 +45,4 @@ if __name__ == "__main__":
 
     #  Call the curses wrapper
     curses.wrapper(main)
+
