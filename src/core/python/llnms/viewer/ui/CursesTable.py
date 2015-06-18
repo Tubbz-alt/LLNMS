@@ -13,6 +13,10 @@ class StringAlignment:
 # --------------------------- #
 def Format_String( data, max_length, alignment = StringAlignment.ALIGN_LEFT, padding_char = ' '):
 
+    #  Skip if input is empty
+    if data is None:
+        return padding_char * max_length
+
     #  Build substr
     outdata = data[0:min(len(data),max_length)]
 

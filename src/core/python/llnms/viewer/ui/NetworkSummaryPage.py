@@ -90,7 +90,7 @@ class NetworkSummaryWindow(Base_Window_Type):
             elif c == ord('d'):
                 result = WarningWindow().Process(self.screen)
                 if result == True:
-                    llnms_state.Remove_Network( llnms_state.networks[self.current_network] )
+                    llnms_state.Remove_Network( llnms_state.network_list[self.current_network] )
 
             #  Arrow Keys
             elif c == curses.KEY_UP:
@@ -98,7 +98,7 @@ class NetworkSummaryWindow(Base_Window_Type):
 
             # Arrow Keys
             elif c == curses.KEY_DOWN:
-                self.current_network = min( len(llnms_state.networks)-1, self.current_network+1)
+                self.current_network = min( len(llnms_state.network_list)-1, self.current_network+1)
 
 
         #  Return the state
@@ -131,7 +131,7 @@ class NetworkSummaryWindow(Base_Window_Type):
     # -    Print the Network Summary Table     - #
     # ------------------------------------------ #
     def Render_Network_Summary_Table(self, llnms_state, min_row, max_row ):
-
+        
         #  Create the table
         table = CursesTable.CursesTable( 3, 1 )
 
@@ -145,16 +145,16 @@ class NetworkSummaryWindow(Base_Window_Type):
         table.Set_Column_Alignment( 2, CursesTable.StringAlignment.ALIGN_LEFT )
 
         #  Load the table
-        for x in xrange( 0, len(llnms_state.networks)):
+        for x in xrange( 0, len(llnms_state.network_list)):
 
             #  Set the Name
-            table.Set_Item( 0, x+1, llnms_state.networks[x].name )
+            table.Set_Item( 0, x+1, llnms_state.network_list[x].name )
 
             #  Set the start address
-            table.Set_Item( 1, x+1, llnms_state.networks[x].address_start )
+            table.Set_Item( 1, x+1, llnms_state.network_list[x].address_start )
 
             #  Set the end address
-            table.Set_Item( 2, x+1, llnms_state.networks[x].address_end )
+            table.Set_Item( 2, x+1, llnms_state.network_list[x].address_end )
 
         #  Print the Table
         min_col = 2

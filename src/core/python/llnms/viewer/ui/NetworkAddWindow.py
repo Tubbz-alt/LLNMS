@@ -37,7 +37,10 @@ class NetworkAddWindow(object):
     def Process(self, llnms_state ):
 
         #  Clear the network data
-        self.network_data = Network()
+        self.network_data = Network( name='',
+                                     address_start='',
+                                     address_end='',
+                                     description='')
 
         #  Start loop
         self.exit_window = False
