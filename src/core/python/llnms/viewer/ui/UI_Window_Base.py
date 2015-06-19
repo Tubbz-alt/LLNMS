@@ -65,6 +65,9 @@ class Base_Sub_Window_Type(object):
     # --------------------------- #
     def Render_Line(self, field, data, row, col, highlight, color_set=[0,1]):
 
+        if len(field) <= 0:
+            return
+
         #  Print the field
         self.screen.addstr( row, col, field)
 
@@ -75,6 +78,10 @@ class Base_Sub_Window_Type(object):
 
         #  Compute the offset
         col_offset = col + len(field)
+        
+        #  Don't print if the string is null
+        if len(data) <= 0:
+            return
 
         self.screen.addstr( row, col_offset, data, cpair )
 

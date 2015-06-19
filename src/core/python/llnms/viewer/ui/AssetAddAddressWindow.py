@@ -98,21 +98,25 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
             #  If user wants to quit
             if c == 27:
                 self.exit_window = True
-            
+           
+
             #  If the user provides the enter key
             elif c == curses.KEY_ENTER or c == 10:
-                
                 self.exit_window = True
-        
+
             
             #  If the user provides arrow key, switch
             elif c == ord('\t') or c == curses.KEY_DOWN:
                 self.current_field = (self.current_field + 1) % len(self.cursors)
 
+
             #  If the user provides up
             elif c == curses.KEY_UP:
-                self.current_field = (self.current_field - 1) % len(self.cursors)
+                self.current_field -= 1
+                if self.current_field < 0:
+                    self.current_field = 0
             
+
             #  If entry is text, add to entry
             else:
                 self.Process_Text( c )
@@ -153,8 +157,7 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
         value = Network_Utilities.IP_Address_Type().To_String(self.address_type)
         width = curses.COLS - len(field) - 6 - (2*self.x_offset)
         entry = CursesTable.Format_String( value, width )
-        flag  = self.current_field == 0, 
-        self.Render_Line( field, entry, row, col, flag, color_set )
+        self.Render_Line( field, entry, row, col, self.current_field == 0, color_set )
 
 
         #  Set the address
@@ -195,12 +198,13 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
         elif input_key == curses.KEY_LEFT:
             self.cursors[self.current_field] = max(0, self.cursors[self.current_field]-1)
 
+        #  Key Right
         elif input_key == curses.KEY_RIGHT:
             field = ''
             if self.current_field == 0:
-                field = self.asset_data.hostname
+                field = Network_Utilities.IP_Address_Type().To_String(self.address_type)
             elif self.current_field == 1:
-                field = self.network_data.description
+                field = self.address_info
             self.cursors[self.current_field] = min(self.cursors[self.current_field]+1, len(field))
 
     # ------------------------------------------- #
@@ -209,17 +213,11 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
     def Add_Letter(self, input_key ):
 
         #  Update the Network Name
-        if self.current_field == 0:
-            if self.asset_data.hostname == '':
-                self.asset_data.hostname = chr(input_key)
+        if self.current_field == 1:
+            if self.address_info == '':
+                self.address_info = chr(input_key)
             else:
-                self.asset_data.hostname = self.asset_data.hostname[:self.cursors[0]] + chr(input_key) + self.asset_data.hostname[self.cursors[0]:]
-
-        elif self.current_field == 1:
-            if self.asset_data.description == '':
-                self.asset_data.description = chr(input_key)
-            else:
-                self.asset_data.description = self.asset_data.description[:self.cursors[1]] + chr(input_key) + self.asset_data.description[self.cursors[1]:]
+                self.address_info = self.address_info[:self.cursors[1]] + chr(input_key) + self.address_info[self.cursors[1]:]
 
 
     # -------------------------------------------- #
@@ -232,13 +230,9 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
             return
 
         #  Delete the character
-        if self.current_field == 0:
-            if position < len(self.asset_data.hostname):
-                self.asset_data.hostname = self.asset_data.hostname[:position] + self.asset_data.hostname[position+1:]
-
-        elif self.current_field == 1:
-            if position < len(self.asset_data.description):
-                self.asset_data.description = self.asset_data.description[:position] + self.asset_data.description[position+1:]
+        if self.current_field == 1:
+            if position < len(self.address_info):
+                self.address_info = self.address_info[:position] + self.address_info[position+1:]
 
 
 
@@ -246,6 +240,16 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
     # -      Check if Input Is Character      - #
     # ----------------------------------------- #
     def Is_Character(self, input_key ):
+
+        #  The address values should only be numbers and periods
+        if self.current_field == 1:
+            if input_key >= ord('0') and input_key <= ord('9'):
+                return True
+            elif input_key == ord('.') or input_key == ord(','):
+                return True
+            else:
+                return False
+
 
         #  Check if letter
         if input_key >= ord('a') and input_key <= ord('z'):
