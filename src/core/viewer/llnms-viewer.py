@@ -14,7 +14,15 @@ import llnms
 # ------------------------------ #
 def Initialize_Curses():
 
+    #  Use for Cursor Overlays
     curses.init_pair( 1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    
+    #  Use for Error Windows
+    curses.init_pair( 2, curses.COLOR_BLACK, curses.COLOR_RED)
+
+    #  Use for Error Text
+    curses.init_pair( 3, curses.COLOR_RED, curses.COLOR_BLACK)
+
 
 # ------------------------- #
 # -      Main Function    - #

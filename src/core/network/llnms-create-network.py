@@ -112,7 +112,7 @@ def Process_Inputs( options, network_list, llnms_home ):
     if options.interactive_mode is True and network_address_start is None:
         while valid_flag is False:
             network_address_start = raw_input('Please enter address start: ')
-            valid_flag = llnms.utility.XML_Utilities.Is_Valid_IP4_Address(network_address_start)
+            valid_flag = llnms.utility.Network_Utilities.Is_Valid_IP4_Address(network_address_start)
             if valid_flag is False:
                 print('error: Invalid input.')
 
@@ -122,7 +122,7 @@ def Process_Inputs( options, network_list, llnms_home ):
     if options.interactive_mode is True and network_address_end is None:
         while valid_flag is False:
             network_address_end = raw_input('Please enter address end: ')
-            valid_flag = llnms.utility.XML_Utilities.Is_Valid_IP4_Address(network_address_end)
+            valid_flag = llnms.utility.Network_Utilities.Is_Valid_IP4_Address(network_address_end)
             if valid_flag is False:
                 print('error: Invalid input.')
 

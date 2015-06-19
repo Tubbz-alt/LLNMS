@@ -4,7 +4,8 @@ __author__ = 'marvinsmith'
 import curses, logging, sys
 
 #  LLNMS Utilities
-import CursesTable
+import CursesTable 
+from ErrorWindow import ErrorWindow
 from ...Network import Network
 
 class NetworkAddWindow(object):
@@ -71,8 +72,17 @@ class NetworkAddWindow(object):
 
             #  If the user provides the enter key
             elif c == curses.KEY_ENTER or c == 10:
-                llnms_state.Add_Network(self.network_data)
-                self.exit_window = True
+
+                #  Make sure the network is valid
+                status, error_msg = self.network_data.Is_Valid(print_error_msg=True)
+                if status is False:
+                    
+                    #  Render an error window
+                    ErrorWindow().Process(self.screen, 'Invalid Network.', error_msg)
+
+                else:
+                    llnms_state.Add_Network(self.network_data)
+                    self.exit_window = True
 
             #  If the user provides arrow key, switch
             elif c == ord('\t') or c == curses.KEY_DOWN:

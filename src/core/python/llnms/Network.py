@@ -16,7 +16,7 @@ import itertools
 
 
 #  LLNMS Libraries
-from llnms.utility import XML_Utilities
+from llnms.utility import XML_Utilities, Network_Utilities
 
 # ----------------------------------- #
 # -      LLNMS Network Object       - #
@@ -274,13 +274,20 @@ class Network(object):
     # ---------------------------------------------- #
     # -       Check if the network is valid        - #
     # ---------------------------------------------- #
-    def Is_Valid(self):
+    def Is_Valid(self, print_error_msg=False):
 
         #  Make sure addresses are valid
-        if XML_Utilities.Is_Valid_IP4_Address(self.address_start) is False:
-            return False
-        if XML_Utilities.Is_Valid_IP4_Address(self.address_end) is False:
-            return False
+        if Network_Utilities.Is_Valid_IP4_Address(self.address_start) is False:
+            if print_error_msg is True:
+                return False, 'Invalid Starting Address.'
+            else:
+                return False
+
+        if Network_Utilities.Is_Valid_IP4_Address(self.address_end) is False:
+            if print_error_msg is True:
+                return False, 'Invalid Ending Address.'
+            else:
+                return False
 
         #  Check the range
         beg_comps = self.address_start.split('.')
@@ -288,10 +295,17 @@ class Network(object):
 
         #  Iterate over range
         if len(beg_comps) != 4 or len(end_comps) != 4:
-            return False
+            if print_error_msg is True:
+                return False, 'The networks are not long enough.'
+            else:    
+                return False
+
         for x in xrange(0, len(beg_comps)):
             if end_comps[x] < beg_comps[x]:
-                return False
+                if print_error_msg is True:
+                    return False, 'Starting network cannot be larger than the ending network.'
+                else:
+                    return False
 
         #  Otherwise, passed
         return True

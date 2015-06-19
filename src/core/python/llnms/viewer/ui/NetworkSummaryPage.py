@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # System Libraries
-import curses
+import curses, logging
 
 # LLNMS Libraries
 import CursesTable
@@ -50,6 +50,8 @@ class NetworkSummaryWindow(Base_Window_Type):
     # -    Process the window     - #
     # ----------------------------- #
     def Process(self, llnms_state):
+        
+        logging.info('Start of NetworkSummaryPage.Process() method.  There are ' + str(len(llnms_state.network_list)) + ' networks.') 
 
         self.exit_window = False
         while self.exit_window == False:
@@ -86,11 +88,18 @@ class NetworkSummaryWindow(Base_Window_Type):
             elif c == ord('a'):
                 llnms_state = self.sub_windows[self.ADD_NETWORK_INDEX].Process(llnms_state)
 
-            #  Delete network
+            #  Delete network key
             elif c == ord('d'):
+
+                #  Make sure the user wishes to do this
                 result = WarningWindow().Process(self.screen)
                 if result == True:
+                    
+                    #  Delete the file
                     llnms_state.Remove_Network( llnms_state.network_list[self.current_network] )
+
+                    #  Decrent the cursor
+                    self.current_network -= 1
 
             #  Arrow Keys
             elif c == curses.KEY_UP:

@@ -10,7 +10,7 @@ from .. import Asset
 from .. import Network
 
 #  Python Imports
-import datetime, os
+import datetime, os, logging, shutil
 from ConfigParser import SafeConfigParser
 
 # ------------------------------- #
@@ -45,10 +45,10 @@ class LLNMS_State(object):
         self.LLNMS_HOME=llnms_home
         
         #  Load the LLNMS Assets
-        asset_list = Asset.llnms_load_assets(llnms_home=self.LLNMS_HOME)
+        self.asset_list  = Asset.llnms_load_assets(llnms_home=self.LLNMS_HOME)
 
         #  Load the LLNMS Networks
-        network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
+        self.network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
     
     # -------------------------- #
     # -       Add network      - #
@@ -63,15 +63,28 @@ class LLNMS_State(object):
         new_network.Write_Network_File()
 
         #  Reload
-        network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
+        self.network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
     
+    # ---------------------------------------- #
+    # -       Remove an LLNMS Network        - #
+    # ---------------------------------------- #
+    def Remove_Network(self, network):
+
+        #  Iterate over networks
+        for net in self.network_list:
+            if net.name == network.name:
+                os.remove(network.filename)
+
+        #  Reload the network llist
+        self.Reload_Networks()
+
     # ----------------------------------- #
     # -     Reload the Network List     - #
     # ----------------------------------- #
     def Reload_Networks(self):
 
         #  Reload
-        network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
+        self.network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
 
     # ----------------------------------------- #
     # -      Process Configuration File       - #
@@ -90,7 +103,7 @@ class LLNMS_State(object):
             parser.read(config_filename)
             
             #  Get the log state
-            self.log_state = parser.getboolean('logging','enabled',True)
+            self.log_state = parser.getboolean('logging','enabled')
 
             #  Get the log pathname
             self.log_pathname = parser.get('logging','pathname')
@@ -108,5 +121,11 @@ class LLNMS_State(object):
             #  Write
             with open(config_filename,'wb') as configfile:
                 parser.write(configfile)
+        
 
+        #  Configure Logging
+        if self.log_state is True:
+            logging.basicConfig( filename= self.log_pathname, 
+                                 filemode='w', 
+                                 level=logging.DEBUG)
 
