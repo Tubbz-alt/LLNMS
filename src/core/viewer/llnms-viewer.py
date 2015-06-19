@@ -23,6 +23,10 @@ def Initialize_Curses():
     #  Use for Error Text
     curses.init_pair( 3, curses.COLOR_RED, curses.COLOR_BLACK)
 
+    #  Use for Simple Backgrounds
+    curses.init_pair( 4, curses.COLOR_WHITE, curses.COLOR_BLUE )
+    curses.init_pair( 5, curses.COLOR_BLUE, curses.COLOR_WHITE )
+
 
 # ------------------------- #
 # -      Main Function    - #

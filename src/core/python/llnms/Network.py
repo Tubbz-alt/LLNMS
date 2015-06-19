@@ -307,8 +307,11 @@ class Network(object):
                 else:
                     return False
 
-        #  Otherwise, passed
-        return True
+        #  Otherwise, return valid
+        if print_error_msg is True:
+            return True, 'No errors.'
+        else:
+            return True
 
     # --------------------------------------- #
     # -       Print to a Debug String       - #

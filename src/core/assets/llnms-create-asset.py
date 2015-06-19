@@ -103,7 +103,7 @@ def Process_Inputs( options, asset_list, llnms_home ):
     #  Get the description
     asset_description = options.asset_description
     if options.interactive_mode is True and asset_description is None:
-        asset_description = raw_input('Please enter description of network: ')
+        asset_description = raw_input('Please enter description of asset: ')
 
 
     #  Get the asset path
@@ -128,7 +128,7 @@ def Process_Inputs( options, asset_list, llnms_home ):
         temp_ip_value = raw_input('Please enter address value: ')
 
         #  Add to network
-        asset.address_list.append(llnms.Asset.AssetAddress(ip_type=temp_ip_type,
+        asset_address_list.append(llnms.Asset.AssetAddress(ip_type=temp_ip_type,
                                                            ip_value=temp_ip_value))
 
     #  Return new asset

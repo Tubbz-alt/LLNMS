@@ -109,7 +109,7 @@ class AssetSummaryWindow(Base_Window_Type):
 
         #  Set the column headers
         table.Set_Column_Header_Item( 0, ' Hostname',    0.20)
-        table.Set_Column_Header_Item( 1, ' IP Address',  0.25)
+        table.Set_Column_Header_Item( 1, ' Addresses',   0.25)
         table.Set_Column_Header_Item( 2, ' Description', 0.40)
         table.Set_Column_Header_Item( 3, ' Scanners',    0.15)
 
@@ -128,18 +128,18 @@ class AssetSummaryWindow(Base_Window_Type):
             #  Set the Hostname
             table.Set_Item( 0, counter, asset_list[x].hostname )
 
-            #  Set the IP Address
-            table.Set_Item( 1, counter, asset_list[x].address )
-
             #  Set the description
             table.Set_Item( 2, counter, asset_list[x].description )
 
+            #  Set the IP Address List
+            #table.Set_Item( 1, counter, asset_list[x].address )
+            
             #  Set the scanners
-            scanners = asset_list[x].scanners
-            for y in xrange(0, len(scanners)):
-                table.Set_Item( 3, counter, scanners[y].id )
-                counter += 1
-            counter += 1
+            #scanners = asset_list[x].scanners
+            #for y in xrange(0, len(scanners)):
+            #    table.Set_Item( 3, counter, scanners[y].id )
+            #    counter += 1
+            #counter += 1
 
         #  Print the Table
         min_col = 2

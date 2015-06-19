@@ -1,4 +1,10 @@
-__author__ = 'marvinsmith'
+#    File:    NetworkAddWindow.py
+#    Author:  Marvin Smith
+#    Date:    6/18/2015
+# 
+#    Purpose:  Provide user with interface to add networks.
+#
+__author__ = 'Marvin Smith'
 
 #  System Libraries
 import curses, logging, sys
@@ -8,6 +14,9 @@ import CursesTable
 from ErrorWindow import ErrorWindow
 from ...Network import Network
 
+# ------------------------------------------ #
+# -        Add Network Window Object       - #
+# ------------------------------------------ #
 class NetworkAddWindow(object):
 
     #  Default Screen
@@ -86,11 +95,11 @@ class NetworkAddWindow(object):
 
             #  If the user provides arrow key, switch
             elif c == ord('\t') or c == curses.KEY_DOWN:
-                self.current_field = (self.current_field+1) % 3
+                self.current_field = (self.current_field+1) % len(self.cursors)
 
             #  If the user provides up
             elif c == curses.KEY_UP:
-                self.current_field = (self.current_field-1) % 3
+                self.current_field = (self.current_field-1) % len(self.cursors)
 
             #  If entry is text, add to entry
             else:

@@ -85,6 +85,30 @@ class LLNMS_State(object):
 
         #  Reload
         self.network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
+    
+
+    # ---------------------------------- #
+    # -       Add an LLNMS Asset       - #
+    # ---------------------------------- #
+    def Add_Asset(self, new_asset ):
+
+        #  Check if the asset has a pathname
+        if new_asset.filename is None:
+            new_asset.filename = self.LLNMS_HOME + '/assets/' + datetime.datetime.now().strftime('%Y%M%d_%H%m%s') + '.llnms-asset.xml'
+
+        #  Write the asset file
+        new_asset.Write_Asset_File()
+
+        #  Reload
+        self.asset_list = Asset.llnms_load_assets( llnms_home=self.LLNMS_HOME)
+
+
+    # ---------------------------------- #
+    # -     Reload the Asset List      - #
+    # ---------------------------------- #
+    def Reload_Assets(self):
+
+        self.asset_list = Asset.llnms_load_assets( llnms_home=self.LLNMS_HOME )
 
     # ----------------------------------------- #
     # -      Process Configuration File       - #

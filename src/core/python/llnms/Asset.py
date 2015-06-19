@@ -297,6 +297,27 @@ class Asset(object):
         #  Write the file
         print('Writing asset to ' + self.filename)
         tree.write(self.filename)
+    
+
+    # ------------------------------------------------ #
+    # -      Check if the entire asset is valid      - #
+    # ------------------------------------------------ #
+    def Is_Valid(self,  print_error_msg=False):
+
+        #  Make sure the hostname is valid
+        if self.Is_Valid_Hostname(self.hostname) is False:
+            if print_error_msg is True:
+                return False, 'Invalid hostname format.'
+            else:
+                return False
+
+
+        #  Otherwise, return valid
+        if print_error_msg is True:
+            return True, 'No errors.'
+        else:
+            return True
+
 
     # ----------------------------------------- #
     # -      Check if Hostname is Valid       - #
