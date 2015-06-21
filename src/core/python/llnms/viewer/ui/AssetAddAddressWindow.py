@@ -12,7 +12,7 @@ import curses, logging
 #  LLNMS Utilities
 import CursesTable, UI_Window_Base
 from ErrorWindow import ErrorWindow
-from ...Asset import Asset
+from ...Asset import Asset, AssetAddress
 from ...utility import Network_Utilities 
 
 
@@ -27,6 +27,7 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
     #  Address Info
     address_info = ''
     address_type = Network_Utilities.IP_Address_Type.IPV4
+    remote_access = None
 
     #  Address Cursors
     addr_field = 0
@@ -51,8 +52,9 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
     def Set_Defaults(self):
 
         # Set the cursor list
-        self.address_info = ''
-        self.address_type = Network_Utilities.IP_Address_Type.IPV4
+        self.address_info  = ''
+        self.address_type  = Network_Utilities.IP_Address_Type.IPV4
+        self.remote_access = [False, {}]
 
         #  Set the current field
         self.current_field = 0
@@ -123,7 +125,9 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
         
 
         #  Return the updated llnms state
-        return new_asset_address
+        return AssetAddress( ip_type  = self.address_type,
+                             ip_value = self.address_info,
+                             remote_access = self.remote_access )
 
 
     # ---------------------------------- #
@@ -169,11 +173,13 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
         entry = CursesTable.Format_String( value, width )
         flag  = self.current_field == 1
         self.Render_Line( field, entry, row, col, flag, color_set )
-            
         
         #  Print the option line
+        instruction_line = curses.LINES-self.y_offset-3
+        self.screen.addstr( instruction_line, self.x_offset+3, 'Press Enter to Validate and Save, ESC to Cancel and return to asset menu.')
+	
         option_line = curses.LINES-self.y_offset-2
-        self.screen.addstr( option_line, self.x_offset+3, 'option:', curses.color_pair(4))
+        self.screen.addstr( option_line,      self.x_offset+3, 'option:', curses.color_pair(4))
     
     # --------------------------------- #
     # -      Process Input Text       - #

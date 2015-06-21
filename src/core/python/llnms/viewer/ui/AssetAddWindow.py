@@ -123,6 +123,7 @@ class AssetAddWindow(object):
 
                     #  Add the address
                     if new_asset_address is not None:
+                        logging.debug('Adding new asset address. Details: ' + new_asset_address.To_Pretty_String())
                         self.asset_data.address_list.append(new_asset_address)
                     
 
@@ -226,11 +227,13 @@ class AssetAddWindow(object):
         for addr in self.asset_data.address_list:
             
             #  Compute the field
-            address_field = 'Address: '
-            address_entry_field = ''
+            address_field        = 'Address: '
+            address_type_field   = Network_Utilities.IP_Address_Type().To_String(addr.ip_type)
+            address_entry_field  = str(addr.ip_value)
+            address_remote_field = str(addr.remote_access)
 
             #  Get the field flag
-            field_flag = (self.current_field == 2) and (self.addr_field == step)
+            field_flag = (self.current_field == step) and (self.addr_field == step)
 
             #  Render the line
             self.Render_Line( address_field, address_entry_field, counter, 2, field_flag )

@@ -34,7 +34,7 @@ class AssetAddress(object):
     # --------------------------- #
     def __init__(self, ip_type=None,
                        ip_value=None,
-                       remote_access = None):
+                       remote_access = [False, {}]):
 
         #  Set the type
         self.ip_type = ip_type
