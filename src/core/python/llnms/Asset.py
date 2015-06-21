@@ -15,6 +15,27 @@ import xml.etree.ElementTree as ET
 import Scanner, Globals, utility.XML_Utilities
 
 
+# ----------------------------------------- #
+# -     Remote Access Asset Attribute     - #
+# ----------------------------------------- #
+class AssetRemoteAccessState(object):
+
+
+    # --------------------------- #
+    # -       Constructor       - #
+    # --------------------------- #
+    def __init__( self, enabled = False,
+                        attributes = {} ):
+
+        
+        #  Set the enabled flag
+        self.enabled = enabled
+
+        #  Set the attribute list
+        self.attributes = attributes
+
+
+
 # ----------------------------- #
 # -       Asset Address       - #
 # ----------------------------- #
@@ -34,7 +55,7 @@ class AssetAddress(object):
     # --------------------------- #
     def __init__(self, ip_type=None,
                        ip_value=None,
-                       remote_access = [False, {}]):
+                       remote_access = None):
 
         #  Set the type
         self.ip_type = ip_type
@@ -43,7 +64,10 @@ class AssetAddress(object):
         self.ip_value = ip_value
 
         #  Set the remote access
-        self.remote_access = remote_access
+        if remote_access is None:
+            self.remote_access = AssetRemoteAccessState()
+        else:
+            self.remote_access = remote_access
 
 
     # ------------------------------------------------- #
@@ -81,9 +105,9 @@ class AssetAddress(object):
         output += '        IP Address Type: ' + utility.Network_Utilities.IP_Address_Type().To_String(self.ip_type) + '\n'
         output += '        Address Value  : ' + self.ip_value + '\n'
         output += '        Remote Access\n'
-        output += '                 Enabled : ' + str(self.remote_access[0]) + '\n'
-        output += '               Driver-ID : ' + str(self.remote_access[1]['remote-driver']) + '\n'
-        output += '                username : ' + str(self.remote_access[1]['login-username']) + '\n'
+        output += '                 Enabled : ' + str(self.remote_access.enabled) + '\n'
+        output += '               Driver-ID : ' + str(self.remote_access.attributes['remote-driver']) + '\n'
+        output += '                username : ' + str(self.remote_access.attributes['login-username']) + '\n'
         output += '\n'
 
         return output
