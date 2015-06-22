@@ -14,7 +14,7 @@
             <supported value="true" />
 
             <!-- Command -->
-            <command name="tasks/command-systemctl/command-systemctl.py" />
+            <command value="tasks/command-systemctl/command-systemctl.py" />
             
         </linux>
     </configuration>

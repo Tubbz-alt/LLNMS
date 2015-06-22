@@ -169,6 +169,9 @@ install_to_filesystem(){
     echo '      -> llnms-list-tasks'
     cp 'src/core/tasking/llnms-list-tasks.py'            "$LLNMS_HOME/bin/llnms-list-tasks"
 
+    echo '      -> Copying llnms-print-task-info'
+    cp 'src/core/tasking/llnms-print-task-info.py'       "$LLNMS_HOME/bin/llnms-print-task-info"
+
 
     #  config utilities
     echo ''

@@ -9,6 +9,57 @@ __author__ = 'Marvin Smith'
 #  Python Libraries
 import os, xml.etree.ElementTree as ET, subprocess, logging
 
+
+# ---------------------------------- #
+# -       Task Configuration       - #
+# ---------------------------------- #
+class Task_Config(object):
+
+    #  Operating System
+    opsys = None
+
+    #  Supported Flag
+    supported = False
+
+    #  Command to execute
+    command = None
+
+
+    # ---------------------------- #
+    # -       Constructor        - #
+    # ---------------------------- #
+    def __init__(self, opsys=None,
+                       supported=False,
+                       command=None):
+
+        #  Operating System
+        self.opsys = opsys
+
+        #  Command
+        self.command = command
+
+        #  Supported
+        self.supported = supported
+
+    # ---------------------------------- #
+    # -     Print to List String       - #
+    # ---------------------------------- #
+    def To_List_String(self):
+
+        #  Create output
+        output = ''
+
+        #  Add OpSys
+        output += str(self.opsys)
+
+        #  Add the supported flag
+        output += ' ' + str(self.supported)
+
+        #  Add command
+        output += ' ' + str(self.command)
+
+        return output
+
 # ---------------------------- #
 # -        Task Class        - #
 # ---------------------------- #
@@ -23,19 +74,29 @@ class Task(object):
     #  Filename
     filename = None
 
+    #  Configurations
+    configurations = []
+
 
     # -------------------------- #
     # -      Constructor       - #
     # -------------------------- #
     def __init__(self, filename=None,
                        id = None,
-                       description = None ):
+                       description = None,
+                       configurations = None ):
 
         #  Set the ID
         self.id = id
 
         #  Set the description
         self.description = description
+
+        #  Set the configurations
+        if configurations is not None:
+            self.configurations = configurations
+        else:
+            self.configurations = []
 
         #  Set the filename
         self.filename = filename
@@ -117,6 +178,27 @@ class Task(object):
         dnode = root.find('description')
         if dnode is not None:
             self.description = dnode.text
+
+        #  Get the COnfiguration
+        config_node = root.find('configuration')
+
+        #  Iterate over subnodes
+        for cnode in config_node:
+
+            #  Get the config name
+            opsys = cnode.tag
+
+            #  Get the node command
+            command = cnode.find('command').get('value')
+
+            #  Get the supported flag
+            supported = bool(cnode.find('supported').get('value'))
+
+            #  Add the configuration
+            self.configurations.append(Task_Config(opsys=opsys,
+                                                   command=command,
+                                                   supported=supported))
+
 
     # -------------------------------- #
     # -     Write the Task File      - #

@@ -17,7 +17,7 @@
             <supported value="true" />
 
             <!-- Command -->
-            <command name="who" />
+            <command value="who" />
             
         </linux>
 
