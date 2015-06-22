@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LLNMS Installer Script &mdash; LLNMS 1.0 documentation</title>
+  <title>LLNMS Tasks &mdash; LLNMS 1.0 documentation</title>
   
 
   
@@ -115,10 +115,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>LLNMS Installer Script</li>
+    <li>LLNMS Tasks</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../sources/llnms/llnms_installer.txt" rel="nofollow"> View page source</a>
+          <a href="../sources/llnms/Task.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -126,44 +126,19 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="llnms-installer-script">
-<span id="llnms-installer"></span><h1>LLNMS Installer Script<a class="headerlink" href="#llnms-installer-script" title="Permalink to this headline">¶</a></h1>
-<p>The LLNMS Installer script can be run with the following command from the base
-directory.:</p>
-<div class="highlight-python"><div class="highlight"><pre>./llnms-installer.sh
-</pre></div>
+  <div class="section" id="llnms-tasks">
+<span id="llnms-task-main"></span><h1>LLNMS Tasks<a class="headerlink" href="#llnms-tasks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="llnms-list-tasks">
+<span id="llnms-list-tasks-def"></span><h2>llnms-list-tasks<a class="headerlink" href="#llnms-list-tasks" title="Permalink to this headline">¶</a></h2>
+<p>List all registered LLNMS tasks.</p>
 </div>
-<p>An output of help is given below.:</p>
-<div class="highlight-python"><div class="highlight"><pre>$&gt;./llnms-installer.sh -h
-
-usage: ./llnms-installer.sh [options]
-
-     required flags (at least one must be specified):
-
-     -m, --make [system]  : Build the relevant system.
-         systems:
-         all [default]
-         core       - LLNMS core scripts.
-
-     -i, --install        : Install LLNMS Components
-         NOTE: Anything that was installed with make commands
-         will be installed.
-
-     -t, --test  [system] : Run unit tests
-         systems:
-         all [default]
-         core      - LLNMS core scripts
-
-     -c, --clean          : Remove all existing builds.
-
-     optional flags:
-         --release            : Create release build
-         --debug              : Create debugging build
-
-         -j [int]             : Set number of threads.
-
-         --PREFIX &lt;new path&gt;  : Set a new destination path.
-</pre></div>
+<div class="section" id="llnms-print-task-info">
+<span id="llnms-print-task-info-def"></span><h2>llnms-print-task-info<a class="headerlink" href="#llnms-print-task-info" title="Permalink to this headline">¶</a></h2>
+<p>Print information about a registered LLNMS Task</p>
+</div>
+<div class="section" id="llnms-register-task">
+<span id="llnms-register-task-def"></span><h2>llnms-register-task<a class="headerlink" href="#llnms-register-task" title="Permalink to this headline">¶</a></h2>
+<p>Register a LLNMS task with the system.</p>
 </div>
 </div>
 

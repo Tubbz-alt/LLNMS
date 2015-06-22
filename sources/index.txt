@@ -88,13 +88,16 @@ with a required and optional set of parameters. Due to the nature of operating
 on the shell-scripting layer, scanners can have configurations
 for different operating system, primarily Linux and Windows.
 
+More info can be found in the :ref:`llnms_scanner_main` Section.
 
 
 Tasks
 ------
 
 Tasks are jobs that can be run both on the scanning system and potentially on assets.
+Like scanners, tasks must be registered on the asset before they can be run.
 
+More info can be found in the :ref:`llnms_task_main` Section.
 
 
 Contents:
@@ -106,6 +109,7 @@ Contents:
    llnms/Assets
    llnms/Networks
    llnms/Scanners
+   llnms/Task
    llnms/Commands
    llnms/Examples
 

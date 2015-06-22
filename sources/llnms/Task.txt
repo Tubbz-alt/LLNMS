@@ -1,0 +1,32 @@
+.. _llnms_task_main:
+
+LLNMS Tasks
+==============
+
+
+
+.. _llnms-list-tasks-def:
+
+llnms-list-tasks
+-------------------
+
+List all registered LLNMS tasks.
+
+
+
+.. _llnms-print-task-info-def:
+
+
+llnms-print-task-info
+------------------------
+
+Print information about a registered LLNMS Task
+
+
+.. _llnms-register-task-def:
+
+llnms-register-task
+----------------------
+
+Register a LLNMS task with the system.
+

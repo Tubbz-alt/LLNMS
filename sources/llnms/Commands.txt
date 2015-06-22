@@ -11,12 +11,14 @@ Below is a list of all current LLNMS commands.
  - :ref:`llnms-list-assets-def`
  - :ref:`llnms-list-networks-def`
  - :ref:`llnms-list-scanners-def`
- - :ref:`llnms-locking-manager-def`
+ - :ref:`llnms-list-tasks-def`
  - :ref:`llnms-print-asset-info-def`
  - :ref:`llnms-print-network-info-def`
  - :ref:`llnms-print-scanner-info-def`
+ - :ref:`llnms-print-task-info-def`
  - :ref:`llnms-register-asset-scanner-def`
  - :ref:`llnms-register-scanner-def`
+ - :ref:`llnms-register-task-def`
  - :ref:`llnms-remove-asset-def`
  - :ref:`llnms-remove-network-def`
  - :ref:`llnms-scan-asset-def`
