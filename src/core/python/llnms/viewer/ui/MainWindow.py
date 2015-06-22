@@ -5,6 +5,7 @@ from NetworkConfigurationPage import *
 from NetworkSummaryPage       import *
 from AssetSummaryWindow       import *
 from ScannerSummaryWindow     import *
+from TaskSummaryWindow        import *
 from UI_Window_Base           import Base_Window_Type
 from EventManager             import EventManager
 import handlers
@@ -49,8 +50,11 @@ class MainWindow(Base_Window_Type):
     #  Scanner Summary Index
     SCANNER_SUMMARY_INDEX = 2
 
+    #  Task Summary Index
+    TASK_SUMMARY_INDEX = 3
+
     #  Network Configuration Page Index
-    NETWORK_CONFIGURATION_INDEX = 3
+    NETWORK_CONFIGURATION_INDEX = 4
 
     #  Event Manager
     event_manager = EventManager()
@@ -84,6 +88,9 @@ class MainWindow(Base_Window_Type):
 
         #  Create the scanner window
         self.sub_windows.append(ScannerSummaryWindow(title=None, screen=self.screen))
+
+        #  Create the task window
+        self.sub_windows.append(TaskSummaryWindow(title=None,screen=self.screen))
 
         #  Create the network configuration Window
         self.sub_windows.append(NetworkConfigurationWindow(title=None, screen=self.screen))
@@ -154,8 +161,20 @@ class MainWindow(Base_Window_Type):
             self.current_window = self.SCANNER_SUMMARY_INDEX
             llnms_state = self.sub_windows[self.SCANNER_SUMMARY_INDEX].Process( llnms_state )
 
-        # check if user wants to view the network configuration page
+
+        #  Check if the user wants to view the task config page
         elif input_key == ord('4'):
+
+            # Print message
+            print_response_message( self.screen, 'Loading Task Summary Page')
+
+            #  Open Page
+            self.current_window = self.TASK_SUMMARY_INDEX
+            llnms_state = self.sub_windows[self.TASK_SUMMARY_INDEX].Process(llnms_state)
+
+
+        # check if user wants to view the network configuration page
+        elif input_key == ord('5'):
 
             #  Print a basic message telling the user you got their response
             print_response_message( self.screen, 'Loading Network Status Page')

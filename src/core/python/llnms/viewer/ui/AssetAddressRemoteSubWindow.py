@@ -1,36 +1,30 @@
-#    File:    AssetAddAddressWindow.py
+#    File:    AssetAddressRemoteSubWindow.py
 #    Author:  Marvin Smith
-#    Date:    6/18/2015
+#    Date:    6/21/2015
 #
-#    Purpose: Provide user with interface to add asset addresses.
+#    Purpose: Modify or create asset remote configurations.
 #
 __author__ = 'Marvin Smith'
 
-#  System Libraries
+
+#  Python Libraries
 import curses, logging
 
-#  LLNMS Utilities
+#  LLNMS Libraries
 import CursesTable, UI_Window_Base
 from ErrorWindow import ErrorWindow
-from AssetAddressRemoteSubWindow import AssetAddressRemoteSubWindow
-from ...Asset import Asset, AssetAddress, AssetRemoteAccessState
-from ...utility import Network_Utilities 
+from ...Asset import AssetRemoteAccessState
 
-
-class AddressWindowMode:
-    ADD=0
-    MODIFY=1
-
-# ------------------------------------ #
-# -      Add Asset Window Object     - #
-# ------------------------------------ #
-class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
+# ------------------------------------------- #
+# -      Add Asset Remote Window Object     - #
+# ------------------------------------------- #
+class AssetAddressRemoteSubWindow(UI_Window_Base.Base_Sub_Window_Type):
 
     #  Exit window
     exit_window = False
 
     #  Address Info
-    address = None
+    remote_access = None
 
     #  offset
     x_offset = 10
@@ -48,34 +42,34 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
     # --------------------------------- #
     # -     Build Default Settings    - #
     # --------------------------------- #
-    def Set_Defaults(self, mode=None, address=None):
+    def Set_Defaults(self, remote_access = None):
 
-        # Set the cursor list
-        self.address = AssetAddress(ip_type=Network_Utilities.IP_Address_Type.IPV4)
+        # Set the remote access
+        if remote_access is not None:
+            self.remote_access = remote_access
+        else:
+            self.remote_access = AssetRemoteAccessState()
 
         #  Set the current field
         self.current_field = 0
 
         #  Set the address and scan fields
-        self.sub_fields       = [0,0,0]
-        self.sub_field_ranges = [0,0,0]
-    
-        #  Build the cursor list
-        self.cursors = [0,0,0]
+        self.sub_fields       = [0]
+        self.sub_field_ranges = [0]
 
-        #  Set the address
-        if mode is not None and mode == AddressWindowMode.MODIFY and address is not None:
-            self.address = address
+        #  Build the cursor list
+        self.cursors = [0]
+
+
 
 
     # -------------------------------- #
     # -     Process This Window      - #
     # -------------------------------- #
-    def Process(self, mode        = AddressWindowMode.ADD,
-                      address      = None):
-        
+    def Process(self, remote_access = None):
+
         #  Construct defaults
-        self.Set_Defaults(mode, address)
+        self.Set_Defaults(remote_access)
 
         #  Start loop
         self.exit_window = False
@@ -97,13 +91,13 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
             if c == 27:
                 self.exit_window = True
                 return None
-           
+
 
             #  If the user provides the enter key
             elif c == curses.KEY_ENTER or c == 10:
                 self.exit_window = True
 
-            
+
             #  If the user provides arrow key, switch
             elif c == ord('\t') or c == curses.KEY_DOWN:
                 self.current_field = (self.current_field + 1) % len(self.cursors)
@@ -115,17 +109,11 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
                 if self.current_field < 0:
                     self.current_field = 0
 
-            # If the user provides the modify key while over the remote set
-            elif c == ord('m') and self.current_field == 2:
-
-                #  Get the remote access window
-                remote_access = AssetAddressRemoteSubWindow(self.screen).Process()
-            
 
             #  If entry is text, add to entry
             else:
                 self.Process_Text( c )
-        
+
 
         #  Return the updated llnms state
         return self.address
@@ -141,7 +129,7 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
 
             #  Width
             width_str = ' ' * (curses.COLS-(2 * self.x_offset))
-            
+
             #  Print line
             self.screen.addstr( y, self.x_offset, width_str, curses.color_pair(4) )
 
@@ -154,46 +142,49 @@ class AssetAddAddressSubWindow(UI_Window_Base.Base_Sub_Window_Type):
         #  Build the color set
         color_set = [0,1]
 
+        #  Render the Remote Enabled Section
+        self.Render_Remote_Enabled(color_set)
+
+
+        #  Print the next option line
+        instruction_line = curses.LINES-self.y_offset-4
+        info_str = ''
+        if self.current_field == 0:
+            info_str += ' Tab) Toggle between enabled and disabled.'
+        self.screen.addstr( instruction_line, self.x_offset+3, info_str)
+
+        #  Print the option line
+        instruction_line = curses.LINES-self.y_offset-3
+        self.screen.addstr( instruction_line, self.x_offset+3, 'Enter) Validate and Save,  ESC) Cancel')
+
+        option_line = curses.LINES-self.y_offset-2
+        self.screen.addstr( option_line,      self.x_offset+3, 'option:', curses.color_pair(4))
+
+    # ---------------------------------------------- #
+    # -      Render the Remote Enabled Section     - #
+    # ---------------------------------------------- #
+    def Render_Remote_Enabled(self, color_set):
 
         #  Set the type
         row   = self.y_offset + 5
         col   = self.x_offset + 5
-        field = 'Address Type: '
-        value = Network_Utilities.IP_Address_Type().To_String(self.address.ip_type)
+        field = 'Remote Access: '
+        if self.remote_access.enabled is True:
+            value = 'Enabled'
+        else:
+            value = 'Disabled'
+
+        self.Render_Field( row, col, field, value, color_set)
+
+    # ------------------------------ #
+    # -      Render the Field      - #
+    # ------------------------------ #
+    def Render_Field(self, row, col, field, value, color_set):
+
         width = curses.COLS - len(field) - 6 - (2*self.x_offset)
         entry = CursesTable.Format_String( value, width )
         self.Render_Line( field, entry, row, col, self.current_field == 0, color_set )
 
-
-        #  Set the address
-        row   = self.y_offset + 9
-        col   = self.x_offset + 5
-        field = 'Address Value: '
-        value = self.address.ip_value
-        width = curses.COLS - len(field) - 6 - (2*self.x_offset)
-        entry = CursesTable.Format_String( value, width )
-        flag  = self.current_field == 1
-        self.Render_Line( field, entry, row, col, flag, color_set )
-
-
-        #  Set the remote info
-        row   = self.y_offset + 11
-        col   = self.x_offset + 5
-        field = 'Remote-Access: '
-        value = str(self.address.remote_access.enabled)
-        width = curses.COLS - len(field) - 6 - (2*self.x_offset)
-        entry = CursesTable.Format_String(value, width)
-        flag  = self.current_field == 2
-        self.Render_Line( field, entry, row, col, flag, color_set)
-
-
-        #  Print the option line
-        instruction_line = curses.LINES-self.y_offset-3
-        self.screen.addstr( instruction_line, self.x_offset+3, 'Press Enter to Validate and Save, ESC to Cancel and return to asset menu.')
-	
-        option_line = curses.LINES-self.y_offset-2
-        self.screen.addstr( option_line,      self.x_offset+3, 'option:', curses.color_pair(4))
-    
     # --------------------------------- #
     # -      Process Input Text       - #
     # --------------------------------- #

@@ -2,7 +2,7 @@ __author__ = 'marvinsmith'
 
 
 #  Python Libraries
-import curses
+import curses, logging
 
 # --------------------------------- #
 # -       Base Window Type        - #
@@ -15,10 +15,19 @@ class Base_Window_Type(object):
     #  Window render screen
     screen = None
 
+    #  Current Field
+    current_field = 0
+
+    #  Address Cursors
+    sub_fields      = [0]
+    sub_field_range = [0]
+
     # --------------------------- #
     # -      Constructor        - #
     # --------------------------- #
-    def __init__(self, title = None, screen = None):
+    def __init__(self, title = None,
+                       screen = None,
+                       current_field = 0):
 
         #  Set the title
         if title is not None:
@@ -28,7 +37,66 @@ class Base_Window_Type(object):
         if screen is not None:
             self.screen = screen
 
+        #  Current Field
+        self.current_field = current_field
 
+        #  Address Cursors
+        self.sub_fields      = [0]
+        self.sub_field_range = [0]
+
+    # ----------------------------- #
+    # -     Render the Header     - #
+    # ----------------------------- #
+    def Render_Header(self):
+
+        #  Print the header
+        self.screen.addstr(0, 0, self.window_title)
+        self.screen.addstr(1, 0, '-' * (curses.COLS-1))
+
+    # ------------------------------------------- #
+    # -      Increment Cursor Field  (Down)     - #
+    # ------------------------------------------- #
+    def Increment_Active_Field(self):
+
+        #  Increment the subfield
+        self.sub_fields[self.current_field] += 1
+
+        #  If the subfield is greater than the range, then increment the field
+        if self.sub_fields[self.current_field] > self.sub_field_range[self.current_field]:
+
+            #  Reset the current subfield
+            self.sub_fields[self.current_field]=0
+
+            #  Increment the field
+            self.current_field += 1
+
+            #  If the field is past the range, then reset
+            if self.current_field >= len(self.sub_fields):
+                self.current_field = 0
+
+            #  Reset the active subfield
+            self.sub_fields[self.current_field]=0
+
+    # ------------------------------------ #
+    # -      Decrement Cursor Field      - #
+    # ------------------------------------ #
+    def Decrement_Active_Field(self):
+
+        #  Decrement the subfield
+        self.sub_fields[self.current_field] -= 1
+
+        #  If the subfield is less than 0
+        if self.sub_fields[self.current_field] < 0:
+
+            #  Decrement the field
+            self.current_field -= 1
+
+            #  If the field is less than 0, move back to the end
+            if self.current_field < 0:
+                self.current_field = len(self.sub_fields)-1
+
+            #  Adjust the current subfield
+            self.sub_fields[self.current_field] = self.sub_field_range[self.current_field]
 
 # ---------------------------------- #
 # -      Base Sub-Window Type      - #
@@ -43,6 +111,9 @@ class Base_Sub_Window_Type(object):
     
     #  Cursor
     current_field = 0
+
+    sub_fields       = [0]
+    sub_field_ranges = [0]
 
     #  Cursor List
     cursors = []
@@ -89,5 +160,3 @@ class Base_Sub_Window_Type(object):
         if highlight == True:
             cpos =  self.cursors[self.current_field]
             self.screen.addch( row, col_offset + cpos, data[cpos], cpair | curses.A_UNDERLINE)
-    
-    

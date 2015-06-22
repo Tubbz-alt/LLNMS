@@ -8,6 +8,7 @@
 # LLNMS Imports
 from .. import Asset
 from .. import Network
+from .. import Scanner
 
 #  Python Imports
 import datetime, os, logging, shutil
@@ -26,6 +27,12 @@ class LLNMS_State(object):
     
     #  List of LLNMS Networks
     network_list = []
+
+    #  List of LLNMS Scanners
+    registered_scanner_list = []
+
+    #  List of LLNMS Tasks
+    registered_task_list = []
 
     #  Log Path
     log_pathname = os.environ['LLNMS_HOME'] + '/.llnms-viewer.log'
@@ -49,6 +56,9 @@ class LLNMS_State(object):
 
         #  Load the LLNMS Networks
         self.network_list = Network.llnms_load_networks(llnms_home=self.LLNMS_HOME)
+
+        #  Load the LLNMS Scanners
+        self.registered_scanner_list = Scanner.llnms_load_scanners(llnms_home=self.LLNMS_HOME)
     
     # -------------------------- #
     # -       Add network      - #
@@ -102,6 +112,18 @@ class LLNMS_State(object):
         #  Reload
         self.asset_list = Asset.llnms_load_assets( llnms_home=self.LLNMS_HOME)
 
+    # ---------------------------------------- #
+    # -        Remove an LLNMS Asset         - #
+    # ---------------------------------------- #
+    def Remove_Asset(self, rm_asset):
+
+        #  Iterate over assets
+        for asset in self.asset_list:
+            if asset.hostname == rm_asset.hostname:
+                os.remove(asset.filename)
+
+        #  Reload the asset list
+        self.Reload_Assets()
 
     # ---------------------------------- #
     # -     Reload the Asset List      - #
@@ -109,6 +131,13 @@ class LLNMS_State(object):
     def Reload_Assets(self):
 
         self.asset_list = Asset.llnms_load_assets( llnms_home=self.LLNMS_HOME )
+
+    # ------------------------------ #
+    # -     Load the Scanners      - #
+    # ------------------------------ #
+    def Reload_Scanners(self):
+
+        self.registered_scanner_list = Scanner.llnms_load_scanners(llnms_home=self.LLNMS_HOME)
 
     # ----------------------------------------- #
     # -      Process Configuration File       - #

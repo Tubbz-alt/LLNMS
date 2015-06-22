@@ -1,4 +1,11 @@
-__author__ = 'marvinsmith'
+#    File:    TaskSummaryWindow.py
+#    Author:  Marvin Smith
+#    Date:    6/21/2015
+#
+#    Purpose: Show existing task scripts
+#
+__author__ = 'Marvin Smith'
+
 
 #  Python Libraries
 import logging, curses
@@ -7,13 +14,14 @@ import logging, curses
 from UI_Window_Base import *
 import CursesTable
 
-class ScannerSummaryWindow(Base_Window_Type):
+
+# --------------------------------------- #
+# -      Task Summary Window Class      - #
+# --------------------------------------- #
+class TaskSummaryWindow(Base_Window_Type):
 
     #  Exit Window Flag
     exit_window = False
-
-    #  Current Scanner
-    current_scanner = 0
 
     # --------------------------- #
     # -      Constructor        - #
@@ -21,7 +29,7 @@ class ScannerSummaryWindow(Base_Window_Type):
     def __init__(self, title=None, screen = None):
 
         #  Build parent
-        Base_Window_Type.__init__(self,title = "Scanner Summary Window", screen = screen)
+        Base_Window_Type.__init__(self,title = "Task Summary Window", screen = screen)
 
         logging.info('End of ' + str(self.__class__.__name__) + " constructor")
 
@@ -84,7 +92,7 @@ class ScannerSummaryWindow(Base_Window_Type):
     def Render_Main_Content(self, llnms_state):
 
         #  Get the scanner list
-        scanners = llnms_state.registered_scanner_list
+        tasks = llnms_state.registered_task_list
 
         #  Create the table
         table = CursesTable.CursesTable(cols=3, rows=1)
@@ -101,16 +109,16 @@ class ScannerSummaryWindow(Base_Window_Type):
 
         #  Set the data
         counter=1
-        for x in xrange(0, len(scanners)):
+        for x in xrange(0, len(tasks)):
 
             # Set the id
-            table.Set_Item( 0, counter, scanners[x].id)
+            table.Set_Item( 0, counter, tasks[x].id)
 
             #  Set the name
-            table.Set_Item( 1, counter, scanners[x].name)
+            table.Set_Item( 1, counter, tasks[x].name)
 
             #  Set the description
-            table.Set_Item( 2, counter, scanners[x].description)
+            table.Set_Item( 2, counter, tasks[x].description)
 
             #  Increment the counter
             counter += 1
@@ -125,7 +133,7 @@ class ScannerSummaryWindow(Base_Window_Type):
                             max_col,
                             min_print_row,
                             curses.LINES-5,
-                            self.current_scanner+1)
+                            self.current_field+1)
 
     # -------------------------------------------------- #
     # -    Command for externally closing the window   - #

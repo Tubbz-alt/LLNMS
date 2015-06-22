@@ -1,16 +1,17 @@
-#    File:    AssetAddWindow.py
+#    File:    AssetModifyWindow.py
 #    Author:  Marvin Smith
-#    Date:    6/18/2015
+#    Date:    6/21/2015
 #
-#    Purpose: Provide user with interface to add assets.
+#    Purpose: Modify an existing Asset.
 #
 __author__ = 'Marvin Smith'
+
 
 #  System Libraries
 import curses, logging
 
 #  LLNMS Utilities
-import CursesTable 
+import CursesTable
 
 from UI_Window_Base import Base_Window_Type
 from AssetAddAddressWindow import AssetAddAddressSubWindow, AddressWindowMode
@@ -19,10 +20,10 @@ from ...Asset import Asset
 from ...utility.Network_Utilities import IP_Address_Type
 
 
-# ------------------------------------ #
-# -      Add Asset Window Object     - #
-# ------------------------------------ #
-class AssetAddWindow(Base_Window_Type):
+# --------------------------------------- #
+# -      Modify Asset Window Object     - #
+# --------------------------------------- #
+class AssetModifyWindow(Base_Window_Type):
 
     #  Default Screen
     screen = None
@@ -42,7 +43,7 @@ class AssetAddWindow(Base_Window_Type):
     def __init__(self, screen ):
 
         #  Build the parent
-        Base_Window_Type.__init__(self, title='Add Asset Window',
+        Base_Window_Type.__init__(self, title='Modify Asset Window',
                                         screen=screen,
                                         current_field=0)
 
@@ -63,18 +64,21 @@ class AssetAddWindow(Base_Window_Type):
         self.sub_field_range = [0,0,0,0]
 
         #  Load the asset data
-        self.asset_data = Asset( hostname='',
-                                 description = '',
-                                 address_list=[])
+        self.asset_data = None
 
 
     # -------------------------------- #
     # -     Process This Window      - #
     # -------------------------------- #
-    def Process(self, llnms_state ):
-        
+    def Process(self, asset ):
+
         #  Construct defaults
         self.Set_Defaults()
+
+        #  Update the asset
+        self.asset_data = asset
+        self.sub_field_range[2] = len(self.asset_data.address_list)
+        self.sub_field_range[3] = len(self.asset_data.registered_scanners)
 
         #  Start loop
         self.exit_window = False
@@ -102,10 +106,21 @@ class AssetAddWindow(Base_Window_Type):
             #  If user wants to quit
             if c == 27:
                 self.exit_window = True
-            
+                return asset
+
+            #  If the user wants to modify the current asset
+            if c == ord('m'):
+                if self.current_field == 2 and self.sub_fields[self.current_field] < len(self.asset_data.address_list):
+
+                    #  Modify
+                    new_asset_address = AssetAddAddressSubWindow(self.screen).Process(mode=AddressWindowMode.MODIFY, address=self.asset_data.address_list[self.sub_fields[self.current_field]])
+
+                    if new_asset_address is not None:
+                        self.asset_data.address_list[self.sub_fields[self.current_field]] = new_asset_address
+
             #  If the user provides the enter key
             elif c == curses.KEY_ENTER or c == 10:
-                
+
                 #  Check if the user requested to add an address
                 if self.current_field == 2 and self.sub_fields[self.current_field] == len(self.asset_data.address_list):
 
@@ -116,20 +131,18 @@ class AssetAddWindow(Base_Window_Type):
                     if new_asset_address is not None:
                         self.asset_data.address_list.append(new_asset_address)
                         self.sub_field_range[self.current_field] += 1
-                    
 
                 #  Otherwise, add the asset
                 else:
-                    
+
                     #  Make sure the network is valid
                     status_flag, error_msg = self.asset_data.Is_Valid(print_error_msg=True)
                     if status_flag is False:
-                        
+
                         #  Render an error window
                         ErrorWindow().Process(self.screen, 'Invalid Asset.', error_msg)
 
                     else:
-                        llnms_state.Add_Asset(self.asset_data)
                         self.exit_window = True
 
 
@@ -148,8 +161,11 @@ class AssetAddWindow(Base_Window_Type):
                 self.Process_Text( c )
 
 
+        #  Write the asset
+        self.asset_data.Write_Asset_File()
+
         #  Return the updated llnms state
-        return llnms_state
+        return self.asset_data
 
     # ------------------------------- #
     # -     Render the Header       - #
@@ -169,7 +185,7 @@ class AssetAddWindow(Base_Window_Type):
         self.screen.addstr( curses.LINES-4, 0, '-' * (curses.COLS-1))
 
         #  Render Menu
-        self.screen.addstr( curses.LINES-3, 0, 'ESC) Cancel,  ENTER)  Accept,  Up/Down Arrow, Tab) Switch Current Field.')
+        self.screen.addstr( curses.LINES-3, 0, 'ESC) Cancel,  ENTER)  Accept,  Up/Down Arrow, Tab) Switch Current Field.,  m) When over address or scanner, modify it.')
         self.screen.addstr( curses.LINES-2, 0, 'Input text into fields.')
 
     # --------------------------------- #
@@ -178,11 +194,11 @@ class AssetAddWindow(Base_Window_Type):
     def Render_Main_Content(self):
 
         # Render the asset hostname
-        host_field = 'Hostname Field: ' 
+        host_field = 'Hostname Field: '
         max_host_width = curses.COLS - len(host_field) - 5
         host_entry = CursesTable.Format_String( self.asset_data.hostname, max_host_width)
         self.Render_Line( host_field, host_entry, 3, 2, self.current_field == 0)
-        
+
         #  Render the asset description
         desc_field = 'Description Field: '
         max_desc_width = curses.COLS - len(desc_field) - 5
@@ -204,7 +220,7 @@ class AssetAddWindow(Base_Window_Type):
         counter += 2
         step = 0
         for addr in self.asset_data.address_list:
-            
+
             #  Compute the field
             address_field        = str(step)
             address_type_field   = IP_Address_Type().To_String(addr.ip_type)
@@ -219,7 +235,7 @@ class AssetAddWindow(Base_Window_Type):
 
             #  Render the line
             self.Render_Line( address_field, address_data, counter, 4, field_flag, field_to_data_gap=8 )
-            
+
             #  Increment the counter
             counter += 1
             step += 1
@@ -266,8 +282,8 @@ class AssetAddWindow(Base_Window_Type):
 
 
         return
-    
-    
+
+
     # --------------------------- #
     # -      Render Line        - #
     # --------------------------- #

@@ -92,13 +92,13 @@ install_to_filesystem(){
     echo ''
     echo '   -> Copying asset module scripts'
     
-    echo '      -> llnms-create-asset.sh'
+    echo '      -> Copying llnms-create-asset.py'
     cp 'src/core/assets/llnms-create-asset.py'            "$LLNMS_HOME/bin/llnms-create-asset"
     
-    echo '      -> llnms-remove-asset.sh'
+    echo '      -> Copying llnms-remove-asset.sh'
     cp 'src/core/assets/llnms-remove-asset.sh'            "$LLNMS_HOME/bin/llnms-remove-asset"
     
-    echo '      -> llnms-list-assets.sh'
+    echo '      -> Copying llnms-list-assets.py'
     cp 'src/core/assets/llnms-list-assets.py'             "$LLNMS_HOME/bin/llnms-list-assets"
     
     echo '      -> llnms-print-asset-info.sh'
@@ -162,6 +162,12 @@ install_to_filesystem(){
     echo '   -> Copying Task Module Scripts'
     echo '      -> llnms task scripts'
     cp -r src/core/tasking/tasks/*                      "$LLNMS_HOME/tasks/"
+
+    echo '      -> llnms-register-task'
+    cp 'src/core/tasking/llnms-register-task.py'         "$LLNMS_HOME/bin/llnms-register-task"
+
+    echo '      -> llnms-list-tasks'
+    cp 'src/core/tasking/llnms-list-tasks.py'            "$LLNMS_HOME/bin/llnms-list-tasks"
 
 
     #  config utilities

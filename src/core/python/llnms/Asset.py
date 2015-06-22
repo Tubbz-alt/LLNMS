@@ -20,6 +20,11 @@ import Scanner, Globals, utility.XML_Utilities
 # ----------------------------------------- #
 class AssetRemoteAccessState(object):
 
+    #  Enabled Flag
+    enabled = False
+
+    #  Attribute Dictionary
+    attributes = {}
 
     # --------------------------- #
     # -       Constructor       - #
@@ -34,7 +39,15 @@ class AssetRemoteAccessState(object):
         #  Set the attribute list
         self.attributes = attributes
 
+    # --------------------------------------- #
+    # -    Get the Value of an Attribute    - #
+    # --------------------------------------- #
+    def Get_Attribute_Value(self, key ):
 
+        if key in self.attributes:
+            return self.attributes[key]
+        else:
+            return None
 
 # ----------------------------- #
 # -       Asset Address       - #
@@ -106,8 +119,8 @@ class AssetAddress(object):
         output += '        Address Value  : ' + self.ip_value + '\n'
         output += '        Remote Access\n'
         output += '                 Enabled : ' + str(self.remote_access.enabled) + '\n'
-        output += '               Driver-ID : ' + str(self.remote_access.attributes['remote-driver']) + '\n'
-        output += '                username : ' + str(self.remote_access.attributes['login-username']) + '\n'
+        output += '               Driver-ID : ' + str(self.remote_access.Get_Attribute_Value('remote-driver')) + '\n'
+        output += '                username : ' + str(self.remote_access.Get_Attribute_Value('login-username')) + '\n'
         output += '\n'
 
         return output
@@ -140,10 +153,15 @@ class Asset(object):
     # --------------------------- #
     def __init__( self,
                   hostname = None,
-                  address_list = [],
+                  address_list = None,
                   description = None,
-                  scanners = [],
+                  scanners = None,
                   filename = None ):
+
+
+        #  Set defaults
+        self.Set_Defaults()
+
 
         #  Hostname
         self.hostname = hostname
@@ -152,13 +170,16 @@ class Asset(object):
         hostname_regex = re.compile(Globals.LLNMS_HOSTNAME_REGEX_PATTERN)
 
         #  Address List
-        self.address_list = address_list
+        if address_list is not None:
+            self.address_list = address_list
 
         #  Description
-        self.description = description
+        if description is not None:
+            self.description = description
 
         #  Scanners
-        self.registered_scanners = scanners
+        if scanners is not None:
+            self.registered_scanners = scanners
 
         #  Filename
         self.filename = filename
@@ -167,6 +188,19 @@ class Asset(object):
         if self.filename is not None:
             self.Load_From_File(self.filename)
 
+    # -------------------------------- #
+    # -      Set default values      - #
+    # -------------------------------- #
+    def Set_Defaults(self):
+
+        #  Set empty list
+        self.address_list = []
+
+        #  Set description
+        self.description = None
+
+        #  Set scanners
+        self.registered_scanners = []
 
     # ---------------------------------------------------- #
     # -      Load the Asset Information From A File      - #
@@ -199,7 +233,7 @@ class Asset(object):
             for address_node in addresses_node:
 
                 #  Get the type
-                ip_type_str = address_node.get('ip-type')
+                ip_type_str = address_node.get('type')
                 ip_type = utility.Network_Utilities.IP_Address_Type().From_String(ip_type_str)
 
                 #  Get the value
@@ -208,16 +242,16 @@ class Asset(object):
                 #  Get the remote access child
                 remote_node = address_node.find('remote-access')
 
-                remote_access = [False, {}]
+                remote_access = AssetRemoteAccessState()
                 if remote_node is not None:
 
                     #  Check if configured
                     if bool(remote_node.get('configured')) is True:
-                        remote_access[0] = True
+                        remote_access.enabled = True
 
                     #  Check the remote-driver
                     if remote_node.get('remote-driver') is not None:
-                        remote_access[1]['remote-driver'] = remote_node.get('remote-driver')
+                        remote_access.attributes['remote-driver'] = remote_node.get('remote-driver')
 
                         #  Look for the remote driver node
                         remote_driver_node = remote_node.find('remote-driver')
@@ -226,7 +260,7 @@ class Asset(object):
                             #  Get the login
                             login_node = remote_driver_node.find('login')
 
-                            remote_access[1]['login-username'] = login_node.get('username')
+                            remote_access.attributes['login-username'] = login_node.get('username')
 
                 #  If both are valid, then create the address node
                 if ip_type is not None and ip_value is not None:
@@ -276,7 +310,7 @@ class Asset(object):
     # ----------------------------------- #
     def Write_Asset_File(self, filename = None):
 
-        #  #  Check the filename
+        #  Check the filename
         if filename is not None:
             self.filename = filename
 
@@ -310,16 +344,24 @@ class Asset(object):
         for address in self.address_list:
 
             #  Check if the address is already there
-            res = addr_node.findall('./address[@ip-value=\'' + address.ip_value + ']' )
+            res = addr_node.findall('./address[@value=\'' + address.ip_value + '\']' )
 
-            if res is not None:
+            if len(res) > 0:
                 pass
+
+            #  If the result is None, then write it out
+            else:
+
+                #  Add the node
+                new_addr_node = ET.SubElement(addr_node,'address')
+                new_addr_node.set('type',  utility.Network_Utilities.IP_Address_Type().To_String(address.ip_type))
+                new_addr_node.set('value', address.ip_value)
 
         #  Indent the file
         utility.XML_Utilities.XML_Indent(root)
 
         #  Write the file
-        print('Writing asset to ' + self.filename)
+        logging.debug('Writing asset to ' + self.filename)
         tree.write(self.filename)
     
 

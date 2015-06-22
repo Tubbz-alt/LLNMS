@@ -4,6 +4,9 @@
     <!-- ID -->
     <id>logged-in</id>
 
+    <!-- Description -->
+    <description>Get a list of currently logged in users.</description>
+
     <!-- Configuration -->
     <configuration>
 
